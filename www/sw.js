@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v26-bn-default";
+const CACHE_NAME = "sunnah-24-enterprise-v25-bn";
 const ASSETS = [
   "./",
   "./index.html",
@@ -10,7 +10,17 @@ const ASSETS = [
 ];
 
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(async (cache) => {
+      for (const asset of ASSETS) {
+        try {
+          await cache.add(asset);
+        } catch (err) {
+          console.warn("Skipped caching optional asset:", asset, err);
+        }
+      }
+    })
+  );
   self.skipWaiting();
 });
 
