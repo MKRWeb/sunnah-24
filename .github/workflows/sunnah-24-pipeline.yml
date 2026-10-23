@@ -1,11 +1,9 @@
-name: Sunnah 24 — Cloud APK, Play Store AAB & GitHub Pages Pipeline
+name: Sunnah 24 — Automated Auto-Updating Release Pipeline
 
 on:
   push:
     branches:
       - main
-    tags:
-      - 'v*' # Triggers automatically whenever you push a new tag like v2.5.0
   workflow_dispatch:
 
 permissions:
@@ -102,7 +100,7 @@ jobs:
             echo "$KEYSTORE_BASE64" | base64 --decode > release-key.jks
             KS_PASS="$KEYSTORE_PASSWORD"
             K_ALIAS="$KEY_ALIAS"
-            K_PASS="$KEY_PASSWORD"
+            K_PASSWORD="$KEY_PASSWORD"
           else
             KS_PASS="Sunnah24SecurePass"
             K_ALIAS="sunnah24"
@@ -143,25 +141,37 @@ jobs:
 
           rm -f aligned-release.apk
 
-      - name: Extract Release Tag
-        id: tag_meta
+      - name: Force Overwrite Existing v2.4.0 Release & Tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            TAG_NAME="${GITHUB_REF#refs/tags/}"
-          else
-            TAG_NAME="v2.5.0"
-          fi
-          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          TAG="v2.4.0"
+          
+          # Delete remote release if it exists
+          gh release delete "$TAG" --repo "${{ github.repository }}" --cleanup-tag -y || true
+          
+          # Delete remote git tag if it exists
+          git push origin --delete "$TAG" || true
+          
+          # Configure git bot
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Create fresh tag pointing to current commit
+          git tag -a "$TAG" -m "Auto-Update Release $TAG"
+          git push origin "$TAG"
 
-      - name: Publish Signed APK & Play Store AAB to GitHub Releases Page
+      - name: Publish Fresh Signed APK & Play Store AAB to GitHub Releases Page
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.tag_meta.outputs.tag_name }}
-          name: "Sunnah 24 — Official Release (${{ steps.tag_meta.outputs.tag_name }})"
+          tag_name: "v2.4.0"
+          name: "Sunnah 24 — Live Auto-Updated Build (Bangla Default)"
           body: |
-            ### ☪️ Sunnah 24 — Corporate Production Build (Bangla Default, Arabic & English)
-            - **📱 Direct Android APK Download:** [**⬇️ Tap Here to Download `Sunnah-24-Release-Signed.apk`**](https://github.com/${{ github.repository }}/releases/download/${{ steps.tag_meta.outputs.tag_name }}/Sunnah-24-Release-Signed.apk)
-            - **🏪 Google Play Console Bundle:** [**⬇️ Tap Here to Download `Sunnah-24-PlayStore-Signed.aab`**](https://github.com/${{ github.repository }}/releases/download/${{ steps.tag_meta.outputs.tag_name }}/Sunnah-24-PlayStore-Signed.aab)
+            ### ☪️ Sunnah 24 — Latest Corporate Production Build
+            *This release automatically updates immediately upon every repository code change.*
+            
+            - **📱 Direct Android APK Download:** [**⬇️ Tap Here to Download `Sunnah-24-Release-Signed.apk`**](https://github.com/${{ github.repository }}/releases/download/v2.4.0/Sunnah-24-Release-Signed.apk)
+            - **🏪 Google Play Console Bundle:** [**⬇️ Tap Here to Download `Sunnah-24-PlayStore-Signed.aab`**](https://github.com/${{ github.repository }}/releases/download/v2.4.0/Sunnah-24-PlayStore-Signed.aab)
             - **🌐 Live Web PWA:** https://mkrweb.github.io/sunnah-24/
           files: |
             Sunnah-24-Release-Signed.apk
