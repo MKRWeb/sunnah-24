@@ -1,0 +1,9 @@
+{
+  "appId": "com.mkrweb.sunnah24",
+  "appName": "Sunnah 24",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}
