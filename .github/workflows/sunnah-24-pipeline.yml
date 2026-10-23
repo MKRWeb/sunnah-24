@@ -24,6 +24,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Ensure www Directory Exists
+        run: |
+          mkdir -p www
+          for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
+            if [ -f "$f" ] && [ ! -f "www/$f" ]; then
+              cp "$f" www/
+            fi
+          done
+
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
@@ -47,6 +56,15 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Ensure www Directory Exists for Capacitor
+        run: |
+          mkdir -p www
+          for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
+            if [ -f "$f" ]; then
+              cp -f "$f" www/
+            fi
+          done
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -122,8 +140,9 @@ jobs:
             aligned-release.apk
 
           rm -f aligned-release.apk
+          ls -lh ./Sunnah-24-Release-Signed.apk ./Sunnah-24-PlayStore-Signed.aab
 
-      - name: Determine Release Tag (Supports Push to Main, Tags, & Manual Run)
+      - name: Determine Release Tag
         id: release_meta
         run: |
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
@@ -138,9 +157,11 @@ jobs:
         with:
           tag_name: ${{ steps.release_meta.outputs.tag_name }}
           name: "Sunnah 24 — Official Release (${{ steps.release_meta.outputs.tag_name }})"
+          prerelease: false
+          draft: false
           body: |
             ### ☪️ Sunnah 24 — Corporate Production Build
-            - **📱 Direct Android Installation:** Download **`Sunnah-24-Release-Signed.apk`** below and open it on your Android device.
+            - **📱 Direct Android Installation:** Scroll down to **Assets** below and tap **`Sunnah-24-Release-Signed.apk`** to download and install on your Android device.
             - **🏪 Google Play Console Bundle:** Upload **`Sunnah-24-PlayStore-Signed.aab`** to Google Play Console.
             - **🌐 Live Web PWA:** https://mkrweb.github.io/sunnah-24/
           files: |
