@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" dir="ltr" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
@@ -17,12 +17,17 @@
     <div class="header-left">
       <div class="brand-badge">☪️ S24</div>
       <div>
-        <h1>Sunnah 24</h1>
+        <h1 data-i18n="app_title">Sunnah 24</h1>
         <p id="current-date-display">Syncing Hijri & Gregorian Calendar...</p>
       </div>
     </div>
     <div class="header-right">
-      <span id="integrity-badge" class="badge-verified" title="SHA-256 Tamper-Proof Ledger Verified">
+      <select id="lang-switcher" class="lang-select" aria-label="Select Language">
+        <option value="en">🌐 EN</option>
+        <option value="bn">🌐 বাংলা</option>
+        <option value="ar">🌐 العربية</option>
+      </select>
+      <span id="integrity-badge" class="badge-verified" title="SHA-256 Tamper-Proof Ledger & i18n Verified">
         🛡️ S24 Verified
       </span>
     </div>
@@ -32,7 +37,7 @@
   <section class="hero-card">
     <div class="hero-stats">
       <div>
-        <span class="label">DAILY SUNNAH 24 MASTERY</span>
+        <span class="label" data-i18n="hero_mastery_label">DAILY SUNNAH 24 MASTERY</span>
         <h2 id="daily-score-text">0%</h2>
         <p id="completed-count-text">0 of 32 Prophetic habits completed</p>
       </div>
@@ -40,7 +45,7 @@
         <span class="streak-flame">🔥</span>
         <div>
           <strong id="streak-count">0</strong>
-          <small>Day Streak</small>
+          <small data-i18n="day_streak">Day Streak</small>
         </div>
       </div>
     </div>
@@ -55,32 +60,32 @@
 
   <!-- Main Navigation Tabs -->
   <nav class="tab-nav" role="tablist">
-    <button class="tab-btn active" data-tab="tab-routine">🕒 24H Routine</button>
-    <button class="tab-btn" data-tab="tab-adhkar">📿 Adhkar</button>
-    <button class="tab-btn" data-tab="tab-diary">📖 Muhasabah</button>
-    <button class="tab-btn" data-tab="tab-vault">🔐 Vault & Info</button>
+    <button class="tab-btn active" data-tab="tab-routine" data-i18n="tab_routine">🕒 24H Routine</button>
+    <button class="tab-btn" data-tab="tab-adhkar" data-i18n="tab_adhkar">📿 Adhkar</button>
+    <button class="tab-btn" data-tab="tab-diary" data-i18n="tab_diary">📖 Muhasabah</button>
+    <button class="tab-btn" data-tab="tab-vault" data-i18n="tab_vault">🔐 Vault & Info</button>
   </nav>
 
   <!-- TAB 1: 24-HOUR PROPHETIC ROUTINE -->
   <main id="tab-routine" class="tab-content active">
     <div class="search-row">
-      <input type="search" id="habit-search-input" class="input-text search-box" placeholder="🔍 Search 32+ Prophetic habits, Hadiths, Duas, or benefits..." />
+      <input type="search" id="habit-search-input" class="input-text search-box" data-i18n-placeholder="search_placeholder" placeholder="🔍 Search 32+ Prophetic habits, Hadiths, Duas, or benefits..." />
     </div>
 
     <div class="filter-bar">
-      <button class="chip active" data-phase="all">All 24H</button>
-      <button class="chip" data-phase="tahajjud_fajr">🌌 Pre-Dawn & Fajr</button>
-      <button class="chip" data-phase="duha_work">☀️ Morning & Work</button>
-      <button class="chip" data-phase="dhuhr_asr">🌤️ Midday & Asr</button>
-      <button class="chip" data-phase="maghrib_isha">🌆 Evening & Isha</button>
-      <button class="chip" data-phase="sleep_sunnah">🛌 Prophetic Sleep</button>
-      <button class="chip" data-phase="diet_hygiene">🍯 Tibb Nabawi & Fitrah</button>
-      <button class="chip" data-phase="character_social">🤝 Akhlaq & Sunnah Days</button>
+      <button class="chip active" data-phase="all" data-i18n="phase_all">All 24H</button>
+      <button class="chip" data-phase="tahajjud_fajr" data-i18n="phase_tahajjud">🌌 Pre-Dawn & Fajr</button>
+      <button class="chip" data-phase="duha_work" data-i18n="phase_duha">☀️ Morning & Work</button>
+      <button class="chip" data-phase="dhuhr_asr" data-i18n="phase_dhuhr">🌤️ Midday & Asr</button>
+      <button class="chip" data-phase="maghrib_isha" data-i18n="phase_maghrib">🌆 Evening & Isha</button>
+      <button class="chip" data-phase="sleep_sunnah" data-i18n="phase_sleep">🛌 Prophetic Sleep</button>
+      <button class="chip" data-phase="diet_hygiene" data-i18n="phase_diet">🍯 Tibb Nabawi & Fitrah</button>
+      <button class="chip" data-phase="character_social" data-i18n="phase_character">🤝 Akhlaq & Sunnah Days</button>
     </div>
 
     <div class="quick-actions-bar">
       <span id="filter-count-label" class="muted-small">Showing all habits</span>
-      <button id="reset-today-btn" class="link-btn">Reset Today</button>
+      <button id="reset-today-btn" class="link-btn" data-i18n="reset_today">Reset Today</button>
     </div>
 
     <div id="habit-list-container" class="habit-list"></div>
@@ -89,8 +94,8 @@
   <!-- TAB 2: INTERACTIVE ADHKAR, TASBIH & DUAS -->
   <main id="tab-adhkar" class="tab-content">
     <div class="card">
-      <h3>📿 Sunnah 24 Haptic Digital Tasbih</h3>
-      <p class="muted">Select an authentic Prophetic Dhikr and tap the golden ring to count.</p>
+      <h3 data-i18n="tasbih_title">📿 Sunnah 24 Haptic Digital Tasbih</h3>
+      <p class="muted" data-i18n="tasbih_subtitle">Select an authentic Prophetic Dhikr and tap the golden ring to count.</p>
       <select id="tasbih-selector" class="input-select">
         <option value="33|SubhanAllah (Glory be to Allah)">SubhanAllah — 33x</option>
         <option value="33|Alhamdulillah (Praise be to Allah)">Alhamdulillah — 33x</option>
@@ -109,30 +114,30 @@
       </div>
 
       <div class="stats-mini">
-        <span>Lifetime Verified Dhikr Count: <strong id="lifetime-dhikr-count">0</strong></span>
+        <span><span data-i18n="lifetime_dhikr">Lifetime Verified Dhikr Count:</span> <strong id="lifetime-dhikr-count">0</strong></span>
       </div>
 
       <div class="btn-row">
-        <button id="tasbih-reset-btn" class="btn-secondary">Reset Cycle</button>
+        <button id="tasbih-reset-btn" class="btn-secondary" data-i18n="reset_cycle">Reset Cycle</button>
       </div>
     </div>
 
     <div class="card">
-      <h3>🤲 Essential Daily Prophetic Duas</h3>
+      <h3 data-i18n="duas_heading">🤲 Essential Daily Prophetic Duas</h3>
       <div class="dua-card">
-        <h4>🌅 Upon Waking Up (Bukhari 6312)</h4>
+        <h4 data-i18n="dua_wake_title">🌅 Upon Waking Up (Bukhari 6312)</h4>
         <p class="translit">"Alhamdu lillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur."</p>
-        <p class="muted-small">All praise is for Allah who gave us life after having taken it from us and unto Him is the resurrection.</p>
+        <p class="muted-small" data-i18n="dua_wake_meaning">All praise is for Allah who gave us life after having taken it from us and unto Him is the resurrection.</p>
       </div>
       <div class="dua-card">
-        <h4>🛡️ Sayyidul Istighfar — Chief Prayer for Forgiveness (Bukhari 6306)</h4>
+        <h4 data-i18n="dua_istighfar_title">🛡️ Sayyidul Istighfar — Chief Prayer for Forgiveness (Bukhari 6306)</h4>
         <p class="translit">"Allahumma Anta Rabbi la ilaha illa Anta, khalaqtani wa ana 'abduka..."</p>
-        <p class="muted-small">Whoever recites this with conviction in the morning and evening is guaranteed Paradise.</p>
+        <p class="muted-small" data-i18n="dua_istighfar_meaning">Whoever recites this with conviction in the morning and evening is guaranteed Paradise.</p>
       </div>
       <div class="dua-card">
-        <h4>🛌 Before Sleeping (Bukhari 6324)</h4>
+        <h4 data-i18n="dua_sleep_title">🛌 Before Sleeping (Bukhari 6324)</h4>
         <p class="translit">"Bismika Rabbi wada'tu janbi, wa bika arfa'uhu, fa in amsakta nafsi farhamha..."</p>
-        <p class="muted-small">In Your Name my Lord, I lie down and in Your Name I rise.</p>
+        <p class="muted-small" data-i18n="dua_sleep_meaning">In Your Name my Lord, I lie down and in Your Name I rise.</p>
       </div>
     </div>
   </main>
@@ -140,33 +145,33 @@
   <!-- TAB 3: MUHASABAH (DAILY SELF-ACCOUNTABILITY DIARY) -->
   <main id="tab-diary" class="tab-content">
     <div class="card">
-      <h3>📖 Daily Muhasabah (Self-Accountability)</h3>
-      <p class="quote-box">
+      <h3 data-i18n="diary_title">📖 Daily Muhasabah (Self-Accountability)</h3>
+      <p class="quote-box" data-i18n="diary_quote">
         "Hold yourselves accountable before you are held accountable, and weigh your deeds before they are weighed for you." — Umar ibn Al-Khattab (RA)
       </p>
 
-      <label class="field-label">Spiritual State of the Heart Today</label>
+      <label class="field-label" data-i18n="diary_mood_label">Spiritual State of the Heart Today</label>
       <div class="mood-selector" id="mood-selector">
-        <button type="button" class="mood-btn active" data-mood="Khushu (Tranquil)">😌 Khushu</button>
-        <button type="button" class="mood-btn" data-mood="Shukr (Grateful)">🤲 Shukr</button>
-        <button type="button" class="mood-btn" data-mood="Sabr (Steadfast)">🌿 Sabr</button>
-        <button type="button" class="mood-btn" data-mood="Tawbah (Repentant)">💧 Tawbah</button>
+        <button type="button" class="mood-btn active" data-mood="Khushu (Tranquil)" data-i18n="mood_khushu">😌 Khushu</button>
+        <button type="button" class="mood-btn" data-mood="Shukr (Grateful)" data-i18n="mood_shukr">🤲 Shukr</button>
+        <button type="button" class="mood-btn" data-mood="Sabr (Steadfast)" data-i18n="mood_sabr">🌿 Sabr</button>
+        <button type="button" class="mood-btn" data-mood="Tawbah (Repentant)" data-i18n="mood_tawbah">💧 Tawbah</button>
       </div>
 
-      <label class="field-label">1. Blessing (Ni'mah) I am most grateful for today:</label>
+      <label class="field-label" data-i18n="diary_q1">1. Blessing (Ni'mah) I am most grateful for today:</label>
       <textarea id="diary-gratitude" class="input-textarea" rows="2" placeholder="Alhamdulillah for health, faith, and..."></textarea>
 
-      <label class="field-label">2. Shortcomings to repent from & guard against:</label>
+      <label class="field-label" data-i18n="diary_q2">2. Shortcomings to repent from & guard against:</label>
       <textarea id="diary-shortcoming" class="input-textarea" rows="2" placeholder="Guarding my tongue, improving Khushu in Salah..."></textarea>
 
-      <label class="field-label">3. Sincere Intention (Niyyah) for tomorrow:</label>
+      <label class="field-label" data-i18n="diary_q3">3. Sincere Intention (Niyyah) for tomorrow:</label>
       <textarea id="diary-niyyah" class="input-textarea" rows="2" placeholder="InshaAllah tomorrow I will wake for Tahajjud and..."></textarea>
 
-      <button id="save-diary-btn" class="btn-primary">💾 Cryptographically Seal Reflection</button>
+      <button id="save-diary-btn" class="btn-primary" data-i18n="diary_save_btn">💾 Cryptographically Seal Reflection</button>
     </div>
 
     <div class="card">
-      <h3>📜 Sealed Muhasabah Ledger</h3>
+      <h3 data-i18n="diary_ledger_title">📜 Sealed Muhasabah Ledger</h3>
       <div id="diary-history-list" class="history-list"></div>
     </div>
   </main>
@@ -174,50 +179,54 @@
   <!-- TAB 4: TAMPER-PROOF VAULT, 7-DAY ANALYTICS & PLAY STORE COMPLIANCE -->
   <main id="tab-vault" class="tab-content">
     <div class="card">
-      <h3>📊 7-Day Sunnah Consistency Matrix</h3>
-      <p class="muted">Your daily habit completion momentum across the past 7 days.</p>
+      <h3 data-i18n="vault_matrix_title">📊 7-Day Sunnah Consistency Matrix</h3>
+      <p class="muted" data-i18n="vault_matrix_sub">Your daily habit completion momentum across the past 7 days.</p>
       <div id="weekly-chart" class="weekly-grid"></div>
     </div>
 
     <div class="card">
-      <h3>➕ Add Personal Habit to Sunnah 24</h3>
-      <input type="text" id="custom-title" class="input-text" placeholder="Habit Title (e.g., Memorize 5 Ayahs after Fajr)" />
+      <h3 data-i18n="vault_custom_title">➕ Add Personal Habit to Sunnah 24</h3>
+      <input type="text" id="custom-title" class="input-text" data-i18n-placeholder="custom_title_ph" placeholder="Habit Title (e.g., Memorize 5 Ayahs after Fajr)" />
       <select id="custom-phase" class="input-select">
-        <option value="tahajjud_fajr">🌌 Pre-Dawn & Fajr</option>
-        <option value="duha_work">☀️ Morning & Work</option>
-        <option value="dhuhr_asr">🌤️ Midday & Asr</option>
-        <option value="maghrib_isha">🌆 Evening & Isha</option>
-        <option value="sleep_sunnah">🛌 Prophetic Sleep</option>
-        <option value="diet_hygiene">🍯 Tibb Nabawi & Fitrah</option>
-        <option value="character_social">🤝 Akhlaq & Sunnah Days</option>
+        <option value="tahajjud_fajr" data-i18n="phase_tahajjud">🌌 Pre-Dawn & Fajr</option>
+        <option value="duha_work" data-i18n="phase_duha">☀️ Morning & Work</option>
+        <option value="dhuhr_asr" data-i18n="phase_dhuhr">🌤️ Midday & Asr</option>
+        <option value="maghrib_isha" data-i18n="phase_maghrib">🌆 Evening & Isha</option>
+        <option value="sleep_sunnah" data-i18n="phase_sleep">🛌 Prophetic Sleep</option>
+        <option value="diet_hygiene" data-i18n="phase_diet">🍯 Tibb Nabawi & Fitrah</option>
+        <option value="character_social" data-i18n="phase_character">🤝 Akhlaq & Sunnah Days</option>
       </select>
-      <input type="text" id="custom-fact" class="input-text" placeholder="Hadith Reference / Personal Benefit" />
-      <button id="add-custom-habit-btn" class="btn-primary">Add to Sunnah 24 Routine</button>
+      <input type="text" id="custom-fact" class="input-text" data-i18n-placeholder="custom_fact_ph" placeholder="Hadith Reference / Personal Benefit" />
+      <button id="add-custom-habit-btn" class="btn-primary" data-i18n="custom_add_btn">Add to Sunnah 24 Routine</button>
     </div>
 
     <div class="card">
-      <h3>🔐 SHA-256 Tamper-Proof Cryptographic Vault</h3>
-      <p class="muted">
-        Every habit completion, Tasbih count, and Muhasabah reflection is chained with a SHA-256 cryptographic signature.
+      <h3 data-i18n="vault_crypto_title">🔐 SHA-256 Tamper-Proof Cryptographic Vault</h3>
+      <p class="muted" data-i18n="vault_crypto_sub">
+        Every habit completion, Tasbih count, Muhasabah reflection, and language pack is chained with a SHA-256 cryptographic signature.
       </p>
       <div class="hash-box">
-        <small>ACTIVE SUNNAH 24 LEDGER DIGEST (SHA-256):</small>
+        <small data-i18n="vault_hash_label">ACTIVE SUNNAH 24 LEDGER DIGEST (SHA-256):</small>
         <code id="latest-hash-display">Initializing...</code>
       </div>
+      <div class="hash-box">
+        <small data-i18n="vault_i18n_hash_label">TAMPER-PROOF MULTI-LANGUAGE PACK DIGEST (SHA-256):</small>
+        <code id="i18n-hash-display">Verifying language pack...</code>
+      </div>
       <div class="btn-row">
-        <button id="export-backup-btn" class="btn-primary">⬇️ Export Signed JSON</button>
+        <button id="export-backup-btn" class="btn-primary" data-i18n="export_btn">⬇️ Export Signed JSON</button>
         <label class="btn-secondary file-label">
-          ⬆️ Restore Signed JSON
+          <span data-i18n="import_btn">⬆️ Restore Signed JSON</span>
           <input type="file" id="import-backup-input" accept=".json" hidden />
         </label>
       </div>
     </div>
 
     <div class="card">
-      <h3>🏛️ Corporate & Google Play Compliance</h3>
-      <p class="muted">Sunnah 24 operates 100% offline with zero third-party trackers, zero ads, and full local data sovereignty.</p>
+      <h3 data-i18n="vault_compliance_title">🏛️ Corporate & Google Play Compliance</h3>
+      <p class="muted" data-i18n="vault_compliance_sub">Sunnah 24 operates 100% offline with zero third-party trackers, zero ads, and full local data sovereignty.</p>
       <div class="btn-row">
-        <a href="privacy.html" class="btn-secondary" style="text-align:center;text-decoration:none;">📄 View Privacy Policy</a>
+        <a href="privacy.html" class="btn-secondary" style="text-align:center;text-decoration:none;" data-i18n="privacy_policy_btn">📄 View Privacy Policy</a>
       </div>
     </div>
   </main>
@@ -228,14 +237,14 @@
       <h3 id="modal-title">Habit Title</h3>
       <span id="modal-category" class="chip">Category</span>
       <div class="modal-section">
-        <h4>📖 Authentic Prophetic Evidence (Quran & Sunnah)</h4>
+        <h4 data-i18n="modal_evidence_heading">📖 Authentic Prophetic Evidence (Quran & Sunnah)</h4>
         <p id="modal-evidence"></p>
       </div>
       <div class="modal-section">
-        <h4>🧠 Physiological, Psychological & Spiritual Wisdom</h4>
+        <h4 data-i18n="modal_wisdom_heading">🧠 Physiological, Psychological & Spiritual Wisdom</h4>
         <p id="modal-wisdom"></p>
       </div>
-      <button id="close-modal-btn" class="btn-primary">Alhamdulillah, Understood</button>
+      <button id="close-modal-btn" class="btn-primary" data-i18n="modal_close_btn">Alhamdulillah, Understood</button>
     </div>
   </div>
 
