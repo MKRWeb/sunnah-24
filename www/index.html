@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Sunnah 24 — Prophetic Lifestyle & Routine Planner</title>
+  <meta name="description" content="Sunnah 24: Enterprise-grade 24-Hour Islamic Routine Planner, Prophetic Habit Tracker, Digital Tasbih & Tamper-Proof Muhasabah Diary." />
+  <meta name="theme-color" content="#064e3b" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Top App Bar -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="brand-badge">☪️ S24</div>
+      <div>
+        <h1>Sunnah 24</h1>
+        <p id="current-date-display">Syncing Hijri & Gregorian Calendar...</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <span id="integrity-badge" class="badge-verified" title="SHA-256 Tamper-Proof Ledger Verified">
+        🛡️ S24 Verified
+      </span>
+    </div>
+  </header>
+
+  <!-- Daily Progress & Streak Hero Banner -->
+  <section class="hero-card">
+    <div class="hero-stats">
+      <div>
+        <span class="label">DAILY SUNNAH 24 MASTERY</span>
+        <h2 id="daily-score-text">0%</h2>
+        <p id="completed-count-text">0 of 32 Prophetic habits completed</p>
+      </div>
+      <div class="streak-box">
+        <span class="streak-flame">🔥</span>
+        <div>
+          <strong id="streak-count">0</strong>
+          <small>Day Streak</small>
+        </div>
+      </div>
+    </div>
+    <div class="progress-track">
+      <div id="daily-progress-bar" class="progress-fill" style="width: 0%"></div>
+    </div>
+    <div class="hero-meta">
+      <span id="next-phase-banner">🕒 Active Phase...</span>
+      <span id="fasting-banner">🌙 Sunnah Fast Check...</span>
+    </div>
+  </section>
+
+  <!-- Main Navigation Tabs -->
+  <nav class="tab-nav" role="tablist">
+    <button class="tab-btn active" data-tab="tab-routine">🕒 24H Routine</button>
+    <button class="tab-btn" data-tab="tab-adhkar">📿 Adhkar</button>
+    <button class="tab-btn" data-tab="tab-diary">📖 Muhasabah</button>
+    <button class="tab-btn" data-tab="tab-vault">🔐 Vault & Info</button>
+  </nav>
+
+  <!-- TAB 1: 24-HOUR PROPHETIC ROUTINE -->
+  <main id="tab-routine" class="tab-content active">
+    <div class="search-row">
+      <input type="search" id="habit-search-input" class="input-text search-box" placeholder="🔍 Search 32+ Prophetic habits, Hadiths, Duas, or benefits..." />
+    </div>
+
+    <div class="filter-bar">
+      <button class="chip active" data-phase="all">All 24H</button>
+      <button class="chip" data-phase="tahajjud_fajr">🌌 Pre-Dawn & Fajr</button>
+      <button class="chip" data-phase="duha_work">☀️ Morning & Work</button>
+      <button class="chip" data-phase="dhuhr_asr">🌤️ Midday & Asr</button>
+      <button class="chip" data-phase="maghrib_isha">🌆 Evening & Isha</button>
+      <button class="chip" data-phase="sleep_sunnah">🛌 Prophetic Sleep</button>
+      <button class="chip" data-phase="diet_hygiene">🍯 Tibb Nabawi & Fitrah</button>
+      <button class="chip" data-phase="character_social">🤝 Akhlaq & Sunnah Days</button>
+    </div>
+
+    <div class="quick-actions-bar">
+      <span id="filter-count-label" class="muted-small">Showing all habits</span>
+      <button id="reset-today-btn" class="link-btn">Reset Today</button>
+    </div>
+
+    <div id="habit-list-container" class="habit-list"></div>
+  </main>
+
+  <!-- TAB 2: INTERACTIVE ADHKAR, TASBIH & DUAS -->
+  <main id="tab-adhkar" class="tab-content">
+    <div class="card">
+      <h3>📿 Sunnah 24 Haptic Digital Tasbih</h3>
+      <p class="muted">Select an authentic Prophetic Dhikr and tap the golden ring to count.</p>
+      <select id="tasbih-selector" class="input-select">
+        <option value="33|SubhanAllah (Glory be to Allah)">SubhanAllah — 33x</option>
+        <option value="33|Alhamdulillah (Praise be to Allah)">Alhamdulillah — 33x</option>
+        <option value="34|Allahu Akbar (Allah is the Greatest)">Allahu Akbar — 34x</option>
+        <option value="100|Astaghfirullah wa atubu ilayh">Astaghfirullah wa atubu ilayh — 100x</option>
+        <option value="100|SubhanAllahi wa bihamdihi">SubhanAllahi wa bihamdihi — 100x</option>
+        <option value="10|Allahumma salli 'ala Muhammad">Salawat upon the Prophet ﷺ — 10x</option>
+        <option value="100|La ilaha illallahu wahdahu la sharika lah">Daily Tahleel Fortress — 100x</option>
+        <option value="33|La hawla wa la quwwata illa billah">Hawqalah (Treasure of Paradise) — 33x</option>
+      </select>
+
+      <div class="tasbih-wheel" id="tasbih-tap-area">
+        <span id="tasbih-current">0</span>
+        <small id="tasbih-target">/ 33</small>
+        <p id="tasbih-label">SubhanAllah (Glory be to Allah)</p>
+      </div>
+
+      <div class="stats-mini">
+        <span>Lifetime Verified Dhikr Count: <strong id="lifetime-dhikr-count">0</strong></span>
+      </div>
+
+      <div class="btn-row">
+        <button id="tasbih-reset-btn" class="btn-secondary">Reset Cycle</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🤲 Essential Daily Prophetic Duas</h3>
+      <div class="dua-card">
+        <h4>🌅 Upon Waking Up (Bukhari 6312)</h4>
+        <p class="translit">"Alhamdu lillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur."</p>
+        <p class="muted-small">All praise is for Allah who gave us life after having taken it from us and unto Him is the resurrection.</p>
+      </div>
+      <div class="dua-card">
+        <h4>🛡️ Sayyidul Istighfar — Chief Prayer for Forgiveness (Bukhari 6306)</h4>
+        <p class="translit">"Allahumma Anta Rabbi la ilaha illa Anta, khalaqtani wa ana 'abduka..."</p>
+        <p class="muted-small">Whoever recites this with conviction in the morning and evening is guaranteed Paradise.</p>
+      </div>
+      <div class="dua-card">
+        <h4>🛌 Before Sleeping (Bukhari 6324)</h4>
+        <p class="translit">"Bismika Rabbi wada'tu janbi, wa bika arfa'uhu, fa in amsakta nafsi farhamha..."</p>
+        <p class="muted-small">In Your Name my Lord, I lie down and in Your Name I rise.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- TAB 3: MUHASABAH (DAILY SELF-ACCOUNTABILITY DIARY) -->
+  <main id="tab-diary" class="tab-content">
+    <div class="card">
+      <h3>📖 Daily Muhasabah (Self-Accountability)</h3>
+      <p class="quote-box">
+        "Hold yourselves accountable before you are held accountable, and weigh your deeds before they are weighed for you." — Umar ibn Al-Khattab (RA)
+      </p>
+
+      <label class="field-label">Spiritual State of the Heart Today</label>
+      <div class="mood-selector" id="mood-selector">
+        <button type="button" class="mood-btn active" data-mood="Khushu (Tranquil)">😌 Khushu</button>
+        <button type="button" class="mood-btn" data-mood="Shukr (Grateful)">🤲 Shukr</button>
+        <button type="button" class="mood-btn" data-mood="Sabr (Steadfast)">🌿 Sabr</button>
+        <button type="button" class="mood-btn" data-mood="Tawbah (Repentant)">💧 Tawbah</button>
+      </div>
+
+      <label class="field-label">1. Blessing (Ni'mah) I am most grateful for today:</label>
+      <textarea id="diary-gratitude" class="input-textarea" rows="2" placeholder="Alhamdulillah for health, faith, and..."></textarea>
+
+      <label class="field-label">2. Shortcomings to repent from & guard against:</label>
+      <textarea id="diary-shortcoming" class="input-textarea" rows="2" placeholder="Guarding my tongue, improving Khushu in Salah..."></textarea>
+
+      <label class="field-label">3. Sincere Intention (Niyyah) for tomorrow:</label>
+      <textarea id="diary-niyyah" class="input-textarea" rows="2" placeholder="InshaAllah tomorrow I will wake for Tahajjud and..."></textarea>
+
+      <button id="save-diary-btn" class="btn-primary">💾 Cryptographically Seal Reflection</button>
+    </div>
+
+    <div class="card">
+      <h3>📜 Sealed Muhasabah Ledger</h3>
+      <div id="diary-history-list" class="history-list"></div>
+    </div>
+  </main>
+
+  <!-- TAB 4: TAMPER-PROOF VAULT, 7-DAY ANALYTICS & PLAY STORE COMPLIANCE -->
+  <main id="tab-vault" class="tab-content">
+    <div class="card">
+      <h3>📊 7-Day Sunnah Consistency Matrix</h3>
+      <p class="muted">Your daily habit completion momentum across the past 7 days.</p>
+      <div id="weekly-chart" class="weekly-grid"></div>
+    </div>
+
+    <div class="card">
+      <h3>➕ Add Personal Habit to Sunnah 24</h3>
+      <input type="text" id="custom-title" class="input-text" placeholder="Habit Title (e.g., Memorize 5 Ayahs after Fajr)" />
+      <select id="custom-phase" class="input-select">
+        <option value="tahajjud_fajr">🌌 Pre-Dawn & Fajr</option>
+        <option value="duha_work">☀️ Morning & Work</option>
+        <option value="dhuhr_asr">🌤️ Midday & Asr</option>
+        <option value="maghrib_isha">🌆 Evening & Isha</option>
+        <option value="sleep_sunnah">🛌 Prophetic Sleep</option>
+        <option value="diet_hygiene">🍯 Tibb Nabawi & Fitrah</option>
+        <option value="character_social">🤝 Akhlaq & Sunnah Days</option>
+      </select>
+      <input type="text" id="custom-fact" class="input-text" placeholder="Hadith Reference / Personal Benefit" />
+      <button id="add-custom-habit-btn" class="btn-primary">Add to Sunnah 24 Routine</button>
+    </div>
+
+    <div class="card">
+      <h3>🔐 SHA-256 Tamper-Proof Cryptographic Vault</h3>
+      <p class="muted">
+        Every habit completion, Tasbih count, and Muhasabah reflection is chained with a SHA-256 cryptographic signature.
+      </p>
+      <div class="hash-box">
+        <small>ACTIVE SUNNAH 24 LEDGER DIGEST (SHA-256):</small>
+        <code id="latest-hash-display">Initializing...</code>
+      </div>
+      <div class="btn-row">
+        <button id="export-backup-btn" class="btn-primary">⬇️ Export Signed JSON</button>
+        <label class="btn-secondary file-label">
+          ⬆️ Restore Signed JSON
+          <input type="file" id="import-backup-input" accept=".json" hidden />
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏛️ Corporate & Google Play Compliance</h3>
+      <p class="muted">Sunnah 24 operates 100% offline with zero third-party trackers, zero ads, and full local data sovereignty.</p>
+      <div class="btn-row">
+        <a href="privacy.html" class="btn-secondary" style="text-align:center;text-decoration:none;">📄 View Privacy Policy</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL FOR ISLAMIC HABITUAL FACT & HADITH REFERENCE -->
+  <div id="fact-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h3 id="modal-title">Habit Title</h3>
+      <span id="modal-category" class="chip">Category</span>
+      <div class="modal-section">
+        <h4>📖 Authentic Prophetic Evidence (Quran & Sunnah)</h4>
+        <p id="modal-evidence"></p>
+      </div>
+      <div class="modal-section">
+        <h4>🧠 Physiological, Psychological & Spiritual Wisdom</h4>
+        <p id="modal-wisdom"></p>
+      </div>
+      <button id="close-modal-btn" class="btn-primary">Alhamdulillah, Understood</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
