@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-theme="dark">
+<html lang="bn" dir="ltr" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Sunnah 24 — Prophetic Lifestyle & Routine Planner</title>
+  <title>সুন্নাহ ২৪ — নববী জীবনধারা ও রুটিন প্ল্যানার | Sunnah 24</title>
   <meta name="description" content="Sunnah 24: Enterprise-grade 24-Hour Islamic Routine Planner, Prophetic Habit Tracker, Digital Tasbih & Tamper-Proof Muhasabah Diary." />
   <meta name="theme-color" content="#064e3b" />
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
@@ -17,18 +17,18 @@
     <div class="header-left">
       <div class="brand-badge">☪️ S24</div>
       <div>
-        <h1 data-i18n="app_title">Sunnah 24</h1>
-        <p id="current-date-display">Syncing Hijri & Gregorian Calendar...</p>
+        <h1 data-i18n="app_title">সুন্নাহ ২৪</h1>
+        <p id="current-date-display">হিজরি ও গ্রেগরিয়ান ক্যালেন্ডার সিঙ্ক হচ্ছে...</p>
       </div>
     </div>
     <div class="header-right">
       <select id="lang-switcher" class="lang-select" aria-label="Select Language">
-        <option value="en">🌐 EN</option>
-        <option value="bn">🌐 বাংলা</option>
+        <option value="bn" selected>🌐 বাংলা</option>
         <option value="ar">🌐 العربية</option>
+        <option value="en">🌐 EN</option>
       </select>
       <span id="integrity-badge" class="badge-verified" title="SHA-256 Tamper-Proof Ledger & i18n Verified">
-        🛡️ S24 Verified
+        🛡️ S24 যাচাইকৃত
       </span>
     </div>
   </header>
@@ -37,15 +37,15 @@
   <section class="hero-card">
     <div class="hero-stats">
       <div>
-        <span class="label" data-i18n="hero_mastery_label">DAILY SUNNAH 24 MASTERY</span>
-        <h2 id="daily-score-text">0%</h2>
-        <p id="completed-count-text">0 of 32 Prophetic habits completed</p>
+        <span class="label" data-i18n="hero_mastery_label">দৈনিক সুন্নাহ ২৪ অনুশীলন</span>
+        <h2 id="daily-score-text">০%</h2>
+        <p id="completed-count-text">আজ ৩২টি নববী সুন্নাহর মধ্যে ০টি সম্পন্ন হয়েছে</p>
       </div>
       <div class="streak-box">
         <span class="streak-flame">🔥</span>
         <div>
-          <strong id="streak-count">0</strong>
-          <small data-i18n="day_streak">Day Streak</small>
+          <strong id="streak-count">০</strong>
+          <small data-i18n="day_streak">দিনের ধারাবাহিকতা</small>
         </div>
       </div>
     </div>
@@ -53,39 +53,39 @@
       <div id="daily-progress-bar" class="progress-fill" style="width: 0%"></div>
     </div>
     <div class="hero-meta">
-      <span id="next-phase-banner">🕒 Active Phase...</span>
-      <span id="fasting-banner">🌙 Sunnah Fast Check...</span>
+      <span id="next-phase-banner">🕒 চলমান সময়কাল...</span>
+      <span id="fasting-banner">🌙 সুন্নাহ রোজা যাচাই...</span>
     </div>
   </section>
 
   <!-- Main Navigation Tabs -->
   <nav class="tab-nav" role="tablist">
-    <button class="tab-btn active" data-tab="tab-routine" data-i18n="tab_routine">🕒 24H Routine</button>
-    <button class="tab-btn" data-tab="tab-adhkar" data-i18n="tab_adhkar">📿 Adhkar</button>
-    <button class="tab-btn" data-tab="tab-diary" data-i18n="tab_diary">📖 Muhasabah</button>
-    <button class="tab-btn" data-tab="tab-vault" data-i18n="tab_vault">🔐 Vault & Info</button>
+    <button class="tab-btn active" data-tab="tab-routine" data-i18n="tab_routine">🕒 ২৪ ঘণ্টা রুটিন</button>
+    <button class="tab-btn" data-tab="tab-adhkar" data-i18n="tab_adhkar">📿 আযকার ও তাসবীহ</button>
+    <button class="tab-btn" data-tab="tab-diary" data-i18n="tab_diary">📖 মুহাসাবা ডায়েরি</button>
+    <button class="tab-btn" data-tab="tab-vault" data-i18n="tab_vault">🔐 ভল্ট ও তথ্য</button>
   </nav>
 
   <!-- TAB 1: 24-HOUR PROPHETIC ROUTINE -->
   <main id="tab-routine" class="tab-content active">
     <div class="search-row">
-      <input type="search" id="habit-search-input" class="input-text search-box" data-i18n-placeholder="search_placeholder" placeholder="🔍 Search 32+ Prophetic habits, Hadiths, Duas, or benefits..." />
+      <input type="search" id="habit-search-input" class="input-text search-box" data-i18n-placeholder="search_placeholder" placeholder="🔍 ৩২+ সুন্নাহ আমল, হাদিস, দোয়া বা উপকারিতা খুঁজুন..." />
     </div>
 
     <div class="filter-bar">
-      <button class="chip active" data-phase="all" data-i18n="phase_all">All 24H</button>
-      <button class="chip" data-phase="tahajjud_fajr" data-i18n="phase_tahajjud">🌌 Pre-Dawn & Fajr</button>
-      <button class="chip" data-phase="duha_work" data-i18n="phase_duha">☀️ Morning & Work</button>
-      <button class="chip" data-phase="dhuhr_asr" data-i18n="phase_dhuhr">🌤️ Midday & Asr</button>
-      <button class="chip" data-phase="maghrib_isha" data-i18n="phase_maghrib">🌆 Evening & Isha</button>
-      <button class="chip" data-phase="sleep_sunnah" data-i18n="phase_sleep">🛌 Prophetic Sleep</button>
-      <button class="chip" data-phase="diet_hygiene" data-i18n="phase_diet">🍯 Tibb Nabawi & Fitrah</button>
-      <button class="chip" data-phase="character_social" data-i18n="phase_character">🤝 Akhlaq & Sunnah Days</button>
+      <button class="chip active" data-phase="all" data-i18n="phase_all">সব ২৪ ঘণ্টা</button>
+      <button class="chip" data-phase="tahajjud_fajr" data-i18n="phase_tahajjud">🌌 তাহাজ্জুদ ও ফজর</button>
+      <button class="chip" data-phase="duha_work" data-i18n="phase_duha">☀️ সকাল ও কর্মক্ষেত্র</button>
+      <button class="chip" data-phase="dhuhr_asr" data-i18n="phase_dhuhr">🌤️ যোহর, কাইলুলা ও আসর</button>
+      <button class="chip" data-phase="maghrib_isha" data-i18n="phase_maghrib">🌆 মাগরিব ও ইশা</button>
+      <button class="chip" data-phase="sleep_sunnah" data-i18n="phase_sleep">🛌 সুন্নাহ সম্মত ঘুম</button>
+      <button class="chip" data-phase="diet_hygiene" data-i18n="phase_diet">🍯 তিব্বে নববী ও ফিতরাত</button>
+      <button class="chip" data-phase="character_social" data-i18n="phase_character">🤝 আখলাক ও সুন্নাহ দিবস</button>
     </div>
 
     <div class="quick-actions-bar">
-      <span id="filter-count-label" class="muted-small">Showing all habits</span>
-      <button id="reset-today-btn" class="link-btn" data-i18n="reset_today">Reset Today</button>
+      <span id="filter-count-label" class="muted-small">সব সুন্নাহ প্রদর্শিত হচ্ছে</span>
+      <button id="reset-today-btn" class="link-btn" data-i18n="reset_today">আজকের রিসেট</button>
     </div>
 
     <div id="habit-list-container" class="habit-list"></div>
@@ -94,50 +94,41 @@
   <!-- TAB 2: INTERACTIVE ADHKAR, TASBIH & DUAS -->
   <main id="tab-adhkar" class="tab-content">
     <div class="card">
-      <h3 data-i18n="tasbih_title">📿 Sunnah 24 Haptic Digital Tasbih</h3>
-      <p class="muted" data-i18n="tasbih_subtitle">Select an authentic Prophetic Dhikr and tap the golden ring to count.</p>
-      <select id="tasbih-selector" class="input-select">
-        <option value="33|SubhanAllah (Glory be to Allah)">SubhanAllah — 33x</option>
-        <option value="33|Alhamdulillah (Praise be to Allah)">Alhamdulillah — 33x</option>
-        <option value="34|Allahu Akbar (Allah is the Greatest)">Allahu Akbar — 34x</option>
-        <option value="100|Astaghfirullah wa atubu ilayh">Astaghfirullah wa atubu ilayh — 100x</option>
-        <option value="100|SubhanAllahi wa bihamdihi">SubhanAllahi wa bihamdihi — 100x</option>
-        <option value="10|Allahumma salli 'ala Muhammad">Salawat upon the Prophet ﷺ — 10x</option>
-        <option value="100|La ilaha illallahu wahdahu la sharika lah">Daily Tahleel Fortress — 100x</option>
-        <option value="33|La hawla wa la quwwata illa billah">Hawqalah (Treasure of Paradise) — 33x</option>
-      </select>
+      <h3 data-i18n="tasbih_title">📿 সুন্নাহ ২৪ ডিজিটাল তাসবীহ</h3>
+      <p class="muted" data-i18n="tasbih_subtitle">একটি সহীহ যিকির নির্বাচন করুন এবং গণনা করতে সোনালী বৃত্তে ট্যাপ করুন।</p>
+      <select id="tasbih-selector" class="input-select"></select>
 
       <div class="tasbih-wheel" id="tasbih-tap-area">
-        <span id="tasbih-current">0</span>
-        <small id="tasbih-target">/ 33</small>
-        <p id="tasbih-label">SubhanAllah (Glory be to Allah)</p>
+        <span id="tasbih-current">০</span>
+        <small id="tasbih-target">/ ৩৩</small>
+        <p id="tasbih-label">সুবহানাল্লাহ (আল্লাহ পবিত্র ও মহান)</p>
       </div>
 
       <div class="stats-mini">
-        <span><span data-i18n="lifetime_dhikr">Lifetime Verified Dhikr Count:</span> <strong id="lifetime-dhikr-count">0</strong></span>
+        <span><span data-i18n="lifetime_dhikr">মোট যাচাইকৃত যিকির গণনা:</span> <strong id="lifetime-dhikr-count">০</strong></span>
       </div>
 
       <div class="btn-row">
-        <button id="tasbih-reset-btn" class="btn-secondary" data-i18n="reset_cycle">Reset Cycle</button>
+        <button id="tasbih-reset-btn" class="btn-secondary" data-i18n="reset_cycle">পুনরায় শুরু করুন</button>
       </div>
     </div>
 
     <div class="card">
-      <h3 data-i18n="duas_heading">🤲 Essential Daily Prophetic Duas</h3>
+      <h3 data-i18n="duas_heading">🤲 প্রতিদিনের জরুরি মাসনূন দোয়া</h3>
       <div class="dua-card">
-        <h4 data-i18n="dua_wake_title">🌅 Upon Waking Up (Bukhari 6312)</h4>
-        <p class="translit">"Alhamdu lillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur."</p>
-        <p class="muted-small" data-i18n="dua_wake_meaning">All praise is for Allah who gave us life after having taken it from us and unto Him is the resurrection.</p>
+        <h4 data-i18n="dua_wake_title">🌅 ঘুম থেকে ওঠার দোয়া (বুখারী ৬৩১২)</h4>
+        <p class="translit" data-i18n="dua_wake_translit">"আলহামদু লিল্লাহিল্লাযী আহ্ইয়ানা বা'দা মা আমাতানা ওয়া ইলাইহিন নুশূর।"</p>
+        <p class="muted-small" data-i18n="dua_wake_meaning">সকল প্রশংসা আল্লাহর জন্য, যিনি আমাদেরকে নিদ্রারূপ মৃত্যুর পর জীবিত করেছেন এবং তাঁর কাছেই পুনরুত্থান।</p>
       </div>
       <div class="dua-card">
-        <h4 data-i18n="dua_istighfar_title">🛡️ Sayyidul Istighfar — Chief Prayer for Forgiveness (Bukhari 6306)</h4>
-        <p class="translit">"Allahumma Anta Rabbi la ilaha illa Anta, khalaqtani wa ana 'abduka..."</p>
-        <p class="muted-small" data-i18n="dua_istighfar_meaning">Whoever recites this with conviction in the morning and evening is guaranteed Paradise.</p>
+        <h4 data-i18n="dua_istighfar_title">🛡️ সাইয়্যিদুল ইস্তিগফার — ক্ষমা প্রার্থনার শ্রেষ্ঠ দোয়া (বুখারী ৬৩০৬)</h4>
+        <p class="translit" data-i18n="dua_istighfar_translit">"আল্লাহুম্মা আনতা রাব্বী লা ইলাহা ইল্লা আনতা, খালাকতানী ওয়া আনা আবদুকা..."</p>
+        <p class="muted-small" data-i18n="dua_istighfar_meaning">যে ব্যক্তি দৃঢ় বিশ্বাসের সাথে সকালে ও সন্ধ্যায় এটি পাঠ করবে সে জান্নাতবাসী হবে।</p>
       </div>
       <div class="dua-card">
-        <h4 data-i18n="dua_sleep_title">🛌 Before Sleeping (Bukhari 6324)</h4>
-        <p class="translit">"Bismika Rabbi wada'tu janbi, wa bika arfa'uhu, fa in amsakta nafsi farhamha..."</p>
-        <p class="muted-small" data-i18n="dua_sleep_meaning">In Your Name my Lord, I lie down and in Your Name I rise.</p>
+        <h4 data-i18n="dua_sleep_title">🛌 ঘুমানোর পূর্বে দোয়া (বুখারী ৬৩২৪)</h4>
+        <p class="translit" data-i18n="dua_sleep_translit">"বিসমিকা রাব্বী ওয়াদা'তু জানবী, ওয়া বিকা আরফাউহু, ফাইন্ন আমসাকতা নাফসী ফারহামহা..."</p>
+        <p class="muted-small" data-i18n="dua_sleep_meaning">হে আমার রব! আপনার নামেই আমি বিছানায় পার্শ্বদেশ রাখলাম এবং আপনার নামেই আবার উঠব।</p>
       </div>
     </div>
   </main>
@@ -145,33 +136,33 @@
   <!-- TAB 3: MUHASABAH (DAILY SELF-ACCOUNTABILITY DIARY) -->
   <main id="tab-diary" class="tab-content">
     <div class="card">
-      <h3 data-i18n="diary_title">📖 Daily Muhasabah (Self-Accountability)</h3>
+      <h3 data-i18n="diary_title">📖 দৈনিক মুহাসাবা (আত্মসমালোচনা)</h3>
       <p class="quote-box" data-i18n="diary_quote">
-        "Hold yourselves accountable before you are held accountable, and weigh your deeds before they are weighed for you." — Umar ibn Al-Khattab (RA)
+        "তোমাদের হিসাব নেওয়ার আগেই নিজেদের হিসাব নাও এবং আমল ওজন করার আগেই তা ওজন করে দেখো।" — উমর ইবনুল খাত্তাব (রা.)
       </p>
 
-      <label class="field-label" data-i18n="diary_mood_label">Spiritual State of the Heart Today</label>
+      <label class="field-label" data-i18n="diary_mood_label">আজ অন্তরের আধ্যাত্মিক অবস্থা</label>
       <div class="mood-selector" id="mood-selector">
-        <button type="button" class="mood-btn active" data-mood="Khushu (Tranquil)" data-i18n="mood_khushu">😌 Khushu</button>
-        <button type="button" class="mood-btn" data-mood="Shukr (Grateful)" data-i18n="mood_shukr">🤲 Shukr</button>
-        <button type="button" class="mood-btn" data-mood="Sabr (Steadfast)" data-i18n="mood_sabr">🌿 Sabr</button>
-        <button type="button" class="mood-btn" data-mood="Tawbah (Repentant)" data-i18n="mood_tawbah">💧 Tawbah</button>
+        <button type="button" class="mood-btn active" data-mood="Khushu" data-i18n="mood_khushu">😌 খুশু (প্রশান্ত)</button>
+        <button type="button" class="mood-btn" data-mood="Shukr" data-i18n="mood_shukr">🤲 শোকর (কৃতজ্ঞ)</button>
+        <button type="button" class="mood-btn" data-mood="Sabr" data-i18n="mood_sabr">🌿 সবর (ধৈর্যশীল)</button>
+        <button type="button" class="mood-btn" data-mood="Tawbah" data-i18n="mood_tawbah">💧 তাওবাহ (অনুতপ্ত)</button>
       </div>
 
-      <label class="field-label" data-i18n="diary_q1">1. Blessing (Ni'mah) I am most grateful for today:</label>
-      <textarea id="diary-gratitude" class="input-textarea" rows="2" placeholder="Alhamdulillah for health, faith, and..."></textarea>
+      <label class="field-label" data-i18n="diary_q1">১. আজকের যে নিয়ামতের জন্য আমি সবচেয়ে বেশি কৃতজ্ঞ:</label>
+      <textarea id="diary-gratitude" class="input-textarea" rows="2" data-i18n-placeholder="diary_q1_ph" placeholder="আলহামদুলিল্লাহ, ঈমান, সুস্থতা এবং..."></textarea>
 
-      <label class="field-label" data-i18n="diary_q2">2. Shortcomings to repent from & guard against:</label>
-      <textarea id="diary-shortcoming" class="input-textarea" rows="2" placeholder="Guarding my tongue, improving Khushu in Salah..."></textarea>
+      <label class="field-label" data-i18n="diary_q2">২. যে ভুলত্রুটি থেকে তাওবাহ ও সতর্ক থাকতে চাই:</label>
+      <textarea id="diary-shortcoming" class="input-textarea" rows="2" data-i18n-placeholder="diary_q2_ph" placeholder="যবানের হেফাজত, সালাতে খুশু বৃদ্ধি..."></textarea>
 
-      <label class="field-label" data-i18n="diary_q3">3. Sincere Intention (Niyyah) for tomorrow:</label>
-      <textarea id="diary-niyyah" class="input-textarea" rows="2" placeholder="InshaAllah tomorrow I will wake for Tahajjud and..."></textarea>
+      <label class="field-label" data-i18n="diary_q3">৩. আগামীকালের জন্য একনিষ্ঠ নিয়ত (Niyyah):</label>
+      <textarea id="diary-niyyah" class="input-textarea" rows="2" data-i18n-placeholder="diary_q3_ph" placeholder="ইনশাআল্লাহ আগামীকাল তাহাজ্জুদে উঠব এবং..."></textarea>
 
-      <button id="save-diary-btn" class="btn-primary" data-i18n="diary_save_btn">💾 Cryptographically Seal Reflection</button>
+      <button id="save-diary-btn" class="btn-primary" data-i18n="diary_save_btn">💾 ক্রিপ্টোগ্রাফিক সিগনেচারসহ সংরক্ষণ করুন</button>
     </div>
 
     <div class="card">
-      <h3 data-i18n="diary_ledger_title">📜 Sealed Muhasabah Ledger</h3>
+      <h3 data-i18n="diary_ledger_title">📜 সংরক্ষিত মুহাসাবা লেজার</h3>
       <div id="diary-history-list" class="history-list"></div>
     </div>
   </main>
@@ -179,54 +170,54 @@
   <!-- TAB 4: TAMPER-PROOF VAULT, 7-DAY ANALYTICS & PLAY STORE COMPLIANCE -->
   <main id="tab-vault" class="tab-content">
     <div class="card">
-      <h3 data-i18n="vault_matrix_title">📊 7-Day Sunnah Consistency Matrix</h3>
-      <p class="muted" data-i18n="vault_matrix_sub">Your daily habit completion momentum across the past 7 days.</p>
+      <h3 data-i18n="vault_matrix_title">📊 ৭-দিনের সুন্নাহ ধারাবাহিকতা ম্যাট্রিক্স</h3>
+      <p class="muted" data-i18n="vault_matrix_sub">গত ৭ দিনে আপনার দৈনিক সুন্নাহ পালনের অগ্রগতি।</p>
       <div id="weekly-chart" class="weekly-grid"></div>
     </div>
 
     <div class="card">
-      <h3 data-i18n="vault_custom_title">➕ Add Personal Habit to Sunnah 24</h3>
-      <input type="text" id="custom-title" class="input-text" data-i18n-placeholder="custom_title_ph" placeholder="Habit Title (e.g., Memorize 5 Ayahs after Fajr)" />
+      <h3 data-i18n="vault_custom_title">➕ ব্যক্তিগত সুন্নাহ আমল যুক্ত করুন</h3>
+      <input type="text" id="custom-title" class="input-text" data-i18n-placeholder="custom_title_ph" placeholder="আমলের নাম (যেমন: ফজরের পর ৫ আয়াত হিফজ)" />
       <select id="custom-phase" class="input-select">
-        <option value="tahajjud_fajr" data-i18n="phase_tahajjud">🌌 Pre-Dawn & Fajr</option>
-        <option value="duha_work" data-i18n="phase_duha">☀️ Morning & Work</option>
-        <option value="dhuhr_asr" data-i18n="phase_dhuhr">🌤️ Midday & Asr</option>
-        <option value="maghrib_isha" data-i18n="phase_maghrib">🌆 Evening & Isha</option>
-        <option value="sleep_sunnah" data-i18n="phase_sleep">🛌 Prophetic Sleep</option>
-        <option value="diet_hygiene" data-i18n="phase_diet">🍯 Tibb Nabawi & Fitrah</option>
-        <option value="character_social" data-i18n="phase_character">🤝 Akhlaq & Sunnah Days</option>
+        <option value="tahajjud_fajr" data-i18n="phase_tahajjud">🌌 তাহাজ্জুদ ও ফজর</option>
+        <option value="duha_work" data-i18n="phase_duha">☀️ সকাল ও কর্মক্ষেত্র</option>
+        <option value="dhuhr_asr" data-i18n="phase_dhuhr">🌤️ যোহর, কাইলুলা ও আসর</option>
+        <option value="maghrib_isha" data-i18n="phase_maghrib">🌆 মাগরিব ও ইশা</option>
+        <option value="sleep_sunnah" data-i18n="phase_sleep">🛌 সুন্নাহ সম্মত ঘুম</option>
+        <option value="diet_hygiene" data-i18n="phase_diet">🍯 তিব্বে নববী ও ফিতরাত</option>
+        <option value="character_social" data-i18n="phase_character">🤝 আখলাক ও সুন্নাহ দিবস</button>
       </select>
-      <input type="text" id="custom-fact" class="input-text" data-i18n-placeholder="custom_fact_ph" placeholder="Hadith Reference / Personal Benefit" />
-      <button id="add-custom-habit-btn" class="btn-primary" data-i18n="custom_add_btn">Add to Sunnah 24 Routine</button>
+      <input type="text" id="custom-fact" class="input-text" data-i18n-placeholder="custom_fact_ph" placeholder="হাদিস সূত্র / ব্যক্তিগত উপকারিতা" />
+      <button id="add-custom-habit-btn" class="btn-primary" data-i18n="custom_add_btn">সুন্নাহ ২৪ রুটিনে যুক্ত করুন</button>
     </div>
 
     <div class="card">
-      <h3 data-i18n="vault_crypto_title">🔐 SHA-256 Tamper-Proof Cryptographic Vault</h3>
+      <h3 data-i18n="vault_crypto_title">🔐 SHA-256 টেম্পার-প্রুফ ক্রিপ্টোগ্রাফিক ভল্ট</h3>
       <p class="muted" data-i18n="vault_crypto_sub">
-        Every habit completion, Tasbih count, Muhasabah reflection, and language pack is chained with a SHA-256 cryptographic signature.
+        প্রতিটি আমল, তাসবীহ গণনা, মুহাসাবা ডায়েরি এবং ভাষা প্যাক SHA-256 ক্রিপ্টোগ্রাফিক স্বাক্ষর দ্বারা সুরক্ষিত।
       </p>
       <div class="hash-box">
-        <small data-i18n="vault_hash_label">ACTIVE SUNNAH 24 LEDGER DIGEST (SHA-256):</small>
+        <small data-i18n="vault_hash_label">সক্রিয় সুন্নাহ ২৪ লেজার ডাইজেস্ট (SHA-256):</small>
         <code id="latest-hash-display">Initializing...</code>
       </div>
       <div class="hash-box">
-        <small data-i18n="vault_i18n_hash_label">TAMPER-PROOF MULTI-LANGUAGE PACK DIGEST (SHA-256):</small>
+        <small data-i18n="vault_i18n_hash_label">টেম্পার-প্রুফ মাল্টি-ল্যাঙ্গুয়েজ প্যাক ডাইজেস্ট (SHA-256):</small>
         <code id="i18n-hash-display">Verifying language pack...</code>
       </div>
       <div class="btn-row">
-        <button id="export-backup-btn" class="btn-primary" data-i18n="export_btn">⬇️ Export Signed JSON</button>
+        <button id="export-backup-btn" class="btn-primary" data-i18n="export_btn">⬇️ ব্যাকআপ ডাউনলোড (JSON)</button>
         <label class="btn-secondary file-label">
-          <span data-i18n="import_btn">⬆️ Restore Signed JSON</span>
+          <span data-i18n="import_btn">⬆️ ব্যাকআপ রিস্টোর (JSON)</span>
           <input type="file" id="import-backup-input" accept=".json" hidden />
         </label>
       </div>
     </div>
 
     <div class="card">
-      <h3 data-i18n="vault_compliance_title">🏛️ Corporate & Google Play Compliance</h3>
-      <p class="muted" data-i18n="vault_compliance_sub">Sunnah 24 operates 100% offline with zero third-party trackers, zero ads, and full local data sovereignty.</p>
+      <h3 data-i18n="vault_compliance_title">🏛️ কর্পোরেট ও গুগল প্লে কমপ্লায়েন্স</h3>
+      <p class="muted" data-i18n="vault_compliance_sub">সুন্নাহ ২৪ সম্পূর্ণ অফলাইনে চলে—কোনো থার্ড-পার্টি ট্র্যাকার বা বিজ্ঞাপন নেই।</p>
       <div class="btn-row">
-        <a href="privacy.html" class="btn-secondary" style="text-align:center;text-decoration:none;" data-i18n="privacy_policy_btn">📄 View Privacy Policy</a>
+        <a href="privacy.html" class="btn-secondary" style="text-align:center;text-decoration:none;" data-i18n="privacy_policy_btn">📄 প্রাইভেসি পলিসি দেখুন</a>
       </div>
     </div>
   </main>
@@ -237,14 +228,14 @@
       <h3 id="modal-title">Habit Title</h3>
       <span id="modal-category" class="chip">Category</span>
       <div class="modal-section">
-        <h4 data-i18n="modal_evidence_heading">📖 Authentic Prophetic Evidence (Quran & Sunnah)</h4>
+        <h4 data-i18n="modal_evidence_heading">📖 সহীহ কুরআন ও সুন্নাহর দলিল</h4>
         <p id="modal-evidence"></p>
       </div>
       <div class="modal-section">
-        <h4 data-i18n="modal_wisdom_heading">🧠 Physiological, Psychological & Spiritual Wisdom</h4>
+        <h4 data-i18n="modal_wisdom_heading">🧠 শারীরিক, মানসিক ও আধ্যাত্মিক হিকমত</h4>
         <p id="modal-wisdom"></p>
       </div>
-      <button id="close-modal-btn" class="btn-primary" data-i18n="modal_close_btn">Alhamdulillah, Understood</button>
+      <button id="close-modal-btn" class="btn-primary" data-i18n="modal_close_btn">আলহামদুলিল্লাহ, বুঝেছি</button>
     </div>
   </div>
 
