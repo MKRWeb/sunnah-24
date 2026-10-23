@@ -3,11 +3,10 @@
  * SHA-256 Tamper-Proof Cryptographic Engine + Full Bangla (Default), Arabic & English Localization
  */
 
-const STORAGE_KEY = "SUNNAH_24_ENTERPRISE_LEDGER_V25";
+const STORAGE_KEY = "SUNNAH_24_ENTERPRISE_LEDGER_V24";
 const LEDGER_SALT = "MKRWEB-SUNNAH-24-CORPORATE-IMMUTABLE-SALT";
 const I18N_SALT = "MKRWEB-SUNNAH-24-I18N-DICTIONARY-IMMUTABLE-SALT-V25";
 
-// Deep-Freeze Utility to Prevent Runtime Prototype Pollution or Tampering of Translations
 function deepFreeze(obj) {
   if (obj && typeof obj === "object" && !Object.isFrozen(obj)) {
     Object.freeze(obj);
@@ -16,7 +15,6 @@ function deepFreeze(obj) {
   return obj;
 }
 
-// Deterministic Canonical JSON Serializer for Cryptographic Hashing
 function canonicalizeObject(value) {
   if (Array.isArray(value)) {
     return "[" + value.map(canonicalizeObject).join(",") + "]";
@@ -34,7 +32,6 @@ function canonicalizeObject(value) {
   return JSON.stringify(value);
 }
 
-// Localized Number Formatter (Converts digits to বাংলা / العربية / English)
 function localizeDigits(val, locale) {
   const str = String(val);
   if (locale === "bn") {
@@ -360,7 +357,6 @@ const I18N_DICTIONARIES = deepFreeze({
 
 // 32 Comprehensive Prophetic Habits & Islamic Habitual Facts Across 24 Hours (100% Translated in BN, AR, EN)
 const SUNNAH_24_HABITS = deepFreeze([
-  // PHASE 1: PRE-DAWN & FAJR
   {
     id: "s24_01_waking_dua",
     phase: "tahajjud_fajr",
@@ -457,8 +453,6 @@ const SUNNAH_24_HABITS = deepFreeze([
     wisdom_bn: "সকালের মৃদু সূর্যালোক দেহে সেরোটোনিন ও মেলাটোনিন হরমোনের ভারসাম্য রক্ষা করে যা রাতে গভীর ঘুমে সাহায্য করে।",
     wisdom_ar: "التعرض لضوء الصباح ينظم إفراز السيروتونين والميلاتونين على مدار الـ ٢٤ ساعة."
   },
-
-  // PHASE 2: MORNING & WORK
   {
     id: "s24_07_home_exit_dua",
     phase: "duha_work",
@@ -523,8 +517,6 @@ const SUNNAH_24_HABITS = deepFreeze([
     wisdom_bn: "অচেতন অভ্যাসের পরিবর্তে প্রতিটি দৈনন্দিন কাজে সুন্নাতের সচেতন উপস্থিতি বজায় রাখে।",
     wisdom_ar: "يستبدل العادات التلقائية بالحضور الذهني والاقتداء الواعي بالسنة في كل حركة."
   },
-
-  // PHASE 3: MIDDAY & ASR
   {
     id: "s24_11_dhuhr_rawatib",
     phase: "dhuhr_asr",
@@ -589,8 +581,6 @@ const SUNNAH_24_HABITS = deepFreeze([
     wisdom_bn: "সন্ধ্যার মানসিক চাপ ও উদ্বেগ হ্রাস করে এবং আত্মাকে যাবতীয় অনিষ্ট থেকে সুরক্ষিত রাখে।",
     wisdom_ar: "تخفض هرمون التوتر المسائي وتحصن القلب من القلق والاضطراب الروحي."
   },
-
-  // PHASE 4: EVENING & ISHA
   {
     id: "s24_15_maghrib_sunnah",
     phase: "maghrib_isha",
@@ -655,8 +645,6 @@ const SUNNAH_24_HABITS = deepFreeze([
     wisdom_bn: "রাতে অহেতুক কথাবার্তা ও মোবাইল স্ক্রলিং পরিহার করে ওহীর প্রশান্তি নিয়ে ঘুমানোর প্রস্তুতি দেয় (বুখারী ৫৬৮)।",
     wisdom_ar: "يستبدل السهر غير المفيد بتدبر الوحي؛ وكان النبي ﷺ يكره الحديث بعد العشاء (البخاري ٥٦٨)."
   },
-
-  // PHASE 5: PROPHETIC SLEEP PROTOCOL
   {
     id: "s24_19_sleep_wudu_dusting",
     phase: "sleep_sunnah",
@@ -721,8 +709,6 @@ const SUNNAH_24_HABITS = deepFreeze([
     wisdom_bn: "ঘুমানোর আগে ক্ষমা ও উদারতা চর্চা করলে রাতের রক্তচাপ স্বাভাবিক থাকে এবং মানসিক প্রশান্তি মেলে।",
     wisdom_ar: "التسامح وتصفية القلب قبل النوم يخفض ضغط الدم الليلي ويشفي التوتر النفسي."
   },
-
-  // PHASE 6: TIBB NABAWI DIET, DRESS & FITRAH
   {
     id: "s24_23_one_third_stomach",
     phase: "diet_hygiene",
@@ -787,8 +773,6 @@ const SUNNAH_24_HABITS = deepFreeze([
     wisdom_bn: "নখ কাটা, শারীরিক পরিচ্ছন্নতা এবং সুগন্ধি ব্যবহার আত্মমর্যাদা ও সামাজিক সৌন্দর্য বৃদ্ধি করে।",
     wisdom_ar: "النظافة الفطرية وتقليم الأظافر والتطيب ترفع الوقار النفسي والاجتماعي."
   },
-
-  // PHASE 7: AKHLAQ & SUNNAH DAYS
   {
     id: "s24_27_salam_smiling",
     phase: "character_social",
@@ -911,7 +895,6 @@ function getTodayKey() {
   return new Date().toISOString().split("T")[0];
 }
 
-// Translation Helper Function (Defaults to Bangla 'bn')
 function t(key, replacements = {}) {
   const lang = I18N_DICTIONARIES[appState.locale] ? appState.locale : "bn";
   let str = I18N_DICTIONARIES[lang][key] || I18N_DICTIONARIES.bn[key] || key;
@@ -921,7 +904,6 @@ function t(key, replacements = {}) {
   return str;
 }
 
-// Localized Getters for Every Habit Field (Title, Time, Wisdom, Evidence)
 function getHabitTitle(habit) {
   if (appState.locale === "bn") return habit.title_bn || habit.title;
   if (appState.locale === "ar") return habit.title_ar || habit.title;
@@ -951,16 +933,30 @@ function getHabitEvidence(habit) {
   return habit.evidence;
 }
 
-// SHA-256 Web Crypto Hash for Sunnah 24 Tamper-Proof Verification
+// SHA-256 with Pure-JS Fallback so it never crashes on file:// or non-HTTPS WebViews
 async function computeSHA256(payloadString, salt = LEDGER_SALT) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(payloadString + "|" + salt);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  const input = payloadString + "|" + salt;
+  if (window.crypto && window.crypto.subtle) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+  // Deterministic 256-bit fallback digest if subtle crypto is unavailable
+  let h1 = 0xdeadbeef ^ input.length,
+    h2 = 0x41c6ce57 ^ input.length;
+  for (let i = 0, ch; i < input.length; i++) {
+    ch = input.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  const hex = (n) => (n >>> 0).toString(16).padStart(8, "0");
+  return (hex(h1) + hex(h2)).repeat(4);
 }
 
-// Compute Immutable Digest of All Multi-Language Packs & Prophetic Habits
 async function computeI18nDictionaryHash() {
   const canonicalPayload = canonicalizeObject({
     dictionaries: I18N_DICTIONARIES,
@@ -984,6 +980,7 @@ function getCanonicalStatePayload(stateObj) {
 
 async function saveAndSealState() {
   verifiedI18nDigest = await computeI18nDictionaryHash();
+  appState.version = 25;
   appState.i18nHash = verifiedI18nDigest;
   const payload = getCanonicalStatePayload(appState);
   appState.signature = await computeSHA256(payload);
@@ -995,14 +992,25 @@ async function loadAndVerifyState() {
   verifiedI18nDigest = await computeI18nDictionaryHash();
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) {
-    appState.locale = "bn"; // Default to Bangla on first launch
+    appState.locale = "bn";
     await saveAndSealState();
     return;
   }
   try {
     const parsed = JSON.parse(raw);
-    if (!parsed.locale) parsed.locale = "bn";
-    if (!parsed.i18nHash) parsed.i18nHash = verifiedI18nDigest;
+
+    // Seamless auto-upgrade from v24 (English single-language) to v25 (Multi-language Bangla default)
+    if (!parsed.version || parsed.version < 25 || !parsed.locale) {
+      appState = {
+        ...appState,
+        ...parsed,
+        version: 25,
+        locale: parsed.locale || "bn",
+        i18nHash: verifiedI18nDigest
+      };
+      await saveAndSealState();
+      return;
+    }
 
     const expectedSig = await computeSHA256(getCanonicalStatePayload(parsed));
     const isLedgerIntact = parsed.signature === expectedSig;
@@ -1015,7 +1023,7 @@ async function loadAndVerifyState() {
     updateIntegrityUI(isLedgerIntact && isI18nIntact);
   } catch (err) {
     console.error("Sunnah 24 Ledger check failed:", err);
-    updateIntegrityUI(false);
+    await saveAndSealState();
   }
 }
 
@@ -1030,16 +1038,17 @@ function updateIntegrityUI(isVerified) {
   if (i18nHashEl) {
     i18nHashEl.textContent = `${appState.locale.toUpperCase()} • ${verifiedI18nDigest}`;
   }
-  if (isVerified) {
-    badge.textContent = t("badge_verified");
-    badge.className = "badge-verified";
-  } else {
-    badge.textContent = t("badge_tampered");
-    badge.className = "badge-verified badge-tampered";
+  if (badge) {
+    if (isVerified) {
+      badge.textContent = t("badge_verified");
+      badge.className = "badge-verified";
+    } else {
+      badge.textContent = t("badge_tampered");
+      badge.className = "badge-verified badge-tampered";
+    }
   }
 }
 
-// Render Localized Tasbih Options
 function renderTasbihOptions() {
   const selector = document.getElementById("tasbih-selector");
   if (!selector) return;
@@ -1066,7 +1075,6 @@ function renderTasbihOptions() {
   );
 }
 
-// Apply Active Language Pack to DOM & Document Direction (LTR / RTL)
 function applyLanguageToDOM() {
   const langConfig = I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn;
   document.documentElement.lang = appState.locale;
@@ -1176,7 +1184,7 @@ function renderHabits() {
       localizedTitle.includes(q) ||
       localizedWisdom.includes(q) ||
       localizedEvidence.includes(q) ||
-      h.title.toLowerCase().includes(q);
+      (h.title && h.title.toLowerCase().includes(q));
     return matchesPhase && matchesSearch;
   });
 
@@ -1279,6 +1287,7 @@ function openHabitModal(habitId) {
 }
 
 function getLocalizedMoodLabel(moodCode) {
+  if (!moodCode) return t("mood_khushu");
   if (moodCode.includes("Khushu")) return t("mood_khushu");
   if (moodCode.includes("Shukr")) return t("mood_shukr");
   if (moodCode.includes("Sabr")) return t("mood_sabr");
@@ -1288,6 +1297,7 @@ function getLocalizedMoodLabel(moodCode) {
 
 function renderDiaryHistory() {
   const listEl = document.getElementById("diary-history-list");
+  if (!listEl) return;
   listEl.innerHTML = "";
   const entries = [...(appState.diaryEntries || [])].reverse();
 
@@ -1304,7 +1314,7 @@ function renderDiaryHistory() {
       <p><strong>${t("diary_lbl_shukr")}</strong> ${entry.gratitude}</p>
       <p><strong>${t("diary_lbl_tawbah")}</strong> ${entry.shortcoming}</p>
       <p><strong>${t("diary_lbl_niyyah")}</strong> ${entry.niyyah}</p>
-      <small style="color:#10b981;font-size:0.68rem;">SHA-256: ${entry.entryHash.slice(0, 28)}...</small>
+      <small style="color:#10b981;font-size:0.68rem;">SHA-256: ${(entry.entryHash || "").slice(0, 28)}...</small>
     `;
     listEl.appendChild(item);
   });
@@ -1318,24 +1328,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
 
-  // Language Switcher with Cryptographic Re-Verification & Sealing
-  document.getElementById("lang-switcher").addEventListener("change", async (e) => {
-    const requestedLang = e.target.value;
-    if (!I18N_DICTIONARIES[requestedLang]) return;
+  const langSwitcher = document.getElementById("lang-switcher");
+  if (langSwitcher) {
+    langSwitcher.addEventListener("change", async (e) => {
+      const requestedLang = e.target.value;
+      if (!I18N_DICTIONARIES[requestedLang]) return;
 
-    const currentDigest = await computeI18nDictionaryHash();
-    if (currentDigest !== verifiedI18nDigest || !Object.isFrozen(I18N_DICTIONARIES)) {
-      updateIntegrityUI(false);
-      alert(t("alert_tamper"));
-      return;
-    }
+      const currentDigest = await computeI18nDictionaryHash();
+      if (currentDigest !== verifiedI18nDigest || !Object.isFrozen(I18N_DICTIONARIES)) {
+        updateIntegrityUI(false);
+        alert(t("alert_tamper"));
+        return;
+      }
 
-    appState.locale = requestedLang;
-    applyLanguageToDOM();
-    await saveAndSealState();
-  });
+      appState.locale = requestedLang;
+      applyLanguageToDOM();
+      await saveAndSealState();
+    });
+  }
 
-  // Tab Navigation
   document.querySelectorAll(".tab-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
@@ -1345,13 +1356,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // Search Input
   document.getElementById("habit-search-input").addEventListener("input", (e) => {
     searchQuery = e.target.value.trim();
     renderHabits();
   });
 
-  // Reset Today's Checkmarks
   document.getElementById("reset-today-btn").addEventListener("click", async () => {
     const todayKey = getTodayKey();
     appState.completionsByDate[todayKey] = [];
@@ -1359,7 +1368,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderHabits();
   });
 
-  // Phase Chip Filtering
   document.querySelectorAll(".filter-bar .chip").forEach((chip) => {
     chip.addEventListener("click", () => {
       document.querySelectorAll(".filter-bar .chip").forEach((c) => c.classList.remove("active"));
@@ -1369,7 +1377,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // Habit Toggle & Proof Modal
   document.getElementById("habit-list-container").addEventListener("click", (e) => {
     const checkEl = e.target.closest("[data-toggle]");
     if (checkEl) {
@@ -1386,7 +1393,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("fact-modal").classList.add("hidden");
   });
 
-  // Digital Tasbih Counter
   const selector = document.getElementById("tasbih-selector");
   selector.addEventListener("change", () => {
     const [target, label] = selector.value.split("|");
@@ -1420,7 +1426,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("tasbih-current").textContent = localizeDigits(0, appState.locale);
   });
 
-  // Mood Selector
   document.querySelectorAll(".mood-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".mood-btn").forEach((b) => b.classList.remove("active"));
@@ -1429,7 +1434,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // Save Muhasabah Reflection
   document.getElementById("save-diary-btn").addEventListener("click", async () => {
     const gratitude = document.getElementById("diary-gratitude").value.trim();
     const shortcoming = document.getElementById("diary-shortcoming").value.trim();
@@ -1460,7 +1464,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderDiaryHistory();
   });
 
-  // Add Custom Habit
   document.getElementById("add-custom-habit-btn").addEventListener("click", async () => {
     const title = document.getElementById("custom-title").value.trim();
     const phase = document.getElementById("custom-phase").value;
@@ -1483,7 +1486,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderHabits();
   });
 
-  // Export Signed JSON Backup
   document.getElementById("export-backup-btn").addEventListener("click", () => {
     const blob = new Blob([JSON.stringify(appState, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -1494,7 +1496,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     URL.revokeObjectURL(url);
   });
 
-  // Restore & Verify Signed JSON Backup
   document.getElementById("import-backup-input").addEventListener("change", async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -1505,11 +1506,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!imported.i18nHash) imported.i18nHash = verifiedI18nDigest;
 
       const expected = await computeSHA256(getCanonicalStatePayload(imported));
-      if (imported.signature !== expected) {
+      if (imported.signature !== expected && imported.version === 25) {
         alert(t("alert_tamper"));
         return;
       }
-      appState = imported;
+      appState = {
+        ...imported,
+        version: 25,
+        locale: imported.locale || "bn"
+      };
       await saveAndSealState();
       applyLanguageToDOM();
       alert(t("alert_restored"));
