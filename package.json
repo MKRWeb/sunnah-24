@@ -1,0 +1,19 @@
+{
+  "name": "sunnah-24",
+  "version": "2.4.0",
+  "description": "Sunnah 24 — Enterprise-Grade 24-Hour Prophetic Lifestyle Routine Planner, Habit Tracker & Muhasabah Diary",
+  "main": "www/index.html",
+  "scripts": {
+    "init:android": "npx cap add android",
+    "sync:android": "npx cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0"
+  },
+  "author": "MKRWeb",
+  "license": "MIT"
+}
