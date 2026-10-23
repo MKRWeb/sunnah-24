@@ -1,0 +1,157 @@
+name: Sunnah 24 — Cloud APK, Play Store AAB & GitHub Pages Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy-pages:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Web App Artifact (www)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './www'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  build-and-release-android:
+    runs-on: ubuntu-latest
+    env:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Java JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Install Capacitor & Generate Native Android Project
+        run: |
+          npm install
+          if [ ! -d "android" ]; then
+            npx cap add android
+          else
+            npx cap sync android
+          fi
+
+      - name: Compile Release APK & Google Play App Bundle (AAB)
+        run: |
+          chmod +x android/gradlew
+          cd android
+          ./gradlew assembleRelease bundleRelease
+
+      - name: Cloud Keystore Setup & Cryptographic Signing (Zero-PC Support)
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "🔐 Using Custom Repository Secret Keystore..."
+            echo "$KEYSTORE_BASE64" | base64 --decode > release-key.jks
+            KS_PASS="$KEYSTORE_PASSWORD"
+            K_ALIAS="$KEY_ALIAS"
+            K_PASS="$KEY_PASSWORD"
+          else
+            echo "☁️ Android-Only Mode: Auto-generating Production RSA-2048 Keystore in Cloud..."
+            KS_PASS="Sunnah24SecurePass"
+            K_ALIAS="sunnah24"
+            K_PASS="Sunnah24SecurePass"
+            keytool -genkeypair -v \
+              -keystore release-key.jks \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -alias "$K_ALIAS" \
+              -storepass "$KS_PASS" \
+              -keypass "$K_PASS" \
+              -dname "CN=MKRWeb, OU=Mobile, O=MKRWeb, L=Rajshahi, S=Rajshahi, C=BD"
+          fi
+
+          # 1. Sign Google Play Store Bundle (.aab)
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+            -keystore release-key.jks \
+            -storepass "$KS_PASS" \
+            -keypass "$K_PASS" \
+            android/app/build/outputs/bundle/release/app-release.aab "$K_ALIAS"
+
+          cp android/app/build/outputs/bundle/release/app-release.aab ./Sunnah-24-PlayStore-Signed.aab
+
+          # 2. Zipalign & Sign Release APK (.apk) for Direct Phone Installation
+          BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
+          "$BUILD_TOOLS_DIR/zipalign" -v -p 4 \
+            android/app/build/outputs/apk/release/app-release-unsigned.apk \
+            aligned-release.apk
+
+          "$BUILD_TOOLS_DIR/apksigner" sign \
+            --ks release-key.jks \
+            --ks-key-alias "$K_ALIAS" \
+            --ks-pass "pass:$KS_PASS" \
+            --key-pass "pass:$K_PASS" \
+            --out ./Sunnah-24-Release-Signed.apk \
+            aligned-release.apk
+
+          rm -f aligned-release.apk
+
+      - name: Determine Release Tag (Supports Push to Main, Tags, & Manual Run)
+        id: release_meta
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG_NAME="${GITHUB_REF#refs/tags/}"
+          else
+            TAG_NAME="v2.4.0"
+          fi
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+
+      - name: Publish Signed APK & Play Store AAB to GitHub Releases Page
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release_meta.outputs.tag_name }}
+          name: "Sunnah 24 — Official Release (${{ steps.release_meta.outputs.tag_name }})"
+          body: |
+            ### ☪️ Sunnah 24 — Corporate Production Build
+            - **📱 Direct Android Installation:** Download **`Sunnah-24-Release-Signed.apk`** below and open it on your Android device.
+            - **🏪 Google Play Console Bundle:** Upload **`Sunnah-24-PlayStore-Signed.aab`** to Google Play Console.
+            - **🌐 Live Web PWA:** https://mkrweb.github.io/sunnah-24/
+          files: |
+            Sunnah-24-Release-Signed.apk
+            Sunnah-24-PlayStore-Signed.aab
+          generate_release_notes: true
+
+      - name: Upload Artifacts to Actions Tab
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sunnah-24-Signed-Production-Binaries
+          path: |
+            Sunnah-24-Release-Signed.apk
+            Sunnah-24-PlayStore-Signed.aab
