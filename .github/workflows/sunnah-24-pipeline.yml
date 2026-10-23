@@ -24,7 +24,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Auto-Prepare www Folder
+      - name: Sync Web Files into www Directory
         run: |
           mkdir -p www
           for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
@@ -32,6 +32,10 @@ jobs:
               cp -f "$f" www/
             fi
           done
+          # Auto-create privacy.html if missing so Service Worker never fails
+          if [ ! -f "www/privacy.html" ]; then
+            echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Privacy Policy - Sunnah 24</title></head><body style='background:#05130e;color:#f8fafc;font-family:sans-serif;padding:24px;'><h1>Sunnah 24 Privacy Policy</h1><p>Sunnah 24 operates 100% offline. Zero personal data is collected, shared, or transmitted to any external server.</p><p><a href='index.html' style='color:#10b981;'>Back to Sunnah 24</a></p></body></html>" > www/privacy.html
+          fi
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
@@ -56,8 +60,10 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Auto-Prepare www Folder for Capacitor
+      - name: Sync Web Files into www Directory for Capacitor
         run: |
           mkdir -p www
           for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
@@ -65,6 +71,9 @@ jobs:
               cp -f "$f" www/
             fi
           done
+          if [ ! -f "www/privacy.html" ]; then
+            echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Privacy Policy - Sunnah 24</title></head><body style='background:#05130e;color:#f8fafc;font-family:sans-serif;padding:24px;'><h1>Sunnah 24 Privacy Policy</h1><p>Sunnah 24 operates 100% offline. Zero personal data is collected, shared, or transmitted to any external server.</p><p><a href='index.html' style='color:#10b981;'>Back to Sunnah 24</a></p></body></html>" > www/privacy.html
+          fi
           ls -la www/
 
       - name: Setup Node.js 20
@@ -91,7 +100,7 @@ jobs:
         run: |
           chmod +x android/gradlew
           cd android
-          ./gradlew assembleRelease bundleRelease
+          ./gradlew assembleRelease bundleRelease --no-daemon
 
       - name: Cloud Keystore Setup & Cryptographic Signing
         run: |
@@ -116,19 +125,21 @@ jobs:
           fi
 
           # 1. Sign Google Play Store Bundle (.aab)
+          AAB_PATH=$(find android/app/build/outputs/bundle/release -name "*.aab" | head -n 1)
           jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
             -keystore release-key.jks \
             -storepass "$KS_PASS" \
             -keypass "$K_PASS" \
-            android/app/build/outputs/bundle/release/app-release.aab "$K_ALIAS"
+            "$AAB_PATH" "$K_ALIAS"
 
-          cp android/app/build/outputs/bundle/release/app-release.aab ./Sunnah-24-PlayStore-Signed.aab
+          cp "$AAB_PATH" ./Sunnah-24-PlayStore-Signed.aab
 
           # 2. Zipalign & Sign Release APK (.apk)
-          BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
-          "$BUILD_TOOLS_DIR/zipalign" -v -p 4 \
-            android/app/build/outputs/apk/release/app-release-unsigned.apk \
-            aligned-release.apk
+          SDK_ROOT="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          BUILD_TOOLS_DIR=$(ls -d "$SDK_ROOT"/build-tools/* | sort -V | tail -n 1)
+          UNSIGNED_APK=$(find android/app/build/outputs/apk/release -name "*-unsigned.apk" | head -n 1)
+
+          "$BUILD_TOOLS_DIR/zipalign" -v -p 4 "$UNSIGNED_APK" aligned-release.apk
 
           "$BUILD_TOOLS_DIR/apksigner" sign \
             --ks release-key.jks \
@@ -139,14 +150,19 @@ jobs:
             aligned-release.apk
 
           rm -f aligned-release.apk
+          ls -lh ./Sunnah-24-Release-Signed.apk ./Sunnah-24-PlayStore-Signed.aab
 
-      - name: Determine Release Tag
+      - name: Update Release Tag Pointer (Ensures v2.4.0 Always Has Latest APK)
         id: release_meta
         run: |
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             TAG_NAME="${GITHUB_REF#refs/tags/}"
           else
             TAG_NAME="v2.4.0"
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git tag -fa "$TAG_NAME" -m "Release $TAG_NAME"
+            git push origin "$TAG_NAME" --force
           fi
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
 
@@ -156,9 +172,9 @@ jobs:
           tag_name: ${{ steps.release_meta.outputs.tag_name }}
           name: "Sunnah 24 — Official Release (${{ steps.release_meta.outputs.tag_name }})"
           body: |
-            ### ☪️ Sunnah 24 — Corporate Production Build
-            - **📱 Direct Android APK Download:** [**⬇️ Click Here to Download `Sunnah-24-Release-Signed.apk`**](https://github.com/${{ github.repository }}/releases/download/${{ steps.release_meta.outputs.tag_name }}/Sunnah-24-Release-Signed.apk)
-            - **🏪 Google Play Console Bundle:** [**⬇️ Click Here to Download `Sunnah-24-PlayStore-Signed.aab`**](https://github.com/${{ github.repository }}/releases/download/${{ steps.release_meta.outputs.tag_name }}/Sunnah-24-PlayStore-Signed.aab)
+            ### ☪️ Sunnah 24 — Corporate Production Build (Bangla, Arabic & English)
+            - **📱 Direct Android APK Download:** [**⬇️ Tap Here to Download `Sunnah-24-Release-Signed.apk`**](https://github.com/${{ github.repository }}/releases/download/${{ steps.release_meta.outputs.tag_name }}/Sunnah-24-Release-Signed.apk)
+            - **🏪 Google Play Console Bundle:** [**⬇️ Tap Here to Download `Sunnah-24-PlayStore-Signed.aab`**](https://github.com/${{ github.repository }}/releases/download/${{ steps.release_meta.outputs.tag_name }}/Sunnah-24-PlayStore-Signed.aab)
             - **🌐 Live Web PWA:** https://mkrweb.github.io/sunnah-24/
           files: |
             Sunnah-24-Release-Signed.apk
