@@ -85,16 +85,8 @@ const I18N_DICTIONARIES = deepFreeze({
     tasbih_subtitle: "একটি সহীহ যিকির নির্বাচন করুন এবং গণনা করতে সোনালী বৃত্তে ট্যাপ করুন।",
     lifetime_dhikr: "মোট যাচাইকৃত যিকির গণনা:",
     reset_cycle: "পুনরায় শুরু করুন",
-    duas_heading: "🤲 প্রতিদিনের জরুরি মাসনূন দোয়া",
-    dua_wake_title: "🌅 ঘুম থেকে ওঠার দোয়া (সহীহ বুখারী ৬৩১২)",
-    dua_wake_translit: "\"আলহামদু লিল্লাহিল্লাযী আহ্ইয়ানা বা'দা মা আমাতানা ওয়া ইলাইহিন নুশূর।\"",
-    dua_wake_meaning: "সকল প্রশংসা আল্লাহর জন্য, যিনি আমাদেরকে নিদ্রারূপ মৃত্যুর পর জীবিত করেছেন এবং তাঁর কাছেই আমাদের পুনরুত্থান।",
-    dua_istighfar_title: "🛡️ সাইয়্যিদুল ইস্তিগফার — ক্ষমা প্রার্থনার শ্রেষ্ঠ দোয়া (বুখারী ৬৩০৬)",
-    dua_istighfar_translit: "\"আল্লাহুম্মা আনতা রাব্বী লা ইলাহা ইল্লা আনতা, খালাকতানী ওয়া আনা আবদুকা, ওয়া আনা আলা আহদিকা ওয়া ওয়া'দিকা মাসতাতা'তু...\"",
-    dua_istighfar_meaning: "যে ব্যক্তি দৃঢ় বিশ্বাসের সাথে সকালে ও সন্ধ্যায় এটি পাঠ করবে এবং সেদিন মৃত্যুবরণ করবে, সে জান্নাতবাসী হবে।",
-    dua_sleep_title: "🛌 ঘুমানোর পূর্বে দোয়া (সহীহ বুখারী ৬৩২৪)",
-    dua_sleep_translit: "\"বিসমিকা রাব্বী ওয়াদা'তু জানবী, ওয়া বিকা আরফাউহু, ফাইন্ন আমসাকতা নাফসী ফারহামহা...\"",
-    dua_sleep_meaning: "হে আমার রব! আপনার নামেই আমি বিছানায় পার্শ্বদেশ রাখলাম এবং আপনার নামেই আবার উঠব। যদি আমার প্রাণ রেখে দেন তবে তার প্রতি দয়া করুন।",
+    duas_heading: "🤲 সকাল-সন্ধ্যার অপরিহার্য পূর্ণাঙ্গ মাসনূন দোয়াসমূহ",
+    duas_subheading: "আরবি মূল পাঠ, বাংলা উচ্চারণ, পূর্ণাঙ্গ অর্থ ও সহীহ হাদিসের ফযীলতসহ।",
     diary_title: "📖 দৈনিক মুহাসাবা (আত্মসমালোচনা ডায়েরি)",
     diary_quote: "\"তোমাদের হিসাব নেওয়ার আগেই নিজেদের হিসাব নাও এবং আমল ওজন করার আগেই তা ওজন করে দেখো।\" — উমর ইবনুল খাত্তাব (রা.)",
     diary_mood_label: "আজ অন্তরের আধ্যাত্মিক অবস্থা",
@@ -122,7 +114,7 @@ const I18N_DICTIONARIES = deepFreeze({
     custom_add_btn: "সুন্নাহ ২৪ রুটিনে যুক্ত করুন",
     custom_time_label: "ব্যক্তিগত সুন্নাহ ২৪",
     custom_default_evidence: "ব্যক্তিগত সুন্নাহ ২৪ লক্ষ্য",
-    custom_default_wisdom: "আল্লাহর কাছে সবচেয়ে প্রিয় আমল তা-ই যা নিয়মিত করা হয়, যদিও তা অল্প হয় (সহীহ বুখারী ৬৪৬৪)।",
+    custom_default_wisdom: "আল্লাহর কাছে সবচেয়ে প্রিয় আমল তা-ই যা নিয়মিত করা হয়, যদিও তা অল্প হয় (সহীহ বুখারী ৬৪৬৪).",
     vault_crypto_title: "🔐 SHA-256 টেম্পার-প্রুফ ক্রিপ্টোগ্রাফিক ভল্ট",
     vault_crypto_sub: "প্রতিটি আমল, তাসবীহ গণনা, মুহাসাবা ডায়েরি এবং ভাষা প্যাক SHA-256 ক্রিপ্টোগ্রাফিক স্বাক্ষর দ্বারা সুরক্ষিত।",
     vault_hash_label: "সক্রিয় সুন্নাহ ২৪ লেজার ডাইজেস্ট (SHA-256):",
@@ -187,16 +179,8 @@ const I18N_DICTIONARIES = deepFreeze({
     tasbih_subtitle: "اختر ذكراً نبوياً صحيحاً واضغط على الحلقة الذهبية للتسبيح.",
     lifetime_dhikr: "إجمالي الأذكار الموثقة:",
     reset_cycle: "تصفير العداد",
-    duas_heading: "🤲 الأدعية النبوية اليومية الأساسية",
-    dua_wake_title: "🌅 دعاء الاستيقاظ من النوم (البخاري ٦٣١٢)",
-    dua_wake_translit: "\"الحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ.\"",
-    dua_wake_meaning: "نستفتح يومنا بحمد الله الذي رد إلينا أرواحنا بعد النوم وإليه البعث والنشور.",
-    dua_istighfar_title: "🛡️ سيد الاستغفار (البخاري ٦٣٠٦)",
-    dua_istighfar_translit: "\"اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ...\"",
-    dua_istighfar_meaning: "من قالها موقناً بها حين يمسي وحين يصبح فمات من يومه أو ليلته دخل الجنة.",
-    dua_sleep_title: "🛌 دعاء النوم (البخاري ٦٣٢٤)",
-    dua_sleep_translit: "\"بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ، فَإِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا...\"",
-    dua_sleep_meaning: "تفويض الروح والنفس إلى الله تعالى عند وضع الجنب على الفراش.",
+    duas_heading: "🤲 أذكار الصباح والمساء والأدعية النبوية الكاملة",
+    duas_subheading: "النص العربي الكامل مع المعاني والفضائل الصحيحة.",
     diary_title: "📖 المحاسبة اليومية للنفس",
     diary_quote: "\"حاسبوا أنفسكم قبل أن تحاسبوا، وزنوا أعمالكم قبل أن توزن عليكم.\" — عمر بن الخطاب رضي الله عنه",
     diary_mood_label: "الحالة الإيمانية للقلب اليوم",
@@ -289,16 +273,8 @@ const I18N_DICTIONARIES = deepFreeze({
     tasbih_subtitle: "Select an authentic Prophetic Dhikr and tap the golden ring to count.",
     lifetime_dhikr: "Lifetime Verified Dhikr Count:",
     reset_cycle: "Reset Cycle",
-    duas_heading: "🤲 Essential Daily Prophetic Duas",
-    dua_wake_title: "🌅 Upon Waking Up (Bukhari 6312)",
-    dua_wake_translit: "\"Alhamdu lillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur.\"",
-    dua_wake_meaning: "All praise is for Allah who gave us life after having taken it from us and unto Him is the resurrection.",
-    dua_istighfar_title: "🛡️ Sayyidul Istighfar — Chief Prayer for Forgiveness (Bukhari 6306)",
-    dua_istighfar_translit: "\"Allahumma Anta Rabbi la ilaha illa Anta, khalaqtani wa ana 'abduka...\"",
-    dua_istighfar_meaning: "Whoever recites this with conviction in the morning and evening is guaranteed Paradise.",
-    dua_sleep_title: "🛌 Before Sleeping (Bukhari 6324)",
-    dua_sleep_translit: "\"Bismika Rabbi wada'tu janbi, wa bika arfa'uhu, fa in amsakta nafsi farhamha...\"",
-    dua_sleep_meaning: "In Your Name my Lord, I lie down and in Your Name I rise.",
+    duas_heading: "🤲 Essential Full Morning & Evening Masnoon Duas",
+    duas_subheading: "Complete Arabic text, transliteration, full translation, and authentic virtues.",
     diary_title: "📖 Daily Muhasabah (Self-Accountability)",
     diary_quote: "\"Hold yourselves accountable before you are held accountable, and weigh your deeds before they are weighed for you.\" — Umar ibn Al-Khattab (RA)",
     diary_mood_label: "Spiritual State of the Heart Today",
@@ -355,7 +331,7 @@ const I18N_DICTIONARIES = deepFreeze({
   }
 });
 
-// 32 Comprehensive Prophetic Habits & Islamic Habitual Facts Across 24 Hours (100% Translated in BN, AR, EN)
+// 32 Comprehensive Prophetic Habits across 24 hours
 const SUNNAH_24_HABITS = deepFreeze([
   {
     id: "s24_01_waking_dua",
@@ -871,6 +847,226 @@ const SUNNAH_24_HABITS = deepFreeze([
   }
 ]);
 
+// 12 Essential Full Morning & Evening Masnoon Duas (Hisnul Muslim & Shaykh Ahmadullah)
+const SUNNAH_24_DUAS = deepFreeze([
+  {
+    id: "dua_01_kalimat_tammat",
+    title_bn: "১. সৃষ্টির অনিষ্ট ও বিষধর প্রাণী থেকে আশ্রয়ের দোয়া",
+    title_ar: "١. التعوذ بكلمات الله التامات من شر ما خلق",
+    title_en: "1. Protection from the Evil of What He Created",
+    badge_bn: "সন্ধ্যায় ৩ বার",
+    badge_ar: "٣ مرات مساءً",
+    badge_en: "Evening 3x",
+    arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ",
+    translit_bn: "উচ্চারণ: আ'উযু বিকালিমা-তিল্লা-হিত তা-ম্মা-তি মিন শাররি মা- খালাক্ব।",
+    translit_en: "Transliteration: A'udhu bikalimatillahit-tammati min sharri ma khalaq.",
+    meaning_bn: "অর্থ: আল্লাহর পরিপূর্ণ কালিমাসমূহের উসীলায় আমি তাঁর নিকট তাঁর সৃষ্টির সকল ক্ষতি থেকে আশ্রয় চাই।",
+    meaning_ar: "المعنى: ألتجئ وأعتصم بكلمات الله الكاملة التي لا يلحقها نقص من شر كل ذي شر من المخلوقات.",
+    meaning_en: "Meaning: I seek refuge in the perfect words of Allah from the evil of what He has created.",
+    virtue_bn: "✨ ফযীলত: যে ব্যক্তি সন্ধ্যায় এ দোয়াটি ৩ বার বলবে, সে রাতে কোনো বিষধর প্রাণী বা অনিষ্টকারী কিছু তার ক্ষতি করতে পারবে না (সহীহ মুসলিম ২৭০৯, ইবনে মাজাহ ৩৫১৮)।",
+    virtue_ar: "✨ الفضيلة: من قالها حين يمسي ثلاث مرات لم تضره حمة تلك الليلة (صحيح مسلم ٢٧٠٩).",
+    virtue_en: "✨ Virtue: Whoever recites this 3 times in the evening will not be harmed by any venomous creature that night (Sahih Muslim 2709)."
+  },
+  {
+    id: "dua_02_tahlil",
+    title_bn: "২. তাওহীদ ও প্রশংসার শ্রেষ্ঠ যিকির (তাহলীল)",
+    title_ar: "٢. تهليل الصباح والمساء العظيم",
+    title_en: "2. Supreme Declaration of Tawheed (Tahleel)",
+    badge_bn: "সকাল-সন্ধ্যায় ১০ বা ১০০ বার",
+    badge_ar: "١٠ مرات أو ١٠٠ مرة",
+    badge_en: "10x or 100x Daily",
+    arabic: "لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ",
+    translit_bn: "উচ্চারণ: লা- ইলা-হা ইল্লাল্লা-হু ওয়াহদাহু লা- শারীকা লাহু, লাহুল মুলকু ওয়া লাহুল হামদু ওয়া হুয়া 'আলা- কুল্লি শাইয়িন ক্বাদীর।",
+    translit_en: "Transliteration: La ilaha illallahu wahdahu la sharika lahu, lahul-mulku wa lahul-hamdu wa Huwa 'ala kulli shay'in Qadir.",
+    meaning_bn: "অর্থ: একমাত্র আল্লাহ ছাড়া কোনো হক্ব ইলাহ নেই, তাঁর কোনো শরীক নেই, রাজত্ব তাঁরই, সমস্ত প্রশংসাও তাঁরই, আর তিনি সব কিছুর ওপর ক্ষমতাবান।",
+    meaning_ar: "المعنى: إقرار بتفرد الله بالألوهية والملك والحمد والقدرة المطلقة على كل شيء.",
+    meaning_en: "Meaning: None has the right to be worshipped but Allah alone, Who has no partner. His is the dominion and His is the praise, and He is Able to do all things.",
+    virtue_bn: "✨ ফযীলত: সকাল-সন্ধ্যায় ১০ বার পাঠ করলে ৪টি দাসমুক্তির সওয়াব, ১০টি নেকী ও শয়তান থেকে সুরক্ষা মেলে। আর দিনে ১০০ বার পড়লে ১০টি দাসমুক্তির সওয়াব, ১০০ নেকী লেখা হয় ও ১০০ গুনাহ মাফ হয় (সহীহ বুখারী ৩২৯৩, মুসলিম ২৬৯১)।",
+    virtue_ar: "✨ الفضيلة: من قالها في يوم مائة مرة كانت له عدل عشر رقاب وكتبت له مائة حسنة ومحيت عنه مائة سيئة وحرزاً من الشيطان (البخاري ٣٢٩٣ ومسلم ٢٦٩١).",
+    virtue_en: "✨ Virtue: Reciting 100x daily equals freeing 10 slaves, writes 100 good deeds, erases 100 sins, and shields from Satan all day (Bukhari 3293, Muslim 2691)."
+  },
+  {
+    id: "dua_03_sayyidul_istighfar",
+    title_bn: "৩. সাইয়্যিদুল ইস্তিগফার (ক্ষমা প্রার্থনার শ্রেষ্ঠ দোয়া)",
+    title_ar: "٣. سيد الاستغفار",
+    title_en: "3. Sayyidul Istighfar (Chief Prayer for Forgiveness)",
+    badge_bn: "সকাল-সন্ধ্যায় ১ বার",
+    badge_ar: "مرة واحدة صباحاً ومساءً",
+    badge_en: "Morning & Evening 1x",
+    arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَٰهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
+    translit_bn: "উচ্চারণ: আল্লা-হুম্মা আনতা রাব্বী লা- ইলা-হা ইল্লা- আনতা, খালাক্বতানী ওয়া আনা 'আবদুকা, ওয়া আনা 'আলা- 'আহদিকা ওয়া ওয়া'দিকা মাস্তাত্বা'তু। আ'উযু বিকা মিন শাররি মা- সানা'তু, আবূউ লাকা বিনি'মাতিকা 'আলাইয়্যা, ওয়া আবূউ বিযাম্বী, ফাগفیر লী ফাইন্নাহু লা- ইয়াগفیرুয যুনূবা ইল্লা- আনতা।",
+    translit_en: "Transliteration: Allahumma Anta Rabbi la ilaha illa Anta, khalaqtani wa ana 'abduka, wa ana 'ala 'ahdika wa wa'dika mastata'tu, a'udhu bika min sharri ma sana'tu, abu'u laka bini'matika 'alayya, wa abu'u bidhanbi faghfir li fa innahu la yaghfirudh-dhunuba illa Anta.",
+    meaning_bn: "অর্থ: হে আল্লাহ! আপনি আমার রব, আপনি ছাড়া কোনো হক্ব ইলাহ নেই। আপনি আমাকে সৃষ্টি করেছেন এবং আমি আপনার বান্দা। আমি আমার সাধ্যমতো আপনার অঙ্গীকার ও প্রতিশ্রুতির ওপর রয়েছি। আমি আমার কৃতকর্মের অনিষ্ট থেকে আপনার আশ্রয় চাই। আমার ওপর আপনার প্রদত্ত নিয়ামত স্বীকার করছি এবং আমার গুনাহেরও স্বীকারোক্তি দিচ্ছি। অতএব আমাকে ক্ষমা করুন, কেননা আপনি ছাড়া কেউ গুনাহ ক্ষমা করতে পারে না।",
+    meaning_ar: "المعنى: اعتراف العبد بربوبية الله ونعمته وإقراره بذنبه وطلب المغفرة منه وحده.",
+    meaning_en: "Meaning: O Allah, You are my Lord, none has the right to be worshipped except You. You created me and I am Your servant, and I abide to Your covenant and promise as best I can. I seek refuge in You from the evil of what I have done. I acknowledge Your favor upon me and I acknowledge my sin, so forgive me, for verily none can forgive sins except You.",
+    virtue_bn: "✨ ফযীলত: যে ব্যক্তি দৃঢ় বিশ্বাসের সাথে সকালে বা সন্ধ্যায় এটি পাঠ করবে এবং সেদিন বা রাতে মৃত্যুবরণ করবে, সে নিশ্চিত জান্নাতবাসী হবে (সহীহ বুখারী ৬৩০৬)।",
+    virtue_ar: "✨ الفضيلة: من قالها موقناً بها حين يمسي وحين يصبح فمات من يومه أو ليلته دخل الجنة (صحيح البخاري ٦٣٠٦).",
+    virtue_en: "✨ Virtue: Whoever says this with conviction in the morning or evening and dies that day or night will enter Paradise (Sahih al-Bukhari 6306)."
+  },
+  {
+    id: "dua_04_bismillahi_la_yadurru",
+    title_bn: "৪. সর্বপ্রকার আকস্মিক বিপদ ও ক্ষতি থেকে সুরক্ষার দোয়া",
+    title_ar: "٤. دعاء الحفظ من الفجأة والضرر",
+    title_en: "4. Protection from Sudden Harm & Calamity",
+    badge_bn: "সকাল-সন্ধ্যায় ৩ বার",
+    badge_ar: "٣ مرات صباحاً ومساءً",
+    badge_en: "Morning & Evening 3x",
+    arabic: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
+    translit_bn: "উচ্চারণ: বিসমিল্লা-হিল্লাযী লা- ইয়াদুররু মা'আসমিহী শাইউন ফিল আরদ্বি ওয়ালা- ফিস সামা-ই, ওয়া হুয়াস সামী'উল 'আলীম।",
+    translit_en: "Transliteration: Bismillahil-ladhi la yadurru ma'asmihi shay'un fil-ardi wa la fis-sama'i wa Huwas-Sami'ul-'Alim.",
+    meaning_bn: "অর্থ: শুরু করছি আল্লাহর নামে, যাঁর নামের সাথে আসমান ও যমীনে কোনো কিছুই কোনো ক্ষতি করতে পারে না। আর তিনি সর্বশ্রোতা, মহাজ্ঞানী।",
+    meaning_ar: "المعنى: الاستعاذة باسم الله الذي يمنع كل ضرر في الأرض وفي السماء.",
+    meaning_en: "Meaning: In the Name of Allah, with Whose Name nothing on earth or in the heavens can cause harm, and He is the All-Hearing, the All-Knowing.",
+    virtue_bn: "✨ ফযীলত: যে ব্যক্তি সকাল ও সন্ধ্যায় ৩ বার করে পাঠ করবে, কোনো কিছুই তার ক্ষতি করতে পারবে না এবং সে আকস্মিক বিপদ থেকে নিরাপদ থাকবে (তিরমিযী ৩৩৮৮, আবু দাউদ ৫০৮৮)।",
+    virtue_ar: "✨ الفضيلة: من قالها ثلاث مرات إذا أصبح وثلاثاً إذا أمسى لم يضره شيء (الترمذي ٣٣٨٨ وأبو داود ٥٠٨٨).",
+    virtue_en: "✨ Virtue: Whoever recites it 3 times in the morning and evening will not be harmed by anything (Tirmidhi 3388, Abu Dawud 5088)."
+  },
+  {
+    id: "dua_05_hasbiyallah",
+    title_bn: "৫. দুনিয়া ও আখিরাতের সকল দুশ্চিন্তা মুক্তির দোয়া",
+    title_ar: "٥. دعاء كفاية الهموم في الدنيا والآخرة",
+    title_en: "5. Sufficiency Against All Worries of Dunya & Akhirah",
+    badge_bn: "সকাল-সন্ধ্যায় ৭ বার",
+    badge_ar: "٧ مرات صباحاً ومساءً",
+    badge_en: "Morning & Evening 7x",
+    arabic: "حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ ۖ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",
+    translit_bn: "উচ্চারণ: হাসবিয়াল্লা-হু লা- ইলা-হা ইল্লা- হুয়া, 'আলাইহি তাওয়াক্কালতু ওয়া হুয়া রাব্বুল 'আরশিল 'আযীম।",
+    translit_en: "Transliteration: Hasbiyallahu la ilaha illa Huwa, 'alayhi tawakkaltu wa Huwa Rabbul-'Arshil-'Azim.",
+    meaning_bn: "অর্থ: আল্লাহই আমার জন্য যথেষ্ট, তিনি ছাড়া আর কোনো হক্ব ইলাহ নেই। আমি তাঁর ওপরই ভরসা করেছি। আর তিনি মহান আরশের রব।",
+    meaning_ar: "المعنى: تفويض الأمر كله لله وحده رب العرش العظيم.",
+    meaning_en: "Meaning: Allah is sufficient for me; there is no deity except Him. On Him I rely, and He is the Lord of the Great Throne.",
+    virtue_bn: "✨ ফযীলত: যে ব্যক্তি সকালে ৭ বার ও সন্ধ্যায় ৭ বার পাঠ করবে, তার দুনিয়া ও আখিরাতের সকল দুশ্চিন্তা ও উৎকণ্ঠার জন্য আল্লাহই যথেষ্ট হবেন (সূরা তাওবা ১২৯, আবু দাউদ ৫০৮১)।",
+    virtue_ar: "✨ الفضيلة: من قالها حين يصبح وحين يمسي سبع مرات كفاه الله ما أهمه من أمر الدنيا والآخرة (أبو داود ٥٠٨١).",
+    virtue_en: "✨ Virtue: Whoever says this 7 times in the morning and evening, Allah will suffice him against whatever worries him in this world and the Hereafter (Abu Dawud 5081)."
+  },
+  {
+    id: "dua_06_afiyah_badan",
+    title_bn: "৬. দেহ, শ্রবণ ও দৃষ্টিশক্তির সুস্থতা এবং কবরের আযাব থেকে আশ্রয়",
+    title_ar: "٦. دعاء العافية في البدن والسمع والبصر",
+    title_en: "6. Well-being in Body, Hearing & Sight",
+    badge_bn: "সকাল-সন্ধ্যায় ৩ বার",
+    badge_ar: "٣ مرات صباحاً ومساءً",
+    badge_en: "Morning & Evening 3x",
+    arabic: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَٰهَ إِلَّا أَنْتَ، اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لَا إِلَٰهَ إِلَّا أَنْتَ",
+    translit_bn: "উচ্চারণ: আল্লা-হুম্মা 'আ-ফিনী ফী বাদানী, আল্লা-হুম্মা 'আ-ফিনী ফী সাম'ঈ, আল্লা-হুম্মা 'আ-ফিনী ফী বাসারী, লা- ইলা-হা ইল্লা- আনতা। আল্লা-হুম্মা ইন্নী আ'উযু বিকা মিনাল কুফরি ওয়াল ফাক্বরি, আল্লা-হুম্মা ইন্নী আ'উযু বিকা মিন 'আযা-বিল ক্বাবরি, লা- ইলা-হা ইল্লা- আনতা।",
+    translit_en: "Transliteration: Allahumma 'afini fi badani, Allahumma 'afini fi sam'i, Allahumma 'afini fi basari, la ilaha illa Anta. Allahumma inni a'udhu bika minal-kufri wal-faqri, Allahumma inni a'udhu bika min 'adhabil-qabri, la ilaha illa Anta.",
+    meaning_bn: "অর্থ: হে আল্লাহ! আমার দেহে সুস্থতা দিন। হে আল্লাহ! আমার শ্রবণশক্তিতে সুস্থতা দিন। হে আল্লাহ! আমার দৃষ্টিশক্তিতে সুস্থতা দিন। আপনি ছাড়া কোনো হক্ব ইলাহ নেই। হে আল্লাহ! আমি আপনার কাছে কুফরি ও দারিদ্র্য থেকে আশ্রয় চাই এবং কবরের আযাব থেকে আশ্রয় চাই। আপনি ছাড়া কোনো হক্ব ইলাহ নেই।",
+    meaning_ar: "المعنى: سؤال الله المعافاة في الجوارح والحفظ من الكفر والفقر وعذاب القبر.",
+    meaning_en: "Meaning: O Allah, grant health to my body, grant health to my hearing, grant health to my sight. None has the right to be worshipped except You. O Allah, I seek refuge in You from disbelief, poverty, and the punishment of the grave. None has the right to be worshipped except You.",
+    virtue_bn: "✨ ফযীলত: রাসূলুল্লাহ ﷺ প্রতিদিন সকাল ও সন্ধ্যায় ৩ বার করে নিয়মিত এই দোয়াটি পাঠ করতেন (সুনানে আবু দাউদ ৫০৯০)।",
+    virtue_ar: "✨ الفضيلة: واظب النبي ﷺ على الدعاء بها ثلاث مرات صباحاً ومساءً (سنن أبي داود ٥٠٩٠).",
+    virtue_en: "✨ Virtue: The Prophet ﷺ consistently recited this 3 times every morning and evening (Sunan Abi Dawud 5090)."
+  },
+  {
+    id: "dua_07_afiyah_six_directions",
+    title_bn: "৭. দ্বীন, দুনিয়া ও পরিবার এবং ছয় দিক থেকে সার্বিক নিরাপত্তার দোয়া",
+    title_ar: "٧. دعاء العفو والعافية والحفظ من الجهات الست",
+    title_en: "7. Comprehensive Protection from All Six Directions",
+    badge_bn: "সকাল-সন্ধ্যায় ১ বার",
+    badge_ar: "مرة واحدة صباحاً ومساءً",
+    badge_en: "Morning & Evening 1x",
+    arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ وَمِنْ خَلْفِي وَعَنْ يَمِينِي وَعَنْ شِمَالِي وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي",
+    translit_bn: "উচ্চারণ: আল্লা-হুম্মা ইন্নী আসআলুকাল 'আফওয়া ওয়াল 'আ-ফিয়াতা ফিদ্দুনইয়া ওয়াল আ-খিরাহ। আল্লা-হুম্মা ইন্নী আসআলুকাল 'আফওয়া ওয়াল 'আ-ফিয়াতা ফী দীনী ওয়া দুনইয়া-ইয়া ওয়া আহলী ওয়া মা-লী। আল্লা-হুম্মাসতুর 'আওরা-তী ওয়া আ-মিন রাও'আ-তী। আল্লা-হুম্মাহফাযনী মিম্বাইনি ইয়াদাইয়্যা ওয়া মিন খালফী ওয়া 'আন ইয়ামীনী ওয়া 'আন শিমা-লী ওয়া মিন ফাওক্বী, ওয়া আ'উযু বি'আযামাতিকা আন উগতা-লা মিন তাহতী।",
+    translit_en: "Transliteration: Allahumma inni as'alukal-'afwa wal-'afiyata fid-dunya wal-akhirah. Allahumma inni as'alukal-'afwa wal-'afiyata fi dini wa dunyaya wa ahli wa mali. Allahummastur 'awrati wa amin raw'ati. Allahummahfazni min bayni yadayya wa min khalfi wa 'an yamini wa 'an shimali wa min fawqi, wa a'udhu bi'azamatika an ughtala min tahti.",
+    meaning_bn: "অর্থ: হে আল্লাহ! আমি আপনার নিকট দুনিয়া ও আখিরাতে ক্ষমা ও নিরাপত্তা প্রার্থনা করছি। হে আল্লাহ! আমি আপনার নিকট আমার দ্বীন, দুনিয়া, পরিবার ও সম্পদে ক্ষমা ও নিরাপত্তা চাচ্ছি। হে আল্লাহ! আমার গোপন ত্রুটিসমূহ ঢেকে রাখুন এবং আমার ভীতিকে নিরাপত্তায় পরিণত করুন। হে আল্লাহ! আমাকে আমার সামনে, পেছনে, ডানে, বামে ও ওপর দিক থেকে হেফাজত করুন। আর আপনার মহত্ত্বের উসীলায় আমার নিচ দিক থেকে হঠাৎ আক্রান্ত হওয়া (ভূমিধস) থেকে আশ্রয় চাই।",
+    meaning_ar: "المعنى: أجمع دعاء لطلب العفو والعافية والستر والحفظ الشامل في الدين والدنيا والأهل والمال.",
+    meaning_en: "Meaning: O Allah, I ask You for forgiveness and well-being in this world and the Hereafter, and in my religion, worldly affairs, family, and wealth. Conceal my faults, calm my fears, and guard me from in front of me, behind me, my right, my left, and above me, and I seek refuge in Your greatness from being unexpectedly destroyed from beneath me.",
+    virtue_bn: "✨ ফযীলত: রাসূলুল্লাহ ﷺ সকাল ও সন্ধ্যায় কখনোই এই ব্যাপক নিরাপত্তার দোয়াটি পাঠ করা ছাড়তেন না (আবু দাউদ ৫০৭৪, ইবনে মাজাহ ৩৮৭১)।",
+    virtue_ar: "✨ الفضيلة: لم يكن رسول الله ﷺ يدع هؤلاء الدعوات حين يمسي وحين يصبح (أبو داود ٥٠٧٤ وابن ماجه ٣٨٧١).",
+    virtue_en: "✨ Virtue: The Prophet ﷺ never left reciting these comprehensive words every morning and evening (Abu Dawud 5074, Ibn Majah 3871)."
+  },
+  {
+    id: "dua_08_raditu_billahi",
+    title_bn: "৮. কিয়ামতের দিন আল্লাহর সন্তুষ্টি লাভের দোয়া",
+    title_ar: "٨. دعاء الرضا بالله رباً وبالإسلام ديناً وبمحمد ﷺ نبياً",
+    title_en: "8. Declaration of Contentment with Allah, Islam & the Prophet ﷺ",
+    badge_bn: "সকাল-সন্ধ্যায় ৩ বার",
+    badge_ar: "٣ مرات صباحاً ومساءً",
+    badge_en: "Morning & Evening 3x",
+    arabic: "رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِوَمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا",
+    translit_bn: "উচ্চারণ: রাদ্বীতু বিল্লা-হি রাব্বান, ওয়া বিল ইসলা-মি দীনান, ওয়া বিমুহাম্মাদিন সাল্লাল্লা-হু 'আলাইহি ওয়াসাল্লামা নাবিয়্যান।",
+    translit_en: "Transliteration: Raditu billahi Rabban, wa bil-Islami dinan, wa bi-Muhammadin sallallahu 'alayhi wa sallama Nabiyyan.",
+    meaning_bn: "অর্থ: আল্লাহকে রব, ইসলামকে দ্বীন এবং মুহাম্মাদ সাল্লাল্লাহু আলাইহি ওয়াসাল্লামকে নবীরূপে গ্রহণ করে আমি সন্তুষ্ট।",
+    meaning_ar: "المعنى: تجديد العهد والرضا التام بربوبية الله وبدين الإسلام وبرسالة النبي محمد ﷺ.",
+    meaning_en: "Meaning: I am pleased with Allah as my Lord, with Islam as my religion, and with Muhammad ﷺ as my Prophet.",
+    virtue_bn: "✨ ফযীলত: যে ব্যক্তি সকাল ও সন্ধ্যায় ৩ বার করে এই দোয়া বলবে, কিয়ামতের দিন তাকে সন্তুষ্ট করা আল্লাহর ওপর আবশ্যক হয়ে যায় (তিরমিযী ৩৩৮৯, মুসনাদে আহমাদ ১৮৯৬৭)।",
+    virtue_ar: "✨ الفضيلة: من قالها ثلاثاً حين يصبح وثلاثاً حين يمسي كان حقاً على الله أن يرضيه يوم القيامة (الترمذي ٣٣٨٩).",
+    virtue_en: "✨ Virtue: Whoever recites this 3 times morning and evening, Allah has promised to please him on the Day of Resurrection (Tirmidhi 3389)."
+  },
+  {
+    id: "dua_09_ya_hayyu_ya_qayyum",
+    title_bn: "৯. সার্বিক অবস্থা সংশোধন ও আল্লাহর রহমত প্রার্থনার দোয়া",
+    title_ar: "٩. الاستغاثة برحمة الحي القيوم وإصلاح الشأن كله",
+    title_en: "9. Seeking Aid Through Allah's Mercy for All Affairs",
+    badge_bn: "সকাল-সন্ধ্যায় ১ বার",
+    badge_ar: "مرة واحدة صباحاً ومساءً",
+    badge_en: "Morning & Evening 1x",
+    arabic: "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَىٰ نَفْسِي طَرْفَةَ عَيْنٍ",
+    translit_bn: "উচ্চারণ: ইয়া- হাইয়্যু ইয়া- ক্বাইয়্যূমু বিরাহমাতিকা আসতাগীস, আসলিহ লী শা'নী কুল্লাহু, ওয়ালা- তাকিলনী ইলা- নাফসী ত্বারফাতা 'আইন।",
+    translit_en: "Transliteration: Ya Hayyu ya Qayyumu birahmatika astaghith, aslih li sha'ni kullahu, wa la takilni ila nafsi tarfata 'ayn.",
+    meaning_bn: "অর্থ: হে চিরঞ্জীব, হে চিরস্থায়ী! আমি আপনার রহমতের উসীলায় সাহায্য ও উদ্ধার কামনা করি; আপনি আমার সার্বিক অবস্থা সংশোধন করে দিন এবং আমাকে এক পলকের জন্যও আমার নিজের কাছে সোপর্দ করবেন না।",
+    meaning_ar: "المعنى: التوسل باسمي الله الحي القيوم لإصلاح جميع شؤون الحياة وعدم التخلي عن العبد لحظة.",
+    meaning_en: "Meaning: O Ever-Living, O Sustainer of all, by Your mercy I seek help; rectify all my affairs and do not leave me to myself even for the blink of an eye.",
+    virtue_bn: "✨ ফযীলত: রাসূলুল্লাহ ﷺ তাঁর প্রিয় কন্যা ফাতিমা (রা.)-কে সকাল ও সন্ধ্যায় এই দোয়াটি পড়ার বিশেষ ওসিয়ত করেছিলেন (মুস্তাদরাকে হাকেম ২০০০, সহীহ তারগীব ৬৬১)।",
+    virtue_ar: "✨ الفضيلة: أوصى بها النبي ﷺ ابنته فاطمة رضي الله عنها أن تقولها إذا أصبحت وإذا أمست (المستدرك ٢٠٠٠).",
+    virtue_en: "✨ Virtue: The Prophet ﷺ specifically advised his daughter Fatimah (RA) to recite this every morning and evening (Al-Hakim 2000)."
+  },
+  {
+    id: "dua_10_subhanallahi_adada",
+    title_bn: "১০. সৃষ্টির সংখ্যা ও আরশের ওজনের সমপরিমাণ তাসবীহ",
+    title_ar: "١٠. التسبيح المضاعف (عدد خلقه ورضا نفسه)",
+    title_en: "10. Multiplied Glorification Equal to His Creation & Throne",
+    badge_bn: "সকালে ৩ বার",
+    badge_ar: "٣ مرات صباحاً",
+    badge_en: "Morning 3x",
+    arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ: عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ",
+    translit_bn: "উচ্চারণ: সুবহা-নাল্লা-হি ওয়া বিহামদিহী: 'আদাদা খালক্বিহী, ওয়া রিদ্বা- নাফসিহী, ওয়া যিনাতা 'আরশিহী, ওয়া মিদা-দা কালিমা-তিহী।",
+    translit_en: "Transliteration: Subhanallahi wa bihamdihi: 'adada khalqihi, wa rida nafsihi, wa zinata 'arshihi, wa midada kalimatihi.",
+    meaning_bn: "অর্থ: আমি আল্লাহর প্রশংসাসহ পবিত্রতা ও মহিমা ঘোষণা করছি—তাঁর সৃষ্ট বস্তুসমূহের সংখ্যার সমান, তাঁর নিজের সন্তোষের সমান, তাঁর আরশের ওজনের সমান এবং তাঁর বাণীসমূহ লেখার কালির পরিমাণের সমান।",
+    meaning_ar: "المعنى: تسبيح عظيم مضاعف الأجر يفوق ساعات طويلة من الذكر.",
+    meaning_en: "Meaning: Glory and praise be to Allah, as many times as the number of His creation, as much as pleases Him, as heavy as the weight of His Throne, and as much as the ink of His words.",
+    virtue_bn: "✨ ফযীলত: ফজরের পর থেকে চাশতের সময় পর্যন্ত দীর্ঘক্ষণ বসে যিকির করার চেয়েও এই ৪টি বাক্য ৩ বার বলা সওয়াবের দিক থেকে অধিক ভারী ও উত্তম (সহীহ মুসলিম ২৭২৬)।",
+    virtue_ar: "✨ الفضيلة: قال النبي ﷺ لجويرية رضي الله عنها أن هذه الأربع كلمات ثلاث مرات تعدل وتفوق الذكر من الفجر إلى الضحى (صحيح مسلم ٢٧٢٦).",
+    virtue_en: "✨ Virtue: Reciting these 4 phrases 3 times outweighs sitting in remembrance from Fajr until mid-morning (Sahih Muslim 2726)."
+  },
+  {
+    id: "dua_11_ilman_nafia",
+    title_bn: "১১. উপকারী জ্ঞান, পবিত্র রিজিক ও কবুলযোগ্য আমলের দোয়া",
+    title_ar: "١١. دعاء العلم النافع والرزق الطيب والعمل المتقبل",
+    title_en: "11. Prayer for Beneficial Knowledge, Pure Provision & Accepted Deeds",
+    badge_bn: "ফজরের পর / সকালে ১ বার",
+    badge_ar: "مرة واحدة بعد الفجر / صباحاً",
+    badge_en: "After Fajr / Morning 1x",
+    arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا",
+    translit_bn: "উচ্চারণ: আল্লা-হুম্মা ইন্নী আসআলুকা 'ইলমান না-ফি'আন, ওয়া রিযক্বান ত্বাইয়্যিবান, ওয়া 'আমালান মুতাক্বাব্বালান।",
+    translit_en: "Transliteration: Allahumma inni as'aluka 'ilman nafi'an, wa rizqan tayyiban, wa 'amalan mutaqabbalan.",
+    meaning_bn: "অর্থ: হে আল্লাহ! আমি আপনার নিকট উপকারী জ্ঞান, পবিত্র-হালাল রিজিক এবং কবুলযোগ্য নেক আমল প্রার্থনা করি।",
+    meaning_ar: "المعنى: افتتاح اليوم بطلب المقاصد الثلاثة الكبرى: العلم النافع، الرزق الحلال، وقبول العمل.",
+    meaning_en: "Meaning: O Allah, I ask You for beneficial knowledge, pure lawful provision, and accepted deeds.",
+    virtue_bn: "✨ ফযীলত: রাসূলুল্লাহ ﷺ প্রতিদিন ফজরের সালাতের সালাম ফিরানোর পর এই দোয়াটি পাঠ করতেন (সুনানে ইবনে মাজাহ ৯২৫, মুসনাদে আহমাদ ২৬৬০২)।",
+    virtue_ar: "✨ الفضيلة: كان النبي ﷺ يقولها كل صباح إذا سلم من صلاة الفجر (سنن ابن ماجه ٩٢٥).",
+    virtue_en: "✨ Virtue: The Prophet ﷺ recited this every morning after concluding the Fajr prayer (Sunan Ibn Majah 925)."
+  },
+  {
+    id: "dua_12_bika_asbahna_sleep",
+    title_bn: "১২. সকাল-সন্ধ্যায় জীবন-মৃত্যু ও পুনরুত্থানের স্মরণ",
+    title_ar: "١٢. دعاء الدخول في الصباح والمساء",
+    title_en: "12. Entering the Morning & Evening by Allah's Grace",
+    badge_bn: "সকাল-সন্ধ্যায় ১ বার",
+    badge_ar: "مرة واحدة صباحاً ومساءً",
+    badge_en: "Morning & Evening 1x",
+    arabic: "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ",
+    translit_bn: "উচ্চারণ: আল্লা-হুম্মা বিকা আসবাহনা- ওয়া বিকা আমসাইনা-, ওয়া বিকা নাহইয়া- ওয়া বিকা নামূতু ওয়া ইলাইকান নুশূর। (সন্ধ্যায়: আল্লা-হুম্মা বিকা আমসাইনা- ওয়া বিকা আসবাহনা-... ওয়া ইলাইকাল মাসীর)।",
+    translit_en: "Transliteration: Allahumma bika asbahna, wa bika amsayna, wa bika nahya, wa bika namutu, wa ilaykan-nushur. (In evening: ...wa ilaykal-masir).",
+    meaning_bn: "অর্থ: হে আল্লাহ! আপনার অনুগ্রহেই আমরা সকালে উপনীত হয়েছি এবং আপনার অনুগ্রহেই সন্ধ্যায় উপনীত হয়েছি। আপনার দ্বারাই আমরা জীবিত থাকি, আপনার দ্বারাই আমরা মৃত্যুবরণ করব এবং আপনার কাছেই আমাদের পুনরুত্থান (সন্ধ্যায়: প্রত্যাবর্তন)।",
+    meaning_ar: "المعنى: تفويض الحياة والموت والبعث لله سبحانه في كل صباح ومساء.",
+    meaning_en: "Meaning: O Allah, by Your leave we have reached the morning and by Your leave we have reached the evening, by Your leave we live and die, and unto You is our resurrection (and return).",
+    virtue_bn: "✨ ফযীলত: নবীজি ﷺ সাহাবীগণকে সকাল ও সন্ধ্যায় এই দোয়াটি পাঠ করার শিক্ষা দিয়েছেন (জামে তিরমিযী ৩৩৯১, ইবনে মাজাহ ৩৮৬৮)।",
+    virtue_ar: "✨ الفضيلة: علمها النبي ﷺ أصحابه ليقولوها عند الصباح والمساء (جامع الترمذي ٣٣٩١).",
+    virtue_en: "✨ Virtue: Taught by the Prophet ﷺ to be recited at the start of every morning and evening (Jami` at-Tirmidhi 3391)."
+  }
+]);
+
 // Application State (Default Language set to Bangla: 'bn')
 let appState = {
   appName: "Sunnah 24",
@@ -959,7 +1155,8 @@ async function computeSHA256(payloadString, salt = LEDGER_SALT) {
 async function computeI18nDictionaryHash() {
   const canonicalPayload = canonicalizeObject({
     dictionaries: I18N_DICTIONARIES,
-    habits: SUNNAH_24_HABITS
+    habits: SUNNAH_24_HABITS,
+    duas: SUNNAH_24_DUAS
   });
   return computeSHA256(canonicalPayload, I18N_SALT);
 }
@@ -1015,7 +1212,8 @@ async function loadAndVerifyState() {
     const isI18nIntact =
       parsed.i18nHash === verifiedI18nDigest &&
       Object.isFrozen(I18N_DICTIONARIES) &&
-      Object.isFrozen(SUNNAH_24_HABITS);
+      Object.isFrozen(SUNNAH_24_HABITS) &&
+      Object.isFrozen(SUNNAH_24_DUAS);
 
     appState = parsed;
     updateIntegrityUI(isLedgerIntact && isI18nIntact);
@@ -1073,6 +1271,36 @@ function renderTasbihOptions() {
   );
 }
 
+function renderDuas() {
+  const container = document.getElementById("duas-list-container");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const lang = appState.locale || "bn";
+
+  SUNNAH_24_DUAS.forEach((dua) => {
+    const title = lang === "bn" ? dua.title_bn : lang === "ar" ? dua.title_ar : dua.title_en;
+    const badge = lang === "bn" ? dua.badge_bn : lang === "ar" ? dua.badge_ar : dua.badge_en;
+    const translit = lang === "bn" ? dua.translit_bn : lang === "en" ? dua.translit_en : "";
+    const meaning = lang === "bn" ? dua.meaning_bn : lang === "ar" ? dua.meaning_ar : dua.meaning_en;
+    const virtue = lang === "bn" ? dua.virtue_bn : lang === "ar" ? dua.virtue_ar : dua.virtue_en;
+
+    const card = document.createElement("div");
+    card.className = "dua-card";
+    card.innerHTML = `
+      <div class="dua-header">
+        <h4>${title}</h4>
+        <span class="dua-badge">${badge}</span>
+      </div>
+      <p class="dua-arabic">${dua.arabic}</p>
+      ${translit ? `<p class="translit">${translit}</p>` : ""}
+      <p class="muted-small">${meaning}</p>
+      <p class="dua-virtue">${virtue}</p>
+    `;
+    container.appendChild(card);
+  });
+}
+
 function applyLanguageToDOM() {
   const langConfig = I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn;
   document.documentElement.lang = appState.locale;
@@ -1092,6 +1320,7 @@ function applyLanguageToDOM() {
   });
 
   renderTasbihOptions();
+  renderDuas();
   renderHeaderDatesAndPhase();
   renderHabits();
   renderDiaryHistory();
