@@ -1814,16 +1814,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderHabits();
   });
 
-  document.getElementById("export-backup-btn").addEventListener("click", () => {
-    const blob = new Blob([JSON.stringify(appState, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `sunnah-24-backup-${getTodayKey()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  });
-
     document.getElementById("export-backup-btn").addEventListener("click", async () => {
     await saveAndSealState();
     const timeStamp = new Date().toTimeString().slice(0, 8).replace(/:/g, "-");
@@ -1840,67 +1830,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       return `✅ সুন্নাহ ২৪ ব্যাকআপ আপনার ফোনে সংরক্ষিত হয়েছে!\n📁 ফোল্ডার: ${savedLocation}`;
     };
 
-    // 1. DIRECT DEVICE SAVE FOR ANDROID APK (Capacitor Filesystem)
-    if (
-      window.Capacitor &&
-      typeof window.Capacitor.isNativePlatform === "function" &&
-      window.Capacitor.isNativePlatform() &&
-      window.Capacitor.Plugins &&
-      window.Capacitor.Plugins.Filesystem
-    ) {
-      const { Filesystem } = window.Capacitor.Plugins;
-
-      try {
-        // Request permission on Android 9 and below if needed
-        if (typeof Filesystem.checkPermissions === "function") {
-          const perm = await Filesystem.checkPermissions();
-          if (perm.publicStorage !== "granted") {
-            await Filesystem.requestPermissions();
-          }
-        }
-
-        // Save directly into Internal Storage -> Documents/Sunnah24/
-        try {
-          await Filesystem.writeFile({
-            path: `Sunnah24/${fileName}`,
-            data: jsonString,
-            directory: "DOCUMENTS",
-            encoding: "utf8",
-            recursive: true
-          });
-          alert(getSuccessMessage(`Internal Storage/Documents/Sunnah24/${fileName}`));
-          return;
-        } catch (subDirErr) {
-          // Fallback: Save directly into Internal Storage -> Documents/
-          await Filesystem.writeFile({
-            path: fileName,
-            data: jsonString,
-            directory: "DOCUMENTS",
-            encoding: "utf8"
-          });
-          alert(getSuccessMessage(`Internal Storage/Documents/${fileName}`));
-          return;
-        }
-      } catch (fsErr) {
-        try {
-          // Secondary fallback: App External Storage (/Android/data/com.mkrweb.sunnah24/files/)
-          await Filesystem.writeFile({
-            path: fileName,
-            data: jsonString,
-            directory: "EXTERNAL",
-            encoding: "utf8"
-          });
-          alert(
-            getSuccessMessage(`Android/data/com.mkrweb.sunnah24/files/${fileName}`)
-          );
-          return;
-        } catch (extErr) {
-          console.error("Native filesystem write error:", extErr);
-        }
+    // 1. NATIVE ANDROID APK BRIDGE (Saves directly to Phone's Downloads/Sunnah24 folder)
+    if (window.AndroidDownloader && typeof window.AndroidDownloader.saveJsonToDownloads === "function") {
+      const result = window.AndroidDownloader.saveJsonToDownloads(fileName, jsonString);
+      if (result && !String(result).startsWith("ERROR:")) {
+        alert(getSuccessMessage(result));
+        return;
       }
     }
 
-    // 2. DIRECT DOWNLOAD FOR WEB BROWSERS / PWA
+    // 2. WEB BROWSER / PWA DIRECT DOWNLOAD
     try {
       const blob = new Blob([jsonString], { type: "application/json;charset=utf-8" });
       const url = URL.createObjectURL(blob);
