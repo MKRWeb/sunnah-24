@@ -1824,87 +1824,83 @@ document.addEventListener("DOMContentLoaded", async () => {
     URL.revokeObjectURL(url);
   });
 
-  document.getElementById("export-backup-btn").addEventListener("click", async () => {
+    document.getElementById("export-backup-btn").addEventListener("click", async () => {
     await saveAndSealState();
-    const fileName = `sunnah-24-backup-${getTodayKey()}.json`;
+    const timeStamp = new Date().toTimeString().slice(0, 8).replace(/:/g, "-");
+    const fileName = `sunnah-24-backup-${getTodayKey()}-${timeStamp}.json`;
     const jsonString = JSON.stringify(appState, null, 2);
 
-    const exportSuccessMsg =
-      appState.locale === "ar"
-        ? "✅ تم تصدير ملف النسخة الاحتياطية لسنة ٢٤ بنجاح!"
-        : appState.locale === "en"
-        ? "✅ Sunnah 24 signed JSON backup exported successfully!"
-        : "✅ সুন্নাহ ২৪ ব্যাকআপ ফাইল সফলভাবে তৈরি হয়েছে!";
+    const getSuccessMessage = (savedLocation) => {
+      if (appState.locale === "ar") {
+        return `✅ تم حفظ النسخة الاحتياطية في جهازك بنجاح!\n📁 المسار: ${savedLocation}`;
+      }
+      if (appState.locale === "en") {
+        return `✅ Backup saved directly to your device!\n📁 Location: ${savedLocation}`;
+      }
+      return `✅ সুন্নাহ ২৪ ব্যাকআপ আপনার ফোনে সংরক্ষিত হয়েছে!\n📁 ফোল্ডার: ${savedLocation}`;
+    };
 
-    // TIER 1: Native Android APK Bridge (@capacitor/filesystem + @capacitor/share)
+    // 1. DIRECT DEVICE SAVE FOR ANDROID APK (Capacitor Filesystem)
     if (
       window.Capacitor &&
       typeof window.Capacitor.isNativePlatform === "function" &&
       window.Capacitor.isNativePlatform() &&
-      window.Capacitor.Plugins
+      window.Capacitor.Plugins &&
+      window.Capacitor.Plugins.Filesystem
     ) {
-      const { Filesystem, Share } = window.Capacitor.Plugins;
+      const { Filesystem } = window.Capacitor.Plugins;
 
       try {
-        if (Filesystem) {
-          // 1. Save a copy to the device's Documents folder
-          try {
-            await Filesystem.writeFile({
-              path: fileName,
-              data: jsonString,
-              directory: "DOCUMENTS",
-              encoding: "utf8"
-            });
-          } catch (docErr) {
-            console.warn("DOCUMENTS write skipped:", docErr);
+        // Request permission on Android 9 and below if needed
+        if (typeof Filesystem.checkPermissions === "function") {
+          const perm = await Filesystem.checkPermissions();
+          if (perm.publicStorage !== "granted") {
+            await Filesystem.requestPermissions();
           }
+        }
 
-          // 2. Write to CACHE and open the native Android Share / Save-to-Device sheet
-          const cacheFile = await Filesystem.writeFile({
+        // Save directly into Internal Storage -> Documents/Sunnah24/
+        try {
+          await Filesystem.writeFile({
+            path: `Sunnah24/${fileName}`,
+            data: jsonString,
+            directory: "DOCUMENTS",
+            encoding: "utf8",
+            recursive: true
+          });
+          alert(getSuccessMessage(`Internal Storage/Documents/Sunnah24/${fileName}`));
+          return;
+        } catch (subDirErr) {
+          // Fallback: Save directly into Internal Storage -> Documents/
+          await Filesystem.writeFile({
             path: fileName,
             data: jsonString,
-            directory: "CACHE",
+            directory: "DOCUMENTS",
             encoding: "utf8"
           });
-
-          if (Share && cacheFile && cacheFile.uri) {
-            await Share.share({
-              title: `Sunnah 24 Backup (${getTodayKey()})`,
-              text: "Sunnah 24 SHA-256 Signed Ledger Backup",
-              url: cacheFile.uri,
-              dialogTitle: t("export_btn")
-            });
-            return;
-          }
-
-          alert(`${exportSuccessMsg}\n📁 Documents/${fileName}`);
+          alert(getSuccessMessage(`Internal Storage/Documents/${fileName}`));
           return;
         }
-      } catch (nativeErr) {
-        if (nativeErr && String(nativeErr.message || "").toLowerCase().includes("cancel")) {
+      } catch (fsErr) {
+        try {
+          // Secondary fallback: App External Storage (/Android/data/com.mkrweb.sunnah24/files/)
+          await Filesystem.writeFile({
+            path: fileName,
+            data: jsonString,
+            directory: "EXTERNAL",
+            encoding: "utf8"
+          });
+          alert(
+            getSuccessMessage(`Android/data/com.mkrweb.sunnah24/files/${fileName}`)
+          );
           return;
+        } catch (extErr) {
+          console.error("Native filesystem write error:", extErr);
         }
-        console.warn("Native plugin export fallback triggered:", nativeErr);
       }
     }
 
-    // TIER 2: Web Share API Level 2 (Works in modern Android WebView & Chrome)
-    try {
-      const fileObj = new File([jsonString], fileName, { type: "application/json" });
-      if (navigator.canShare && navigator.canShare({ files: [fileObj] })) {
-        await navigator.share({
-          title: `Sunnah 24 Backup (${getTodayKey()})`,
-          text: "Sunnah 24 SHA-256 Signed Ledger Backup",
-          files: [fileObj]
-        });
-        return;
-      }
-    } catch (shareErr) {
-      if (shareErr && shareErr.name === "AbortError") return;
-      console.warn("Web Share fallback triggered:", shareErr);
-    }
-
-    // TIER 3: Browser / WebView Anchor Download with 60-Second Delayed Revoke
+    // 2. DIRECT DOWNLOAD FOR WEB BROWSERS / PWA
     try {
       const blob = new Blob([jsonString], { type: "application/json;charset=utf-8" });
       const url = URL.createObjectURL(blob);
