@@ -1,4 +1,4 @@
-name: Sunnah 24 — Automated Auto-Updating Release Pipeline
+name: Sunnah 24 — Dynamic Auto-Versioning Release Pipeline
 
 on:
   push:
@@ -141,38 +141,29 @@ jobs:
 
           rm -f aligned-release.apk
 
-      - name: Safely Reset Rolling Release Tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate Dynamic Version Tag
+        id: dynamic_version
         run: |
-          TAG="v2.4-latest"
+          # Generates format like v2.6.20261024.1430 (YearMonthDay.HourMinute)
+          DATE_TAG="v2.6.$(date -u +'%Y%m%d.%H%M')"
+          echo "tag_name=$DATE_TAG" >> $GITHUB_OUTPUT
           
-          # Delete GitHub Release via GitHub CLI API
-          gh release delete "$TAG" --repo "${{ github.repository }}" --cleanup-tag -y || true
-          
-          # Force delete local and remote tag cleanly
-          git tag -d "$TAG" || true
-          git push origin ":refs/tags/$TAG" || true
-          
-          # Setup Git Identity
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Create and push fresh tag
-          git tag "$TAG"
-          git push origin "$TAG" --force
+          git tag "$DATE_TAG"
+          git push origin "$DATE_TAG"
 
       - name: Publish Fresh Signed APK & Play Store AAB to GitHub Releases Page
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "v2.4-latest"
-          name: "Sunnah 24 — Live Auto-Updated Build (Bangla Default)"
+          tag_name: ${{ steps.dynamic_version.outputs.tag_name }}
+          name: "Sunnah 24 — Automated Build (${{ steps.dynamic_version.outputs.tag_name }})"
           body: |
-            ### ☪️ Sunnah 24 — Latest Corporate Production Build
-            *This release updates automatically on every single code push.*
+            ### ☪️ Sunnah 24 — Corporate Production Build
+            *Version: `${{ steps.dynamic_version.outputs.tag_name }}` — Updated automatically on code push.*
             
-            - **📱 Direct Android APK Download:** [**⬇️ Tap Here to Download `Sunnah-24-Release-Signed.apk`**](https://github.com/${{ github.repository }}/releases/download/v2.4-latest/Sunnah-24-Release-Signed.apk)
-            - **🏪 Google Play Console Bundle:** [**⬇️ Tap Here to Download `Sunnah-24-PlayStore-Signed.aab`**](https://github.com/${{ github.repository }}/releases/download/v2.4-latest/Sunnah-24-PlayStore-Signed.aab)
+            - **📱 Direct Android APK Download:** [**⬇️ Tap Here to Download `Sunnah-24-Release-Signed.apk`**](https://github.com/${{ github.repository }}/releases/download/${{ steps.dynamic_version.outputs.tag_name }}/Sunnah-24-Release-Signed.apk)
+            - **🏪 Google Play Console Bundle:** [**⬇️ Tap Here to Download `Sunnah-24-PlayStore-Signed.aab`**](https://github.com/${{ github.repository }}/releases/download/${{ steps.dynamic_version.outputs.tag_name }}/Sunnah-24-PlayStore-Signed.aab)
             - **🌐 Live Web PWA:** https://mkrweb.github.io/sunnah-24/
           files: |
             Sunnah-24-Release-Signed.apk
