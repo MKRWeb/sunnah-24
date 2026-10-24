@@ -91,7 +91,7 @@
     <div id="habit-list-container" class="habit-list"></div>
   </main>
 
-  <!-- TAB 2: INTERACTIVE ADHKAR, TASBIH & DUAS -->
+  <!-- TAB 2: INTERACTIVE ADHKAR, TASBIH & FULL MASNOON DUAS -->
   <main id="tab-adhkar" class="tab-content">
     <div class="card">
       <h3 data-i18n="tasbih_title">📿 সুন্নাহ ২৪ ডিজিটাল তাসবীহ</h3>
@@ -114,22 +114,10 @@
     </div>
 
     <div class="card">
-      <h3 data-i18n="duas_heading">🤲 প্রতিদিনের জরুরি মাসনূন দোয়া</h3>
-      <div class="dua-card">
-        <h4 data-i18n="dua_wake_title">🌅 ঘুম থেকে ওঠার দোয়া (বুখারী ৬৩১২)</h4>
-        <p class="translit" data-i18n="dua_wake_translit">"আলহামদু লিল্লাহিল্লাযী আহ্ইয়ানা বা'দা মা আমাতানা ওয়া ইলাইহিন নুশূর।"</p>
-        <p class="muted-small" data-i18n="dua_wake_meaning">সকল প্রশংসা আল্লাহর জন্য, যিনি আমাদেরকে নিদ্রারূপ মৃত্যুর পর জীবিত করেছেন এবং তাঁর কাছেই পুনরুত্থান।</p>
-      </div>
-      <div class="dua-card">
-        <h4 data-i18n="dua_istighfar_title">🛡️ সাইয়্যিদুল ইস্তিগফার — ক্ষমা প্রার্থনার শ্রেষ্ঠ দোয়া (বুখারী ৬৩০৬)</h4>
-        <p class="translit" data-i18n="dua_istighfar_translit">"আল্লাহুম্মা আনতা রাব্বী লা ইলাহা ইল্লা আনতা, খালাকতানী ওয়া আনা আবদুকা..."</p>
-        <p class="muted-small" data-i18n="dua_istighfar_meaning">যে ব্যক্তি দৃঢ় বিশ্বাসের সাথে সকালে ও সন্ধ্যায় এটি পাঠ করবে সে জান্নাতবাসী হবে।</p>
-      </div>
-      <div class="dua-card">
-        <h4 data-i18n="dua_sleep_title">🛌 ঘুমানোর পূর্বে দোয়া (বুখারী ৬৩২৪)</h4>
-        <p class="translit" data-i18n="dua_sleep_translit">"বিসমিকা রাব্বী ওয়াদা'তু জানবী, ওয়া বিকা আরফাউহু, ফাইন্ন আমসাকতা নাফসী ফারহামহা..."</p>
-        <p class="muted-small" data-i18n="dua_sleep_meaning">হে আমার রব! আপনার নামেই আমি বিছানায় পার্শ্বদেশ রাখলাম এবং আপনার নামেই আবার উঠব।</p>
-      </div>
+      <h3 data-i18n="duas_heading">🤲 সকাল-সন্ধ্যার অপরিহার্য পূর্ণাঙ্গ মাসনূন দোয়াসমূহ</h3>
+      <p class="muted" data-i18n="duas_subheading">আরবি মূল পাঠ, বাংলা/ইংরেজি উচ্চারণ, পূর্ণাঙ্গ অর্থ ও সহীহ হাদিসের ফযীলতসহ।</p>
+      <!-- Dynamic Full Duas Container (Populated by app.js) -->
+      <div id="duas-list-container" class="duas-list"></div>
     </div>
   </main>
 
@@ -185,7 +173,7 @@
         <option value="maghrib_isha" data-i18n="phase_maghrib">🌆 মাগরিব ও ইশা</option>
         <option value="sleep_sunnah" data-i18n="phase_sleep">🛌 সুন্নাহ সম্মত ঘুম</option>
         <option value="diet_hygiene" data-i18n="phase_diet">🍯 তিব্বে নববী ও ফিতরাত</option>
-        <option value="character_social" data-i18n="phase_character">🤝 আখলাক ও সুন্নাহ দিবস</button>
+        <option value="character_social" data-i18n="phase_character">🤝 আখলাক ও সুন্নাহ দিবস</option>
       </select>
       <input type="text" id="custom-fact" class="input-text" data-i18n-placeholder="custom_fact_ph" placeholder="হাদিস সূত্র / ব্যক্তিগত উপকারিতা" />
       <button id="add-custom-habit-btn" class="btn-primary" data-i18n="custom_add_btn">সুন্নাহ ২৪ রুটিনে যুক্ত করুন</button>
