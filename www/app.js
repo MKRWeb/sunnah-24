@@ -1,6 +1,6 @@
 /**
  * SUNNAH 24 — ENTERPRISE PROPHETIC 24-HOUR LIFESTYLE & HABIT TRACKER
- * SHA-256 Tamper-Proof Cryptographic Engine + Full Bangla (Default), Arabic & English Localization
+ * SHA-256 Tamper-Proof Cryptographic Engine + Accurate Hijri Calendar + Full Bangla (Default), Arabic & English Localization
  */
 
 const STORAGE_KEY = "SUNNAH_24_ENTERPRISE_LEDGER_V24";
@@ -448,7 +448,7 @@ const SUNNAH_24_HABITS = deepFreeze([
     title_ar: "٦. جلسة الذكر بعد الفجر وصلاة ركعتي الإشراق",
     evidence: "Jami` at-Tirmidhi 586: Whoever prays Fajr in congregation, then sits remembering Allah until the sun rises, then prays two Rak'ahs, has the reward of a complete Hajj and Umrah.",
     evidence_bn: "জামে তিরমিযী ৫৮৬: যে ব্যক্তি জামাতে ফজর পড়ে সূর্যোদয় পর্যন্ত বসে আল্লাহর যিকির করে এবং এরপর দুই রাকাত সালাত পড়ে, সে পরিপূর্ণ হজ ও উমরার সওয়াব পায়।",
-    evidence_ar: "جامع الترمذي ٥٨٦: «من صلى الغداة في جماعة ثم قعد يذكر الله حتى تطلع الشمس ثم صلى ركعتين كانت له كأجر حجة وعمرة تامة تامة تامة».",
+    evidence_ar: "جامع الترمذي ٥٨৬: «من صلى الغداة في جماعة ثم قعد يذكر الله حتى تطلع الشمس ثم صلى ركعتين كانت له كأجر حجة وعمرة تامة تامة تامة».",
     wisdom: "Morning sunlight exposure regulates serotonin and melatonin cycles for the entire 24-hour period.",
     wisdom_bn: "সকালের মৃদু সূর্যালোক দেহে সেরোটোনিন ও মেলাটোনিন হরমোনের ভারসাম্য রক্ষা করে যা রাতে গভীর ঘুমে সাহায্য করে।",
     wisdom_ar: "التعرض لضوء الصباح ينظم إفراز السيروتونين والميلاتونين على مدار الـ ٢٤ ساعة."
@@ -943,7 +943,6 @@ async function computeSHA256(payloadString, salt = LEDGER_SALT) {
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
   }
-  // Deterministic 256-bit fallback digest if subtle crypto is unavailable
   let h1 = 0xdeadbeef ^ input.length,
     h2 = 0x41c6ce57 ^ input.length;
   for (let i = 0, ch; i < input.length; i++) {
@@ -999,7 +998,6 @@ async function loadAndVerifyState() {
   try {
     const parsed = JSON.parse(raw);
 
-    // Seamless auto-upgrade from v24 (English single-language) to v25 (Multi-language Bangla default)
     if (!parsed.version || parsed.version < 25 || !parsed.locale) {
       appState = {
         ...appState,
@@ -1100,6 +1098,116 @@ function applyLanguageToDOM() {
   updateIntegrityUI(true);
 }
 
+// Accurate Hijri Date Formatter with Authentic Bangla, Arabic & English Month Names
+function getAccurateHijriDate(dateObj, locale) {
+  const hijriMonths = {
+    bn: [
+      "মহররম",
+      "সফর",
+      "রবিউল আউয়াল",
+      "রবিউস সানি",
+      "জমাদিউল আউয়াল",
+      "জমাদিউস সানি",
+      "রজব",
+      "শাবান",
+      "রমজান",
+      "শাওয়াল",
+      "জিলকদ",
+      "জিলহজ"
+    ],
+    ar: [
+      "محرم",
+      "صفر",
+      "ربيع الأول",
+      "ربيع الآخر",
+      "جمادى الأولى",
+      "جمادى الآخرة",
+      "رجب",
+      "شعبان",
+      "رمضان",
+      "شوال",
+      "ذو القعدة",
+      "ذو الحجة"
+    ],
+    en: [
+      "Muharram",
+      "Safar",
+      "Rabi' al-Awwal",
+      "Rabi' al-Thani",
+      "Jumada al-Ula",
+      "Jumada al-Akhirah",
+      "Rajab",
+      "Sha'ban",
+      "Ramadan",
+      "Shawwal",
+      "Dhu al-Qi'dah",
+      "Dhu al-Hijjah"
+    ]
+  };
+
+  let hDay = 1;
+  let hMonth = 1;
+  let hYear = 1448;
+  let extracted = false;
+
+  const calendars = ["islamic-umalqura", "islamic-civil", "islamic"];
+  for (const cal of calendars) {
+    try {
+      const parts = new Intl.DateTimeFormat(`en-u-ca-${cal}-nu-latn`, {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric"
+      }).formatToParts(dateObj);
+
+      const d = parseInt(parts.find((p) => p.type === "day")?.value, 10);
+      const m = parseInt(parts.find((p) => p.type === "month")?.value, 10);
+      const y = parseInt(parts.find((p) => p.type === "year")?.value, 10);
+
+      if (!isNaN(d) && !isNaN(m) && !isNaN(y) && y < 1700 && m >= 1 && m <= 12) {
+        hDay = d;
+        hMonth = m;
+        hYear = y;
+        extracted = true;
+        break;
+      }
+    } catch (e) {
+      // Fallback below
+    }
+  }
+
+  // Astronomical Tabular Hijri Fallback if WebView lacks ICU Islamic data
+  if (!extracted) {
+    const jd = Math.floor(dateObj.getTime() / 86400000) + 2440588;
+    let l = jd - 1948440 + 10632;
+    const n = Math.floor((l - 1) / 10631);
+    l = l - 10631 * n + 354;
+    const j =
+      Math.floor((10985 - l) / 5316) * Math.floor((50 * l) / 17719) +
+      Math.floor(l / 5670) * Math.floor((43 * l) / 15238);
+    l =
+      l -
+      Math.floor((30 - j) / 15) * Math.floor((17719 * j) / 50) -
+      Math.floor(j / 16) * Math.floor((15238 * j) / 43) +
+      29;
+    hMonth = Math.floor((24 * l) / 709);
+    hDay = l - Math.floor((709 * hMonth) / 24);
+    hYear = 30 * n + j - 30;
+  }
+
+  const lang = hijriMonths[locale] ? locale : "bn";
+  const monthName = hijriMonths[lang][hMonth - 1] || hijriMonths.bn[0];
+  const dayStr = localizeDigits(hDay, lang);
+  const yearStr = localizeDigits(hYear, lang);
+
+  if (lang === "bn") {
+    return `${dayStr} ${monthName}, ${yearStr} হিজরি`;
+  }
+  if (lang === "ar") {
+    return `${dayStr} ${monthName} ${yearStr} هـ`;
+  }
+  return `${dayStr} ${monthName} ${yearStr} AH`;
+}
+
 function renderHeaderDatesAndPhase() {
   const now = new Date();
   const localeTag = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).localeTag;
@@ -1111,16 +1219,7 @@ function renderHeaderDatesAndPhase() {
     year: "numeric"
   });
 
-  let hijri = "";
-  try {
-    hijri = new Intl.DateTimeFormat(`${localeTag}-u-ca-islamic-umalqura`, {
-      day: "numeric",
-      month: "long",
-      year: "numeric"
-    }).format(now);
-  } catch {
-    hijri = "Hijri Calendar";
-  }
+  const hijri = getAccurateHijriDate(now, appState.locale);
 
   document.getElementById("current-date-display").textContent = `${greg} • ${hijri}`;
 
