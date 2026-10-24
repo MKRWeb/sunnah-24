@@ -1824,6 +1824,112 @@ document.addEventListener("DOMContentLoaded", async () => {
     URL.revokeObjectURL(url);
   });
 
+  document.getElementById("export-backup-btn").addEventListener("click", async () => {
+    await saveAndSealState();
+    const fileName = `sunnah-24-backup-${getTodayKey()}.json`;
+    const jsonString = JSON.stringify(appState, null, 2);
+
+    const exportSuccessMsg =
+      appState.locale === "ar"
+        ? "✅ تم تصدير ملف النسخة الاحتياطية لسنة ٢٤ بنجاح!"
+        : appState.locale === "en"
+        ? "✅ Sunnah 24 signed JSON backup exported successfully!"
+        : "✅ সুন্নাহ ২৪ ব্যাকআপ ফাইল সফলভাবে তৈরি হয়েছে!";
+
+    // TIER 1: Native Android APK Bridge (@capacitor/filesystem + @capacitor/share)
+    if (
+      window.Capacitor &&
+      typeof window.Capacitor.isNativePlatform === "function" &&
+      window.Capacitor.isNativePlatform() &&
+      window.Capacitor.Plugins
+    ) {
+      const { Filesystem, Share } = window.Capacitor.Plugins;
+
+      try {
+        if (Filesystem) {
+          // 1. Save a copy to the device's Documents folder
+          try {
+            await Filesystem.writeFile({
+              path: fileName,
+              data: jsonString,
+              directory: "DOCUMENTS",
+              encoding: "utf8"
+            });
+          } catch (docErr) {
+            console.warn("DOCUMENTS write skipped:", docErr);
+          }
+
+          // 2. Write to CACHE and open the native Android Share / Save-to-Device sheet
+          const cacheFile = await Filesystem.writeFile({
+            path: fileName,
+            data: jsonString,
+            directory: "CACHE",
+            encoding: "utf8"
+          });
+
+          if (Share && cacheFile && cacheFile.uri) {
+            await Share.share({
+              title: `Sunnah 24 Backup (${getTodayKey()})`,
+              text: "Sunnah 24 SHA-256 Signed Ledger Backup",
+              url: cacheFile.uri,
+              dialogTitle: t("export_btn")
+            });
+            return;
+          }
+
+          alert(`${exportSuccessMsg}\n📁 Documents/${fileName}`);
+          return;
+        }
+      } catch (nativeErr) {
+        if (nativeErr && String(nativeErr.message || "").toLowerCase().includes("cancel")) {
+          return;
+        }
+        console.warn("Native plugin export fallback triggered:", nativeErr);
+      }
+    }
+
+    // TIER 2: Web Share API Level 2 (Works in modern Android WebView & Chrome)
+    try {
+      const fileObj = new File([jsonString], fileName, { type: "application/json" });
+      if (navigator.canShare && navigator.canShare({ files: [fileObj] })) {
+        await navigator.share({
+          title: `Sunnah 24 Backup (${getTodayKey()})`,
+          text: "Sunnah 24 SHA-256 Signed Ledger Backup",
+          files: [fileObj]
+        });
+        return;
+      }
+    } catch (shareErr) {
+      if (shareErr && shareErr.name === "AbortError") return;
+      console.warn("Web Share fallback triggered:", shareErr);
+    }
+
+    // TIER 3: Browser / WebView Anchor Download with 60-Second Delayed Revoke
+    try {
+      const blob = new Blob([jsonString], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      a.setAttribute("download", fileName);
+      document.body.appendChild(a);
+      a.click();
+
+      setTimeout(() => {
+        if (a.parentNode) document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 60000);
+    } catch (blobErr) {
+      const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(jsonString);
+      const a = document.createElement("a");
+      a.href = dataUri;
+      a.setAttribute("download", fileName);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  });
+
   document.getElementById("import-backup-input").addEventListener("change", async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -1849,5 +1955,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch {
       alert(t("alert_invalid"));
     }
+    e.target.value = "";
   });
 });
