@@ -42,7 +42,7 @@ jobs:
           node --check www/sw.js
           echo "✅ All Sunnah 24 assets and JS syntax verified!"
 
-      - name: 4. Build Capacitor Android Bridge & Inject Native Downloads Saver
+      - name: 4. Build Capacitor Android Bridge, Generate Custom APK Icons & Inject Native Downloader
         run: |
           npm install
           if [ ! -d "android" ]; then
@@ -50,7 +50,34 @@ jobs:
           fi
           npx cap sync android
 
-          # Inject Native Android MediaStore Downloads Bridge into MainActivity.java
+          # 4B. Convert www/icon.svg into All Android APK Mipmap Launcher Icons
+          sudo apt-get update && sudo apt-get install -y librsvg2-bin imagemagick
+          RES_DIR="android/app/src/main/res"
+
+          declare -A SIZES=(
+            ["mipmap-mdpi"]=48
+            ["mipmap-hdpi"]=72
+            ["mipmap-xhdpi"]=96
+            ["mipmap-xxhdpi"]=144
+            ["mipmap-xxxhdpi"]=192
+          )
+
+          for folder in "${!SIZES[@]}"; do
+            size=${SIZES[$folder]}
+            mkdir -p "$RES_DIR/$folder"
+            rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$folder/ic_launcher.png"
+            rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$folder/ic_launcher_round.png"
+            rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$folder/ic_launcher_foreground.png"
+          done
+
+          # Remove default Capacitor adaptive vector XMLs that override our PNGs
+          rm -f "$RES_DIR/drawable/ic_launcher_background.xml"
+          rm -f "$RES_DIR/drawable/ic_launcher_foreground.xml"
+          rm -f "$RES_DIR/drawable-v24/ic_launcher_foreground.xml"
+          rm -rf "$RES_DIR/mipmap-anydpi-v26"
+          echo "✅ Custom Sunnah 24 APK Launcher Icons generated from www/icon.svg!"
+
+          # 4C. Inject Native Android MediaStore Downloads Bridge into MainActivity.java
           MAIN_ACT=$(find android/app/src/main/java -name "MainActivity.java" | head -n 1)
           if [ -n "$MAIN_ACT" ]; then
             cat << 'EOF' > "$MAIN_ACT"
@@ -182,8 +209,9 @@ jobs:
           name: "☪️ Sunnah 24 v2.8.${{ github.run_number }} — Enterprise Prophetic Lifestyle APK"
           body: |
             ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Enterprise Signed Android APK Release
-            - **Default Language:** বাংলা (Bangla) + العربية (Arabic) + English
+            - **Custom Sunnah 24 Logo:** High-DPI Android Launcher Icon compiled from `www/icon.svg`
             - **Direct Device Backup:** Saves signed JSON directly to `Downloads/Sunnah24/` on Android
+            - **Default Language:** বাংলা (Bangla) + العربية (Arabic) + English
             - **32 Authentic 24-Hour Prophetic Habits** & **12 Full Masnoon Duas**
             - **100% Offline & SHA-256 Tamper-Proof Cryptographic Ledger**
           files: |
