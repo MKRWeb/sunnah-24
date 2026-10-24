@@ -1,4 +1,4 @@
-name: Sunnah 24 — Dynamic Auto-Versioning Release Pipeline
+name: Sunnah 24 — Foolproof Release Pipeline
 
 on:
   push:
@@ -140,12 +140,14 @@ jobs:
             aligned-release.apk
 
           rm -f aligned-release.apk
+          
+          # Absolute verification that files exist before proceeding
+          ls -lh ./Sunnah-24-Release-Signed.apk ./Sunnah-24-PlayStore-Signed.aab
 
-      - name: Generate Dynamic Version Tag
+      - name: Generate Dynamic Version Tag Only After Successful Build
         id: dynamic_version
         run: |
-          # Generates format like v2.6.20261024.1430 (YearMonthDay.HourMinute)
-          DATE_TAG="v2.6.$(date -u +'%Y%m%d.%H%M')"
+          DATE_TAG="v2.6.$(date -u +'%Y%m%d.%H%M%S')"
           echo "tag_name=$DATE_TAG" >> $GITHUB_OUTPUT
           
           git config --global user.name "github-actions[bot]"
@@ -153,15 +155,13 @@ jobs:
           git tag "$DATE_TAG"
           git push origin "$DATE_TAG"
 
-      - name: Publish Fresh Signed APK & Play Store AAB to GitHub Releases Page
+      - name: Publish Verified Signed APK & AAB to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.dynamic_version.outputs.tag_name }}
-          name: "Sunnah 24 — Automated Build (${{ steps.dynamic_version.outputs.tag_name }})"
+          name: "Sunnah 24 — Verified Build (${{ steps.dynamic_version.outputs.tag_name }})"
           body: |
-            ### ☪️ Sunnah 24 — Corporate Production Build
-            *Version: `${{ steps.dynamic_version.outputs.tag_name }}` — Updated automatically on code push.*
-            
+            ### ☪️ Sunnah 24 — Corporate Production Build (Bangla Default)
             - **📱 Direct Android APK Download:** [**⬇️ Tap Here to Download `Sunnah-24-Release-Signed.apk`**](https://github.com/${{ github.repository }}/releases/download/${{ steps.dynamic_version.outputs.tag_name }}/Sunnah-24-Release-Signed.apk)
             - **🏪 Google Play Console Bundle:** [**⬇️ Tap Here to Download `Sunnah-24-PlayStore-Signed.aab`**](https://github.com/${{ github.repository }}/releases/download/${{ steps.dynamic_version.outputs.tag_name }}/Sunnah-24-PlayStore-Signed.aab)
             - **🌐 Live Web PWA:** https://mkrweb.github.io/sunnah-24/
