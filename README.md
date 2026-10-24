@@ -28,4 +28,4 @@
 ---
 
 ## 📄 License
-MIT License © [MKRWeb](https://github.com/MKRWeb)
+GNU Affero General Public License v3.0 (AGPL-3.0) © [MKRWeb](https://github.com/MKRWeb)
