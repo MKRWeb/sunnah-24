@@ -88,6 +88,85 @@ jobs:
             npx cap sync android
           fi
 
+      - name: Generate Native Android Launcher Icons & Adaptive Vectors
+        run: |
+          sudo apt-get update && sudo apt-get install -y librsvg2-bin
+
+          # 1. Prepare 1024x1024 Master Assets for @capacitor/assets
+          mkdir -p assets
+          cp www/icon.svg assets/icon-only.svg
+          cp www/icon.svg assets/icon-foreground.svg
+          rsvg-convert -w 1024 -h 1024 www/icon.svg -o assets/icon-only.png
+          rsvg-convert -w 1024 -h 1024 www/icon.svg -o assets/icon-foreground.png
+          rsvg-convert -w 2732 -h 2732 www/icon.svg -o assets/splash.png
+          rsvg-convert -w 2732 -h 2732 www/icon.svg -o assets/splash-dark.png
+
+          npx --yes @capacitor/assets generate --android --iconBackgroundColor '#064e3b' --iconBackgroundColorDark '#05130e' --splashBackgroundColor '#05130e' --splashBackgroundColorDark '#05130e' || true
+
+          # 2. Directly Rasterize Exact PNG Mipmaps Across All Android Screen Densities
+          RES_DIR="android/app/src/main/res"
+          declare -A DENSITIES=( ["mdpi"]=48 ["hdpi"]=72 ["xhdpi"]=96 ["xxhdpi"]=144 ["xxxhdpi"]=192 )
+          declare -A FG_DENSITIES=( ["mdpi"]=108 ["hdpi"]=162 ["xhdpi"]=216 ["xxhdpi"]=324 ["xxxhdpi"]=432 )
+
+          for density in "${!DENSITIES[@]}"; do
+            SIZE=${DENSITIES[$density]}
+            FG_SIZE=${FG_DENSITIES[$density]}
+            TARGET_DIR="$RES_DIR/mipmap-$density"
+            mkdir -p "$TARGET_DIR"
+            rsvg-convert -w "$SIZE" -h "$SIZE" www/icon.svg -o "$TARGET_DIR/ic_launcher.png"
+            rsvg-convert -w "$SIZE" -h "$SIZE" www/icon.svg -o "$TARGET_DIR/ic_launcher_round.png"
+            rsvg-convert -w "$FG_SIZE" -h "$FG_SIZE" www/icon.svg -o "$TARGET_DIR/ic_launcher_foreground.png"
+          done
+
+          # 3. Inject Native Android Adaptive Vector Drawables (Android 8.0 to Android 15+)
+          mkdir -p "$RES_DIR/drawable" "$RES_DIR/drawable-v24" "$RES_DIR/values"
+
+          cat << 'EOF' > "$RES_DIR/values/ic_launcher_background.xml"
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <color name="ic_launcher_background">#064E3B</color>
+          </resources>
+          EOF
+
+          cat << 'EOF' > "$RES_DIR/drawable/ic_launcher_background.xml"
+          <?xml version="1.0" encoding="utf-8"?>
+          <vector xmlns:android="http://schemas.android.com/apk/res/android"
+              android:width="108dp"
+              android:height="108dp"
+              android:viewportWidth="512"
+              android:viewportHeight="512">
+              <path
+                  android:fillColor="#064E3B"
+                  android:pathData="M0,0h512v512h-512z" />
+          </vector>
+          EOF
+
+          cat << 'EOF' > "$RES_DIR/drawable/ic_launcher_foreground.xml"
+          <?xml version="1.0" encoding="utf-8"?>
+          <vector xmlns:android="http://schemas.android.com/apk/res/android"
+              android:width="108dp"
+              android:height="108dp"
+              android:viewportWidth="512"
+              android:viewportHeight="512">
+              <group
+                  android:scaleX="0.62"
+                  android:scaleY="0.62"
+                  android:translateX="97.28"
+                  android:translateY="97.28">
+                  <path
+                      android:fillColor="#00000000"
+                      android:strokeColor="#EAB308"
+                      android:strokeWidth="14"
+                      android:pathData="M256,64 A192,192 0 1,1 255.9,64 Z" />
+                  <path
+                      android:fillColor="#EAB308"
+                      android:pathData="M295,140 A95,95 0 1,0 365,290 A80,80 0 1,1 295,140 Z" />
+              </group>
+          </vector>
+          EOF
+
+          cp -f "$RES_DIR/drawable/ic_launcher_foreground.xml" "$RES_DIR/drawable-v24/ic_launcher_foreground.xml" || true
+
       - name: Compile Release APK & Google Play App Bundle (AAB)
         run: |
           chmod +x android/gradlew
@@ -140,14 +219,12 @@ jobs:
             aligned-release.apk
 
           rm -f aligned-release.apk
-          
-          # Absolute verification that files exist before proceeding
           ls -lh ./Sunnah-24-Release-Signed.apk ./Sunnah-24-PlayStore-Signed.aab
 
       - name: Generate Dynamic Version Tag Only After Successful Build
         id: dynamic_version
         run: |
-          DATE_TAG="v2.6.$(date -u +'%Y%m%d.%H%M%S')"
+          DATE_TAG="v2.7.$(date -u +'%Y%m%d.%H%M%S')"
           echo "tag_name=$DATE_TAG" >> $GITHUB_OUTPUT
           
           git config --global user.name "github-actions[bot]"
@@ -161,7 +238,7 @@ jobs:
           tag_name: ${{ steps.dynamic_version.outputs.tag_name }}
           name: "Sunnah 24 — Verified Build (${{ steps.dynamic_version.outputs.tag_name }})"
           body: |
-            ### ☪️ Sunnah 24 — Corporate Production Build (Bangla Default)
+            ### ☪️ Sunnah 24 — Corporate Production Build (With Native Launcher Icon)
             - **📱 Direct Android APK Download:** [**⬇️ Tap Here to Download `Sunnah-24-Release-Signed.apk`**](https://github.com/${{ github.repository }}/releases/download/${{ steps.dynamic_version.outputs.tag_name }}/Sunnah-24-Release-Signed.apk)
             - **🏪 Google Play Console Bundle:** [**⬇️ Tap Here to Download `Sunnah-24-PlayStore-Signed.aab`**](https://github.com/${{ github.repository }}/releases/download/${{ steps.dynamic_version.outputs.tag_name }}/Sunnah-24-PlayStore-Signed.aab)
             - **🌐 Live Web PWA:** https://mkrweb.github.io/sunnah-24/
