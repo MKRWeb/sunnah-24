@@ -256,8 +256,9 @@ body {
 }
 
 .muted-small {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
+  line-height: 1.5;
 }
 
 .link-btn {
@@ -269,10 +270,11 @@ body {
   text-decoration: underline;
 }
 
-.habit-list {
+.habit-list,
+.duas-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .habit-item {
@@ -372,24 +374,66 @@ body {
 }
 
 .dua-card {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.28);
   border-left: 3px solid var(--accent-emerald);
-  padding: 10px 12px;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  padding: 14px;
+  border-radius: 12px;
+  border-top: 1px solid rgba(16, 185, 129, 0.14);
+  border-right: 1px solid rgba(16, 185, 129, 0.14);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.14);
+}
+
+.dua-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .dua-card h4 {
-  font-size: 0.84rem;
+  font-size: 0.9rem;
   color: var(--accent-gold);
-  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.dua-badge {
+  background: rgba(234, 179, 8, 0.16);
+  color: var(--accent-gold);
+  border: 1px solid rgba(234, 179, 8, 0.4);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.dua-arabic {
+  font-size: 1.18rem;
+  line-height: 1.95;
+  text-align: right;
+  direction: rtl;
+  color: #f8fafc;
+  background: rgba(6, 78, 59, 0.28);
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  font-family: "Traditional Arabic", "Amiri", "Scheherazade New", serif;
 }
 
 .translit {
-  font-size: 0.82rem;
-  font-style: italic;
-  margin-bottom: 4px;
-  color: #e2e8f0;
+  font-size: 0.84rem;
+  margin-bottom: 6px;
+  color: #a7f3d0;
+  line-height: 1.55;
+}
+
+.dua-virtue {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(148, 163, 184, 0.2);
+  font-size: 0.74rem;
+  color: #fde047;
 }
 
 .input-select,
@@ -605,7 +649,7 @@ body {
 
 /* RTL Support for Arabic */
 html[dir="rtl"] .dua-card {
-  border-left: none;
+  border-left: 1px solid rgba(16, 185, 129, 0.14);
   border-right: 3px solid var(--accent-emerald);
 }
 
