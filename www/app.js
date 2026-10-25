@@ -2458,18 +2458,10 @@ function initWebsiteOnlyApkInstaller() {
   // 2. Running on the Website (https://mkrweb.github.io/sunnah-24/) -> Show Button!
   apkBtn.classList.remove("hidden");
 
-  // Localize button text automatically when language changes
-  const updateApkButtonLabel = () => {
+    const updateApkButtonLabel = () => {
     const span = apkBtn.querySelector("span");
-    if (!span) return;
-    if (appState.locale === "ar") {
-      span.textContent = "تحميل التطبيق (APK)";
-    } else if (appState.locale === "en") {
-      span.textContent = "Install App (APK)";
-    } else {
-      span.textContent = "অ্যাপ ইনস্টল (APK)";
-    }
-  };
+    if (span) span.textContent = "Install App";
+  }; 
 
   updateApkButtonLabel();
   const langSwitcher = document.getElementById("lang-switcher");
