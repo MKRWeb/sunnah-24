@@ -5,22 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Sunnah 24 — নববী জীবনধারা ও রুটিন প্ল্যানার | Sunnah 24</title>
   <meta name="description" content="Sunnah 24: Enterprise-grade 24-Hour Islamic Routine Planner, Prophetic Habit Tracker, Digital Tasbih & Tamper-Proof Muhasabah Diary." />
-  <meta name="theme-color" content="#05130e" />
+  <meta name="theme-color" content="#064e3b" />
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Instant Startup Splash Screen Preview (Shows icon.svg immediately when APK opens) -->
-  <div id="s24-startup-splash" class="startup-splash">
-    <div class="startup-splash-inner">
-      <img src="icon.svg" alt="Sunnah 24 Logo" class="startup-splash-logo" />
-      <h2 class="startup-splash-title">সুন্নাহ ২৪ • Sunnah 24</h2>
-      <p class="startup-splash-sub">নববী জীবনধারা ও ২৪ ঘণ্টা রুটিন প্ল্যানার</p>
-    </div>
-  </div>
-
   <!-- Top App Bar -->
   <header class="app-header">
     <div class="header-left">
@@ -31,7 +22,7 @@
       </div>
     </div>
 
-    <div class="header-right">
+        <div class="header-right">
       <div class="header-controls-stack">
         <select id="lang-switcher" class="lang-select" aria-label="Select Language">
           <option value="bn" selected>🌐 বাংলা</option>
@@ -39,19 +30,22 @@
           <option value="en">🌐 EN</option>
         </select>
         <!-- Website-Only 1-Click APK Download Button (Positioned cleanly below language switcher) -->
-        <a
-          id="web-apk-download-btn"
-          href="https://github.com/MKRWeb/sunnah-24/releases/latest/download/Sunnah-24-v4.1-Enterprise-Signed.apk"
-          class="apk-install-btn hidden"
-          download
-        >
-          📲 <span>Install App</span>
-        </a>
+              <a
+        id="web-apk-download-btn"
+        href="https://github.com/MKRWeb/sunnah-24/releases/latest/download/Sunnah-24-v3.9-Enterprise-Signed.apk"
+        class="apk-install-btn hidden"
+        download
+       >
+        📲 <span>Install App</span>
+      </a>
+
       </div>
       <span id="integrity-badge" class="badge-verified" title="SHA-256 Tamper-Proof Ledger & i18n Verified">
         🛡️ S24 যাচাইকৃত
       </span>
     </div>
+
+
   </header>
 
   <!-- Daily Progress & Streak Hero Banner -->
@@ -183,6 +177,7 @@
       <div id="weekly-chart" class="weekly-grid"></div>
     </div>
 
+    <!-- NEW: 6-MONTH (180-DAY) AUTOMATIC HISTORY ARCHIVE -->
     <div class="card">
       <div class="archive-header-row">
         <h3 data-i18n="vault_archive_title">🗓️ দীর্ঘমেয়াদী সুন্নাহ আর্কাইভ (৬ মাস / ১৮০ দিন)</h3>

@@ -2700,16 +2700,6 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
 document.addEventListener("DOMContentLoaded", () => {
   renderInstalledVersionBadge();
   setTimeout(() => initInAppUpdateChecker(false), 2500);
-
-  // Smoothly fade out the icon.svg startup splash overlay once UI is ready
-  const splash = document.getElementById("s24-startup-splash");
-  if (splash) {
-    setTimeout(() => {
-      splash.classList.add("splash-hidden");
-      setTimeout(() => splash.remove(), 450);
-    }, 550);
-  }
 });
-
 
     
