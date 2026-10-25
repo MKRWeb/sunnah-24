@@ -2536,9 +2536,10 @@ function initInAppUpdateChecker() {
 }
 
    // ============================================================================
-// HASSLE-FREE IN-APP APK UPDATE CHECKER & SMART LOCAL-CACHE INSTALLER
+// HASSLE-FREE IN-APP APK UPDATE CHECKER & AUTO LOCAL-APK INSTALLER (SNAPTUBE STYLE)
 // ============================================================================
-let downloadedApkUrl = "";
+let latestRemoteApkUrl = "";
+let latestRemoteVersionTag = "";
 
 function getInstalledAppVersionTag() {
   try {
@@ -2574,50 +2575,59 @@ function initInAppUpdateChecker() {
         const apkAsset = (release.assets || []).find(
           (a) => a.name && a.name.toLowerCase().endsWith(".apk")
         );
-        if (apkAsset && apkAsset.browser_download_url) {
-          downloadedApkUrl = apkAsset.browser_download_url;
-          
-          // Check if native app already has this APK cached locally on the device!
-          if (window.AndroidDownloader && typeof window.AndroidDownloader.isLocalApkCached === "function") {
-            const isCached = window.AndroidDownloader.isLocalApkCached();
-            showUpdateNotificationBanner(latestTag, isCached);
-          } else {
-            showUpdateNotificationBanner(latestTag, false);
-          }
+        if (!apkAsset || !apkAsset.browser_download_url) return;
+
+        latestRemoteApkUrl = apkAsset.browser_download_url;
+        latestRemoteVersionTag = latestTag;
+
+        // Check if this EXACT version APK is already downloaded on the phone
+        let alreadyOnDevice = false;
+        if (
+          window.AndroidDownloader &&
+          typeof window.AndroidDownloader.isVersionApkCached === "function"
+        ) {
+          alreadyOnDevice = Boolean(window.AndroidDownloader.isVersionApkCached(latestTag));
         }
+
+        showUpdateNotificationBanner(latestTag, alreadyOnDevice);
       }
     })
     .catch(() => {});
 }
 
-function showUpdateNotificationBanner(newVersion, isCachedLocally) {
+function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
   if (document.getElementById("s24-update-banner")) return;
 
   const banner = document.createElement("div");
   banner.id = "s24-update-banner";
   banner.className = "update-banner-card";
+  banner.setAttribute("data-cached", isAlreadyOnDevice ? "true" : "false");
 
   const msgText =
     appState.locale === "ar"
-      ? `✨ يتوفر تحديث جديد (${newVersion}) لتطبيق سنة ٢٤!`
+      ? `✨ تحديث جديد (${newVersion}) متاح لتطبيق سنة ٢٤!`
       : appState.locale === "en"
-      ? `✨ New Update (${newVersion}) Available for Sunnah 24!`
-      : `✨ সুন্নাহ ২৪-এর নতুন আপডেট (${newVersion}) এসেছে!`;
+      ? `✨ Update (${newVersion}) Available for Sunnah 24!`
+      : `✨ সুন্নাহ ২৪-এর নতুন আপডেট (${newVersion}) প্রস্তুত!`;
 
-  const subText = isCachedLocally
-    ? (appState.locale === "bn" ? "অফলাইন ফাইল ডিভাইসে সংরক্ষিত আছে। সরাসরি ইনস্টল করুন।" : "Update APK is already downloaded locally.")
-    : (appState.locale === "bn" ? "নতুন আপডেটটি আপনার বর্তমান অ্যাপের ওপর ইনস্টল করার জন্য প্রস্তুত।" : "New update is ready to download and install.");
+  const subText = isAlreadyOnDevice
+    ? appState.locale === "bn"
+      ? "আপডেট ফাইলটি আপনার ফোনে ডাউনলোড করা আছে। সরাসরি ইনস্টল করুন।"
+      : "Update APK is already saved on your phone. Tap to launch installer."
+    : appState.locale === "bn"
+    ? "ডাউনলোড শেষ হওয়ার সাথে সাথেই স্বয়ংক্রিয়ভাবে ইনস্টল স্ক্রিন চালু হবে।"
+    : "Automatically opens your phone's package installer once downloaded.";
 
-  const btnText = isCachedLocally
-    ? (appState.locale === "bn" ? "📦 ইনস্টল করুন" : "📦 Install Now")
-    : (appState.locale === "bn" ? "⬇️ ডাউনলোড ও ইনস্টল" : "⬇️ Download & Install");
+  const btnText = isAlreadyOnDevice
+    ? appState.locale === "bn"
+      ? "📦 ফোনের ফাইল থেকে ইনস্টল করুন"
+      : "📦 Install Downloaded APK"
+    : appState.locale === "bn"
+    ? "🚀 আপডেট করুন"
+    : "🚀 Update Now";
 
   const dismissText =
-    appState.locale === "ar"
-      ? "لاحقاً"
-      : appState.locale === "en"
-      ? "Later"
-      : "পরে";
+    appState.locale === "ar" ? "لاحقاً" : appState.locale === "en" ? "Later" : "পরে";
 
   banner.innerHTML = `
     <div class="update-banner-content">
@@ -2635,44 +2645,66 @@ function showUpdateNotificationBanner(newVersion, isCachedLocally) {
 
   document.body.appendChild(banner);
 
-  if (isCachedLocally) {
-    banner.setAttribute("data-ready", "true");
-  }
-
   document.getElementById("trigger-native-update-btn").addEventListener("click", () => {
     const btn = document.getElementById("trigger-native-update-btn");
     const statusEl = document.getElementById("s24-update-status");
 
-    if (banner.getAttribute("data-ready") === "true") {
-      // Install directly from local device storage without redownloading!
-      if (window.AndroidDownloader && typeof window.AndroidDownloader.installLocalApk === "function") {
-        window.AndroidDownloader.installLocalApk();
+    // 1. If the APK is ALREADY on the phone -> Open Android Package Installer directly (NO RE-DOWNLOAD!)
+    if (banner.getAttribute("data-cached") === "true") {
+      if (
+        window.AndroidDownloader &&
+        typeof window.AndroidDownloader.installCachedVersionApk === "function"
+      ) {
+        window.AndroidDownloader.installCachedVersionApk(latestRemoteVersionTag);
+        return;
       }
+      if (
+        window.AndroidDownloader &&
+        typeof window.AndroidDownloader.installLocalApk === "function"
+      ) {
+        window.AndroidDownloader.installLocalApk();
+        return;
+      }
+    }
+
+    // 2. Otherwise download once to local phone storage AND auto-trigger installer at 100%
+    if (
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.downloadAndAutoInstallVersionApk === "function"
+    ) {
+      btn.disabled = true;
+      btn.textContent = appState.locale === "bn" ? "⏳ ০% ডাউনলোড হচ্ছে..." : "⏳ Downloading 0%...";
+      if (statusEl) {
+        statusEl.textContent =
+          appState.locale === "bn"
+            ? "ডাউনলোড শেষ হলে স্বয়ংক্রিয়ভাবে ইনস্টলার ওপেন হবে..."
+            : "Package installer will open automatically at 100%...";
+      }
+      window.AndroidDownloader.downloadAndAutoInstallVersionApk(
+        latestRemoteApkUrl,
+        latestRemoteVersionTag
+      );
       return;
     }
 
-    // Otherwise download it once in background
+    // 3. Legacy APK bridge fallback (if user is running v3.7/v3.8 APK)
     if (
       window.AndroidDownloader &&
       typeof window.AndroidDownloader.downloadAndInstallApk === "function"
     ) {
       btn.disabled = true;
       btn.textContent = appState.locale === "bn" ? "⏳ ডাউনলোড হচ্ছে..." : "⏳ Downloading...";
-      if (statusEl) {
-        statusEl.textContent = appState.locale === "bn" ? "ফাইল ডাউনলোড হচ্ছে..." : "Downloading update file...";
-      }
-      window.AndroidDownloader.downloadAndInstallApk(downloadedApkUrl);
-    } else {
-      window.open(downloadedApkUrl, "_blank");
+      window.AndroidDownloader.downloadAndInstallApk(latestRemoteApkUrl);
     }
   });
 }
 
-// Live Progress Listener from Native Android Bridge
+// Live Progress Callback from Native Android DownloadManager
 window.onSunnahApkDownloadProgress = function (percent, statusText) {
   const btn = document.getElementById("trigger-native-update-btn");
   const statusEl = document.getElementById("s24-update-status");
-  
+  const banner = document.getElementById("s24-update-banner");
+
   if (btn && percent >= 0 && percent < 100) {
     btn.textContent = `⬇️ ${localizeDigits(percent, appState.locale)}%`;
   }
@@ -2681,23 +2713,25 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
   }
 
   if (percent >= 100) {
+    if (banner) banner.setAttribute("data-cached", "true");
     if (btn) {
       btn.disabled = false;
       btn.style.background = "var(--accent-gold)";
       btn.style.color = "#05130e";
-      btn.textContent = appState.locale === "bn" ? "📦 ইনস্টল করুন" : "📦 Install Now";
+      btn.textContent =
+        appState.locale === "bn" ? "📦 ফোনের ফাইল থেকে ইনস্টল করুন" : "📦 Install Downloaded APK";
     }
     if (statusEl) {
       statusEl.textContent =
         appState.locale === "bn"
-          ? "ডাউনলোড সম্পন্ন! ইনস্টল করতে বোতামে চাপ দিন।"
-          : "Download finished! Tap button to start installation.";
+          ? "✅ ডাউনলোড সম্পন্ন! ইনস্টলার স্ক্রিন চালু হচ্ছে..."
+          : "✅ Downloaded to phone! Launching Android Package Installer...";
     }
-    const banner = document.getElementById("s24-update-banner");
-    if (banner) banner.setAttribute("data-ready", "true");
   }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  initInAppUpdateChecker();
+  setTimeout(initInAppUpdateChecker, 2500);
 });
+
+  
