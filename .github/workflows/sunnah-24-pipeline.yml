@@ -85,7 +85,7 @@ jobs:
           node --check www/sw.js
           echo "✅ All Sunnah 24 assets and JS syntax verified!"
 
-      - name: 4. Build Capacitor Android Bridge, Custom APK Icons & Native Multi-Month Vault
+      - name: 4. Build Capacitor Android Bridge, Custom APK Icons, Back-Button & Native Vault
         run: |
           npm install
           if [ ! -d "android" ]; then
@@ -119,13 +119,13 @@ jobs:
           rm -rf "$RES_DIR/mipmap-anydpi-v26"
           echo "✅ Custom Sunnah 24 APK Launcher Icons generated!"
 
-          # 4C. Enable Android Auto-Backup in AndroidManifest.xml so OS preserves data
+          # 4C. Enable Android Auto-Backup in AndroidManifest.xml
           MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
           if [ -f "$MANIFEST_FILE" ]; then
             sed -i 's/android:allowBackup="false"/android:allowBackup="true"/g' "$MANIFEST_FILE" || true
           fi
 
-          # 4D. Inject Native Android Internal Vault + MediaStore Downloads Bridge into MainActivity.java
+          # 4D. Inject Smart Back-Button + Native Multi-Month Vault + Downloads Bridge into MainActivity.java
           MAIN_ACT=$(find android/app/src/main/java -name "MainActivity.java" | head -n 1)
           if [ -n "$MAIN_ACT" ]; then
             cat << 'EOF' > "$MAIN_ACT"
@@ -161,8 +161,23 @@ jobs:
                   }
               }
 
+              @Override
+              public void onBackPressed() {
+                  if (this.bridge != null && this.bridge.getWebView() != null) {
+                      this.bridge.getWebView().evaluateJavascript(
+                          "(function() { return window.handleSunnahBackNavigation ? window.handleSunnahBackNavigation() : false; })();",
+                          value -> {
+                              if ("false".equals(value)) {
+                                  runOnUiThread(() -> MainActivity.super.onBackPressed());
+                              }
+                          }
+                      );
+                  } else {
+                      super.onBackPressed();
+                  }
+              }
+
               public class WebAppDownloader {
-                  // Automatic Multi-Month Internal Native File Vault (Survives WebView cache clears)
                   @JavascriptInterface
                   public boolean autoSaveInternalVault(String jsonContent) {
                       try {
@@ -255,7 +270,7 @@ jobs:
               }
           }
           EOF
-            echo "✅ Injected Native Multi-Month Vault + AndroidDownloader bridge into $MAIN_ACT"
+            echo "✅ Injected Smart Back-Button + Native Multi-Month Vault into $MAIN_ACT"
           fi
 
       - name: 5. Compile Release & Debug APKs + Play Store Bundle via Gradle
@@ -282,7 +297,7 @@ jobs:
           fi
 
           UNSIGNED_APK="android/app/build/outputs/apk/release/app-release-unsigned.apk"
-          SIGNED_APK="Sunnah-24-v3.5-Enterprise-Signed.apk"
+          SIGNED_APK="Sunnah-24-v3.6-Enterprise-Signed.apk"
 
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
           $BUILD_TOOLS_DIR/zipalign -v -p 4 "$UNSIGNED_APK" app-release-aligned.apk
@@ -295,7 +310,7 @@ jobs:
             jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
               -keystore sunnah24-release.keystore -storepass "$KS_PASS" -keypass "$K_PASS" \
               "$AAB_PATH" "$K_ALIAS"
-            cp "$AAB_PATH" ./Sunnah-24-v3.5-PlayStore-Signed.aab
+            cp "$AAB_PATH" ./Sunnah-24-v3.6-PlayStore-Signed.aab
           fi
           echo "✅ Signed APK ready: $SIGNED_APK"
 
@@ -304,21 +319,20 @@ jobs:
         with:
           name: Sunnah-24-Enterprise-APK
           path: |
-            Sunnah-24-v3.5-Enterprise-Signed.apk
-            Sunnah-24-v3.5-PlayStore-Signed.aab
+            Sunnah-24-v3.6-Enterprise-Signed.apk
+            Sunnah-24-v3.6-PlayStore-Signed.aab
 
       - name: 8. Publish Automatic GitHub Release with APK
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v3.5.${{ github.run_number }}
-          name: "☪️ Sunnah 24 v3.5.${{ github.run_number }} — Multi-Month Vault & Persistent History APK"
+          tag_name: v3.6.${{ github.run_number }}
+          name: "☪️ Sunnah 24 v3.6.${{ github.run_number }} — Smart Back-Button & Compact History APK"
           body: |
-            ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Enterprise Signed Android APK Release (v3.5)
-            - **১৯০+ দিনের অটোমেটিক হিস্ট্রি সংরক্ষণ (Triple-Redundant Vault):** LocalStorage + IndexedDB + Native Android Internal Storage (`Sunnah24_AutoVault_v35.json`)
-            - **Local Timezone Accuracy:** Fixes midnight UTC date reset bug so 7-Day Matrix and Streaks never reset prematurely
-            - **6-Month (180-Day) Interactive History Matrix & Monthly Summary**
-            - **32 Authentic 24-Hour Prophetic Habits** & **12 Full Masnoon Duas**
+            ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Enterprise Signed Android APK Release (v3.6)
+            - **Smart Hardware Back-Button Navigation:** Closes open modals, clears filters, and steps back to previous tabs instead of exiting the app
+            - **Compact Scrollable History Modal:** Inspecting any day in the 7-Day or 6-Month matrix renders inside a clean, mobile-fitted scrollable container
+            - **180-Day Triple-Redundant Auto-Vault:** LocalStorage + IndexedDB + Native Android Vault
           files: |
-            Sunnah-24-v3.5-Enterprise-Signed.apk
-            Sunnah-24-v3.5-PlayStore-Signed.aab
+            Sunnah-24-v3.6-Enterprise-Signed.apk
+            Sunnah-24-v3.6-PlayStore-Signed.aab
