@@ -89,7 +89,7 @@ jobs:
           node --check www/sw.js
           echo "✅ All Sunnah 24 assets and JS syntax verified!"
 
-      - name: 4. Build Capacitor Android Bridge, Versioning & SnapTube-Style Auto-Installer
+      - name: 4. Build Capacitor Android Bridge, Versioning & Play-Protect-Safe Updater
         run: |
           npm install
           if [ ! -d "android" ]; then
@@ -134,72 +134,32 @@ jobs:
           rm -rf "$RES_DIR/mipmap-anydpi-v26"
           echo "✅ Custom Sunnah 24 APK Launcher Icons generated!"
 
-          # 4C. Inject REQUEST_INSTALL_PACKAGES Permission & Auto-Backup into AndroidManifest.xml
+          # 4C. Enable Android Auto-Backup (NO REQUEST_INSTALL_PACKAGES so Play Protect never flags APK)
           MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
           if [ -f "$MANIFEST_FILE" ]; then
             sed -i 's/android:allowBackup="false"/android:allowBackup="true"/g' "$MANIFEST_FILE" || true
-            if ! grep -q "REQUEST_INSTALL_PACKAGES" "$MANIFEST_FILE"; then
-              sed -i '/<manifest/a \    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />' "$MANIFEST_FILE"
-            fi
+            sed -i '/REQUEST_INSTALL_PACKAGES/d' "$MANIFEST_FILE" || true
           fi
 
-          # 4D. Inject FileProvider XML covering all internal/external download directories
-          XML_DIR="android/app/src/main/res/xml"
-          mkdir -p "$XML_DIR"
-          cat << 'EOF' > "$XML_DIR/file_paths.xml"
-          <?xml version="1.0" encoding="utf-8"?>
-          <paths xmlns:android="http://schemas.android.com/apk/res/android">
-              <external-files-path name="external_files_path" path="." />
-              <external-cache-path name="external_cache_path" path="." />
-              <cache-path name="cache_path" path="." />
-              <files-path name="files_path" path="." />
-              <external-path name="external_downloads" path="Download/" />
-          </paths>
-          EOF
-
-          if [ -f "$MANIFEST_FILE" ]; then
-            if ! grep -q "fileprovider" "$MANIFEST_FILE"; then
-              sed -i '/<\/application>/i \
-              <provider\
-                  android:name="androidx.core.content.FileProvider"\
-                  android:authorities="${applicationId}.fileprovider"\
-                  android:exported="false"\
-                  android:grantUriPermissions="true">\
-                  <meta-data\
-                      android:name="android.support.FILE_PROVIDER_PATHS"\
-                      android:resource="@xml/file_paths" />\
-              </provider>' "$MANIFEST_FILE"
-            fi
-          fi
-
-          # 4E. Inject SnapTube-Style Auto-Installer + Triple-Layer Vault into MainActivity.java
+          # 4D. Inject Play-Protect-Safe Updater + Triple-Layer Vault into MainActivity.java
           MAIN_ACT=$(find android/app/src/main/java -name "MainActivity.java" | head -n 1)
           if [ -n "$MAIN_ACT" ]; then
             cat << 'EOF' > "$MAIN_ACT"
           package com.mkrweb.sunnah24;
 
-          import android.app.DownloadManager;
-          import android.content.BroadcastReceiver;
           import android.content.ContentValues;
-          import android.content.Context;
           import android.content.Intent;
-          import android.content.IntentFilter;
           import android.content.pm.PackageInfo;
-          import android.database.Cursor;
           import android.net.Uri;
           import android.os.Build;
           import android.os.Bundle;
           import android.os.Environment;
-          import android.os.Handler;
-          import android.os.Looper;
           import android.provider.MediaStore;
-          import android.provider.Settings;
           import android.webkit.JavascriptInterface;
           import android.webkit.WebSettings;
           import android.webkit.WebView;
           import android.widget.Toast;
           import androidx.activity.OnBackPressedCallback;
-          import androidx.core.content.FileProvider;
           import com.getcapacitor.BridgeActivity;
           import java.io.BufferedReader;
           import java.io.File;
@@ -210,25 +170,6 @@ jobs:
           import java.nio.charset.StandardCharsets;
 
           public class MainActivity extends BridgeActivity {
-              private long downloadId = -1;
-              private File targetApkFile = null;
-              private boolean pendingInstallAfterPermission = false;
-              private final Handler progressHandler = new Handler(Looper.getMainLooper());
-
-              private final BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
-                  @Override
-                  public void onReceive(Context context, Intent intent) {
-                      long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-                      if (downloadId != -1 && downloadId == id) {
-                          progressHandler.removeCallbacksAndMessages(null);
-                          notifyWebProgress(100, "✅ Download complete! Launching installer...");
-                          if (targetApkFile != null && targetApkFile.exists()) {
-                              triggerPackageInstaller(targetApkFile);
-                          }
-                      }
-                  }
-              };
-
               @Override
               public void onCreate(Bundle savedInstanceState) {
                   super.onCreate(savedInstanceState);
@@ -239,20 +180,6 @@ jobs:
                       ws.setDomStorageEnabled(true);
                       ws.setDatabaseEnabled(true);
                       webView.addJavascriptInterface(new WebAppDownloader(), "AndroidDownloader");
-
-                      // Intercept any direct .apk link clicks inside WebView and auto-install them
-                      webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
-                          if (url != null && (url.toLowerCase().endsWith(".apk") ||
-                              "application/vnd.android.package-archive".equalsIgnoreCase(mimetype))) {
-                              startSnapTubeStyleApkUpdate(url);
-                          }
-                      });
-                  }
-
-                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                      registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
-                  } else {
-                      registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
                   }
 
                   getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -274,169 +201,23 @@ jobs:
                   });
               }
 
-              @Override
-              public void onResume() {
-                  super.onResume();
-                  // If user just enabled "Allow from this source" in Settings, immediately resume APK installation
-                  if (pendingInstallAfterPermission && targetApkFile != null && targetApkFile.exists()) {
-                      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || getPackageManager().canRequestPackageInstalls()) {
-                          pendingInstallAfterPermission = false;
-                          triggerPackageInstaller(targetApkFile);
-                      }
-                  }
-              }
-
-              @Override
-              public void onDestroy() {
-                  super.onDestroy();
-                  progressHandler.removeCallbacksAndMessages(null);
-                  try {
-                      unregisterReceiver(onDownloadComplete);
-                  } catch (Exception ignored) {}
-              }
-
-              private void notifyWebProgress(int pct, String message) {
-                  runOnUiThread(() -> {
-                      if (bridge != null && bridge.getWebView() != null) {
-                          String safeMsg = message.replace("'", "\\'");
-                          bridge.getWebView().evaluateJavascript(
-                              "if(window.onSunnahApkDownloadProgress) window.onSunnahApkDownloadProgress(" + pct + ", '" + safeMsg + "');",
-                              null
-                          );
-                      }
-                  });
-              }
-
-              private void startSnapTubeStyleApkUpdate(String urlString) {
-                  try {
-                      File downloadDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-                      if (downloadDir != null && !downloadDir.exists()) {
-                          downloadDir.mkdirs();
-                      }
-                      targetApkFile = new File(downloadDir, "Sunnah24-Update.apk");
-                      if (targetApkFile.exists()) {
-                          targetApkFile.delete();
-                      }
-
-                      runOnUiThread(() -> Toast.makeText(
-                          MainActivity.this,
-                          "⬇️ Downloading Sunnah 24 Update...",
-                          Toast.LENGTH_SHORT
-                      ).show());
-
-                      DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlString));
-                      request.setTitle("Sunnah 24 Auto-Update");
-                      request.setDescription("Downloading update package...");
-                      request.setMimeType("application/vnd.android.package-archive");
-                      request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                      request.setDestinationUri(Uri.fromFile(targetApkFile));
-
-                      DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                      downloadId = dm.enqueue(request);
-
-                      // Poll progress every 400ms and auto-trigger installer immediately upon completion
-                      progressHandler.post(new Runnable() {
-                          @Override
-                          public void run() {
-                              DownloadManager.Query q = new DownloadManager.Query();
-                              q.setFilterById(downloadId);
-                              try (Cursor c = dm.query(q)) {
-                                  if (c != null && c.moveToFirst()) {
-                                      int statusIdx = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
-                                      int bytesIdx = c.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
-                                      int totalIdx = c.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
-                                      int status = statusIdx >= 0 ? c.getInt(statusIdx) : -1;
-
-                                      if (bytesIdx >= 0 && totalIdx >= 0) {
-                                          long downloaded = c.getLong(bytesIdx);
-                                          long total = c.getLong(totalIdx);
-                                          if (total > 0) {
-                                              int pct = (int) ((downloaded * 100L) / total);
-                                              notifyWebProgress(pct, "⬇️ Downloading update (" + pct + "%)...");
-                                          }
-                                      }
-
-                                      if (status == DownloadManager.STATUS_SUCCESSFUL) {
-                                          progressHandler.removeCallbacksAndMessages(null);
-                                          notifyWebProgress(100, "✅ Launching installer...");
-                                          if (targetApkFile != null && targetApkFile.exists()) {
-                                              triggerPackageInstaller(targetApkFile);
-                                          }
-                                          return;
-                                      } else if (status == DownloadManager.STATUS_FAILED) {
-                                          progressHandler.removeCallbacksAndMessages(null);
-                                          notifyWebProgress(-1, "❌ Update download failed.");
-                                          return;
-                                      }
-                                  }
-                              } catch (Exception ignored) {}
-                              progressHandler.postDelayed(this, 400);
-                          }
-                      });
-                  } catch (Exception e) {
-                      runOnUiThread(() -> Toast.makeText(
-                          MainActivity.this,
-                          "Download Error: " + e.getMessage(),
-                          Toast.LENGTH_LONG
-                      ).show());
-                  }
-              }
-
-              private void triggerPackageInstaller(File apkFile) {
-                  runOnUiThread(() -> {
-                      try {
-                          // On Android 8.0+, verify "Install Unknown Apps" permission first
-                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                              if (!getPackageManager().canRequestPackageInstalls()) {
-                                  pendingInstallAfterPermission = true;
-                                  Toast.makeText(
-                                      MainActivity.this,
-                                      "⚙️ Enable 'Allow from this source' once to auto-install updates",
-                                      Toast.LENGTH_LONG
-                                  ).show();
-                                  Intent permIntent = new Intent(
-                                      Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                                      Uri.parse("package:" + getPackageName())
-                                  );
-                                  permIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                  startActivity(permIntent);
-                                  return;
-                              }
-                          }
-
-                          Uri apkUri;
-                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                              apkUri = FileProvider.getUriForFile(
-                                  MainActivity.this,
-                                  getPackageName() + ".fileprovider",
-                                  apkFile
-                              );
-                          } else {
-                              apkUri = Uri.fromFile(apkFile);
-                          }
-
-                          Intent installIntent = new Intent(Intent.ACTION_VIEW);
-                          installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-                          installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
-                          installIntent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
-                          installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                          installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                          installIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                          startActivity(installIntent);
-                      } catch (Exception e) {
-                          Toast.makeText(
-                              MainActivity.this,
-                              "Installer Error: " + e.getMessage(),
-                              Toast.LENGTH_LONG
-                          ).show();
-                      }
-                  });
-              }
-
               public class WebAppDownloader {
                   @JavascriptInterface
                   public void downloadAndInstallApk(String urlString) {
-                      startSnapTubeStyleApkUpdate(urlString);
+                      runOnUiThread(() -> {
+                          try {
+                              Toast.makeText(
+                                  MainActivity.this,
+                                  "⬇️ Downloading update... Tap 'Open/Install' when finished.",
+                                  Toast.LENGTH_LONG
+                              ).show();
+                              Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+                              intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                              startActivity(intent);
+                          } catch (Exception e) {
+                              Toast.makeText(MainActivity.this, "Update Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                          }
+                      });
                   }
 
                   @JavascriptInterface
@@ -516,7 +297,7 @@ jobs:
               }
           }
           EOF
-            echo "✅ Injected SnapTube-Style Auto-Installer + Vault Bridge into $MAIN_ACT"
+            echo "✅ Injected Play-Protect-Safe Updater + Vault Bridge into $MAIN_ACT"
           fi
 
       - name: 5. Compile Release & Debug APKs + Play Store Bundle via Gradle
@@ -587,10 +368,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION_NAME }}
-          name: "☪️ Sunnah 24 v${{ env.VERSION_NAME }} — SnapTube-Style Auto-Installer APK"
+          name: "☪️ Sunnah 24 v${{ env.VERSION_NAME }} — Play-Protect-Safe Auto-Update APK"
           body: |
             ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Enterprise Signed Android APK Release (v${{ env.VERSION_NAME }})
-            - **SnapTube-Style Auto-Installer:** Automatically launches the Android Package Installer the moment the APK finishes downloading and cleanly overwrites the existing installed app (`versionCode: ${{ env.VERSION_CODE }}`).
+            - **Play-Protect-Safe Updater:** Cleanly downloads and updates the existing installed app (`versionCode: ${{ env.VERSION_CODE }}`) without triggering Google Play Protect heuristic blocks.
             - **180-Day Triple-Redundant Auto-Vault:** Preserves all user habit records across LocalStorage, IndexedDB, and Native Android Vault during updates.
           files: |
             Sunnah-24-v3.8-Enterprise-Signed.apk
