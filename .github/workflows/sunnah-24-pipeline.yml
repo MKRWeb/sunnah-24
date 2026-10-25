@@ -44,7 +44,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-    build-and-release-apk:
+  build-and-release-apk:
     name: Build, Verify & Release Sunnah 24 Signed APK
     runs-on: ubuntu-latest
     env:
@@ -53,8 +53,10 @@ jobs:
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       RUN_NUMBER: ${{ github.run_number }}
-      VERSION_NAME: "4.1.${{ github.run_number }}"
-  
+      VERSION_NAME: "4.0.${{ github.run_number }}"
+      
+
+
     steps:
       - name: 1. Checkout Repository
         uses: actions/checkout@v4
