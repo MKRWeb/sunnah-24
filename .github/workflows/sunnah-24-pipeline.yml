@@ -134,14 +134,14 @@ jobs:
           rm -rf "$RES_DIR/mipmap-anydpi-v26"
           echo "✅ Custom Sunnah 24 APK Launcher Icons generated!"
 
-          # 4C. Enable Android Auto-Backup (NO REQUEST_INSTALL_PACKAGES so Play Protect never flags APK)
+          # 4C. Enable Android Auto-Backup
           MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
           if [ -f "$MANIFEST_FILE" ]; then
             sed -i 's/android:allowBackup="false"/android:allowBackup="true"/g' "$MANIFEST_FILE" || true
             sed -i '/REQUEST_INSTALL_PACKAGES/d' "$MANIFEST_FILE" || true
           fi
 
-          # 4D. Inject Play-Protect-Safe Updater + Triple-Layer Vault into MainActivity.java
+          # 4D. Inject Play-Protect-Safe Updater + Vault Bridge into MainActivity.java
           MAIN_ACT=$(find android/app/src/main/java -name "MainActivity.java" | head -n 1)
           if [ -n "$MAIN_ACT" ]; then
             cat << 'EOF' > "$MAIN_ACT"
@@ -208,8 +208,8 @@ jobs:
                           try {
                               Toast.makeText(
                                   MainActivity.this,
-                                  "⬇️ Downloading update... Tap 'Open/Install' when finished.",
-                                  Toast.LENGTH_LONG
+                                  "📦 Installing latest update...",
+                                  Toast.LENGTH_SHORT
                               ).show();
                               Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
                               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -328,7 +328,6 @@ jobs:
               -storepass "$KS_PASS" -keypass "$K_PASS" \
               -dname "CN=MKRWeb, OU=Sunnah24, O=MKRWeb, L=Rajshahi, S=Rajshahi, C=BD"
 
-            # Automatically save the keystore back to your GitHub repo so all future updates match signatures!
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add -f "$KEYSTORE_FILE"
@@ -368,10 +367,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION_NAME }}
-          name: "☪️ Sunnah 24 v${{ env.VERSION_NAME }} — Play-Protect-Safe Auto-Update APK"
+          name: "☪️ Sunnah 24 v${{ env.VERSION_NAME }} — Install Now APK"
           body: |
             ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Enterprise Signed Android APK Release (v${{ env.VERSION_NAME }})
-            - **Play-Protect-Safe Updater:** Cleanly downloads and updates the existing installed app (`versionCode: ${{ env.VERSION_CODE }}`) without triggering Google Play Protect heuristic blocks.
+            - **Install Now Flow:** Cleanly displays an instant "📦 ইনস্টল করুন (Install Now)" button when an update is found.
             - **180-Day Triple-Redundant Auto-Vault:** Preserves all user habit records across LocalStorage, IndexedDB, and Native Android Vault during updates.
           files: |
             Sunnah-24-v3.8-Enterprise-Signed.apk
