@@ -52,7 +52,7 @@ jobs:
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-      VERSION_CODE: ${{ 1000 + github.run_number }}
+      RUN_NUMBER: ${{ github.run_number }}
       VERSION_NAME: "3.8.${{ github.run_number }}"
 
     steps:
@@ -97,7 +97,10 @@ jobs:
           fi
           npx cap sync android
 
-          # 4A. Auto-Increment versionCode & versionName so new APKs cleanly overwrite existing app
+          # 4A. Compute VERSION_CODE in Bash & update build.gradle so new APKs cleanly overwrite existing app
+          VERSION_CODE=$((1000 + RUN_NUMBER))
+          echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_ENV
+
           APP_GRADLE="android/app/build.gradle"
           if [ -f "$APP_GRADLE" ]; then
             sed -i "s/versionCode [0-9]*/versionCode ${VERSION_CODE}/g" "$APP_GRADLE"
