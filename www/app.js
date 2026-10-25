@@ -2568,19 +2568,25 @@ function showUpdateNotificationBanner(newVersion, apkUrl) {
       <span>🚀</span>
       <div>
         <strong>${msgText}</strong>
-        <small>${appState.locale === 'bn' ? 'কোনো ডেটা মুছবে না, সহজে ওভাররাইট হবে।' : 'Hassle-free update without losing data.'}</small>
+        <small>${appState.locale === 'bn' ? 'অটোমেটিক আপডেট হবে, কোনো ডেটা মুছবে না।' : 'Auto-updates seamlessly without losing data.'}</small>
       </div>
     </div>
     <div class="update-banner-actions">
-      <a href="${apkUrl}" class="btn-update-action" target="_blank">${btnText}</a>
+      <button id="trigger-native-update-btn" class="btn-update-action">${btnText}</button>
       <button class="btn-update-dismiss" onclick="document.getElementById('s24-update-banner').remove()">${dismissText}</button>
     </div>
   `;
 
   document.body.appendChild(banner);
-}
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Check for updates 4 seconds after app launch so it doesn't slow down startup
-  setTimeout(initInAppUpdateChecker, 4000);
-});
+  // Hook up the button to trigger native background download & package installer prompt
+  document.getElementById("trigger-native-update-btn").addEventListener("click", () => {
+    if (window.AndroidDownloader && typeof window.AndroidDownloader.downloadAndInstallApk === "function") {
+      window.AndroidDownloader.downloadAndInstallApk(apkUrl);
+      document.getElementById("s24-update-banner").remove();
+    } else {
+      // Fallback for browser testing
+      window.open(apkUrl, "_blank");
+    }
+  });
+}
