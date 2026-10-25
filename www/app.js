@@ -2499,3 +2499,88 @@ function initWebsiteOnlyApkInstaller() {
 document.addEventListener("DOMContentLoaded", () => {
   initWebsiteOnlyApkInstaller();
 });
+
+// ============================================================================
+// HASSLE-FREE IN-APP APK UPDATE CHECKER & OTA NOTIFICATION
+// ============================================================================
+const CURRENT_APP_VERSION = "v3.6"; // Bump this whenever you release a new version
+
+function initInAppUpdateChecker() {
+  // Only run inside the native APK / Android wrapper
+  const isInsideNativeApk =
+    Boolean(window.AndroidDownloader) ||
+    Boolean(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) ||
+    window.location.protocol === "capacitor:" ||
+    window.location.protocol === "file:";
+
+  if (!isInsideNativeApk) return;
+
+  // Check GitHub Releases for latest version
+  fetch("https://api.github.com/repos/MKRWeb/sunnah-24/releases/latest", { cache: "no-store" })
+    .then((res) => (res.ok ? res.json() : null))
+    .then((release) => {
+      if (!release || !release.tag_name) return;
+      const latestTag = release.tag_name; // e.g. "v3.7"
+
+      if (latestTag !== CURRENT_APP_VERSION) {
+        // Find the .apk asset download URL
+        const apkAsset = (release.assets || []).find(
+          (a) => a.name && a.name.toLowerCase().endsWith(".apk")
+        );
+        const downloadUrl = apkAsset ? apkAsset.browser_download_url : `https://github.com/MKRWeb/sunnah-24/releases/download/${latestTag}/Sunnah-24-Release-Signed.apk`;
+
+        showUpdateNotificationBanner(latestTag, downloadUrl);
+      }
+    })
+    .catch(() => {});
+}
+
+function showUpdateNotificationBanner(newVersion, apkUrl) {
+  if (document.getElementById("s24-update-banner")) return;
+
+  const banner = document.createElement("div");
+  banner.id = "s24-update-banner";
+  banner.className = "update-banner-card";
+
+  const msgText =
+    appState.locale === "ar"
+      ? `✨ يتوفر إصدار جديد (${newVersion}) لتطبيق سنة ٢٤!`
+      : appState.locale === "en"
+      ? `✨ A new version (${newVersion}) of Sunnah 24 is available!`
+      : `✨ সুন্নাহ ২৪-এর নতুন সংস্করণ (${newVersion}) উপলব্ধ আছে!`;
+
+  const btnText =
+    appState.locale === "ar"
+      ? "تحديث فوري"
+      : appState.locale === "en"
+      ? "Update Now"
+      : "এখনই আপডেট করুন";
+
+  const dismissText =
+    appState.locale === "ar"
+      ? "لاحقاً"
+      : appState.locale === "en"
+      ? "Later"
+      : "পরে";
+
+  banner.innerHTML = `
+    <div class="update-banner-content">
+      <span>🚀</span>
+      <div>
+        <strong>${msgText}</strong>
+        <small>${appState.locale === 'bn' ? 'কোনো ডেটা মুছবে না, সহজে ওভাররাইট হবে।' : 'Hassle-free update without losing data.'}</small>
+      </div>
+    </div>
+    <div class="update-banner-actions">
+      <a href="${apkUrl}" class="btn-update-action" target="_blank">${btnText}</a>
+      <button class="btn-update-dismiss" onclick="document.getElementById('s24-update-banner').remove()">${dismissText}</button>
+    </div>
+  `;
+
+  document.body.appendChild(banner);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Check for updates 4 seconds after app launch so it doesn't slow down startup
+  setTimeout(initInAppUpdateChecker, 4000);
+});
