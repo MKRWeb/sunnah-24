@@ -2536,7 +2536,7 @@ function initInAppUpdateChecker() {
 }
 
     // ============================================================================
-// HASSLE-FREE IN-APP APK UPDATE CHECKER & USER-CONTROLLED "ইনস্টল করুন" FLOW
+// HASSLE-FREE IN-APP APK UPDATE CHECKER & "ইনস্টল করুন" FLOW
 // ============================================================================
 let downloadedApkUrl = "";
 
@@ -2599,17 +2599,17 @@ function showUpdateNotificationBanner(newVersion, apkUrl) {
 
   const subText =
     appState.locale === "ar"
-      ? "جاهز للتحميل والتثبيت فوق النسخة الحالية."
+      ? "التحديث جاهز للتثبيت فوق النسخة الحالية."
       : appState.locale === "en"
-      ? "Ready to download and install over your existing app."
-      : "ডাউনলোড করে আগের অ্যাপের ওপর আপডেট করার জন্য প্রস্তুত।";
+      ? "Update is ready to install over your existing app."
+      : "নতুন আপডেটটি আপনার বর্তমান অ্যাপের ওপর ইনস্টল করার জন্য প্রস্তুত।";
 
   const btnText =
     appState.locale === "ar"
-      ? "⬇️ تحميل التحديث"
+      ? "📦 تثبيت التحديث الآن"
       : appState.locale === "en"
-      ? "⬇️ Download Update"
-      : "⬇️ আপডেট ডাউনলোড করুন";
+      ? "📦 Install Update Now"
+      : "📦 ইনস্টল করুন";
 
   const dismissText =
     appState.locale === "ar"
@@ -2627,7 +2627,7 @@ function showUpdateNotificationBanner(newVersion, apkUrl) {
       </div>
     </div>
     <div class="update-banner-actions">
-      <button id="trigger-native-update-btn" class="btn-update-action">${btnText}</button>
+      <button id="trigger-native-update-btn" class="btn-update-action" style="background:var(--accent-gold);color:#05130e;font-weight:800;">${btnText}</button>
       <button class="btn-update-dismiss" onclick="document.getElementById('s24-update-banner').remove()">${dismissText}</button>
     </div>
   `;
@@ -2635,64 +2635,16 @@ function showUpdateNotificationBanner(newVersion, apkUrl) {
   document.body.appendChild(banner);
 
   document.getElementById("trigger-native-update-btn").addEventListener("click", () => {
-    const btn = document.getElementById("trigger-native-update-btn");
-    const statusEl = document.getElementById("s24-update-status");
-
-    // If download is complete, clicking "ইনস্টল করুন" starts the installer immediately
-    if (banner.getAttribute("data-ready") === "true") {
-      if (window.AndroidDownloader && typeof window.AndroidDownloader.installDownloadedApk === "function") {
-        window.AndroidDownloader.installDownloadedApk();
-      }
-      return;
-    }
-
-    // Otherwise, start the background download
     if (
       window.AndroidDownloader &&
       typeof window.AndroidDownloader.downloadAndInstallApk === "function"
     ) {
-      btn.disabled = true;
-      btn.textContent = appState.locale === "bn" ? "⏳ ডাউনলোড হচ্ছে..." : "⏳ Downloading...";
-      if (statusEl) {
-        statusEl.textContent = appState.locale === "bn" ? "ফাইল ডাউনলোড হচ্ছে..." : "Downloading update file...";
-      }
       window.AndroidDownloader.downloadAndInstallApk(downloadedApkUrl);
     } else {
       window.open(downloadedApkUrl, "_blank");
     }
   });
 }
-
-// Live Progress Listener from Native Android Bridge
-window.onSunnahApkDownloadProgress = function (percent, statusText) {
-  const btn = document.getElementById("trigger-native-update-btn");
-  const statusEl = document.getElementById("s24-update-status");
-  
-  if (btn && percent >= 0 && percent < 100) {
-    btn.textContent = `⬇️ ${localizeDigits(percent, appState.locale)}%`;
-  }
-  if (statusEl && statusText) {
-    statusEl.textContent = statusText;
-  }
-
-  // When download finishes (100%), transform button into "ইনস্টল করুন"
-  if (percent >= 100) {
-    if (btn) {
-      btn.disabled = false;
-      btn.style.background = "var(--accent-gold)";
-      btn.style.color = "#05130e";
-      btn.textContent = appState.locale === "bn" ? "📦 ইনস্টল করুন" : "📦 Install Now";
-    }
-    if (statusEl) {
-      statusEl.textContent =
-        appState.locale === "bn"
-          ? "ডাউনলোড সম্পন্ন! ইনস্টল করতে বোতামে চাপ দিন।"
-          : "Download finished! Tap button to start installation.";
-    }
-    const banner = document.getElementById("s24-update-banner");
-    if (banner) banner.setAttribute("data-ready", "true");
-  }
-};
 
 document.addEventListener("DOMContentLoaded", () => {
   initInAppUpdateChecker();
