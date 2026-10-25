@@ -2697,26 +2697,9 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
   }
 };
 
-
-function updateDiagnosticCardUI(statusMsg) {
-  const diagEl = document.getElementById("apk-update-diagnostic-status");
-  if (!diagEl) return;
-  const installed = getInstalledAppVersionTag();
-  const bridgeActive = Boolean(window.AndroidDownloader) ? "Active ✓" : "Web Mode (Browser)";
-  diagEl.textContent = `Installed: ${installed} | Native Bridge: ${bridgeActive} | ${statusMsg}`;
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   renderInstalledVersionBadge();
-  updateDiagnosticCardUI("Ready to check GitHub Release");
-
-  const manualUpdateBtn = document.getElementById("manual-check-update-btn");
-  if (manualUpdateBtn) {
-    manualUpdateBtn.addEventListener("click", () => {
-      updateDiagnosticCardUI("Fetching latest release from GitHub...");
-      initInAppUpdateChecker(true);
-    });
-  }
-
-  setTimeout(() => initInAppUpdateChecker(false), 2000);
+  setTimeout(() => initInAppUpdateChecker(false), 2500);
 });
+
+    
