@@ -1960,33 +1960,6 @@ function openHabitModal(habitId) {
 }
 
 
-async function toggleHabit(habitId) {
-  const todayKey = getTodayKey();
-  if (!appState.completionsByDate[todayKey]) {
-    appState.completionsByDate[todayKey] = [];
-  }
-  const list = appState.completionsByDate[todayKey];
-  const idx = list.indexOf(habitId);
-  if (idx > -1) {
-    list.splice(idx, 1);
-  } else {
-    list.push(habitId);
-    if (navigator.vibrate) navigator.vibrate(15);
-  }
-  await saveAndSealState();
-  renderHabits();
-}
-
-function openHabitModal(habitId) {
-  const habit = getAllHabits().find((h) => h.id === habitId);
-  if (!habit) return;
-  document.getElementById("modal-title").textContent = getHabitTitle(habit);
-  document.getElementById("modal-category").textContent = getHabitTime(habit);
-  document.getElementById("modal-evidence").textContent = getHabitEvidence(habit);
-  document.getElementById("modal-wisdom").textContent = getHabitWisdom(habit);
-  document.getElementById("fact-modal").classList.remove("hidden");
-}
-
 function getLocalizedMoodLabel(moodCode) {
   if (!moodCode) return t("mood_khushu");
   if (moodCode.includes("Khushu")) return t("mood_khushu");
