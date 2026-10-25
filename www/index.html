@@ -21,25 +21,29 @@
         <p id="current-date-display">হিজরি ও গ্রেগরিয়ান ক্যালেন্ডার সিঙ্ক হচ্ছে...</p>
       </div>
     </div>
-      <div class="header-right">
-    <!-- Website-Only 1-Click APK Download Button (Hidden by default inside APK) -->
-    <a
-      id="web-apk-download-btn"
-      href="https://github.com/MKRWeb/sunnah-24/releases/latest/download/Sunnah-24-v3.6-Enterprise-Signed.apk"
-      class="apk-install-btn hidden"
-      download
-    >
-      📲 <span data-i18n="install_apk_btn">অ্যাপ ডাউনলোড</span>
-    </a>
-    <select id="lang-switcher" class="lang-select" aria-label="Select Language">
-      <option value="bn" selected>🌐 বাংলা</option>
-      <option value="ar">🌐 العربية</option>
-      <option value="en">🌐 EN</option>
-    </select>
-    <span id="integrity-badge" class="badge-verified" title="SHA-256 Tamper-Proof Ledger & i18n Verified">
-      🛡️ S24 যাচাইকৃত
-    </span>
-  </div>
+
+        <div class="header-right">
+      <div class="header-controls-stack">
+        <select id="lang-switcher" class="lang-select" aria-label="Select Language">
+          <option value="bn" selected>🌐 বাংলা</option>
+          <option value="ar">🌐 العربية</option>
+          <option value="en">🌐 EN</option>
+        </select>
+        <!-- Website-Only 1-Click APK Download Button (Positioned cleanly below language switcher) -->
+        <a
+          id="web-apk-download-btn"
+          href="https://github.com/MKRWeb/sunnah-24/releases/latest/download/Sunnah-24-v3.6-Enterprise-Signed.apk"
+          class="apk-install-btn hidden"
+          download
+        >
+          📲 <span data-i18n="install_apk_btn">অ্যাপ ডাউনলোড</span>
+        </a>
+      </div>
+      <span id="integrity-badge" class="badge-verified" title="SHA-256 Tamper-Proof Ledger & i18n Verified">
+        🛡️ S24 যাচাইকৃত
+      </span>
+    </div>
+
 
   </header>
 
