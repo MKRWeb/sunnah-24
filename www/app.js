@@ -1900,24 +1900,65 @@ function renderLongTermArchive() {
   });
 }
 
-// Inspect Any Past Day's Completed Habits in Modal
+// Inspect Any Past Day's Completed Habits in a Compact Scrollable Modal
 function openDayHistoryModal(dateKey) {
   const doneIds = appState.completionsByDate[dateKey] || [];
   const allHabits = getAllHabits();
-  const completedTitles = doneIds
-    .map((id) => {
-      const found = allHabits.find((h) => h.id === id);
-      return found ? `✓ ${getHabitTitle(found)}` : null;
-    })
+  const completedHabits = doneIds
+    .map((id) => allHabits.find((h) => h.id === id))
     .filter(Boolean);
 
   document.getElementById("modal-title").textContent = `${t("day_detail_title")} ${localizeDigits(dateKey, appState.locale)}`;
-  document.getElementById("modal-category").textContent = `${localizeDigits(doneIds.length, appState.locale)} / ${localizeDigits(allHabits.length, appState.locale)}`;
-  document.getElementById("modal-evidence").textContent =
-    completedTitles.length > 0 ? completedTitles.join("\n") : t("day_detail_none");
-  document.getElementById("modal-wisdom").textContent = t("custom_default_wisdom");
+  document.getElementById("modal-category").textContent = `${localizeDigits(doneIds.length, appState.locale)} / ${localizeDigits(allHabits.length, appState.locale)} (${localizeDigits(Math.round((doneIds.length / (allHabits.length || 32)) * 100), appState.locale)}%)`;
+
+  const evidenceEl = document.getElementById("modal-evidence");
+  const wisdomSection = document.getElementById("modal-wisdom")?.parentElement;
+
+  if (wisdomSection) wisdomSection.style.display = "none";
+
+  if (completedHabits.length > 0) {
+    evidenceEl.innerHTML = `<div class="compact-history-grid">${completedHabits
+      .map((h) => `<div class="compact-history-item">✓ ${getHabitTitle(h)}</div>`)
+      .join("")}</div>`;
+  } else {
+    evidenceEl.textContent = t("day_detail_none");
+  }
+
   document.getElementById("fact-modal").classList.remove("hidden");
+  if (typeof pushAppHistoryState === "function") pushAppHistoryState("modal");
 }
+
+async function toggleHabit(habitId) {
+  const todayKey = getTodayKey();
+  if (!appState.completionsByDate[todayKey]) {
+    appState.completionsByDate[todayKey] = [];
+  }
+  const list = appState.completionsByDate[todayKey];
+  const idx = list.indexOf(habitId);
+  if (idx > -1) {
+    list.splice(idx, 1);
+  } else {
+    list.push(habitId);
+    if (navigator.vibrate) navigator.vibrate(15);
+  }
+  await saveAndSealState();
+  renderHabits();
+}
+
+function openHabitModal(habitId) {
+  const habit = getAllHabits().find((h) => h.id === habitId);
+  if (!habit) return;
+  const wisdomSection = document.getElementById("modal-wisdom")?.parentElement;
+  if (wisdomSection) wisdomSection.style.display = "block";
+
+  document.getElementById("modal-title").textContent = getHabitTitle(habit);
+  document.getElementById("modal-category").textContent = getHabitTime(habit);
+  document.getElementById("modal-evidence").textContent = getHabitEvidence(habit);
+  document.getElementById("modal-wisdom").textContent = getHabitWisdom(habit);
+  document.getElementById("fact-modal").classList.remove("hidden");
+  if (typeof pushAppHistoryState === "function") pushAppHistoryState("modal");
+}
+
 
 async function toggleHabit(habitId) {
   const todayKey = getTodayKey();
@@ -2246,5 +2287,149 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert(t("alert_invalid"));
     }
     e.target.value = "";
+  });
+});
+
+// ============================================================================
+// SMART ANDROID APK & PWA BACK-BUTTON NAVIGATION ENGINE (NEVER EXITS ABRUPTLY)
+// ============================================================================
+let navTabStack = ["tab-routine"];
+let tabScrollPositions = { "tab-routine": 0 };
+let lastBackTapTime = 0;
+
+function pushAppHistoryState(contextTag = "nav") {
+  try {
+    history.pushState({ sunnah24: contextTag, ts: Date.now() }, "");
+  } catch {}
+}
+
+function showExitToast() {
+  let toast = document.getElementById("s24-exit-toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "s24-exit-toast";
+    toast.className = "exit-toast";
+    document.body.appendChild(toast);
+  }
+  toast.textContent =
+    appState.locale === "ar"
+      ? "اضغط رجوع مرة أخرى للخروج من التطبيق"
+      : appState.locale === "en"
+      ? "Press back again to exit Sunnah 24"
+      : "অ্যাপ থেকে বের হতে পুনরায় ব্যাক বাটন চাপুন";
+  toast.style.opacity = "1";
+  setTimeout(() => {
+    if (toast) toast.style.opacity = "0";
+  }, 2000);
+}
+
+function switchTabProgrammatically(targetTabId, recordInStack = true) {
+  const currentActiveBtn = document.querySelector(".tab-btn.active");
+  if (currentActiveBtn) {
+    tabScrollPositions[currentActiveBtn.dataset.tab] = window.scrollY || 0;
+  }
+
+  document.querySelectorAll(".tab-btn").forEach((b) => {
+    b.classList.toggle("active", b.dataset.tab === targetTabId);
+  });
+  document.querySelectorAll(".tab-content").forEach((c) => {
+    c.classList.toggle("active", c.id === targetTabId);
+  });
+
+  if (recordInStack && navTabStack[navTabStack.length - 1] !== targetTabId) {
+    navTabStack.push(targetTabId);
+    pushAppHistoryState(targetTabId);
+  }
+
+  const savedScroll = tabScrollPositions[targetTabId] || 0;
+  window.scrollTo({ top: savedScroll, behavior: "instant" });
+}
+
+// Global handler invoked by both Android Native Back Button & Browser popstate
+window.handleSunnahBackNavigation = function () {
+  // 1. If Fact / History Modal is open -> Close modal first
+  const modal = document.getElementById("fact-modal");
+  if (modal && !modal.classList.contains("hidden")) {
+    modal.classList.add("hidden");
+    return true;
+  }
+
+  // 2. If Search box has text -> Clear search and stay on page
+  const searchInput = document.getElementById("habit-search-input");
+  if (searchQuery && searchInput) {
+    searchQuery = "";
+    searchInput.value = "";
+    renderHabits();
+    return true;
+  }
+
+  // 3. If a Phase Filter Chip (other than "all") is active on Routine tab -> Reset to "All 24H"
+  const activeTab = document.querySelector(".tab-content.active")?.id;
+  if (activeTab === "tab-routine" && activePhase !== "all") {
+    activePhase = "all";
+    document.querySelectorAll(".filter-bar .chip").forEach((c) => {
+      c.classList.toggle("active", c.dataset.phase === "all");
+    });
+    renderHabits();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return true;
+  }
+
+  // 4. If user is on Adhkar, Muhasabah, or Vault tab -> Go back to previous tab in stack
+  if (navTabStack.length > 1) {
+    navTabStack.pop(); // remove current
+    const prevTab = navTabStack[navTabStack.length - 1] || "tab-routine";
+    switchTabProgrammatically(prevTab, false);
+    return true;
+  }
+
+  if (activeTab && activeTab !== "tab-routine") {
+    switchTabProgrammatically("tab-routine", false);
+    return true;
+  }
+
+  // 5. If scrolled far down on the Home Routine tab -> Smooth scroll back to top
+  if (window.scrollY > 220) {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return true;
+  }
+
+  // 6. At the very top of Home Routine tab -> Require double back-press within 2s to exit
+  const now = Date.now();
+  if (now - lastBackTapTime < 2000) {
+    return false; // Allow native APK exit on second tap
+  }
+  lastBackTapTime = now;
+  showExitToast();
+  pushAppHistoryState("root-guard");
+  return true;
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Seed initial history state so back button is intercepted by WebView
+  pushAppHistoryState("root-guard");
+
+  // Track Tab clicks in navigation stack
+  document.querySelectorAll(".tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const targetTab = btn.dataset.tab;
+      if (navTabStack[navTabStack.length - 1] !== targetTab) {
+        navTabStack.push(targetTab);
+        pushAppHistoryState(targetTab);
+      }
+    });
+  });
+
+  // Track Phase chip clicks
+  document.querySelectorAll(".filter-bar .chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      if (chip.dataset.phase !== "all") {
+        pushAppHistoryState("phase-" + chip.dataset.phase);
+      }
+    });
+  });
+
+  window.addEventListener("popstate", () => {
+    window.handleSunnahBackNavigation();
   });
 });
