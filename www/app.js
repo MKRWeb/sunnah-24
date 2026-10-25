@@ -2568,7 +2568,7 @@ function showUpdateNotificationBanner(newVersion, apkUrl) {
       <span>🚀</span>
       <div>
         <strong>${msgText}</strong>
-        <small>${appState.locale === 'bn' ? 'অটোমেটিক আপডেট হবে, কোনো ডেটা মুছবে না।' : 'Auto-updates seamlessly without losing data.'}</small>
+        <small>${appState.locale === 'bn' ? 'ডাউনলোড শেষে স্বয়ংক্রিয়ভাবে ইনস্টল হবে।' : 'Auto-installs upon download completion.'}</small>
       </div>
     </div>
     <div class="update-banner-actions">
@@ -2579,13 +2579,11 @@ function showUpdateNotificationBanner(newVersion, apkUrl) {
 
   document.body.appendChild(banner);
 
-  // Hook up the button to trigger native background download & package installer prompt
   document.getElementById("trigger-native-update-btn").addEventListener("click", () => {
     if (window.AndroidDownloader && typeof window.AndroidDownloader.downloadAndInstallApk === "function") {
       window.AndroidDownloader.downloadAndInstallApk(apkUrl);
       document.getElementById("s24-update-banner").remove();
     } else {
-      // Fallback for browser testing
       window.open(apkUrl, "_blank");
     }
   });
