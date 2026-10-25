@@ -2465,8 +2465,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initWebsiteOnlyApkInstaller();
 });
 
-// ============================================================================
-// PLAY-PROTECT-COMPLIANT IN-APP UPDATE CHECKER (v4.1)
+    // ============================================================================
+// SNAPTUBE-STYLE IN-APP APK UPDATE ENGINE (PLAY-PROTECT SAFE • v4.2)
 // ============================================================================
 let latestRemoteApkUrl = "";
 let latestRemoteVersionTag = "";
@@ -2481,7 +2481,7 @@ function getInstalledAppVersionTag() {
       if (nativeVer) return nativeVer.startsWith("v") ? nativeVer : `v${nativeVer}`;
     }
   } catch {}
-  return "v4.1.0";
+  return "v4.2.0";
 }
 
 function renderInstalledVersionBadge() {
@@ -2516,7 +2516,16 @@ function initInAppUpdateChecker(manualTrigger = false) {
 
         latestRemoteApkUrl = apkAsset.browser_download_url;
         latestRemoteVersionTag = latestTag;
-        showUpdateNotificationBanner(latestTag);
+
+        let alreadyOnDevice = false;
+        if (
+          window.AndroidDownloader &&
+          typeof window.AndroidDownloader.isVersionApkCached === "function"
+        ) {
+          alreadyOnDevice = Boolean(window.AndroidDownloader.isVersionApkCached(latestTag));
+        }
+
+        showUpdateNotificationBanner(latestTag, alreadyOnDevice);
       } else if (manualTrigger) {
         alert(
           appState.locale === "bn"
@@ -2528,13 +2537,14 @@ function initInAppUpdateChecker(manualTrigger = false) {
     .catch(() => {});
 }
 
-function showUpdateNotificationBanner(newVersion) {
+function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
   const existing = document.getElementById("s24-update-banner");
   if (existing) existing.remove();
 
   const banner = document.createElement("div");
   banner.id = "s24-update-banner";
   banner.className = "update-banner-card";
+  banner.setAttribute("data-cached", isAlreadyOnDevice ? "true" : "false");
 
   const msgText =
     appState.locale === "ar"
@@ -2543,13 +2553,21 @@ function showUpdateNotificationBanner(newVersion) {
       ? `✨ Update (${newVersion}) Available for Sunnah 24!`
       : `✨ সুন্নাহ ২৪-এর নতুন আপডেট (${newVersion}) প্রস্তুত!`;
 
-  const subText =
-    appState.locale === "bn"
-      ? "নিরাপদে অফিসিয়াল গিটহাব রিলিজ থেকে নতুন সংস্করণ ডাউনলোড ও ইনস্টল করুন।"
-      : "Download and install the verified update via your system browser.";
+  const subText = isAlreadyOnDevice
+    ? appState.locale === "bn"
+      ? "আপডেট ফাইলটি আপনার ফোনে প্রস্তুত আছে। সরাসরি ইনস্টল করুন।"
+      : "Update APK is already saved on your phone. Tap to install."
+    : appState.locale === "bn"
+    ? "ডাউনলোড শেষ হওয়ার সাথে সাথেই স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হবে।"
+    : "Automatically triggers the package installer right after download finishes.";
 
-  const btnText =
-    appState.locale === "bn" ? "🚀 আপডেট ডাউনলোড করুন" : "🚀 Download Update";
+  const btnText = isAlreadyOnDevice
+    ? appState.locale === "bn"
+      ? "📦 এখনই ইনস্টল করুন"
+      : "📦 Install Now"
+    : appState.locale === "bn"
+    ? "🚀 আপডেট করুন"
+    : "🚀 Update Now";
 
   const dismissText =
     appState.locale === "ar" ? "لاحقاً" : appState.locale === "en" ? "Later" : "পরে";
@@ -2557,9 +2575,12 @@ function showUpdateNotificationBanner(newVersion) {
   banner.innerHTML = `
     <div class="update-banner-content">
       <span>🚀</span>
-      <div>
+      <div style="flex:1;">
         <strong id="s24-update-title">${msgText}</strong>
         <small id="s24-update-status">${subText}</small>
+        <div id="s24-update-progress-wrap" class="progress-track" style="display:none;height:6px;margin:6px 0 2px;">
+          <div id="s24-update-progress-bar" class="progress-fill" style="width:0%;"></div>
+        </div>
       </div>
     </div>
     <div class="update-banner-actions">
@@ -2571,19 +2592,111 @@ function showUpdateNotificationBanner(newVersion) {
   document.body.appendChild(banner);
 
   document.getElementById("trigger-native-update-btn").addEventListener("click", () => {
-    if (!latestRemoteApkUrl) return;
+    const btn = document.getElementById("trigger-native-update-btn");
+    const statusEl = document.getElementById("s24-update-status");
+    const progWrap = document.getElementById("s24-update-progress-wrap");
+
+    // 1. If already downloaded -> Immediately trigger native package installer
+    if (banner.getAttribute("data-cached") === "true") {
+      if (
+        window.AndroidDownloader &&
+        typeof window.AndroidDownloader.installCachedVersionApk === "function"
+      ) {
+        window.AndroidDownloader.installCachedVersionApk(latestRemoteVersionTag);
+        return;
+      }
+      if (
+        window.AndroidDownloader &&
+        typeof window.AndroidDownloader.installLocalApk === "function"
+      ) {
+        window.AndroidDownloader.installLocalApk();
+        return;
+      }
+    }
+
+    // 2. Download in-app via DownloadManager & auto-launch installer at 100%
     if (
       window.AndroidDownloader &&
-      typeof window.AndroidDownloader.openOfficialUpdateInBrowser === "function"
+      typeof window.AndroidDownloader.downloadAndAutoInstallVersionApk === "function"
     ) {
-      window.AndroidDownloader.openOfficialUpdateInBrowser(latestRemoteApkUrl);
-    } else {
-      window.open(latestRemoteApkUrl, "_blank", "noopener,noreferrer");
+      btn.disabled = true;
+      btn.textContent = appState.locale === "bn" ? "⏳ ০% ডাউনলোড হচ্ছে..." : "⏳ Downloading 0%...";
+      if (progWrap) progWrap.style.display = "block";
+      if (statusEl) {
+        statusEl.textContent =
+          appState.locale === "bn"
+            ? "ডাউনলোড শেষ হলে স্বয়ংক্রিয়ভাবে ইনস্টল স্ক্রিন ওপেন হবে..."
+            : "Package installer will launch automatically at 100%...";
+      }
+      window.AndroidDownloader.downloadAndAutoInstallVersionApk(
+        latestRemoteApkUrl,
+        latestRemoteVersionTag
+      );
+      return;
+    }
+
+    // 3. Fallback for older APK bridges
+    if (
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.downloadAndInstallApk === "function"
+    ) {
+      btn.disabled = true;
+      if (progWrap) progWrap.style.display = "block";
+      window.AndroidDownloader.downloadAndInstallApk(latestRemoteApkUrl);
     }
   });
 }
 
+// Live Progress Bar & Automatic Installer Trigger Callback
+window.onSunnahApkDownloadProgress = function (percent, statusText) {
+  const btn = document.getElementById("trigger-native-update-btn");
+  const statusEl = document.getElementById("s24-update-status");
+  const banner = document.getElementById("s24-update-banner");
+  const progWrap = document.getElementById("s24-update-progress-wrap");
+  const progBar = document.getElementById("s24-update-progress-bar");
+
+  if (progWrap && percent >= 0) {
+    progWrap.style.display = "block";
+  }
+  if (progBar && percent >= 0) {
+    progBar.style.width = `${Math.min(100, percent)}%`;
+  }
+
+  if (btn && percent >= 0 && percent < 100) {
+    btn.textContent = `⬇️ ${localizeDigits(percent, appState.locale)}%`;
+  }
+  if (statusEl && statusText) {
+    statusEl.textContent = statusText;
+  }
+
+  if (percent >= 100) {
+    if (banner) banner.setAttribute("data-cached", "true");
+    if (progBar) progBar.style.width = "100%";
+    if (btn) {
+      btn.disabled = false;
+      btn.style.background = "var(--accent-gold)";
+      btn.style.color = "#05130e";
+      btn.textContent =
+        appState.locale === "bn" ? "📦 এখনই ইনস্টল করুন" : "📦 Install Now";
+    }
+    if (statusEl) {
+      statusEl.textContent =
+        appState.locale === "bn"
+          ? "✅ ডাউনলোড সম্পন্ন! স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হয়েছে।"
+          : "✅ Download complete! Package installer launched automatically.";
+    }
+  }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   renderInstalledVersionBadge();
   setTimeout(() => initInAppUpdateChecker(false), 2500);
-}); 
+
+  const splash = document.getElementById("s24-startup-splash");
+  if (splash) {
+    setTimeout(() => {
+      splash.classList.add("splash-hidden");
+      setTimeout(() => splash.remove(), 450);
+    }, 550);
+  }
+});
