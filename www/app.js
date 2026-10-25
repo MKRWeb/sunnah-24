@@ -2492,7 +2492,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initWebsiteOnlyApkInstaller();
 });
 
-
 // ============================================================================
 // PLAY-PROTECT-COMPLIANT IN-APP UPDATE CHECKER (v4.1)
 // ============================================================================
@@ -2615,5 +2614,3 @@ document.addEventListener("DOMContentLoaded", () => {
   renderInstalledVersionBadge();
   setTimeout(() => initInAppUpdateChecker(false), 2500);
 });
-
-            
