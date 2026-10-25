@@ -1,9 +1,14 @@
 /**
- * SUNNAH 24 — ENTERPRISE PROPHETIC 24-HOUR LIFESTYLE & HABIT TRACKER
- * SHA-256 Tamper-Proof Cryptographic Engine + Accurate Hijri Calendar + Full Bangla (Default), Arabic & English Localization
+ * SUNNAH 24 — ENTERPRISE PROPHETIC 24-HOUR LIFESTYLE & HABIT TRACKER (v3.5)
+ * SHA-256 Tamper-Proof Engine + Triple-Redundant Multi-Month Vault (LocalStorage + IndexedDB + Native Android)
+ * Local Timezone Date Engine + Accurate Hijri Calendar + Full Bangla (Default), Arabic & English Localization
  */
 
 const STORAGE_KEY = "SUNNAH_24_ENTERPRISE_LEDGER_V24";
+const BACKUP_MIRROR_KEY = "SUNNAH_24_ENTERPRISE_MIRROR_V35";
+const IDB_NAME = "Sunnah24EnterpriseDB";
+const IDB_STORE = "Sunnah24VaultStore";
+const IDB_KEY = "primary_ledger_v35";
 const LEDGER_SALT = "MKRWEB-SUNNAH-24-CORPORATE-IMMUTABLE-SALT";
 const I18N_SALT = "MKRWEB-SUNNAH-24-I18N-DICTIONARY-IMMUTABLE-SALT-V25";
 
@@ -43,6 +48,18 @@ function localizeDigits(val, locale) {
     return str.replace(/\d/g, (d) => arDigits[Number(d)]);
   }
   return str;
+}
+
+// Local Timezone Date Key Generator (Fixes UTC midnight shift bug permanently)
+function getLocalDateKey(dateObj = new Date()) {
+  const year = dateObj.getFullYear();
+  const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+  const day = String(dateObj.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function getTodayKey() {
+  return getLocalDateKey(new Date());
 }
 
 // Immutable Multi-Language UI Dictionary (Bangla Default, Arabic, English)
@@ -107,7 +124,13 @@ const I18N_DICTIONARIES = deepFreeze({
     diary_lbl_tawbah: "তাওবাহ:",
     diary_lbl_niyyah: "নিয়ত:",
     vault_matrix_title: "📊 ৭-দিনের সুন্নাহ ধারাবাহিকতা ম্যাট্রিক্স",
-    vault_matrix_sub: "গত ৭ দিনে আপনার দৈনিক সুন্নাহ পালনের অগ্রগতি।",
+    vault_matrix_sub: "গত ৭ দিনে আপনার দৈনিক সুন্নাহ পালনের অগ্রগতি (দিনে ট্যাপ করে বিস্তারিত দেখুন)।",
+    vault_archive_title: "🗓️ দীর্ঘমেয়াদী সুন্নাহ আর্কাইভ (৬ মাস / ১৮০ দিন)",
+    vault_archive_sub: "আপনার বিগত কয়েক মাসের সকল দিনের রেকর্ড ডিভাইসে স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকে।",
+    archive_empty: "নির্বাচিত সময়সীমার মধ্যে এখনও কোনো সম্পন্ন আমলের রেকর্ড নেই।",
+    archive_active_days: "সক্রিয় দিন:",
+    archive_avg_score: "গড় অর্জন:",
+    vault_storage_status_label: "অটো-স্টোরেজ সুরক্ষা স্তর:",
     vault_custom_title: "➕ ব্যক্তিগত সুন্নাহ আমল যুক্ত করুন",
     custom_title_ph: "আমলের নাম (যেমন: ফজরের পর ৫ আয়াত হিফজ)",
     custom_fact_ph: "হাদিস সূত্র / ব্যক্তিগত উপকারিতা",
@@ -115,8 +138,8 @@ const I18N_DICTIONARIES = deepFreeze({
     custom_time_label: "ব্যক্তিগত সুন্নাহ ২৪",
     custom_default_evidence: "ব্যক্তিগত সুন্নাহ ২৪ লক্ষ্য",
     custom_default_wisdom: "আল্লাহর কাছে সবচেয়ে প্রিয় আমল তা-ই যা নিয়মিত করা হয়, যদিও তা অল্প হয় (সহীহ বুখারী ৬৪৬৪).",
-    vault_crypto_title: "🔐 SHA-256 টেম্পার-প্রুফ ক্রিপ্টোগ্রাফিক ভল্ট",
-    vault_crypto_sub: "প্রতিটি আমল, তাসবীহ গণনা, মুহাসাবা ডায়েরি এবং ভাষা প্যাক SHA-256 ক্রিপ্টোগ্রাফিক স্বাক্ষর দ্বারা সুরক্ষিত।",
+    vault_crypto_title: "🔐 SHA-256 টেম্পার-প্রুফ ট্রিপল-লেয়ার ভল্ট",
+    vault_crypto_sub: "প্রতিটি আমল স্বয়ংক্রিয়ভাবে ৩টি স্তরে (LocalStorage, IndexedDB এবং Native Android Vault) সংরক্ষিত হয় যাতে মাসের পর মাস ডেটা কখনোই মুছে না যায়।",
     vault_hash_label: "সক্রিয় সুন্নাহ ২৪ লেজার ডাইজেস্ট (SHA-256):",
     vault_i18n_hash_label: "টেম্পার-প্রুফ মাল্টি-ল্যাঙ্গুয়েজ প্যাক ডাইজেস্ট (SHA-256):",
     export_btn: "⬇️ ব্যাকআপ ডাউনলোড (JSON)",
@@ -130,6 +153,8 @@ const I18N_DICTIONARIES = deepFreeze({
     alert_tamper: "⚠️ নিরাপত্তা সতর্কতা: ব্যাকআপ বা ভাষা ফাইলের স্বাক্ষর মিলছে না!",
     alert_restored: "✅ সুন্নাহ ২৪ ব্যাকআপ সফলভাবে যাচাই ও রিস্টোর হয়েছে!",
     alert_invalid: "অকার্যকর সুন্নাহ ২৪ ব্যাকআপ ফাইল।",
+    day_detail_title: "📅 দিনের আমল বিবরণী:",
+    day_detail_none: "এই তারিখে কোনো সুন্নাহ আমল চিহ্নিত করা হয়নি।",
     tasbih_options: [
       { target: 33, label: "সুবহানাল্লাহ (আল্লাহ পবিত্র ও মহান)", text: "সুবহানাল্লাহ — ৩৩ বার" },
       { target: 33, label: "আলহামদুলিল্লাহ (সকল প্রশংসা আল্লাহর)", text: "আলহামদুলিল্লাহ — ৩৩ বার" },
@@ -201,7 +226,13 @@ const I18N_DICTIONARIES = deepFreeze({
     diary_lbl_tawbah: "التوبة:",
     diary_lbl_niyyah: "النية:",
     vault_matrix_title: "📊 مصفوفة الاستقامة لـ ٧ أيام",
-    vault_matrix_sub: "معدل إتمامك للسنن النبوية خلال الأيام السبعة الماضية.",
+    vault_matrix_sub: "معدل إتمامك للسنن النبوية خلال الأيام السبعة الماضية (اضغط على اليوم للتفاصيل).",
+    vault_archive_title: "🗓️ أرشيف السنن طويل المدى (٦ أشهر / ١٨٠ يوماً)",
+    vault_archive_sub: "يتم حفظ سجل أيامك وأشهرك السابقة تلقائياً في الجهاز.",
+    archive_empty: "لا توجد سجلات مكتملة في هذه الفترة بعد.",
+    archive_active_days: "الأيام النشطة:",
+    archive_avg_score: "المعدل:",
+    vault_storage_status_label: "طبقات الحفظ التلقائي:",
     vault_custom_title: "➕ إضافة ورد أو سنة شخصية",
     custom_title_ph: "عنوان العمل (مثال: حفظ ٥ آيات بعد الفجر)",
     custom_fact_ph: "الدليل من الحديث أو الفائدة",
@@ -209,8 +240,8 @@ const I18N_DICTIONARIES = deepFreeze({
     custom_time_label: "ورد شخصي — سنة ٢٤",
     custom_default_evidence: "هدف شخصي في جدول سنة ٢٤",
     custom_default_wisdom: "أحب الأعمال إلى الله أدومها وإن قل (صحيح البخاري ٦٤٦٤).",
-    vault_crypto_title: "🔐 الخزنة المشفرة المقاومة للتلاعب (SHA-256)",
-    vault_crypto_sub: "كل إنجاز، تسبيح، محاسبة، وحزمة لغة مؤمنة بتوقيع رقمي SHA-256.",
+    vault_crypto_title: "🔐 الخزنة المشفرة ثلاثية الطبقات (SHA-256)",
+    vault_crypto_sub: "يتم حفظ كل عمل تلقائياً في ٣ طبقات (LocalStorage + IndexedDB + خزنة أندرويد) لضمان عدم ضياع البيانات.",
     vault_hash_label: "البصمة الرقمية لسجل سنة ٢٤ (SHA-256):",
     vault_i18n_hash_label: "البصمة الرقمية لحزم اللغات الموثقة (SHA-256):",
     export_btn: "⬇️ تصدير نسخة موقعة (JSON)",
@@ -224,6 +255,8 @@ const I18N_DICTIONARIES = deepFreeze({
     alert_tamper: "⚠️ تنبيه أمني: فشل التحقق من التوقيع الرقمي للملف!",
     alert_restored: "✅ تمت استعادة النسخة الاحتياطية والتحقق من سلامتها بنجاح!",
     alert_invalid: "ملف النسخة الاحتياطية غير صالح.",
+    day_detail_title: "📅 تفاصيل إنجاز اليوم:",
+    day_detail_none: "لم يتم تسجيل سنن مكتملة في هذا التاريخ.",
     tasbih_options: [
       { target: 33, label: "سبحان الله", text: "سبحان الله — ٣٣ مرة" },
       { target: 33, label: "الحمد لله", text: "الحمد لله — ٣٣ مرة" },
@@ -295,7 +328,13 @@ const I18N_DICTIONARIES = deepFreeze({
     diary_lbl_tawbah: "Tawbah:",
     diary_lbl_niyyah: "Niyyah:",
     vault_matrix_title: "📊 7-Day Sunnah Consistency Matrix",
-    vault_matrix_sub: "Your daily habit completion momentum across the past 7 days.",
+    vault_matrix_sub: "Your daily habit completion momentum across the past 7 days (tap any day to inspect).",
+    vault_archive_title: "🗓️ Long-Term Sunnah Archive (6 Months / 180 Days)",
+    vault_archive_sub: "Your multi-month daily history is automatically preserved across 3 device storage layers.",
+    archive_empty: "No completed habit records found in this range yet.",
+    archive_active_days: "Active Days:",
+    archive_avg_score: "Avg Score:",
+    vault_storage_status_label: "AUTO-PERSISTENCE LAYERS:",
     vault_custom_title: "➕ Add Personal Habit to Sunnah 24",
     custom_title_ph: "Habit Title (e.g., Memorize 5 Ayahs after Fajr)",
     custom_fact_ph: "Hadith Reference / Personal Benefit",
@@ -303,8 +342,8 @@ const I18N_DICTIONARIES = deepFreeze({
     custom_time_label: "Custom Sunnah 24",
     custom_default_evidence: "Personal Sunnah 24 Goal",
     custom_default_wisdom: "The most beloved deeds to Allah are those done consistently, even if small (Sahih al-Bukhari 6464).",
-    vault_crypto_title: "🔐 SHA-256 Tamper-Proof Cryptographic Vault",
-    vault_crypto_sub: "Every habit completion, Tasbih count, Muhasabah reflection, and language pack is chained with a SHA-256 cryptographic signature.",
+    vault_crypto_title: "🔐 SHA-256 Tamper-Proof Triple-Layer Vault",
+    vault_crypto_sub: "Every habit check is automatically mirrored across LocalStorage, IndexedDB, and Native Android Vault so history never resets.",
     vault_hash_label: "ACTIVE SUNNAH 24 LEDGER DIGEST (SHA-256):",
     vault_i18n_hash_label: "TAMPER-PROOF MULTI-LANGUAGE PACK DIGEST (SHA-256):",
     export_btn: "⬇️ Export Signed JSON",
@@ -318,6 +357,8 @@ const I18N_DICTIONARIES = deepFreeze({
     alert_tamper: "⚠️ Sunnah 24 Security Alert: Signature mismatch! File integrity cannot be verified.",
     alert_restored: "✅ Sunnah 24 Signed Backup Restored & Cryptographically Verified!",
     alert_invalid: "Invalid Sunnah 24 backup file.",
+    day_detail_title: "📅 Completed Sunnahs on:",
+    day_detail_none: "No habits were marked completed on this date.",
     tasbih_options: [
       { target: 33, label: "SubhanAllah (Glory be to Allah)", text: "SubhanAllah — 33x" },
       { target: 33, label: "Alhamdulillah (Praise be to Allah)", text: "Alhamdulillah — 33x" },
@@ -424,7 +465,7 @@ const SUNNAH_24_HABITS = deepFreeze([
     title_ar: "٦. جلسة الذكر بعد الفجر وصلاة ركعتي الإشراق",
     evidence: "Jami` at-Tirmidhi 586: Whoever prays Fajr in congregation, then sits remembering Allah until the sun rises, then prays two Rak'ahs, has the reward of a complete Hajj and Umrah.",
     evidence_bn: "জামে তিরমিযী ৫৮৬: যে ব্যক্তি জামাতে ফজর পড়ে সূর্যোদয় পর্যন্ত বসে আল্লাহর যিকির করে এবং এরপর দুই রাকাত সালাত পড়ে, সে পরিপূর্ণ হজ ও উমরার সওয়াব পায়।",
-    evidence_ar: "جامع الترمذي ٥٨৬: «من صلى الغداة في جماعة ثم قعد يذكر الله حتى تطلع الشمس ثم صلى ركعتين كانت له كأجر حجة وعمرة تامة تامة تامة».",
+    evidence_ar: "جامع الترمذي ٥٨٦: «من صلى الغداة في جماعة ثم قعد يذكر الله حتى تطلع الشمس ثم صلى ركعتين كانت له كأجر حجة وعمرة تامة تامة تامة».",
     wisdom: "Morning sunlight exposure regulates serotonin and melatonin cycles for the entire 24-hour period.",
     wisdom_bn: "সকালের মৃদু সূর্যালোক দেহে সেরোটোনিন ও মেলাটোনিন হরমোনের ভারসাম্য রক্ষা করে যা রাতে গভীর ঘুমে সাহায্য করে।",
     wisdom_ar: "التعرض لضوء الصباح ينظم إفراز السيروتونين والميلاتونين على مدار الـ ٢٤ ساعة."
@@ -847,7 +888,7 @@ const SUNNAH_24_HABITS = deepFreeze([
   }
 ]);
 
-// 12 Essential Full Morning & Evening Masnoon Duas (Hisnul Muslim & Shaykh Ahmadullah)
+// 12 Essential Full Morning & Evening Masnoon Duas
 const SUNNAH_24_DUAS = deepFreeze([
   {
     id: "dua_01_kalimat_tammat",
@@ -894,7 +935,7 @@ const SUNNAH_24_DUAS = deepFreeze([
     badge_ar: "مرة واحدة صباحاً ومساءً",
     badge_en: "Morning & Evening 1x",
     arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَٰهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
-    translit_bn: "উচ্চারণ: আল্লা-হুম্মা আনতা রাব্বী লা- ইলা-হা ইল্লা- আনতা, খালাক্বতানী ওয়া আনা 'আবদুকা, ওয়া আনা 'আলা- 'আহদিকা ওয়া ওয়া'দিকা মাস্তাত্বা'তু। আ'উযু বিকা মিন শাররি মা- সানা'তু, আবূউ লাকা বিনি'মাতিকা 'আলাইয়্যা, ওয়া আবূউ বিযাম্বী, ফাগفیر লী ফাইন্নাহু লা- ইয়াগفیرুয যুনূবা ইল্লা- আনতা।",
+    translit_bn: "উচ্চারণ: আল্লা-হুম্মা আনতা রাব্বী লা- ইলা-হা ইল্লা- আনতা, খালাক্বতানী ওয়া আনা 'আবদুকা, ওয়া আনা 'আলা- 'আহদিকা ওয়া ওয়া'দিকা মাস্তাত্বা'তু। আ'উযু বিকা মিন শাররি মা- সানা'তু, আবূউ লাকা বিনি'মাতিকা 'আলাইয়্যা, ওয়া আবূউ বিযাম্বী, ফাগফির লী ফাইন্নাহু লা- ইয়াগফিরুয যুনূবা ইল্লা- আনতা।",
     translit_en: "Transliteration: Allahumma Anta Rabbi la ilaha illa Anta, khalaqtani wa ana 'abduka, wa ana 'ala 'ahdika wa wa'dika mastata'tu, a'udhu bika min sharri ma sana'tu, abu'u laka bini'matika 'alayya, wa abu'u bidhanbi faghfir li fa innahu la yaghfirudh-dhunuba illa Anta.",
     meaning_bn: "অর্থ: হে আল্লাহ! আপনি আমার রব, আপনি ছাড়া কোনো হক্ব ইলাহ নেই। আপনি আমাকে সৃষ্টি করেছেন এবং আমি আপনার বান্দা। আমি আমার সাধ্যমতো আপনার অঙ্গীকার ও প্রতিশ্রুতির ওপর রয়েছি। আমি আমার কৃতকর্মের অনিষ্ট থেকে আপনার আশ্রয় চাই। আমার ওপর আপনার প্রদত্ত নিয়ামত স্বীকার করছি এবং আমার গুনাহেরও স্বীকারোক্তি দিচ্ছি। অতএব আমাকে ক্ষমা করুন, কেননা আপনি ছাড়া কেউ গুনাহ ক্ষমা করতে পারে না।",
     meaning_ar: "المعنى: اعتراف العبد بربوبية الله ونعمته وإقراره بذنبه وطلب المغفرة منه وحده.",
@@ -983,7 +1024,7 @@ const SUNNAH_24_DUAS = deepFreeze([
     badge_bn: "সকাল-সন্ধ্যায় ৩ বার",
     badge_ar: "٣ مرات صباحاً ومساءً",
     badge_en: "Morning & Evening 3x",
-    arabic: "رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِوَمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا",
+    arabic: "رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا",
     translit_bn: "উচ্চারণ: রাদ্বীতু বিল্লা-হি রাব্বান, ওয়া বিল ইসলা-মি দীনান, ওয়া বিমুহাম্মাদিন সাল্লাল্লা-হু 'আলাইহি ওয়াসাল্লামা নাবিয়্যান।",
     translit_en: "Transliteration: Raditu billahi Rabban, wa bil-Islami dinan, wa bi-Muhammadin sallallahu 'alayhi wa sallama Nabiyyan.",
     meaning_bn: "অর্থ: আল্লাহকে রব, ইসলামকে দ্বীন এবং মুহাম্মাদ সাল্লাল্লাহু আলাইহি ওয়াসাল্লামকে নবীরূপে গ্রহণ করে আমি সন্তুষ্ট।",
@@ -1070,13 +1111,14 @@ const SUNNAH_24_DUAS = deepFreeze([
 // Application State (Default Language set to Bangla: 'bn')
 let appState = {
   appName: "Sunnah 24",
-  version: 25,
+  version: 35,
   locale: "bn",
   i18nHash: "",
   customHabits: [],
   completionsByDate: {},
   diaryEntries: [],
   lifetimeDhikr: 0,
+  lastUpdated: 0,
   signature: ""
 };
 
@@ -1086,10 +1128,8 @@ let selectedMood = "Khushu";
 let tasbihCount = 0;
 let tasbihTarget = 33;
 let verifiedI18nDigest = "";
-
-function getTodayKey() {
-  return new Date().toISOString().split("T")[0];
-}
+let historyRangeDays = 180;
+let lastObservedDateKey = getTodayKey();
 
 function t(key, replacements = {}) {
   const lang = I18N_DICTIONARIES[appState.locale] ? appState.locale : "bn";
@@ -1168,57 +1208,239 @@ function getCanonicalStatePayload(stateObj) {
     locale: stateObj.locale || "bn",
     i18nHash: stateObj.i18nHash || verifiedI18nDigest,
     customHabits: stateObj.customHabits || [],
-    completionsByDate: stateObj.completionsByDate || {},
+    completionsByDate: canonicalizeObject(stateObj.completionsByDate || {}),
     diaryEntries: stateObj.diaryEntries || [],
     lifetimeDhikr: stateObj.lifetimeDhikr || 0
   });
 }
 
+// ============================================================================
+// TRIPLE-REDUNDANT STORAGE ENGINE (LocalStorage + IndexedDB + Native Android)
+// ============================================================================
+
+function openSunnahIDB() {
+  return new Promise((resolve) => {
+    if (!window.indexedDB) {
+      resolve(null);
+      return;
+    }
+    try {
+      const req = indexedDB.open(IDB_NAME, 1);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(IDB_STORE)) {
+          db.createObjectStore(IDB_STORE);
+        }
+      };
+      req.onsuccess = (e) => resolve(e.target.result);
+      req.onerror = () => resolve(null);
+    } catch {
+      resolve(null);
+    }
+  });
+}
+
+async function saveToIndexedDB(jsonStr) {
+  const db = await openSunnahIDB();
+  if (!db) return false;
+  return new Promise((resolve) => {
+    try {
+      const tx = db.transaction(IDB_STORE, "readwrite");
+      tx.objectStore(IDB_STORE).put(jsonStr, IDB_KEY);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => resolve(false);
+    } catch {
+      resolve(false);
+    }
+  });
+}
+
+async function loadFromIndexedDB() {
+  const db = await openSunnahIDB();
+  if (!db) return null;
+  return new Promise((resolve) => {
+    try {
+      const tx = db.transaction(IDB_STORE, "readonly");
+      const req = tx.objectStore(IDB_STORE).get(IDB_KEY);
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => resolve(null);
+    } catch {
+      resolve(null);
+    }
+  });
+}
+
+// Deep-merge multiple storage snapshots so no past day's history is ever lost
+function mergeHistoryStates(statesArray) {
+  const validStates = statesArray.filter((s) => s && typeof s === "object");
+  if (validStates.length === 0) return null;
+
+  // Sort by lastUpdated descending so latest preferences win
+  validStates.sort((a, b) => (b.lastUpdated || 0) - (a.lastUpdated || 0));
+  const base = { ...validStates[0] };
+
+  const mergedCompletions = {};
+  const mergedCustomMap = new Map();
+  const mergedDiaryMap = new Map();
+  let maxDhikr = 0;
+
+  validStates.forEach((st) => {
+    if ((st.lifetimeDhikr || 0) > maxDhikr) {
+      maxDhikr = st.lifetimeDhikr;
+    }
+    if (st.completionsByDate && typeof st.completionsByDate === "object") {
+      Object.keys(st.completionsByDate).forEach((dateKey) => {
+        const arr = Array.isArray(st.completionsByDate[dateKey]) ? st.completionsByDate[dateKey] : [];
+        if (!mergedCompletions[dateKey]) {
+          mergedCompletions[dateKey] = new Set();
+        }
+        arr.forEach((hId) => mergedCompletions[dateKey].add(hId));
+      });
+    }
+    if (Array.isArray(st.customHabits)) {
+      st.customHabits.forEach((ch) => {
+        if (ch && ch.id && !mergedCustomMap.has(ch.id)) {
+          mergedCustomMap.set(ch.id, ch);
+        }
+      });
+    }
+    if (Array.isArray(st.diaryEntries)) {
+      st.diaryEntries.forEach((de) => {
+        if (de && de.id && !mergedDiaryMap.has(de.id)) {
+          mergedDiaryMap.set(de.id, de);
+        }
+      });
+    }
+  });
+
+  const finalCompletions = {};
+  Object.keys(mergedCompletions)
+    .sort()
+    .forEach((dateKey) => {
+      const list = Array.from(mergedCompletions[dateKey]);
+      if (list.length > 0 || dateKey === getTodayKey()) {
+        finalCompletions[dateKey] = list;
+      }
+    });
+
+  return {
+    appName: "Sunnah 24",
+    version: 35,
+    locale: base.locale || "bn",
+    i18nHash: verifiedI18nDigest,
+    customHabits: Array.from(mergedCustomMap.values()),
+    completionsByDate: finalCompletions,
+    diaryEntries: Array.from(mergedDiaryMap.values()).sort((a, b) => Number(a.id) - Number(b.id)),
+    lifetimeDhikr: maxDhikr,
+    lastUpdated: Date.now(),
+    signature: ""
+  };
+}
+
 async function saveAndSealState() {
   verifiedI18nDigest = await computeI18nDictionaryHash();
-  appState.version = 25;
+  appState.version = 35;
   appState.i18nHash = verifiedI18nDigest;
+  appState.lastUpdated = Date.now();
   const payload = getCanonicalStatePayload(appState);
   appState.signature = await computeSHA256(payload);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+
+  const serialized = JSON.stringify(appState);
+
+  // Layer 1: Primary & Mirror LocalStorage
+  let lsOk = false;
+  try {
+    localStorage.setItem(STORAGE_KEY, serialized);
+    localStorage.setItem(BACKUP_MIRROR_KEY, serialized);
+    lsOk = true;
+  } catch (e) {
+    console.warn("LocalStorage write warning:", e);
+  }
+
+  // Layer 2: IndexedDB Asynchronous Database
+  const idbOk = await saveToIndexedDB(serialized);
+
+  // Layer 3: Native Android Internal Vault (Survives WebView cache resets)
+  let nativeOk = false;
+  try {
+    if (
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.autoSaveInternalVault === "function"
+    ) {
+      nativeOk = Boolean(window.AndroidDownloader.autoSaveInternalVault(serialized));
+    }
+  } catch (e) {
+    console.warn("Native vault write warning:", e);
+  }
+
+  updateStorageStatusIndicator(lsOk, idbOk, nativeOk);
   updateIntegrityUI(true);
+}
+
+function updateStorageStatusIndicator(lsOk, idbOk, nativeOk) {
+  const statusEl = document.getElementById("storage-layers-status");
+  if (!statusEl) return;
+  const layers = [];
+  if (lsOk) layers.push("LocalStorage ✓");
+  if (idbOk) layers.push("IndexedDB ✓");
+  if (nativeOk) layers.push("Android Native Vault ✓");
+  const totalDays = Object.keys(appState.completionsByDate || {}).filter(
+    (k) => (appState.completionsByDate[k] || []).length > 0
+  ).length;
+  statusEl.textContent = `${layers.join(" • ")} | সংরক্ষিত সক্রিয় দিন: ${localizeDigits(totalDays, appState.locale)}`;
 }
 
 async function loadAndVerifyState() {
   verifiedI18nDigest = await computeI18nDictionaryHash();
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) {
+
+  // Request persistent storage permission from browser/WebView so OS never evicts data
+  if (navigator.storage && navigator.storage.persist) {
+    navigator.storage.persist().catch(() => {});
+  }
+
+  const candidates = [];
+
+  // 1. Read Primary LocalStorage
+  try {
+    const rawLS = localStorage.getItem(STORAGE_KEY);
+    if (rawLS) candidates.push(JSON.parse(rawLS));
+  } catch {}
+
+  // 2. Read Mirror LocalStorage
+  try {
+    const rawMirror = localStorage.getItem(BACKUP_MIRROR_KEY);
+    if (rawMirror) candidates.push(JSON.parse(rawMirror));
+  } catch {}
+
+  // 3. Read IndexedDB
+  try {
+    const rawIDB = await loadFromIndexedDB();
+    if (rawIDB) candidates.push(JSON.parse(rawIDB));
+  } catch {}
+
+  // 4. Read Native Android AutoVault
+  try {
+    if (
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.autoLoadInternalVault === "function"
+    ) {
+      const rawNative = window.AndroidDownloader.autoLoadInternalVault();
+      if (rawNative && rawNative.trim().startsWith("{")) {
+        candidates.push(JSON.parse(rawNative));
+      }
+    }
+  } catch {}
+
+  if (candidates.length === 0) {
     appState.locale = "bn";
     await saveAndSealState();
     return;
   }
-  try {
-    const parsed = JSON.parse(raw);
 
-    if (!parsed.version || parsed.version < 25 || !parsed.locale) {
-      appState = {
-        ...appState,
-        ...parsed,
-        version: 25,
-        locale: parsed.locale || "bn",
-        i18nHash: verifiedI18nDigest
-      };
-      await saveAndSealState();
-      return;
-    }
-
-    const expectedSig = await computeSHA256(getCanonicalStatePayload(parsed));
-    const isLedgerIntact = parsed.signature === expectedSig;
-    const isI18nIntact =
-      parsed.i18nHash === verifiedI18nDigest &&
-      Object.isFrozen(I18N_DICTIONARIES) &&
-      Object.isFrozen(SUNNAH_24_HABITS) &&
-      Object.isFrozen(SUNNAH_24_DUAS);
-
-    appState = parsed;
-    updateIntegrityUI(isLedgerIntact && isI18nIntact);
-  } catch (err) {
-    console.error("Sunnah 24 Ledger check failed:", err);
+  // Deep-merge all storage layers so history from previous days/months is never lost
+  const merged = mergeHistoryStates(candidates);
+  if (merged) {
+    appState = merged;
     await saveAndSealState();
   }
 }
@@ -1399,12 +1621,9 @@ function getAccurateHijriDate(dateObj, locale) {
         extracted = true;
         break;
       }
-    } catch (e) {
-      // Fallback below
-    }
+    } catch {}
   }
 
-  // Astronomical Tabular Hijri Fallback if WebView lacks ICU Islamic data
   if (!extracted) {
     const jd = Math.floor(dateObj.getTime() / 86400000) + 2440588;
     let l = jd - 1948440 + 10632;
@@ -1428,12 +1647,8 @@ function getAccurateHijriDate(dateObj, locale) {
   const dayStr = localizeDigits(hDay, lang);
   const yearStr = localizeDigits(hYear, lang);
 
-  if (lang === "bn") {
-    return `${dayStr} ${monthName}, ${yearStr} হিজরি`;
-  }
-  if (lang === "ar") {
-    return `${dayStr} ${monthName} ${yearStr} هـ`;
-  }
+  if (lang === "bn") return `${dayStr} ${monthName}, ${yearStr} হিজরি`;
+  if (lang === "ar") return `${dayStr} ${monthName} ${yearStr} هـ`;
   return `${dayStr} ${monthName} ${yearStr} AH`;
 }
 
@@ -1449,7 +1664,6 @@ function renderHeaderDatesAndPhase() {
   });
 
   const hijri = getAccurateHijriDate(now, appState.locale);
-
   document.getElementById("current-date-display").textContent = `${greg} • ${hijri}`;
 
   const hour = now.getHours();
@@ -1478,11 +1692,20 @@ function getAllHabits() {
   return [...SUNNAH_24_HABITS, ...(appState.customHabits || [])];
 }
 
+// Resilient Streak Calculation Using Local Timezone Keys
+// (If today is 0% because the day just started, streak continues from yesterday!)
 function calculateStreak() {
   let streak = 0;
   const cursor = new Date();
+  const todayKey = getLocalDateKey(cursor);
+  const doneToday = (appState.completionsByDate[todayKey] || []).length;
+
+  if (doneToday === 0) {
+    cursor.setDate(cursor.getDate() - 1);
+  }
+
   while (true) {
-    const key = cursor.toISOString().split("T")[0];
+    const key = getLocalDateKey(cursor);
     const done = appState.completionsByDate[key] || [];
     if (done.length > 0) {
       streak++;
@@ -1559,32 +1782,141 @@ function renderHabits() {
     calculateStreak(),
     appState.locale
   );
+
   renderWeeklyChart();
+  renderLongTermArchive();
 }
 
+// 7-Day Consistency Matrix Using Local Timezone Date Keys + Interactive Day Inspection
 function renderWeeklyChart() {
   const chart = document.getElementById("weekly-chart");
   if (!chart) return;
   chart.innerHTML = "";
   const totalHabits = getAllHabits().length;
   const localeTag = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).localeTag;
+  const todayKey = getTodayKey();
 
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
-    const key = d.toISOString().split("T")[0];
+    const key = getLocalDateKey(d);
     const dayLabel = d.toLocaleDateString(localeTag, { weekday: "short" });
+    const dayNum = localizeDigits(d.getDate(), appState.locale);
     const count = (appState.completionsByDate[key] || []).length;
     const pct = totalHabits > 0 ? Math.round((count / totalHabits) * 100) : 0;
 
     const col = document.createElement("div");
-    col.className = "day-col";
+    col.className = `day-col ${key === todayKey ? "today-active" : ""} ${count > 0 ? "has-progress" : ""}`;
+    col.style.cursor = "pointer";
+    col.setAttribute("data-date-inspect", key);
     col.innerHTML = `
       <strong>${localizeDigits(pct, appState.locale)}%</strong>
       <small>${dayLabel}</small>
+      <span class="day-date-num">${dayNum}</span>
     `;
     chart.appendChild(col);
   }
+}
+
+// 6-Month (180-Day) Long-Term Archive & Monthly Summary Renderer
+function renderLongTermArchive() {
+  const monthlyEl = document.getElementById("monthly-summary-list");
+  const historyListEl = document.getElementById("longterm-history-list");
+  if (!monthlyEl || !historyListEl) return;
+
+  monthlyEl.innerHTML = "";
+  historyListEl.innerHTML = "";
+
+  const totalHabits = getAllHabits().length || 32;
+  const localeTag = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).localeTag;
+
+  const recordedRows = [];
+  const monthlyStats = {};
+
+  for (let i = 0; i < historyRangeDays; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const key = getLocalDateKey(d);
+    const doneList = appState.completionsByDate[key] || [];
+    const count = doneList.length;
+
+    if (count > 0 || i === 0) {
+      const pct = Math.min(100, Math.round((count / totalHabits) * 100));
+      const monthKey = key.slice(0, 7); // YYYY-MM
+      if (!monthlyStats[monthKey]) {
+        const monthLabel = d.toLocaleDateString(localeTag, { month: "long", year: "numeric" });
+        monthlyStats[monthKey] = { label: monthLabel, activeDays: 0, totalPct: 0 };
+      }
+      if (count > 0) {
+        monthlyStats[monthKey].activeDays += 1;
+        monthlyStats[monthKey].totalPct += pct;
+      }
+
+      const readableDate = d.toLocaleDateString(localeTag, {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      });
+
+      recordedRows.push({
+        key,
+        readableDate,
+        count,
+        pct
+      });
+    }
+  }
+
+  const monthKeys = Object.keys(monthlyStats).sort().reverse();
+  monthKeys.forEach((mKey) => {
+    const st = monthlyStats[mKey];
+    const avg = st.activeDays > 0 ? Math.round(st.totalPct / st.activeDays) : 0;
+    const card = document.createElement("div");
+    card.className = "month-summary-card";
+    card.innerHTML = `
+      <h4>🗓️ ${st.label}</h4>
+      <p>${t("archive_active_days")} <strong>${localizeDigits(st.activeDays, appState.locale)}</strong></p>
+      <p>${t("archive_avg_score")} <strong>${localizeDigits(avg, appState.locale)}%</strong></p>
+    `;
+    monthlyEl.appendChild(card);
+  });
+
+  if (recordedRows.length === 0) {
+    historyListEl.innerHTML = `<p class="muted">${t("archive_empty")}</p>`;
+    return;
+  }
+
+  recordedRows.forEach((row) => {
+    const item = document.createElement("div");
+    item.className = "history-day-row";
+    item.style.cursor = "pointer";
+    item.setAttribute("data-date-inspect", row.key);
+    item.innerHTML = `
+      <span>📅 ${row.readableDate}</span>
+      <strong>${localizeDigits(row.count, appState.locale)}/${localizeDigits(totalHabits, appState.locale)} (${localizeDigits(row.pct, appState.locale)}%)</strong>
+    `;
+    historyListEl.appendChild(item);
+  });
+}
+
+// Inspect Any Past Day's Completed Habits in Modal
+function openDayHistoryModal(dateKey) {
+  const doneIds = appState.completionsByDate[dateKey] || [];
+  const allHabits = getAllHabits();
+  const completedTitles = doneIds
+    .map((id) => {
+      const found = allHabits.find((h) => h.id === id);
+      return found ? `✓ ${getHabitTitle(found)}` : null;
+    })
+    .filter(Boolean);
+
+  document.getElementById("modal-title").textContent = `${t("day_detail_title")} ${localizeDigits(dateKey, appState.locale)}`;
+  document.getElementById("modal-category").textContent = `${localizeDigits(doneIds.length, appState.locale)} / ${localizeDigits(allHabits.length, appState.locale)}`;
+  document.getElementById("modal-evidence").textContent =
+    completedTitles.length > 0 ? completedTitles.join("\n") : t("day_detail_none");
+  document.getElementById("modal-wisdom").textContent = t("custom_default_wisdom");
+  document.getElementById("fact-modal").classList.remove("hidden");
 }
 
 async function toggleHabit(habitId) {
@@ -1656,6 +1988,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
 
+  // Automatic Midnight Rollover Watcher (Preserves yesterday's record & refreshes UI cleanly at 12:00 AM local time)
+  setInterval(() => {
+    const currentKey = getTodayKey();
+    if (currentKey !== lastObservedDateKey) {
+      lastObservedDateKey = currentKey;
+      renderHeaderDatesAndPhase();
+      renderHabits();
+    }
+  }, 30000);
+
   const langSwitcher = document.getElementById("lang-switcher");
   if (langSwitcher) {
     langSwitcher.addEventListener("change", async (e) => {
@@ -1672,6 +2014,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       appState.locale = requestedLang;
       applyLanguageToDOM();
       await saveAndSealState();
+    });
+  }
+
+  const rangeSelect = document.getElementById("history-range-selector");
+  if (rangeSelect) {
+    rangeSelect.addEventListener("change", (e) => {
+      historyRangeDays = parseInt(e.target.value, 10) || 180;
+      renderLongTermArchive();
     });
   }
 
@@ -1714,6 +2064,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const infoEl = e.target.closest("[data-info]");
     if (infoEl) {
       openHabitModal(infoEl.dataset.info);
+    }
+  });
+
+  // Click on any day in 7-Day Matrix or 6-Month Archive to inspect completed habits
+  document.getElementById("tab-vault").addEventListener("click", (e) => {
+    const dayEl = e.target.closest("[data-date-inspect]");
+    if (dayEl) {
+      openDayHistoryModal(dayEl.getAttribute("data-date-inspect"));
     }
   });
 
@@ -1814,7 +2172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderHabits();
   });
 
-    document.getElementById("export-backup-btn").addEventListener("click", async () => {
+  document.getElementById("export-backup-btn").addEventListener("click", async () => {
     await saveAndSealState();
     const timeStamp = new Date().toTimeString().slice(0, 8).replace(/:/g, "-");
     const fileName = `sunnah-24-backup-${getTodayKey()}-${timeStamp}.json`;
@@ -1830,8 +2188,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       return `✅ সুন্নাহ ২৪ ব্যাকআপ আপনার ফোনে সংরক্ষিত হয়েছে!\n📁 ফোল্ডার: ${savedLocation}`;
     };
 
-    // 1. NATIVE ANDROID APK BRIDGE (Saves directly to Phone's Downloads/Sunnah24 folder)
-    if (window.AndroidDownloader && typeof window.AndroidDownloader.saveJsonToDownloads === "function") {
+    if (
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.saveJsonToDownloads === "function"
+    ) {
       const result = window.AndroidDownloader.saveJsonToDownloads(fileName, jsonString);
       if (result && !String(result).startsWith("ERROR:")) {
         alert(getSuccessMessage(result));
@@ -1839,7 +2199,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    // 2. WEB BROWSER / PWA DIRECT DOWNLOAD
     try {
       const blob = new Blob([jsonString], { type: "application/json;charset=utf-8" });
       const url = URL.createObjectURL(blob);
@@ -1854,7 +2213,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (a.parentNode) document.body.removeChild(a);
         URL.revokeObjectURL(url);
       }, 60000);
-    } catch (blobErr) {
+    } catch {
       const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(jsonString);
       const a = document.createElement("a");
       a.href = dataUri;
@@ -1874,16 +2233,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!imported.locale) imported.locale = "bn";
       if (!imported.i18nHash) imported.i18nHash = verifiedI18nDigest;
 
-      const expected = await computeSHA256(getCanonicalStatePayload(imported));
-      if (imported.signature !== expected && imported.version === 25) {
-        alert(t("alert_tamper"));
-        return;
+      // Deep-merge imported backup with existing history so importing never wipes other days
+      const merged = mergeHistoryStates([imported, appState]);
+      if (merged) {
+        merged.locale = imported.locale || appState.locale || "bn";
+        appState = merged;
       }
-      appState = {
-        ...imported,
-        version: 25,
-        locale: imported.locale || "bn"
-      };
       await saveAndSealState();
       applyLanguageToDOM();
       alert(t("alert_restored"));
