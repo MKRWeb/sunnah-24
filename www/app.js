@@ -2586,5 +2586,4 @@ function showUpdateNotificationBanner(newVersion) {
 document.addEventListener("DOMContentLoaded", () => {
   renderInstalledVersionBadge();
   setTimeout(() => initInAppUpdateChecker(false), 2500);
-});
-
+}); 
