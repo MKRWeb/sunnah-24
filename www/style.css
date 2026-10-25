@@ -507,6 +507,16 @@ body {
   border-radius: 10px;
   padding: 8px 4px;
   text-align: center;
+  transition: transform 0.15s ease;
+}
+
+.day-col.today-active {
+  border-color: var(--accent-gold);
+  background: rgba(234, 179, 8, 0.14);
+}
+
+.day-col.has-progress {
+  border-color: var(--accent-emerald);
 }
 
 .day-col strong {
@@ -516,8 +526,73 @@ body {
 }
 
 .day-col small {
-  font-size: 0.68rem;
+  display: block;
+  font-size: 0.66rem;
   color: var(--text-muted);
+}
+
+.day-col .day-date-num {
+  font-size: 0.62rem;
+  color: #a7f3d0;
+  margin-top: 2px;
+}
+
+/* 6-Month Archive & Monthly Summary Styles */
+.archive-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.monthly-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.month-summary-card {
+  background: rgba(6, 78, 59, 0.25);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.month-summary-card h4 {
+  font-size: 0.8rem;
+  color: var(--accent-gold);
+  margin-bottom: 3px;
+}
+
+.month-summary-card p {
+  font-size: 0.73rem;
+  color: var(--text-primary);
+}
+
+.longterm-history-list {
+  max-height: 270px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 4px;
+}
+
+.history-day-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.26);
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  border-radius: 10px;
+  font-size: 0.78rem;
+}
+
+.history-day-row strong {
+  color: var(--accent-gold);
 }
 
 .btn-primary,
