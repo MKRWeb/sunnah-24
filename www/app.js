@@ -2500,43 +2500,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initWebsiteOnlyApkInstaller();
 });
 
+
 // ============================================================================
-// HASSLE-FREE IN-APP APK UPDATE CHECKER & OTA NOTIFICATION
-// ============================================================================
-const CURRENT_APP_VERSION = "v3.6"; // Bump this whenever you release a new version
-
-function initInAppUpdateChecker() {
-  // Only run inside the native APK / Android wrapper
-  const isInsideNativeApk =
-    Boolean(window.AndroidDownloader) ||
-    Boolean(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) ||
-    window.location.protocol === "capacitor:" ||
-    window.location.protocol === "file:";
-
-  if (!isInsideNativeApk) return;
-
-  // Check GitHub Releases for latest version
-  fetch("https://api.github.com/repos/MKRWeb/sunnah-24/releases/latest", { cache: "no-store" })
-    .then((res) => (res.ok ? res.json() : null))
-    .then((release) => {
-      if (!release || !release.tag_name) return;
-      const latestTag = release.tag_name; // e.g. "v3.7"
-
-      if (latestTag !== CURRENT_APP_VERSION) {
-        // Find the .apk asset download URL
-        const apkAsset = (release.assets || []).find(
-          (a) => a.name && a.name.toLowerCase().endsWith(".apk")
-        );
-        const downloadUrl = apkAsset ? apkAsset.browser_download_url : `https://github.com/MKRWeb/sunnah-24/releases/download/${latestTag}/Sunnah-24-Release-Signed.apk`;
-
-        showUpdateNotificationBanner(latestTag, downloadUrl);
-      }
-    })
-    .catch(() => {});
-}
-
-   // ============================================================================
-// HASSLE-FREE IN-APP APK UPDATE CHECKER & AUTO LOCAL-APK INSTALLER (SNAPTUBE STYLE)
+// HASSLE-FREE IN-APP APK UPDATE CHECKER & AUTO LOCAL-APK INSTALLER (v4.0)
 // ============================================================================
 let latestRemoteApkUrl = "";
 let latestRemoteVersionTag = "";
@@ -2551,17 +2517,24 @@ function getInstalledAppVersionTag() {
       if (nativeVer) return nativeVer.startsWith("v") ? nativeVer : `v${nativeVer}`;
     }
   } catch {}
-  return "v3.8.0";
+  return "v4.0.0";
 }
 
-function initInAppUpdateChecker() {
+function renderInstalledVersionBadge() {
+  const badge = document.getElementById("integrity-badge");
+  if (badge && window.AndroidDownloader) {
+    badge.textContent = `🛡️ S24 • ${getInstalledAppVersionTag()}`;
+  }
+}
+
+function initInAppUpdateChecker(manualTrigger = false) {
   const isInsideNativeApk =
     Boolean(window.AndroidDownloader) ||
     Boolean(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) ||
     window.location.protocol === "capacitor:" ||
     window.location.protocol === "file:";
 
-  if (!isInsideNativeApk) return;
+  if (!isInsideNativeApk && !manualTrigger) return;
 
   const installedTag = getInstalledAppVersionTag();
 
@@ -2580,7 +2553,6 @@ function initInAppUpdateChecker() {
         latestRemoteApkUrl = apkAsset.browser_download_url;
         latestRemoteVersionTag = latestTag;
 
-        // Check if this EXACT version APK is already downloaded on the phone
         let alreadyOnDevice = false;
         if (
           window.AndroidDownloader &&
@@ -2590,13 +2562,20 @@ function initInAppUpdateChecker() {
         }
 
         showUpdateNotificationBanner(latestTag, alreadyOnDevice);
+      } else if (manualTrigger) {
+        alert(
+          appState.locale === "bn"
+            ? `✅ আলহামদুলিল্লাহ! আপনি সর্বশেষ সংস্করণ (${installedTag}) ব্যবহার করছেন।`
+            : `✅ Alhamdulillah! You are on the latest version (${installedTag}).`
+        );
       }
     })
     .catch(() => {});
 }
 
 function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
-  if (document.getElementById("s24-update-banner")) return;
+  const existing = document.getElementById("s24-update-banner");
+  if (existing) existing.remove();
 
   const banner = document.createElement("div");
   banner.id = "s24-update-banner";
@@ -2649,7 +2628,6 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
     const btn = document.getElementById("trigger-native-update-btn");
     const statusEl = document.getElementById("s24-update-status");
 
-    // 1. If the APK is ALREADY on the phone -> Open Android Package Installer directly (NO RE-DOWNLOAD!)
     if (banner.getAttribute("data-cached") === "true") {
       if (
         window.AndroidDownloader &&
@@ -2667,7 +2645,6 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
       }
     }
 
-    // 2. Otherwise download once to local phone storage AND auto-trigger installer at 100%
     if (
       window.AndroidDownloader &&
       typeof window.AndroidDownloader.downloadAndAutoInstallVersionApk === "function"
@@ -2687,7 +2664,6 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
       return;
     }
 
-    // 3. Legacy APK bridge fallback (if user is running v3.7/v3.8 APK)
     if (
       window.AndroidDownloader &&
       typeof window.AndroidDownloader.downloadAndInstallApk === "function"
@@ -2699,7 +2675,6 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
   });
 }
 
-// Live Progress Callback from Native Android DownloadManager
 window.onSunnahApkDownloadProgress = function (percent, statusText) {
   const btn = document.getElementById("trigger-native-update-btn");
   const statusEl = document.getElementById("s24-update-status");
@@ -2731,7 +2706,8 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(initInAppUpdateChecker, 2500);
+  renderInstalledVersionBadge();
+  setTimeout(() => initInAppUpdateChecker(false), 2500);
 });
 
-  
+    
