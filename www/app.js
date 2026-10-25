@@ -2433,3 +2433,69 @@ document.addEventListener("DOMContentLoaded", () => {
     window.handleSunnahBackNavigation();
   });
 });
+
+// ============================================================================
+// WEBSITE-ONLY 1-CLICK LATEST APK INSTALLER ENGINE (HIDDEN INSIDE APK)
+// ============================================================================
+function initWebsiteOnlyApkInstaller() {
+  const apkBtn = document.getElementById("web-apk-download-btn");
+  if (!apkBtn) return;
+
+  // 1. Detect if running inside the installed Android APK / Capacitor Native Shell
+  const isInsideNativeApk =
+    Boolean(window.AndroidDownloader) ||
+    Boolean(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) ||
+    window.location.protocol === "capacitor:" ||
+    window.location.protocol === "file:" ||
+    (window.location.hostname === "localhost" && Boolean(window.Capacitor));
+
+  // If inside the APK, keep the button strictly hidden
+  if (isInsideNativeApk) {
+    apkBtn.classList.add("hidden");
+    return;
+  }
+
+  // 2. Running on the Website (https://mkrweb.github.io/sunnah-24/) -> Show Button!
+  apkBtn.classList.remove("hidden");
+
+  // Localize button text automatically when language changes
+  const updateApkButtonLabel = () => {
+    const span = apkBtn.querySelector("span");
+    if (!span) return;
+    if (appState.locale === "ar") {
+      span.textContent = "تحميل التطبيق (APK)";
+    } else if (appState.locale === "en") {
+      span.textContent = "Install App (APK)";
+    } else {
+      span.textContent = "অ্যাপ ইনস্টল (APK)";
+    }
+  };
+
+  updateApkButtonLabel();
+  const langSwitcher = document.getElementById("lang-switcher");
+  if (langSwitcher) {
+    langSwitcher.addEventListener("change", updateApkButtonLabel);
+  }
+
+  // 3. Dynamically fetch the exact latest .apk asset URL from GitHub Releases API
+  // so 1-click download always grabs the newest APK regardless of version number
+  fetch("https://api.github.com/repos/MKRWeb/sunnah-24/releases/latest")
+    .then((res) => (res.ok ? res.json() : null))
+    .then((releaseData) => {
+      if (!releaseData || !Array.isArray(releaseData.assets)) return;
+      const apkAsset = releaseData.assets.find(
+        (asset) => asset.name && asset.name.toLowerCase().endsWith(".apk")
+      );
+      if (apkAsset && apkAsset.browser_download_url) {
+        apkBtn.href = apkAsset.browser_download_url;
+        apkBtn.setAttribute("title", `Download ${apkAsset.name}`);
+      }
+    })
+    .catch(() => {
+      // Fallback stays on /releases/latest/download/Sunnah-24-v3.6-Enterprise-Signed.apk
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initWebsiteOnlyApkInstaller();
+});
