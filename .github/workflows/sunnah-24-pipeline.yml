@@ -1,4 +1,4 @@
-name: Sunnah 24 — Enterprise CI/CD & Signed APK Release Pipeline
+name: Sunnah 24 — Enterprise CI/CD, GitHub Pages & Signed APK Pipeline
 
 on:
   push:
@@ -9,11 +9,49 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
+  deploy-pages:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Sync Root Web Files into www Directory
+        run: |
+          mkdir -p www
+          for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
+            if [ -f "$f" ]; then
+              cp -f "$f" www/
+            fi
+          done
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Web App Artifact (www)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './www'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
   build-and-release-apk:
     name: Build, Verify & Release Sunnah 24 Signed APK
     runs-on: ubuntu-latest
+    env:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
     steps:
       - name: 1. Checkout Repository
@@ -28,9 +66,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: 3. Verify Web Assets & Cryptographic Integrity
+      - name: 3. Sync & Verify Web Assets
         run: |
-          echo "Verifying Sunnah 24 Enterprise Web Assets..."
+          mkdir -p www
+          for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
+            if [ -f "$f" ]; then
+              cp -f "$f" www/
+            fi
+          done
           test -f www/index.html
           test -f www/style.css
           test -f www/app.js
@@ -42,7 +85,7 @@ jobs:
           node --check www/sw.js
           echo "✅ All Sunnah 24 assets and JS syntax verified!"
 
-      - name: 4. Build Capacitor Android Bridge, Generate Custom APK Icons & Inject Native Downloader
+      - name: 4. Build Capacitor Android Bridge, Custom APK Icons & Native Multi-Month Vault
         run: |
           npm install
           if [ ! -d "android" ]; then
@@ -70,14 +113,19 @@ jobs:
             rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$folder/ic_launcher_foreground.png"
           done
 
-          # Remove default Capacitor adaptive vector XMLs that override our PNGs
           rm -f "$RES_DIR/drawable/ic_launcher_background.xml"
           rm -f "$RES_DIR/drawable/ic_launcher_foreground.xml"
           rm -f "$RES_DIR/drawable-v24/ic_launcher_foreground.xml"
           rm -rf "$RES_DIR/mipmap-anydpi-v26"
-          echo "✅ Custom Sunnah 24 APK Launcher Icons generated from www/icon.svg!"
+          echo "✅ Custom Sunnah 24 APK Launcher Icons generated!"
 
-          # 4C. Inject Native Android MediaStore Downloads Bridge into MainActivity.java
+          # 4C. Enable Android Auto-Backup in AndroidManifest.xml so OS preserves data
+          MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
+          if [ -f "$MANIFEST_FILE" ]; then
+            sed -i 's/android:allowBackup="false"/android:allowBackup="true"/g' "$MANIFEST_FILE" || true
+          fi
+
+          # 4D. Inject Native Android Internal Vault + MediaStore Downloads Bridge into MainActivity.java
           MAIN_ACT=$(find android/app/src/main/java -name "MainActivity.java" | head -n 1)
           if [ -n "$MAIN_ACT" ]; then
             cat << 'EOF' > "$MAIN_ACT"
@@ -91,9 +139,12 @@ jobs:
           import android.os.Environment;
           import android.provider.MediaStore;
           import android.webkit.JavascriptInterface;
+          import android.webkit.WebSettings;
           import android.widget.Toast;
           import com.getcapacitor.BridgeActivity;
+          import java.io.ByteArrayOutputStream;
           import java.io.File;
+          import java.io.FileInputStream;
           import java.io.FileOutputStream;
           import java.io.OutputStream;
           import java.nio.charset.StandardCharsets;
@@ -103,11 +154,48 @@ jobs:
               public void onCreate(Bundle savedInstanceState) {
                   super.onCreate(savedInstanceState);
                   if (this.bridge != null && this.bridge.getWebView() != null) {
+                      WebSettings ws = this.bridge.getWebView().getSettings();
+                      ws.setDomStorageEnabled(true);
+                      ws.setDatabaseEnabled(true);
                       this.bridge.getWebView().addJavascriptInterface(new WebAppDownloader(), "AndroidDownloader");
                   }
               }
 
               public class WebAppDownloader {
+                  // Automatic Multi-Month Internal Native File Vault (Survives WebView cache clears)
+                  @JavascriptInterface
+                  public boolean autoSaveInternalVault(String jsonContent) {
+                      try {
+                          File vaultFile = new File(getFilesDir(), "Sunnah24_AutoVault_v35.json");
+                          try (FileOutputStream fos = new FileOutputStream(vaultFile)) {
+                              fos.write(jsonContent.getBytes(StandardCharsets.UTF_8));
+                              fos.flush();
+                          }
+                          return true;
+                      } catch (Exception e) {
+                          return false;
+                      }
+                  }
+
+                  @JavascriptInterface
+                  public String autoLoadInternalVault() {
+                      try {
+                          File vaultFile = new File(getFilesDir(), "Sunnah24_AutoVault_v35.json");
+                          if (!vaultFile.exists()) return "";
+                          try (FileInputStream fis = new FileInputStream(vaultFile);
+                               ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+                              byte[] buffer = new byte[4096];
+                              int read;
+                              while ((read = fis.read(buffer)) != -1) {
+                                  bos.write(buffer, 0, read);
+                              }
+                              return bos.toString("UTF-8");
+                          }
+                      } catch (Exception e) {
+                          return "";
+                      }
+                  }
+
                   @JavascriptInterface
                   public String saveJsonToDownloads(String filename, String jsonContent) {
                       try {
@@ -167,30 +255,48 @@ jobs:
               }
           }
           EOF
-            echo "✅ Injected Native AndroidDownloader bridge into $MAIN_ACT"
+            echo "✅ Injected Native Multi-Month Vault + AndroidDownloader bridge into $MAIN_ACT"
           fi
 
-      - name: 5. Compile Release & Debug APKs via Gradle
+      - name: 5. Compile Release & Debug APKs + Play Store Bundle via Gradle
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug assembleRelease
+          ./gradlew assembleDebug assembleRelease bundleRelease
 
-      - name: 6. Sign Release APK for Direct Installation & Distribution
+      - name: 6. Sign Release APK & AAB for Direct Installation
         run: |
-          keytool -genkey -v -keystore sunnah24-release.keystore \
-            -alias sunnah24 -keyalg RSA -keysize 2048 -validity 10000 \
-            -storepass sunnah24pass -keypass sunnah24pass \
-            -dname "CN=MKRWeb, OU=Sunnah24, O=MKRWeb, L=Dhaka, S=Dhaka, C=BD"
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 --decode > sunnah24-release.keystore
+            KS_PASS="$KEYSTORE_PASSWORD"
+            K_ALIAS="$KEY_ALIAS"
+            K_PASS="$KEY_PASSWORD"
+          else
+            KS_PASS="sunnah24pass"
+            K_ALIAS="sunnah24"
+            K_PASS="sunnah24pass"
+            keytool -genkey -v -keystore sunnah24-release.keystore \
+              -alias "$K_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 \
+              -storepass "$KS_PASS" -keypass "$K_PASS" \
+              -dname "CN=MKRWeb, OU=Sunnah24, O=MKRWeb, L=Rajshahi, S=Rajshahi, C=BD"
+          fi
 
           UNSIGNED_APK="android/app/build/outputs/apk/release/app-release-unsigned.apk"
-          SIGNED_APK="Sunnah-24-v2.8-Enterprise-Signed.apk"
+          SIGNED_APK="Sunnah-24-v3.5-Enterprise-Signed.apk"
 
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
           $BUILD_TOOLS_DIR/zipalign -v -p 4 "$UNSIGNED_APK" app-release-aligned.apk
           $BUILD_TOOLS_DIR/apksigner sign --ks sunnah24-release.keystore \
-            --ks-key-alias sunnah24 --ks-pass pass:sunnah24pass \
-            --key-pass pass:sunnah24pass --out "$SIGNED_APK" app-release-aligned.apk
+            --ks-key-alias "$K_ALIAS" --ks-pass "pass:$KS_PASS" \
+            --key-pass "pass:$K_PASS" --out "$SIGNED_APK" app-release-aligned.apk
+
+          AAB_PATH=$(find android/app/build/outputs/bundle/release -name "*.aab" | head -n 1)
+          if [ -n "$AAB_PATH" ]; then
+            jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+              -keystore sunnah24-release.keystore -storepass "$KS_PASS" -keypass "$K_PASS" \
+              "$AAB_PATH" "$K_ALIAS"
+            cp "$AAB_PATH" ./Sunnah-24-v3.5-PlayStore-Signed.aab
+          fi
           echo "✅ Signed APK ready: $SIGNED_APK"
 
       - name: 7. Upload Signed APK as Build Artifact
@@ -198,21 +304,21 @@ jobs:
         with:
           name: Sunnah-24-Enterprise-APK
           path: |
-            Sunnah-24-v2.8-Enterprise-Signed.apk
-            android/app/build/outputs/apk/debug/app-debug.apk
+            Sunnah-24-v3.5-Enterprise-Signed.apk
+            Sunnah-24-v3.5-PlayStore-Signed.aab
 
       - name: 8. Publish Automatic GitHub Release with APK
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v2.8.${{ github.run_number }}
-          name: "☪️ Sunnah 24 v2.8.${{ github.run_number }} — Enterprise Prophetic Lifestyle APK"
+          tag_name: v3.5.${{ github.run_number }}
+          name: "☪️ Sunnah 24 v3.5.${{ github.run_number }} — Multi-Month Vault & Persistent History APK"
           body: |
-            ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Enterprise Signed Android APK Release
-            - **Custom Sunnah 24 Logo:** High-DPI Android Launcher Icon compiled from `www/icon.svg`
-            - **Direct Device Backup:** Saves signed JSON directly to `Downloads/Sunnah24/` on Android
-            - **Default Language:** বাংলা (Bangla) + العربية (Arabic) + English
+            ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Enterprise Signed Android APK Release (v3.5)
+            - **১৯০+ দিনের অটোমেটিক হিস্ট্রি সংরক্ষণ (Triple-Redundant Vault):** LocalStorage + IndexedDB + Native Android Internal Storage (`Sunnah24_AutoVault_v35.json`)
+            - **Local Timezone Accuracy:** Fixes midnight UTC date reset bug so 7-Day Matrix and Streaks never reset prematurely
+            - **6-Month (180-Day) Interactive History Matrix & Monthly Summary**
             - **32 Authentic 24-Hour Prophetic Habits** & **12 Full Masnoon Duas**
-            - **100% Offline & SHA-256 Tamper-Proof Cryptographic Ledger**
           files: |
-            Sunnah-24-v2.8-Enterprise-Signed.apk
+            Sunnah-24-v3.5-Enterprise-Signed.apk
+            Sunnah-24-v3.5-PlayStore-Signed.aab
