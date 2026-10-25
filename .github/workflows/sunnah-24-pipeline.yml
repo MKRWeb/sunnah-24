@@ -85,7 +85,7 @@ jobs:
           node --check www/sw.js
           echo "✅ All Sunnah 24 assets and JS syntax verified!"
 
-      - name: 4. Build Capacitor Android Bridge, Custom APK Icons, Back-Button & Native Vault
+      - name: 4. Build Capacitor Android Bridge, Custom APK Icons & Native Installer Bridge
         run: |
           npm install
           if [ ! -d "android" ]; then
@@ -125,29 +125,51 @@ jobs:
             sed -i 's/android:allowBackup="false"/android:allowBackup="true"/g' "$MANIFEST_FILE" || true
           fi
 
-          # 4D. Inject Smart Back-Button + Native Multi-Month Vault + Downloads Bridge into MainActivity.java
+          # 4D. Inject FileProvider XML and Manifest Provider Declaration
+          XML_DIR="android/app/src/main/res/xml"
+          mkdir -p "$XML_DIR"
+          cat << 'EOF' > "$XML_DIR/file_paths.xml"
+          <?xml version="1.0" encoding="utf-8"?>
+          <paths xmlns:android="http://schemas.android.com/apk/res/android">
+              <external-cache-path name="external_cache_path" path="." />
+              <cache-path name="cache_path" path="." />
+          </paths>
+          EOF
+
+          if [ -f "$MANIFEST_FILE" ]; then
+            if ! grep -q "fileprovider" "$MANIFEST_FILE"; then
+              sed -i '/<\/application>/i \
+              <provider\
+                  android:name="androidx.core.content.FileProvider"\
+                  android:authorities="${applicationId}.fileprovider"\
+                  android:exported="false"\
+                  android:grantUriPermissions="true">\
+                  <meta-data\
+                      android:name="android.support.FILE_PROVIDER_PATHS"\
+                      android:resource="@xml/file_paths" />\
+              </provider>' "$MANIFEST_FILE"
+            fi
+          fi
+
+          # 4E. Inject Native APK Downloader & Auto-Installer Bridge into MainActivity.java
           MAIN_ACT=$(find android/app/src/main/java -name "MainActivity.java" | head -n 1)
           if [ -n "$MAIN_ACT" ]; then
             cat << 'EOF' > "$MAIN_ACT"
           package com.mkrweb.sunnah24;
 
-          import android.content.ContentResolver;
-          import android.content.ContentValues;
+          import android.content.Intent;
           import android.net.Uri;
           import android.os.Build;
           import android.os.Bundle;
-          import android.os.Environment;
-          import android.provider.MediaStore;
           import android.webkit.JavascriptInterface;
           import android.webkit.WebSettings;
           import android.widget.Toast;
           import com.getcapacitor.BridgeActivity;
-          import java.io.ByteArrayOutputStream;
           import java.io.File;
-          import java.io.FileInputStream;
           import java.io.FileOutputStream;
-          import java.io.OutputStream;
-          import java.nio.charset.StandardCharsets;
+          import java.io.InputStream;
+          import java.net.HttpURLConnection;
+          import java.net.URL;
 
           public class MainActivity extends BridgeActivity {
               @Override
@@ -161,116 +183,56 @@ jobs:
                   }
               }
 
-              @Override
-              public void onBackPressed() {
-                  if (this.bridge != null && this.bridge.getWebView() != null) {
-                      this.bridge.getWebView().evaluateJavascript(
-                          "(function() { return window.handleSunnahBackNavigation ? window.handleSunnahBackNavigation() : false; })();",
-                          value -> {
-                              if ("false".equals(value)) {
-                                  runOnUiThread(() -> MainActivity.super.onBackPressed());
-                              }
-                          }
-                      );
-                  } else {
-                      super.onBackPressed();
-                  }
-              }
-
               public class WebAppDownloader {
                   @JavascriptInterface
-                  public boolean autoSaveInternalVault(String jsonContent) {
-                      try {
-                          File vaultFile = new File(getFilesDir(), "Sunnah24_AutoVault_v35.json");
-                          try (FileOutputStream fos = new FileOutputStream(vaultFile)) {
-                              fos.write(jsonContent.getBytes(StandardCharsets.UTF_8));
-                              fos.flush();
-                          }
-                          return true;
-                      } catch (Exception e) {
-                          return false;
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public String autoLoadInternalVault() {
-                      try {
-                          File vaultFile = new File(getFilesDir(), "Sunnah24_AutoVault_v35.json");
-                          if (!vaultFile.exists()) return "";
-                          try (FileInputStream fis = new FileInputStream(vaultFile);
-                               ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-                              byte[] buffer = new byte[4096];
-                              int read;
-                              while ((read = fis.read(buffer)) != -1) {
-                                  bos.write(buffer, 0, read);
-                              }
-                              return bos.toString("UTF-8");
-                          }
-                      } catch (Exception e) {
-                          return "";
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public String saveJsonToDownloads(String filename, String jsonContent) {
-                      try {
-                          byte[] bytes = jsonContent.getBytes(StandardCharsets.UTF_8);
-                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                              ContentValues values = new ContentValues();
-                              values.put(MediaStore.Downloads.DISPLAY_NAME, filename);
-                              values.put(MediaStore.Downloads.MIME_TYPE, "application/json");
-                              values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/Sunnah24");
-                              ContentResolver resolver = getContentResolver();
-                              Uri uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
-                              if (uri != null) {
-                                  try (OutputStream os = resolver.openOutputStream(uri)) {
-                                      if (os != null) {
-                                          os.write(bytes);
-                                          os.flush();
-                                      }
-                                  }
-                                  runOnUiThread(() -> Toast.makeText(
-                                      MainActivity.this,
-                                      "✅ Saved: Downloads/Sunnah24/" + filename,
-                                      Toast.LENGTH_LONG
-                                  ).show());
-                                  return "Downloads/Sunnah24/" + filename;
-                              }
-                          } else {
-                              File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Sunnah24");
-                              if (!dir.exists()) dir.mkdirs();
-                              File file = new File(dir, filename);
-                              try (FileOutputStream fos = new FileOutputStream(file)) {
-                                  fos.write(bytes);
-                                  fos.flush();
-                              }
-                              runOnUiThread(() -> Toast.makeText(
-                                  MainActivity.this,
-                                  "✅ Saved: Downloads/Sunnah24/" + filename,
-                                  Toast.LENGTH_LONG
-                              ).show());
-                              return file.getAbsolutePath();
-                          }
-                      } catch (Exception e) {
+                  public void downloadAndInstallApk(String urlString) {
+                      runOnUiThread(() -> Toast.makeText(MainActivity.this, "⬇️ Downloading update...", Toast.LENGTH_SHORT).show());
+                      new Thread(() -> {
                           try {
-                              File fallbackDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-                              if (fallbackDir != null && !fallbackDir.exists()) fallbackDir.mkdirs();
-                              File fallbackFile = new File(fallbackDir, filename);
-                              try (FileOutputStream fos = new FileOutputStream(fallbackFile)) {
-                                  fos.write(jsonContent.getBytes(StandardCharsets.UTF_8));
-                                  fos.flush();
+                              URL url = new URL(urlString);
+                              HttpURLConnection c = (HttpURLConnection) url.openConnection();
+                              c.setRequestMethod("GET");
+                              c.setDoOutput(false);
+                              c.connect();
+
+                              File outputFile = new File(getCacheDir(), "update.apk");
+                              if (outputFile.exists()) outputFile.delete();
+
+                              FileOutputStream fos = new FileOutputStream(outputFile);
+                              InputStream is = c.getInputStream();
+                              byte[] buffer = new byte[8192];
+                              int len1;
+                              while ((len1 = is.read(buffer)) != -1) {
+                                  fos.write(buffer, 0, len1);
                               }
-                              return fallbackFile.getAbsolutePath();
-                          } catch (Exception ex) {
-                              return "ERROR:" + ex.getMessage();
+                              fos.close();
+                              is.close();
+
+                              Intent intent = new Intent(Intent.ACTION_VIEW);
+                              Uri apkUri;
+                              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                  apkUri = androidx.core.content.FileProvider.getUriForFile(
+                                      MainActivity.this,
+                                      getPackageName() + ".fileprovider",
+                                      outputFile
+                                  );
+                                  intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+                                  intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                              } else {
+                                  apkUri = Uri.fromFile(outputFile);
+                                  intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+                              }
+                              intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                              startActivity(intent);
+                          } catch (Exception e) {
+                              runOnUiThread(() -> Toast.makeText(MainActivity.this, "Update Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
                           }
-                      }
-                      return "ERROR:Unknown";
+                      }).start();
                   }
               }
           }
           EOF
-            echo "✅ Injected Smart Back-Button + Native Multi-Month Vault into $MAIN_ACT"
+            echo "✅ Injected Native APK Auto-Installer bridge into $MAIN_ACT"
           fi
 
       - name: 5. Compile Release & Debug APKs + Play Store Bundle via Gradle
@@ -297,7 +259,7 @@ jobs:
           fi
 
           UNSIGNED_APK="android/app/build/outputs/apk/release/app-release-unsigned.apk"
-          SIGNED_APK="Sunnah-24-v3.6-Enterprise-Signed.apk"
+          SIGNED_APK="Sunnah-24-v3.7-Enterprise-Signed.apk"
 
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
           $BUILD_TOOLS_DIR/zipalign -v -p 4 "$UNSIGNED_APK" app-release-aligned.apk
@@ -310,7 +272,7 @@ jobs:
             jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
               -keystore sunnah24-release.keystore -storepass "$KS_PASS" -keypass "$K_PASS" \
               "$AAB_PATH" "$K_ALIAS"
-            cp "$AAB_PATH" ./Sunnah-24-v3.6-PlayStore-Signed.aab
+            cp "$AAB_PATH" ./Sunnah-24-v3.7-PlayStore-Signed.aab
           fi
           echo "✅ Signed APK ready: $SIGNED_APK"
 
@@ -319,20 +281,19 @@ jobs:
         with:
           name: Sunnah-24-Enterprise-APK
           path: |
-            Sunnah-24-v3.6-Enterprise-Signed.apk
-            Sunnah-24-v3.6-PlayStore-Signed.aab
+            Sunnah-24-v3.7-Enterprise-Signed.apk
+            Sunnah-24-v3.7-PlayStore-Signed.aab
 
       - name: 8. Publish Automatic GitHub Release with APK
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v3.6.${{ github.run_number }}
-          name: "☪️ Sunnah 24 v3.6.${{ github.run_number }} — Smart Back-Button & Compact History APK"
+          tag_name: v3.7.${{ github.run_number }}
+          name: "☪️ Sunnah 24 v3.7.${{ github.run_number }} — Auto-Installing Update APK"
           body: |
-            ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Enterprise Signed Android APK Release (v3.6)
-            - **Smart Hardware Back-Button Navigation:** Closes open modals, clears filters, and steps back to previous tabs instead of exiting the app
-            - **Compact Scrollable History Modal:** Inspecting any day in the 7-Day or 6-Month matrix renders inside a clean, mobile-fitted scrollable container
-            - **180-Day Triple-Redundant Auto-Vault:** LocalStorage + IndexedDB + Native Android Vault
+            ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Enterprise Signed Android APK Release (v3.7)
+            - **Seamless In-App Auto-Installer:** Clicking update automatically downloads and launches the native package installer prompt over the app without losing data.
+            - **180-Day Triple-Redundant Auto-Vault:** LocalStorage + IndexedDB + Native Android Vault.
           files: |
-            Sunnah-24-v3.6-Enterprise-Signed.apk
-            Sunnah-24-v3.6-PlayStore-Signed.aab
+            Sunnah-24-v3.7-Enterprise-Signed.apk
+            Sunnah-24-v3.7-PlayStore-Signed.aab
