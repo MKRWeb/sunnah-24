@@ -737,3 +737,91 @@ html[dir="rtl"] .info-btn {
   margin-left: 0;
   margin-right: 8px;
 }
+
+/* ==========================================================================
+   COMPACT SCROLLABLE MODAL & DAY HISTORY CHIPS (MOBILE SCREEN FIX)
+   ========================================================================== */
+.modal-card {
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 16px;
+}
+
+.modal-card h3 {
+  font-size: 0.96rem;
+  line-height: 1.35;
+  margin-bottom: 6px;
+  flex-shrink: 0;
+}
+
+.modal-card #modal-category {
+  align-self: flex-start;
+  margin-bottom: 6px;
+  flex-shrink: 0;
+}
+
+.modal-section {
+  margin: 6px 0;
+  padding: 10px 12px;
+  max-height: 36vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+#modal-evidence {
+  white-space: pre-line;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* Compact Grid for 7-Day & 6-Month History Inspection */
+.compact-history-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 34vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.compact-history-item {
+  font-size: 0.74rem;
+  line-height: 1.35;
+  padding: 6px 9px;
+  background: rgba(16, 185, 129, 0.1);
+  border-left: 2px solid var(--accent-emerald);
+  border-radius: 6px;
+  color: var(--text-primary);
+}
+
+html[dir="rtl"] .compact-history-item {
+  border-left: none;
+  border-right: 2px solid var(--accent-emerald);
+}
+
+.modal-card #close-modal-btn {
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+/* Back-Button Exit Toast Notification */
+.exit-toast {
+  position: fixed;
+  bottom: 85px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(6, 78, 59, 0.96);
+  color: #f8fafc;
+  border: 1px solid var(--accent-gold);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  z-index: 200;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
