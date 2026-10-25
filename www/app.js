@@ -2535,6 +2535,51 @@ function initInAppUpdateChecker() {
     .catch(() => {});
 }
 
+// ============================================================================
+// HASSLE-FREE IN-APP APK UPDATE CHECKER & SNAPTUBE-STYLE AUTO-INSTALLER
+// ============================================================================
+function getInstalledAppVersionTag() {
+  try {
+    if (
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.getInstalledVersionName === "function"
+    ) {
+      const nativeVer = window.AndroidDownloader.getInstalledVersionName();
+      if (nativeVer) return nativeVer.startsWith("v") ? nativeVer : `v${nativeVer}`;
+    }
+  } catch {}
+  return "v3.8.0";
+}
+
+function initInAppUpdateChecker() {
+  const isInsideNativeApk =
+    Boolean(window.AndroidDownloader) ||
+    Boolean(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) ||
+    window.location.protocol === "capacitor:" ||
+    window.location.protocol === "file:";
+
+  if (!isInsideNativeApk) return;
+
+  const installedTag = getInstalledAppVersionTag();
+
+  fetch("https://api.github.com/repos/MKRWeb/sunnah-24/releases/latest", { cache: "no-store" })
+    .then((res) => (res.ok ? res.json() : null))
+    .then((release) => {
+      if (!release || !release.tag_name) return;
+      const latestTag = release.tag_name.trim();
+
+      if (latestTag !== installedTag) {
+        const apkAsset = (release.assets || []).find(
+          (a) => a.name && a.name.toLowerCase().endsWith(".apk")
+        );
+        if (apkAsset && apkAsset.browser_download_url) {
+          showUpdateNotificationBanner(latestTag, apkAsset.browser_download_url);
+        }
+      }
+    })
+    .catch(() => {});
+}
+
 function showUpdateNotificationBanner(newVersion, apkUrl) {
   if (document.getElementById("s24-update-banner")) return;
 
@@ -2544,17 +2589,24 @@ function showUpdateNotificationBanner(newVersion, apkUrl) {
 
   const msgText =
     appState.locale === "ar"
-      ? `✨ يتوفر إصدار جديد (${newVersion}) لتطبيق سنة ٢٤!`
+      ? `✨ يتوفر تحديث جديد (${newVersion}) لتطبيق سنة ٢٤!`
       : appState.locale === "en"
-      ? `✨ A new version (${newVersion}) of Sunnah 24 is available!`
-      : `✨ সুন্নাহ ২৪-এর নতুন সংস্করণ (${newVersion}) উপলব্ধ আছে!`;
+      ? `✨ New Update (${newVersion}) Available for Sunnah 24!`
+      : `✨ সুন্নাহ ২৪-এর নতুন আপডেট (${newVersion}) এসেছে!`;
+
+  const subText =
+    appState.locale === "ar"
+      ? "سيتم التحميل والتثبيت التلقائي فوراً فوق النسخة الحالية."
+      : appState.locale === "en"
+      ? "Downloads & auto-installs over your existing app without losing data."
+      : "ডাউনলোড শেষেই স্বয়ংক্রিয়ভাবে আগের অ্যাপের ওপর আপডেট ইনস্টল হবে।";
 
   const btnText =
     appState.locale === "ar"
-      ? "تحديث فوري"
+      ? "⚡ تحديث وتثبيت تلقائي"
       : appState.locale === "en"
-      ? "Update Now"
-      : "এখনই আপডেট করুন";
+      ? "⚡ Auto-Update & Install"
+      : "⚡ অটো-আপডেট ও ইনস্টল";
 
   const dismissText =
     appState.locale === "ar"
@@ -2567,8 +2619,8 @@ function showUpdateNotificationBanner(newVersion, apkUrl) {
     <div class="update-banner-content">
       <span>🚀</span>
       <div>
-        <strong>${msgText}</strong>
-        <small>${appState.locale === 'bn' ? 'ডাউনলোড শেষে স্বয়ংক্রিয়ভাবে ইনস্টল হবে।' : 'Auto-installs upon download completion.'}</small>
+        <strong id="s24-update-title">${msgText}</strong>
+        <small id="s24-update-status">${subText}</small>
       </div>
     </div>
     <div class="update-banner-actions">
@@ -2580,11 +2632,46 @@ function showUpdateNotificationBanner(newVersion, apkUrl) {
   document.body.appendChild(banner);
 
   document.getElementById("trigger-native-update-btn").addEventListener("click", () => {
-    if (window.AndroidDownloader && typeof window.AndroidDownloader.downloadAndInstallApk === "function") {
+    const btn = document.getElementById("trigger-native-update-btn");
+    const statusEl = document.getElementById("s24-update-status");
+
+    if (
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.downloadAndInstallApk === "function"
+    ) {
+      btn.disabled = true;
+      btn.textContent = appState.locale === "bn" ? "⏳ ডাউনলোড হচ্ছে..." : "⏳ Downloading...";
+      if (statusEl) {
+        statusEl.textContent =
+          appState.locale === "bn"
+            ? "ডাউনলোড সম্পন্ন হলেই ইনস্টলার স্বয়ংক্রিয়ভাবে চালু হবে..."
+            : "Installer will launch automatically as soon as download finishes...";
+      }
       window.AndroidDownloader.downloadAndInstallApk(apkUrl);
-      document.getElementById("s24-update-banner").remove();
     } else {
       window.open(apkUrl, "_blank");
     }
   });
 }
+
+// Callback invoked by Native Android Bridge to show live download progress & completion
+window.onSunnahApkDownloadProgress = function (percent, statusText) {
+  const btn = document.getElementById("trigger-native-update-btn");
+  const statusEl = document.getElementById("s24-update-status");
+  if (btn && percent >= 0 && percent <= 100) {
+    btn.textContent = `⬇️ ${localizeDigits(percent, appState.locale)}%`;
+  }
+  if (statusEl && statusText) {
+    statusEl.textContent = statusText;
+  }
+  if (percent >= 100) {
+    setTimeout(() => {
+      const banner = document.getElementById("s24-update-banner");
+      if (banner) banner.remove();
+    }, 2500);
+  }
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  initInAppUpdateChecker();
+});
