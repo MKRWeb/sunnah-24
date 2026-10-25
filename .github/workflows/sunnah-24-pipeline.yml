@@ -53,9 +53,7 @@ jobs:
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       RUN_NUMBER: ${{ github.run_number }}
-      VERSION_NAME: "4.0.${{ github.run_number }}"
-      
-
+      VERSION_NAME: "4.1.${{ github.run_number }}"
 
     steps:
       - name: 1. Checkout Repository
@@ -91,7 +89,7 @@ jobs:
           node --check www/sw.js
           echo "✅ All Sunnah 24 assets and JS syntax verified!"
 
-      - name: 4. Build Capacitor Android Bridge, Versioning & SnapTube-Style Auto-Installer
+      - name: 4. Build Capacitor Android Bridge, Startup Splash Logo & SnapTube-Style Auto-Installer
         run: |
           npm install
           if [ ! -d "android" ]; then
@@ -110,7 +108,7 @@ jobs:
             echo "✅ Updated build.gradle to versionCode=${VERSION_CODE}, versionName=${VERSION_NAME}"
           fi
 
-          # 4B. Convert www/icon.svg into All Android APK Mipmap Launcher Icons
+          # 4B. Convert www/icon.svg into All Android Launcher Icons AND Startup Splash Screen Previews
           sudo apt-get update && sudo apt-get install -y librsvg2-bin imagemagick
           RES_DIR="android/app/src/main/res"
 
@@ -122,21 +120,106 @@ jobs:
             ["mipmap-xxxhdpi"]=192
           )
 
+          declare -A FG_SIZES=(
+            ["mipmap-mdpi"]=108
+            ["mipmap-hdpi"]=162
+            ["mipmap-xhdpi"]=216
+            ["mipmap-xxhdpi"]=324
+            ["mipmap-xxxhdpi"]=432
+          )
+
           for folder in "${!SIZES[@]}"; do
             size=${SIZES[$folder]}
+            fg_size=${FG_SIZES[$folder]}
+            icon_inset=$(( fg_size * 62 / 100 ))
             mkdir -p "$RES_DIR/$folder"
+
+            # Legacy & Round Launcher Icons
             rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$folder/ic_launcher.png"
             rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$folder/ic_launcher_round.png"
-            rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$folder/ic_launcher_foreground.png"
+
+            # Adaptive Foreground Icon (Padded inside 108dp safe zone so Android 12+ Splash Screen never crops the logo!)
+            rsvg-convert -w $icon_inset -h $icon_inset www/icon.svg -o "/tmp/fg_${size}.png"
+            convert -size ${fg_size}x${fg_size} xc:none "/tmp/fg_${size}.png" -gravity center -composite "$RES_DIR/$folder/ic_launcher_foreground.png"
           done
 
+          # Remove default Capacitor vector XMLs
           rm -f "$RES_DIR/drawable/ic_launcher_background.xml"
           rm -f "$RES_DIR/drawable/ic_launcher_foreground.xml"
           rm -f "$RES_DIR/drawable-v24/ic_launcher_foreground.xml"
-          rm -rf "$RES_DIR/mipmap-anydpi-v26"
-          echo "✅ Custom Sunnah 24 APK Launcher Icons generated!"
 
-          # 4C. Enable Android Auto-Backup AND Inject REQUEST_INSTALL_PACKAGES Permission (Required to launch local APK installer!)
+          # Create proper Adaptive Icon XMLs for Android 8-15 Launcher & Startup Splash Preview
+          mkdir -p "$RES_DIR/mipmap-anydpi-v26"
+          cat << 'EOF' > "$RES_DIR/mipmap-anydpi-v26/ic_launcher.xml"
+          <?xml version="1.0" encoding="utf-8"?>
+          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+              <background android:drawable="@color/ic_launcher_background"/>
+              <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+          </adaptive-icon>
+          EOF
+          cp "$RES_DIR/mipmap-anydpi-v26/ic_launcher.xml" "$RES_DIR/mipmap-anydpi-v26/ic_launcher_round.xml"
+
+          mkdir -p "$RES_DIR/values"
+          cat << 'EOF' > "$RES_DIR/values/ic_launcher_background.xml"
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <color name="ic_launcher_background">#05130E</color>
+          </resources>
+          EOF
+
+          # Generate High-Res Centered Splash Screen PNG from www/icon.svg & Overwrite All Default Capacitor Splash Files
+          rsvg-convert -w 512 -h 512 www/icon.svg -o /tmp/s24_logo_512.png
+          convert -size 1080x1920 xc:"#05130E" /tmp/s24_logo_512.png -gravity center -composite /tmp/s24_splash_screen.png
+
+          for existing_splash in $(find "$RES_DIR" -name "splash.png"); do
+            cp -f /tmp/s24_splash_screen.png "$existing_splash"
+          done
+
+          # Create a clean XML layer-list drawable @drawable/splash_centered so Android 11 and below center the logo without stretching
+          mkdir -p "$RES_DIR/drawable"
+          cp -f /tmp/s24_logo_512.png "$RES_DIR/drawable/s24_splash_logo.png"
+          cat << 'EOF' > "$RES_DIR/drawable/splash_centered.xml"
+          <?xml version="1.0" encoding="utf-8"?>
+          <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+              <item android:drawable="@color/ic_launcher_background" />
+              <item
+                  android:width="180dp"
+                  android:height="180dp"
+                  android:gravity="center"
+                  android:drawable="@mipmap/ic_launcher_foreground" />
+          </layer-list>
+          EOF
+
+          # Configure values/styles.xml so Android 12+ and Legacy Android both display icon.svg on #05130E dark emerald at app start
+          cat << 'EOF' > "$RES_DIR/values/styles.xml"
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources xmlns:tools="http://schemas.android.com/tools">
+              <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+                  <item name="colorPrimary">#064E3B</item>
+                  <item name="colorPrimaryDark">#05130E</item>
+                  <item name="colorAccent">#EAB308</item>
+                  <item name="android:windowBackground">#05130E</item>
+                  <item name="android:statusBarColor">#05130E</item>
+                  <item name="android:navigationBarColor">#05130E</item>
+              </style>
+
+              <style name="AppTheme.NoActionBar" parent="AppTheme">
+                  <item name="windowActionBar">false</item>
+                  <item name="windowNoTitle">true</item>
+                  <item name="android:background">@null</item>
+              </style>
+
+              <style name="AppTheme.NoActionBarLaunch" parent="AppTheme.NoActionBar">
+                  <item name="android:windowBackground">@drawable/splash_centered</item>
+                  <item name="android:windowSplashScreenBackground" tools:targetApi="31">#05130E</item>
+                  <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@mipmap/ic_launcher_foreground</item>
+                  <item name="android:windowSplashScreenIconBackgroundColor" tools:targetApi="31">#05130E</item>
+              </style>
+          </resources>
+          EOF
+          echo "✅ Custom Sunnah 24 APK Launcher Icons & Startup Splash Preview generated from www/icon.svg!"
+
+          # 4C. Enable Android Auto-Backup AND Inject REQUEST_INSTALL_PACKAGES Permission
           MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
           if [ -f "$MANIFEST_FILE" ]; then
             sed -i 's/android:allowBackup="false"/android:allowBackup="true"/g' "$MANIFEST_FILE" || true
@@ -187,6 +270,7 @@ jobs:
           import android.content.IntentFilter;
           import android.content.pm.PackageInfo;
           import android.database.Cursor;
+          import android.graphics.Color;
           import android.net.Uri;
           import android.os.Build;
           import android.os.Bundle;
@@ -241,6 +325,7 @@ jobs:
 
                   if (this.bridge != null && this.bridge.getWebView() != null) {
                       WebView webView = this.bridge.getWebView();
+                      webView.setBackgroundColor(Color.parseColor("#05130E"));
                       WebSettings ws = webView.getSettings();
                       ws.setDomStorageEnabled(true);
                       ws.setDatabaseEnabled(true);
@@ -275,7 +360,6 @@ jobs:
               @Override
               public void onResume() {
                   super.onResume();
-                  // If user just enabled "Allow from this source" in Android Settings, immediately launch the local APK!
                   if (pendingInstallAfterPermission && targetApkFile != null && targetApkFile.exists()) {
                       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || getPackageManager().canRequestPackageInstalls()) {
                           pendingInstallAfterPermission = false;
@@ -321,7 +405,6 @@ jobs:
                               return;
                           }
 
-                          // Android 8.0+ Check: If "Install Unknown Apps" isn't enabled yet, take user straight to toggle
                           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                               if (!getPackageManager().canRequestPackageInstalls()) {
                                   pendingInstallAfterPermission = true;
@@ -492,7 +575,7 @@ jobs:
                           PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                           return pInfo.versionName;
                       } catch (Exception e) {
-                          return "3.9.0";
+                          return "4.1.0";
                       }
                   }
 
@@ -603,7 +686,7 @@ jobs:
           fi
 
           UNSIGNED_APK="android/app/build/outputs/apk/release/app-release-unsigned.apk"
-          SIGNED_APK="Sunnah-24-v3.9-Enterprise-Signed.apk"
+          SIGNED_APK="Sunnah-24-v4.1-Enterprise-Signed.apk"
 
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
           $BUILD_TOOLS_DIR/zipalign -v -p 4 "$UNSIGNED_APK" app-release-aligned.apk
@@ -616,7 +699,7 @@ jobs:
             jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
               -keystore "$KEYSTORE_FILE" -storepass "$KS_PASS" -keypass "$K_PASS" \
               "$AAB_PATH" "$K_ALIAS"
-            cp "$AAB_PATH" ./Sunnah-24-v3.9-PlayStore-Signed.aab
+            cp "$AAB_PATH" ./Sunnah-24-v4.1-PlayStore-Signed.aab
           fi
           echo "✅ Signed APK ready: $SIGNED_APK (versionCode=${VERSION_CODE}, versionName=${VERSION_NAME})"
 
@@ -625,19 +708,20 @@ jobs:
         with:
           name: Sunnah-24-Enterprise-APK
           path: |
-            Sunnah-24-v3.9-Enterprise-Signed.apk
-            Sunnah-24-v3.9-PlayStore-Signed.aab
+            Sunnah-24-v4.1-Enterprise-Signed.apk
+            Sunnah-24-v4.1-PlayStore-Signed.aab
 
       - name: 8. Publish Automatic GitHub Release with APK
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION_NAME }}
-          name: "☪️ Sunnah 24 v${{ env.VERSION_NAME }} — SnapTube-Style Auto-Installer APK"
+          name: "☪️ Sunnah 24 v${{ env.VERSION_NAME }} — Custom Startup Splash Logo & Auto-Installer APK"
           body: |
             ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Enterprise Signed Android APK Release (v${{ env.VERSION_NAME }})
-            - **SnapTube-Style Auto-Installer:** Downloads the update once to device storage and automatically launches Android's Package Installer at 100%. If already downloaded, tapping the button opens the local APK directly without re-downloading.
+            - **Custom Startup Splash Logo:** Displays `icon.svg` centered on `#05130E` dark emerald immediately upon APK launch.
+            - **SnapTube-Style Auto-Installer:** Downloads the update once to device storage and automatically launches Android's Package Installer at 100%.
             - **180-Day Triple-Redundant Auto-Vault:** Preserves all user habit records across LocalStorage, IndexedDB, and Native Android Vault during updates.
           files: |
-            Sunnah-24-v3.9-Enterprise-Signed.apk
-            Sunnah-24-v3.9-PlayStore-Signed.aab
+            Sunnah-24-v4.1-Enterprise-Signed.apk
+            Sunnah-24-v4.1-PlayStore-Signed.aab
