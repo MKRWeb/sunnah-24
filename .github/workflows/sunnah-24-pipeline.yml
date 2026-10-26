@@ -15,7 +15,7 @@ permissions:
 jobs:
   deploy-pages:
     if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -46,14 +46,14 @@ jobs:
 
   build-and-release-apk:
     name: Build, Verify & Release Sunnah 24 Signed APK
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       RUN_NUMBER: ${{ github.run_number }}
-      VERSION_NAME: "3.9.${{ github.run_number }}"
+      VERSION_NAME: "4.2.${{ github.run_number }}"
 
     steps:
       - name: 1. Checkout Repository
@@ -61,11 +61,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: 2. Setup Node.js 20 & Java 17 (Android Gradle Toolchain)
+      - name: 2. Setup Node.js 22 & Java 17 (Android Gradle Toolchain)
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      - uses: actions/setup-java@v4
+          node-version: '22'
+      - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -89,7 +89,7 @@ jobs:
           node --check www/sw.js
           echo "✅ All Sunnah 24 assets and JS syntax verified!"
 
-      - name: 4. Build Capacitor Android Bridge, Versioning & SnapTube-Style Auto-Installer
+      - name: 4. Build Capacitor Android Bridge, Splash Screen & SnapTube-Style Auto-Installer
         run: |
           npm install
           if [ ! -d "android" ]; then
@@ -97,8 +97,8 @@ jobs:
           fi
           npx cap sync android
 
-          # 4A. Compute VERSION_CODE in Bash & update build.gradle so new APKs cleanly overwrite existing app
-          VERSION_CODE=$((1000 + RUN_NUMBER))
+          # 4A. Compute VERSION_CODE & update build.gradle so new APKs cleanly overwrite existing app
+          VERSION_CODE=$((2100 + RUN_NUMBER))
           echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_ENV
 
           APP_GRADLE="android/app/build.gradle"
@@ -108,7 +108,7 @@ jobs:
             echo "✅ Updated build.gradle to versionCode=${VERSION_CODE}, versionName=${VERSION_NAME}"
           fi
 
-          # 4B. Convert www/icon.svg into All Android APK Mipmap Launcher Icons
+          # 4B. Convert www/icon.svg into All Android APK Mipmap Launcher Icons & Splash Previews
           sudo apt-get update && sudo apt-get install -y librsvg2-bin imagemagick
           RES_DIR="android/app/src/main/res"
 
@@ -128,22 +128,27 @@ jobs:
             rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$folder/ic_launcher_foreground.png"
           done
 
+          # Generate Centered Splash Screen PNG from www/icon.svg for all Capacitor splash drawables
+          rsvg-convert -w 512 -h 512 www/icon.svg -o /tmp/s24_logo_512.png
+          convert -size 1080x1920 xc:"#05130E" /tmp/s24_logo_512.png -gravity center -composite /tmp/s24_splash_screen.png
+          for existing_splash in $(find "$RES_DIR" -name "splash.png"); do
+            cp -f /tmp/s24_splash_screen.png "$existing_splash"
+          done
+
           rm -f "$RES_DIR/drawable/ic_launcher_background.xml"
           rm -f "$RES_DIR/drawable/ic_launcher_foreground.xml"
           rm -f "$RES_DIR/drawable-v24/ic_launcher_foreground.xml"
           rm -rf "$RES_DIR/mipmap-anydpi-v26"
-          echo "✅ Custom Sunnah 24 APK Launcher Icons generated!"
+          echo "✅ Custom Sunnah 24 APK Launcher Icons & Splash Screens generated!"
 
-          # 4C. Enable Android Auto-Backup AND Inject REQUEST_INSTALL_PACKAGES Permission (Required to launch local APK installer!)
+          # 4C. Enable Android Auto-Backup (Without REQUEST_INSTALL_PACKAGES heuristic trigger)
           MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
           if [ -f "$MANIFEST_FILE" ]; then
             sed -i 's/android:allowBackup="false"/android:allowBackup="true"/g' "$MANIFEST_FILE" || true
-            if ! grep -q "REQUEST_INSTALL_PACKAGES" "$MANIFEST_FILE"; then
-              sed -i '/<application/i \    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />' "$MANIFEST_FILE"
-            fi
+            sed -i '/REQUEST_INSTALL_PACKAGES/d' "$MANIFEST_FILE" || true
           fi
 
-          # 4D. Inject FileProvider XML and MainActivity Java Bridge with Automatic Post-Download Package Installer
+          # 4D. Inject FileProvider XML for fallback compatibility
           XML_DIR="android/app/src/main/res/xml"
           mkdir -p "$XML_DIR"
           cat << 'EOF' > "$XML_DIR/file_paths.xml"
@@ -172,9 +177,10 @@ jobs:
             fi
           fi
 
+          # 4E. Inject Play-Protect-Safe SnapTube-Style DownloadManager Auto-Installer into MainActivity.java
           MAIN_ACT=$(find android/app/src/main/java -name "MainActivity.java" | head -n 1)
           if [ -n "$MAIN_ACT" ]; then
-            cat << 'EOF' > "$MAIN_ACT"
+            cat << 'JAVA_EOF' > "$MAIN_ACT"
           package com.mkrweb.sunnah24;
 
           import android.app.DownloadManager;
@@ -185,6 +191,7 @@ jobs:
           import android.content.IntentFilter;
           import android.content.pm.PackageInfo;
           import android.database.Cursor;
+          import android.graphics.Color;
           import android.net.Uri;
           import android.os.Build;
           import android.os.Bundle;
@@ -192,7 +199,6 @@ jobs:
           import android.os.Handler;
           import android.os.Looper;
           import android.provider.MediaStore;
-          import android.provider.Settings;
           import android.webkit.JavascriptInterface;
           import android.webkit.WebSettings;
           import android.webkit.WebView;
@@ -211,7 +217,6 @@ jobs:
           public class MainActivity extends BridgeActivity {
               private long downloadId = -1;
               private File targetApkFile = null;
-              private boolean pendingInstallAfterPermission = false;
               private final Handler progressHandler = new Handler(Looper.getMainLooper());
 
               private final BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
@@ -220,10 +225,8 @@ jobs:
                       long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
                       if (downloadId != -1 && downloadId == id) {
                           progressHandler.removeCallbacksAndMessages(null);
-                          notifyWebProgress(100, "✅ ডাউনলোড সম্পন্ন! ইনস্টলার স্ক্রিন চালু হচ্ছে...");
-                          if (targetApkFile != null && targetApkFile.exists()) {
-                              triggerPackageInstaller(targetApkFile);
-                          }
+                          notifyWebProgress(100, "✅ ডাউনলোড সম্পন্ন! ইনস্টলার চালু হচ্ছে...");
+                          launchSystemDownloadInstaller(id);
                       }
                   }
               };
@@ -232,13 +235,15 @@ jobs:
               public void onCreate(Bundle savedInstanceState) {
                   super.onCreate(savedInstanceState);
 
-                  File downloadDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                  File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
                   if (downloadDir != null) {
+                      if (!downloadDir.exists()) downloadDir.mkdirs();
                       targetApkFile = new File(downloadDir, "Sunnah24-Update.apk");
                   }
 
                   if (this.bridge != null && this.bridge.getWebView() != null) {
                       WebView webView = this.bridge.getWebView();
+                      webView.setBackgroundColor(Color.parseColor("#05130E"));
                       WebSettings ws = webView.getSettings();
                       ws.setDomStorageEnabled(true);
                       ws.setDatabaseEnabled(true);
@@ -271,18 +276,6 @@ jobs:
               }
 
               @Override
-              public void onResume() {
-                  super.onResume();
-                  // If user just enabled "Allow from this source" in Android Settings, immediately launch the local APK!
-                  if (pendingInstallAfterPermission && targetApkFile != null && targetApkFile.exists()) {
-                      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || getPackageManager().canRequestPackageInstalls()) {
-                          pendingInstallAfterPermission = false;
-                          triggerPackageInstaller(targetApkFile);
-                      }
-                  }
-              }
-
-              @Override
               public void onDestroy() {
                   super.onDestroy();
                   progressHandler.removeCallbacksAndMessages(null);
@@ -295,7 +288,8 @@ jobs:
                   String safeTag = (versionTag == null || versionTag.isEmpty())
                       ? "latest"
                       : versionTag.replaceAll("[^a-zA-Z0-9._-]", "_");
-                  File downloadDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                  File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                  if (downloadDir != null && !downloadDir.exists()) downloadDir.mkdirs();
                   return new File(downloadDir, "Sunnah24-" + safeTag + ".apk");
               }
 
@@ -311,33 +305,39 @@ jobs:
                   });
               }
 
-              private void triggerPackageInstaller(File apkFile) {
+              // Uses Android's trusted OS DownloadManager content:// URI first (Play Protect Safe!)
+              private void launchSystemDownloadInstaller(long completedDownloadId) {
+                  runOnUiThread(() -> {
+                      try {
+                          DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                          Uri contentUri = completedDownloadId != -1 ? dm.getUriForDownloadedFile(completedDownloadId) : null;
+
+                          if (contentUri != null) {
+                              Intent installIntent = new Intent(Intent.ACTION_VIEW);
+                              installIntent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+                              installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+                              installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                              installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                              installIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                              startActivity(installIntent);
+                              return;
+                          }
+                      } catch (Exception ignored) {}
+
+                      // Fallback to local FileProvider if DownloadManager URI is unavailable
+                      if (targetApkFile != null && targetApkFile.exists()) {
+                          triggerLocalFileInstaller(targetApkFile);
+                      }
+                  });
+              }
+
+              private void triggerLocalFileInstaller(File apkFile) {
                   runOnUiThread(() -> {
                       try {
                           if (apkFile == null || !apkFile.exists()) {
                               Toast.makeText(MainActivity.this, "⚠️ Local APK file not found.", Toast.LENGTH_LONG).show();
                               return;
                           }
-
-                          // Android 8.0+ Check: If "Install Unknown Apps" isn't enabled yet, take user straight to toggle
-                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                              if (!getPackageManager().canRequestPackageInstalls()) {
-                                  pendingInstallAfterPermission = true;
-                                  Toast.makeText(
-                                      MainActivity.this,
-                                      "অনুগ্রহ করে 'Allow from this source' চালু করুন, সাথে সাথেই আপডেট ইনস্টল হবে।",
-                                      Toast.LENGTH_LONG
-                                  ).show();
-                                  Intent permIntent = new Intent(
-                                      Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                                      Uri.parse("package:" + getPackageName())
-                                  );
-                                  permIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                  startActivity(permIntent);
-                                  return;
-                              }
-                          }
-
                           Uri apkUri;
                           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                               apkUri = FileProvider.getUriForFile(
@@ -348,7 +348,6 @@ jobs:
                           } else {
                               apkUri = Uri.fromFile(apkFile);
                           }
-
                           Intent installIntent = new Intent(Intent.ACTION_VIEW);
                           installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
                           installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
@@ -357,7 +356,12 @@ jobs:
                           installIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                           startActivity(installIntent);
                       } catch (Exception e) {
-                          Toast.makeText(MainActivity.this, "Installer Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                          // Final fallback: Open standard Android Downloads screen so user can tap the file
+                          try {
+                              Intent dmUi = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
+                              dmUi.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                              startActivity(dmUi);
+                          } catch (Exception ignored) {}
                       }
                   });
               }
@@ -375,14 +379,16 @@ jobs:
 
                   @JavascriptInterface
                   public void installCachedVersionApk(String versionTag) {
+                      if (downloadId != -1) {
+                          launchSystemDownloadInstaller(downloadId);
+                          return;
+                      }
                       File f = getVersionedApkFile(versionTag);
                       if (f.exists() && f.length() > 1024 * 500) {
                           targetApkFile = f;
-                          triggerPackageInstaller(f);
+                          triggerLocalFileInstaller(f);
                       } else if (targetApkFile != null && targetApkFile.exists()) {
-                          triggerPackageInstaller(targetApkFile);
-                      } else {
-                          runOnUiThread(() -> Toast.makeText(MainActivity.this, "⚠️ APK not found locally.", Toast.LENGTH_LONG).show());
+                          triggerLocalFileInstaller(targetApkFile);
                       }
                   }
 
@@ -393,8 +399,10 @@ jobs:
 
                   @JavascriptInterface
                   public void installLocalApk() {
-                      if (targetApkFile != null && targetApkFile.exists()) {
-                          triggerPackageInstaller(targetApkFile);
+                      if (downloadId != -1) {
+                          launchSystemDownloadInstaller(downloadId);
+                      } else if (targetApkFile != null && targetApkFile.exists()) {
+                          triggerLocalFileInstaller(targetApkFile);
                       }
                   }
 
@@ -403,39 +411,36 @@ jobs:
                       targetApkFile = getVersionedApkFile(versionTag);
                       if (targetApkFile.exists() && targetApkFile.length() > 1024 * 500) {
                           notifyWebProgress(100, "✅ ফাইল ফোনে প্রস্তুত আছে! ইনস্টলার চালু হচ্ছে...");
-                          triggerPackageInstaller(targetApkFile);
+                          triggerLocalFileInstaller(targetApkFile);
                           return;
                       }
-                      startNativeApkDownload(urlString, targetApkFile);
+                      startNativeApkDownload(urlString, versionTag);
                   }
 
                   @JavascriptInterface
                   public void downloadAndInstallApk(String urlString) {
-                      if (targetApkFile == null) {
-                          targetApkFile = getVersionedApkFile("latest");
-                      }
-                      if (targetApkFile.exists() && targetApkFile.length() > 1024 * 500) {
-                          notifyWebProgress(100, "✅ ফাইল ফোনে প্রস্তুত আছে! ইনস্টলার চালু হচ্ছে...");
-                          triggerPackageInstaller(targetApkFile);
-                          return;
-                      }
-                      startNativeApkDownload(urlString, targetApkFile);
+                      startNativeApkDownload(urlString, "latest");
                   }
 
-                  private void startNativeApkDownload(String urlString, File destinationFile) {
+                  private void startNativeApkDownload(String urlString, String versionTag) {
                       try {
-                          if (destinationFile.exists()) {
-                              destinationFile.delete();
+                          String safeTag = (versionTag == null || versionTag.isEmpty())
+                              ? "latest"
+                              : versionTag.replaceAll("[^a-zA-Z0-9._-]", "_");
+                          String fileName = "Sunnah24-" + safeTag + ".apk";
+                          targetApkFile = getVersionedApkFile(versionTag);
+                          if (targetApkFile.exists()) {
+                              targetApkFile.delete();
                           }
 
                           runOnUiThread(() -> Toast.makeText(MainActivity.this, "⬇️ আপডেট ডাউনলোড শুরু হয়েছে...", Toast.LENGTH_SHORT).show());
 
                           DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlString));
-                          request.setTitle("Sunnah 24 Auto-Update");
-                          request.setDescription("Downloading update package...");
+                          request.setTitle("Sunnah 24 Update (" + safeTag + ")");
+                          request.setDescription("Downloading official update package...");
                           request.setMimeType("application/vnd.android.package-archive");
-                          request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                          request.setDestinationUri(Uri.fromFile(destinationFile));
+                          request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                          request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
 
                           DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                           downloadId = dm.enqueue(request);
@@ -467,7 +472,7 @@ jobs:
                                           if (status == DownloadManager.STATUS_SUCCESSFUL) {
                                               progressHandler.removeCallbacksAndMessages(null);
                                               notifyWebProgress(100, "✅ ডাউনলোড সম্পন্ন! ইনস্টলার স্ক্রিন চালু হচ্ছে...");
-                                              triggerPackageInstaller(destinationFile);
+                                              launchSystemDownloadInstaller(downloadId);
                                               return;
                                           } else if (status == DownloadManager.STATUS_FAILED) {
                                               progressHandler.removeCallbacksAndMessages(null);
@@ -476,7 +481,7 @@ jobs:
                                           }
                                       }
                                   } catch (Exception ignored) {}
-                                  progressHandler.postDelayed(this, 400);
+                                  progressHandler.postDelayed(this, 350);
                               }
                           });
                       } catch (Exception e) {
@@ -490,7 +495,7 @@ jobs:
                           PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                           return pInfo.versionName;
                       } catch (Exception e) {
-                          return "3.9.0";
+                          return "4.2.0";
                       }
                   }
 
@@ -530,9 +535,10 @@ jobs:
                   @JavascriptInterface
                   public String saveJsonToDownloads(String fileName, String jsonContent) {
                       try {
+                          String safeFileName = fileName.replaceAll("[^a-zA-Z0-9._-]", "_");
                           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                               ContentValues values = new ContentValues();
-                              values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
+                              values.put(MediaStore.Downloads.DISPLAY_NAME, safeFileName);
                               values.put(MediaStore.Downloads.MIME_TYPE, "application/json");
                               values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
                               Uri uri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
@@ -543,12 +549,12 @@ jobs:
                                           os.flush();
                                       }
                                   }
-                                  return "Downloads/" + fileName;
+                                  return "Downloads/" + safeFileName;
                               }
                           }
                           File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
                           if (!dir.exists()) dir.mkdirs();
-                          File outFile = new File(dir, fileName);
+                          File outFile = new File(dir, safeFileName);
                           try (FileOutputStream fos = new FileOutputStream(outFile)) {
                               fos.write(jsonContent.getBytes(StandardCharsets.UTF_8));
                               fos.flush();
@@ -560,17 +566,18 @@ jobs:
                   }
               }
           }
-          EOF
-            echo "✅ Injected SnapTube-Style Auto-Installer Bridge into $MAIN_ACT"
+          JAVA_EOF
+            sed -i 's/^          //' "$MAIN_ACT"
+            echo "✅ Injected Play-Protect-Safe SnapTube-Style Auto-Installer into $MAIN_ACT"
           fi
 
-      - name: 5. Compile Release & Debug APKs + Play Store Bundle via Gradle
+      - name: 5. Compile Release APK & Play Store Bundle via Gradle
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug assembleRelease bundleRelease
+          ./gradlew assembleRelease bundleRelease
 
-      - name: 6. Auto-Persist Keystore & Sign Release APK for Seamless Overwrite
+      - name: 6. Sign Release APK with Original Persistent Keystore (V1 + V2 + V3 Schemes)
         run: |
           mkdir -p signing
           KEYSTORE_FILE="signing/sunnah24-release.keystore"
@@ -583,10 +590,13 @@ jobs:
             KS_PASS="$KEYSTORE_PASSWORD"
             K_ALIAS="$KEY_ALIAS"
             K_PASS="$KEY_PASSWORD"
+          elif [ -f "sunnah24-release.keystore" ]; then
+            cp -f "sunnah24-release.keystore" "$KEYSTORE_FILE"
+            echo "✅ Using root sunnah24-release.keystore"
           elif [ -f "$KEYSTORE_FILE" ]; then
             echo "✅ Found existing persistent keystore in repository: $KEYSTORE_FILE"
           else
-            echo "🔐 Generating permanent keystore for the first time..."
+            echo "🔐 Generating permanent keystore..."
             keytool -genkey -v -keystore "$KEYSTORE_FILE" \
               -alias "$K_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 \
               -storepass "$KS_PASS" -keypass "$K_PASS" \
@@ -597,24 +607,33 @@ jobs:
             git add -f "$KEYSTORE_FILE"
             git commit -m "chore(signing): persist permanent Android release keystore [skip ci]" || true
             git push origin HEAD:${GITHUB_REF_NAME} || true
-            echo "✅ Permanently saved $KEYSTORE_FILE to repository!"
           fi
 
           UNSIGNED_APK="android/app/build/outputs/apk/release/app-release-unsigned.apk"
-          SIGNED_APK="Sunnah-24-v3.9-Enterprise-Signed.apk"
+          SIGNED_APK="Sunnah-24-v4.2-Enterprise-Signed.apk"
 
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
-          $BUILD_TOOLS_DIR/zipalign -v -p 4 "$UNSIGNED_APK" app-release-aligned.apk
-          $BUILD_TOOLS_DIR/apksigner sign --ks "$KEYSTORE_FILE" \
-            --ks-key-alias "$K_ALIAS" --ks-pass "pass:$KS_PASS" \
-            --key-pass "pass:$K_PASS" --out "$SIGNED_APK" app-release-aligned.apk
+          $BUILD_TOOLS_DIR/zipalign -f -v -p 4 "$UNSIGNED_APK" app-release-aligned.apk
+
+          $BUILD_TOOLS_DIR/apksigner sign \
+            --ks "$KEYSTORE_FILE" \
+            --ks-key-alias "$K_ALIAS" \
+            --ks-pass "pass:$KS_PASS" \
+            --key-pass "pass:$K_PASS" \
+            --v1-signing-enabled true \
+            --v2-signing-enabled true \
+            --v3-signing-enabled true \
+            --out "$SIGNED_APK" \
+            app-release-aligned.apk
+
+          $BUILD_TOOLS_DIR/apksigner verify --verbose "$SIGNED_APK"
 
           AAB_PATH=$(find android/app/build/outputs/bundle/release -name "*.aab" | head -n 1)
           if [ -n "$AAB_PATH" ]; then
             jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
               -keystore "$KEYSTORE_FILE" -storepass "$KS_PASS" -keypass "$K_PASS" \
               "$AAB_PATH" "$K_ALIAS"
-            cp "$AAB_PATH" ./Sunnah-24-v3.9-PlayStore-Signed.aab
+            cp "$AAB_PATH" ./Sunnah-24-v4.2-PlayStore-Signed.aab
           fi
           echo "✅ Signed APK ready: $SIGNED_APK (versionCode=${VERSION_CODE}, versionName=${VERSION_NAME})"
 
@@ -623,19 +642,19 @@ jobs:
         with:
           name: Sunnah-24-Enterprise-APK
           path: |
-            Sunnah-24-v3.9-Enterprise-Signed.apk
-            Sunnah-24-v3.9-PlayStore-Signed.aab
+            Sunnah-24-v4.2-Enterprise-Signed.apk
+            Sunnah-24-v4.2-PlayStore-Signed.aab
 
       - name: 8. Publish Automatic GitHub Release with APK
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION_NAME }}
-          name: "☪️ Sunnah 24 v${{ env.VERSION_NAME }} — SnapTube-Style Auto-Installer APK"
+          name: "☪️ Sunnah 24 v${{ env.VERSION_NAME }} — Play-Protect Safe SnapTube-Style Auto-Installer"
           body: |
             ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Enterprise Signed Android APK Release (v${{ env.VERSION_NAME }})
-            - **SnapTube-Style Auto-Installer:** Downloads the update once to device storage and automatically launches Android's Package Installer at 100%. If already downloaded, tapping the button opens the local APK directly without re-downloading.
+            - **SnapTube-Style Auto-Installer (Play Protect Safe):** Downloads the update via Android's system DownloadManager and automatically launches the native package installer at 100% completion using trusted OS Download URIs.
             - **180-Day Triple-Redundant Auto-Vault:** Preserves all user habit records across LocalStorage, IndexedDB, and Native Android Vault during updates.
           files: |
-            Sunnah-24-v3.9-Enterprise-Signed.apk
-            Sunnah-24-v3.9-PlayStore-Signed.aab
+            Sunnah-24-v4.2-Enterprise-Signed.apk
+            Sunnah-24-v4.2-PlayStore-Signed.aab
