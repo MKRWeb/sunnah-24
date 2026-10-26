@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v8-v4-release";
+const CACHE_NAME = "sunnah-24-enterprise-v65-tamper-proof";
 const ASSETS = [
   "./",
   "./index.html",
@@ -34,6 +34,12 @@ self.addEventListener("activate", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
+  const url = e.request.url || "";
+  // Never cache GitHub API update checks or APK binary downloads
+  if (url.includes("api.github.com") || url.endsWith(".apk")) {
+    e.respondWith(fetch(e.request));
+    return;
+  }
   e.respondWith(
     caches.match(e.request).then((cached) => cached || fetch(e.request))
   );
