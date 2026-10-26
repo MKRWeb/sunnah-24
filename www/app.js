@@ -1458,7 +1458,12 @@ function updateIntegrityUI(isVerified) {
   }
   if (badge) {
     if (isVerified) {
-      badge.textContent = t("badge_verified");
+      // Automatically adds the version tag (e.g. • v4.5.0) to the header badge inside the APK
+      const verSuffix =
+        window.AndroidDownloader && typeof getInstalledAppVersionTag === "function"
+          ? ` • ${getInstalledAppVersionTag()}`
+          : "";
+      badge.textContent = `${t("badge_verified")}${verSuffix}`;
       badge.className = "badge-verified";
     } else {
       badge.textContent = t("badge_tampered");
@@ -1466,6 +1471,7 @@ function updateIntegrityUI(isVerified) {
     }
   }
 }
+
 
 function renderTasbihOptions() {
   const selector = document.getElementById("tasbih-selector");
@@ -2471,6 +2477,7 @@ document.addEventListener("DOMContentLoaded", () => {
 let latestRemoteApkUrl = "";
 let latestRemoteVersionTag = "";
 
+
 function getInstalledAppVersionTag() {
   try {
     if (
@@ -2481,7 +2488,7 @@ function getInstalledAppVersionTag() {
       if (nativeVer) return nativeVer.startsWith("v") ? nativeVer : `v${nativeVer}`;
     }
   } catch {}
-  return "v4.2.0";
+  return "v4.5.0"; // <-- Updated fallback version matching current release
 }
 
 function renderInstalledVersionBadge() {
@@ -2689,9 +2696,10 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  renderInstalledVersionBadge();
+  renderInstalledVersionBadge(); // Ensures version appears on header badge instantly
   setTimeout(() => initInAppUpdateChecker(false), 2500);
 
+  // Smoothly fades out the icon.svg startup splash overlay once the UI is ready
   const splash = document.getElementById("s24-startup-splash");
   if (splash) {
     setTimeout(() => {
