@@ -162,12 +162,13 @@ const I18N_DICTIONARIES = deepFreeze({
       { target: 100, label: "আস্তাগফিরুল্লাহ ওয়া আতুবু ইলাইহি", text: "আস্তাগফিরুল্লাহ ওয়া আতুবু ইলাইহি — ১০০ বার" },
       { target: 100, label: "সুবহানাল্লাহি ওয়া বিহামদিহি", text: "সুবহানাল্লাহি ওয়া বিহামদিহি — ১০০ বার" },
       { target: 10, label: "আল্লাহুম্মা সাল্লি আলা মুহাম্মাদ ﷺ", text: "নবীজি ﷺ-এর ওপর দরূদ পাঠ — ১০ বার" },
+
             {
         target: 100,
-        label: "লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারীকা লাহু, লাহুল মুলকু ওয়া লাহুল হামদু, ওয়া হুয়া আলা কুল্লি শাইয়িন কাদীর।\nلاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+        label: "লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারীকা লাহু, লাহুল মুলকু ওয়া লাহুল হামদু, ওয়া হুয়া আলা কুল্লি শাইয়িন কাদীর • لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
         text: "লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারীকা লাহু, লাহুল মুলকু ওয়া লাহুল হামদু, ওয়া হুয়া আলা কুল্লি শাইয়িন কাদীর — ১০০ বার"
       },
-
+      
       { target: 33, label: "লা হাওলা ওয়া লা কুওয়াতা ইল্লা বিল্লাহ", text: "হাওকালাহ (জান্নাতের গুপ্তধন) — ৩৩ বার" }
     ]
   },
@@ -269,6 +270,7 @@ const I18N_DICTIONARIES = deepFreeze({
       { target: 100, label: "أستغفر الله وأتوب إليه", text: "أستغفر الله وأتوب إليه — ١٠٠ مرة" },
       { target: 100, label: "سبحان الله وبحمده", text: "سبحان الله وبحمده — ١٠٠ مرة" },
       { target: 10, label: "اللهم صل وسلم على نبينا محمد ﷺ", text: "الصلاة على النبي ﷺ — ١٠ مرات" },
+
             {
         target: 100,
         label: "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
@@ -376,11 +378,13 @@ const I18N_DICTIONARIES = deepFreeze({
       { target: 100, label: "Astaghfirullah wa atubu ilayh", text: "Astaghfirullah wa atubu ilayh — 100x" },
       { target: 100, label: "SubhanAllahi wa bihamdihi", text: "SubhanAllahi wa bihamdihi — 100x" },
       { target: 10, label: "Allahumma salli 'ala Muhammad ﷺ", text: "Salawat upon the Prophet ﷺ — 10x" },
+            
             {
         target: 100,
-        label: "La ilaha illallahu wahdahu la sharika lahu, lahul-mulku wa lahul-hamdu, wa Huwa 'ala kulli shay'in Qadir\nلاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
-        text: "Daily Full Tahleel — 100x"
+        label: "La ilaha illallahu wahdahu la sharika lahu, lahul-mulku wa lahul-hamdu, wa Huwa 'ala kulli shay'in Qadir • لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+        text: "La ilaha illallahu wahdahu la sharika lahu, lahul-mulku wa lahul-hamdu... — 100x"
       },
+
 
       { target: 33, label: "La hawla wa la quwwata illa billah", text: "Hawqalah (Treasure of Paradise) — 33x" }
     ]
@@ -1489,24 +1493,31 @@ function renderTasbihOptions() {
   const options = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).tasbih_options;
 
   selector.innerHTML = "";
-  options.forEach((opt) => {
+  options.forEach((opt, idx) => {
     const optionEl = document.createElement("option");
-    optionEl.value = `${opt.target}|${opt.label}`;
+    optionEl.value = String(idx);
     optionEl.textContent = opt.text;
     selector.appendChild(optionEl);
   });
 
-  selector.selectedIndex = currentIdx < options.length ? currentIdx : 0;
-  const chosen = options[selector.selectedIndex];
-  tasbihTarget = chosen.target;
-  document.getElementById("tasbih-current").textContent = localizeDigits(tasbihCount, appState.locale);
-  document.getElementById("tasbih-target").textContent = `/ ${localizeDigits(tasbihTarget, appState.locale)}`;
-  document.getElementById("tasbih-label").textContent = chosen.label;
-  document.getElementById("lifetime-dhikr-count").textContent = localizeDigits(
-    appState.lifetimeDhikr || 0,
-    appState.locale
-  );
+  const safeIdx = currentIdx >= 0 && currentIdx < options.length ? currentIdx : 0;
+  selector.selectedIndex = safeIdx;
+  const chosen = options[safeIdx] || options[0];
+  tasbihTarget = chosen.target || 33;
+
+  const currentEl = document.getElementById("tasbih-current");
+  const targetEl = document.getElementById("tasbih-target");
+  const labelEl = document.getElementById("tasbih-label");
+  const lifetimeEl = document.getElementById("lifetime-dhikr-count");
+
+  if (currentEl) currentEl.textContent = localizeDigits(tasbihCount, appState.locale);
+  if (targetEl) targetEl.textContent = `/ ${localizeDigits(tasbihTarget, appState.locale)}`;
+  if (labelEl) labelEl.textContent = chosen.label;
+  if (lifetimeEl) {
+    lifetimeEl.textContent = localizeDigits(appState.lifetimeDhikr || 0, appState.locale);
+  }
 }
+
 
 function renderDuas() {
   const container = document.getElementById("duas-list-container");
@@ -2108,38 +2119,53 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("fact-modal").classList.add("hidden");
   });
 
+  
   const selector = document.getElementById("tasbih-selector");
-  selector.addEventListener("change", () => {
-    const [target, label] = selector.value.split("|");
-    tasbihTarget = parseInt(target, 10);
-    tasbihCount = 0;
-    document.getElementById("tasbih-current").textContent = localizeDigits(0, appState.locale);
-    document.getElementById("tasbih-target").textContent = `/ ${localizeDigits(tasbihTarget, appState.locale)}`;
-    document.getElementById("tasbih-label").textContent = label;
-  });
+  if (selector) {
+    selector.addEventListener("change", () => {
+      const options = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).tasbih_options;
+      const chosenIdx = parseInt(selector.value, 10);
+      const chosen = options[chosenIdx] || options[0];
+      tasbihTarget = chosen.target || 33;
+      tasbihCount = 0;
+      document.getElementById("tasbih-current").textContent = localizeDigits(0, appState.locale);
+      document.getElementById("tasbih-target").textContent = `/ ${localizeDigits(tasbihTarget, appState.locale)}`;
+      document.getElementById("tasbih-label").textContent = chosen.label;
+    });
+  }
 
-  document.getElementById("tasbih-tap-area").addEventListener("click", async () => {
-    tasbihCount++;
-    appState.lifetimeDhikr = (appState.lifetimeDhikr || 0) + 1;
-    if (navigator.vibrate) navigator.vibrate(25);
-    if (tasbihCount > tasbihTarget) {
-      tasbihCount = 1;
-    }
-    document.getElementById("tasbih-current").textContent = localizeDigits(
-      tasbihCount,
-      appState.locale
-    );
-    document.getElementById("lifetime-dhikr-count").textContent = localizeDigits(
-      appState.lifetimeDhikr,
-      appState.locale
-    );
-    await saveAndSealState();
-  });
+  const tapArea = document.getElementById("tasbih-tap-area");
+  if (tapArea) {
+    tapArea.addEventListener("click", async () => {
+      tasbihCount++;
+      appState.lifetimeDhikr = (appState.lifetimeDhikr || 0) + 1;
+      if (navigator.vibrate) navigator.vibrate(25);
+      if (tasbihCount > tasbihTarget) {
+        tasbihCount = 1;
+      }
+      document.getElementById("tasbih-current").textContent = localizeDigits(
+        tasbihCount,
+        appState.locale
+      );
+      document.getElementById("lifetime-dhikr-count").textContent = localizeDigits(
+        appState.lifetimeDhikr,
+        appState.locale
+      );
+      await saveAndSealState();
+    });
+  }
 
-  document.getElementById("tasbih-reset-btn").addEventListener("click", () => {
-    tasbihCount = 0;
-    document.getElementById("tasbih-current").textContent = localizeDigits(0, appState.locale);
-  });
+  const resetTasbihBtn = document.getElementById("tasbih-reset-btn");
+  if (resetTasbihBtn) {
+    resetTasbihBtn.addEventListener("click", () => {
+      tasbihCount = 0;
+      const currentEl = document.getElementById("tasbih-current");
+      if (currentEl) {
+        currentEl.textContent = localizeDigits(0, appState.locale);
+      }
+      if (navigator.vibrate) navigator.vibrate(15);
+    });
+  }
 
   document.querySelectorAll(".mood-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
