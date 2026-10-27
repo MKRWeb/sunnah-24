@@ -162,7 +162,12 @@ const I18N_DICTIONARIES = deepFreeze({
       { target: 100, label: "আস্তাগফিরুল্লাহ ওয়া আতুবু ইলাইহি", text: "আস্তাগফিরুল্লাহ ওয়া আতুবু ইলাইহি — ১০০ বার" },
       { target: 100, label: "সুবহানাল্লাহি ওয়া বিহামদিহি", text: "সুবহানাল্লাহি ওয়া বিহামদিহি — ১০০ বার" },
       { target: 10, label: "আল্লাহুম্মা সাল্লি আলা মুহাম্মাদ ﷺ", text: "নবীজি ﷺ-এর ওপর দরূদ পাঠ — ১০ বার" },
-      { target: 100, label: "লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারীকা লাহু", text: "দৈনিক তাহলীল দুর্গ — ১০০ বার" },
+            {
+        target: 100,
+        label: "লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারীকা লাহু, লাহুল মুলকু ওয়া লাহুল হামদু, ওয়া হুয়া আলা কুল্লি শাইয়িন কাদীর।\nلاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+        text: "লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারীকা লাহু, লাহুল মুলকু ওয়া লাহুল হামদু, ওয়া হুয়া আলা কুল্লি শাইয়িন কাদীর — ১০০ বার"
+      },
+
       { target: 33, label: "লা হাওলা ওয়া লা কুওয়াতা ইল্লা বিল্লাহ", text: "হাওকালাহ (জান্নাতের গুপ্তধন) — ৩৩ বার" }
     ]
   },
@@ -264,7 +269,12 @@ const I18N_DICTIONARIES = deepFreeze({
       { target: 100, label: "أستغفر الله وأتوب إليه", text: "أستغفر الله وأتوب إليه — ١٠٠ مرة" },
       { target: 100, label: "سبحان الله وبحمده", text: "سبحان الله وبحمده — ١٠٠ مرة" },
       { target: 10, label: "اللهم صل وسلم على نبينا محمد ﷺ", text: "الصلاة على النبي ﷺ — ١٠ مرات" },
-      { target: 100, label: "لا إله إلا الله وحده لا شريك له", text: "التهليل اليومي — ١٠٠ مرة" },
+            {
+        target: 100,
+        label: "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+        text: "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ — ١٠٠ مرة"
+      },
+
       { target: 33, label: "لا حول ولا قوة إلا بالله", text: "الحوقلة (كنز من كنوز الجنة) — ٣٣ مرة" }
     ]
   },
@@ -366,7 +376,12 @@ const I18N_DICTIONARIES = deepFreeze({
       { target: 100, label: "Astaghfirullah wa atubu ilayh", text: "Astaghfirullah wa atubu ilayh — 100x" },
       { target: 100, label: "SubhanAllahi wa bihamdihi", text: "SubhanAllahi wa bihamdihi — 100x" },
       { target: 10, label: "Allahumma salli 'ala Muhammad ﷺ", text: "Salawat upon the Prophet ﷺ — 10x" },
-      { target: 100, label: "La ilaha illallahu wahdahu la sharika lah", text: "Daily Tahleel Fortress — 100x" },
+            {
+        target: 100,
+        label: "La ilaha illallahu wahdahu la sharika lahu, lahul-mulku wa lahul-hamdu, wa Huwa 'ala kulli shay'in Qadir\nلاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+        text: "Daily Full Tahleel — 100x"
+      },
+
       { target: 33, label: "La hawla wa la quwwata illa billah", text: "Hawqalah (Treasure of Paradise) — 33x" }
     ]
   }
