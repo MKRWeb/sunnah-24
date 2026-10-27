@@ -450,8 +450,9 @@ body {
 }
 
 .tasbih-wheel {
-  width: 195px;
-  height: 195px;
+  width: 230px;
+  min-height: 230px;
+  height: auto;
   border-radius: 50%;
   margin: 16px auto;
   background: radial-gradient(circle, #134e3a, #071f17);
@@ -462,7 +463,7 @@ body {
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 0 28px rgba(234, 179, 8, 0.22);
-  padding: 12px;
+  padding: 18px 14px;
   text-align: center;
 }
 
@@ -478,9 +479,12 @@ body {
 }
 
 #tasbih-label {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
+  line-height: 1.4;
   color: #cbd5e1;
-  margin-top: 4px;
+  margin-top: 6px;
+  white-space: pre-line;
+  max-width: 195px;
 }
 
 .stats-mini {
