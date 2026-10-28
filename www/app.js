@@ -1132,7 +1132,6 @@ let appState = {
   appName: "Sunnah 24",
   version: 42,
   locale: "bn",
-  theme: "dark", // ☀️ / 🌙 Minimalist Theme Persistence
   i18nHash: "",
   customHabits: [],
   completionsByDate: {},
@@ -1142,41 +1141,6 @@ let appState = {
   lastUpdated: 0,
   signature: ""
 };
-
-// ============================================================================
-// MINIMALIST DAY / NIGHT THEME ENGINE
-// ============================================================================
-function applyThemeToDOM() {
-  const currentTheme = appState.theme === "light" ? "light" : "dark";
-  document.documentElement.setAttribute("data-theme", currentTheme);
-
-  const metaTheme = document.getElementById("meta-theme-color");
-  if (metaTheme) {
-    metaTheme.setAttribute("content", currentTheme === "light" ? "#f7f9f7" : "#06100c");
-  }
-
-  const iconEl = document.getElementById("theme-toggle-icon");
-  const labelEl = document.getElementById("theme-toggle-label");
-  if (iconEl && labelEl) {
-    if (currentTheme === "light") {
-      iconEl.textContent = "☀️";
-      labelEl.textContent =
-        appState.locale === "ar" ? "نهار" : appState.locale === "en" ? "Day" : "দিন";
-    } else {
-      iconEl.textContent = "🌙";
-      labelEl.textContent =
-        appState.locale === "ar" ? "ليل" : appState.locale === "en" ? "Night" : "রাত";
-    }
-  }
-}
-
-async function toggleDayNightTheme() {
-  appState.theme = appState.theme === "light" ? "dark" : "light";
-  if (navigator.vibrate) navigator.vibrate(12);
-  applyThemeToDOM();
-  await saveAndSealState();
-}
-
 
 let activePhase = "all";
 let searchQuery = "";
@@ -1529,15 +1493,27 @@ async function loadAndVerifyState() {
   }
 }
 
-function updateIntegrityUI() {
+function updateIntegrityUI(isVerified) {
+  const badge = document.getElementById("integrity-badge");
   const hashEl = document.getElementById("latest-hash-display");
   const i18nHashEl = document.getElementById("i18n-hash-display");
 
   if (hashEl) {
-    hashEl.textContent = appState.signature || "Verified";
+    hashEl.textContent = appState.signature || "Pending signature...";
   }
   if (i18nHashEl) {
     i18nHashEl.textContent = `${appState.locale.toUpperCase()} • ${verifiedI18nDigest}`;
+  }
+  if (badge) {
+    if (isVerified) {
+      badge.textContent = window.AndroidDownloader
+        ? `🛡️ S24 • ${getInstalledAppVersionTag()}`
+        : t("badge_verified");
+      badge.className = "badge-verified";
+    } else {
+      badge.textContent = t("badge_tampered");
+      badge.className = "badge-verified badge-tampered";
+    }
   }
 }
 
@@ -2155,7 +2131,6 @@ function applyLanguageToDOM() {
   renderHabits();
   renderDiaryHistory();
   updateIntegrityUI(true);
-  applyThemeToDOM(); // <--- Added here so button text (দিন / Day / نهار) updates on language change
 }
 
 // Accurate Hijri Date Formatter with Authentic Bangla, Arabic & English Month Names
@@ -2747,13 +2722,6 @@ function renderDiaryHistory() {
 document.addEventListener("DOMContentLoaded", async () => {
   await loadAndVerifyState();
   applyLanguageToDOM();
-  applyThemeToDOM(); // <--- Added here to initialize Day/Night colors on startup
-
-  // <--- Added click listener for the minimalist Day/Night toggle button
-  const themeBtn = document.getElementById("theme-toggle-btn");
-  if (themeBtn) {
-    themeBtn.addEventListener("click", toggleDayNightTheme);
-  }
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
@@ -3298,7 +3266,10 @@ function getInstalledAppVersionTag() {
 }
 
 function renderInstalledVersionBadge() {
-  applyThemeToDOM();
+  const badge = document.getElementById("integrity-badge");
+  if (badge && window.AndroidDownloader) {
+    badge.textContent = `🛡️ S24 • ${getInstalledAppVersionTag()}`;
+  }
 }
 
 function initInAppUpdateChecker(manualTrigger = false) {
