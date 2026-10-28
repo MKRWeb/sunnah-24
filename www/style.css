@@ -1,13 +1,44 @@
-:root {
-  --bg-main: #05130e;
-  --bg-card: #0b221a;
-  --bg-card-elevated: #123528;
+/* ==========================================================================
+   SUNNAH 24 — WORLD-CLASS MINIMALIST DAY & NIGHT DESIGN SYSTEM
+   ========================================================================== */
+
+:root,
+html[data-theme="dark"] {
+  --bg-main: #06100c;
+  --bg-card: #0c1d16;
+  --bg-card-elevated: #122920;
+  --bg-glass: rgba(12, 29, 22, 0.85);
+  --bg-input: #081510;
+  --bg-arabic: rgba(16, 185, 129, 0.08);
   --accent-gold: #eab308;
   --accent-emerald: #10b981;
-  --text-primary: #f8fafc;
+  --text-primary: #f1f5f9;
   --text-muted: #94a3b8;
-  --border-color: rgba(16, 185, 129, 0.25);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(16, 185, 129, 0.4);
   --danger: #ef4444;
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.28);
+  --hero-grad: linear-gradient(145deg, #0d261d, #07140f);
+  --ring-track: rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="light"] {
+  --bg-main: #f7f9f7;
+  --bg-card: #ffffff;
+  --bg-card-elevated: #f0f5f2;
+  --bg-glass: rgba(255, 255, 255, 0.88);
+  --bg-input: #f8faf9;
+  --bg-arabic: rgba(5, 150, 105, 0.06);
+  --accent-gold: #b45309;
+  --accent-emerald: #059669;
+  --text-primary: #0f172a;
+  --text-muted: #64748b;
+  --border-color: rgba(15, 23, 42, 0.08);
+  --border-active: rgba(5, 150, 105, 0.45);
+  --danger: #dc2626;
+  --shadow-soft: 0 4px 18px rgba(15, 23, 42, 0.05);
+  --hero-grad: linear-gradient(145deg, #ffffff, #eef6f2);
+  --ring-track: rgba(15, 23, 42, 0.08);
 }
 
 * {
@@ -18,49 +49,95 @@
 }
 
 body {
-  font-family: "Noto Sans Bengali", "Hind Siliguri", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, sans-serif;
+  font-family: "Noto Sans Bengali", "Hind Siliguri", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background-color: var(--bg-main);
   color: var(--text-primary);
   padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
   line-height: 1.55;
   user-select: none;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+.app-container {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* Minimalist Sticky Top Header */
 .app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  background: linear-gradient(135deg, #064e3b, #05130e);
+  padding: 12px 16px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
-  z-index: 30;
+  z-index: 40;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  min-width: 0;
+}
+
+.app-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.app-header h1 {
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.app-header p {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 210px;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
-.lang-select {
-  background: rgba(16, 185, 129, 0.14);
+/* Minimal Pill Controls (Language & Day/Night Switcher) */
+.lang-select,
+.theme-toggle-btn {
+  background: var(--bg-card-elevated);
   color: var(--text-primary);
-  border: 1px solid var(--accent-emerald);
-  padding: 5px 8px;
+  border: 1px solid var(--border-color);
+  padding: 6px 10px;
   border-radius: 999px;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   outline: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:active,
+.lang-select:active {
+  transform: scale(0.95);
 }
 
 .lang-select option {
@@ -68,98 +145,137 @@ body {
   color: var(--text-primary);
 }
 
-.brand-badge {
-  background: rgba(234, 179, 8, 0.16);
-  border: 1px solid var(--accent-gold);
-  color: var(--accent-gold);
-  font-weight: 800;
-  padding: 8px 11px;
-  border-radius: 12px;
-  font-size: 0.85rem;
-}
-
-.app-header h1 {
-  font-size: 1.2rem;
-  font-weight: 800;
-  letter-spacing: 0.01em;
-}
-
-.app-header p {
-  font-size: 0.73rem;
-  color: var(--text-muted);
-}
-
-.badge-verified {
-  background: rgba(16, 185, 129, 0.18);
-  color: #34d399;
-  border: 1px solid var(--accent-emerald);
-  padding: 5px 10px;
+/* Website-Only APK Button */
+.apk-install-btn {
+  background: var(--accent-emerald);
+  color: #ffffff;
+  padding: 6px 10px;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
 }
 
-.badge-tampered {
-  background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
-  border: 1px solid var(--danger);
+.apk-install-btn.hidden {
+  display: none !important;
 }
 
+/* Minimal Hero Card */
 .hero-card {
-  margin: 16px;
+  margin: 14px 16px;
   padding: 18px;
-  border-radius: 18px;
-  background: linear-gradient(145deg, #0f382a, #071913);
+  border-radius: 20px;
+  background: var(--hero-grad);
   border: 1px solid var(--border-color);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.42);
+  box-shadow: var(--shadow-soft);
 }
 
 .hero-stats {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+}
+
+.hero-left-info {
+  flex: 1;
 }
 
 .label {
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  color: var(--accent-gold);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-emerald);
   font-weight: 700;
 }
 
 .hero-stats h2 {
-  font-size: 2.1rem;
+  font-size: 2rem;
+  font-weight: 800;
   margin: 2px 0;
+  letter-spacing: -0.02em;
 }
 
-.streak-box {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.35);
-  padding: 10px 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(234, 179, 8, 0.35);
-}
-
-.streak-flame {
-  font-size: 1.5rem;
-}
-
-.streak-box strong {
-  display: block;
-  font-size: 1.15rem;
-  color: var(--accent-gold);
-}
-
-.streak-box small {
-  font-size: 0.7rem;
+#completed-count-text {
+  font-size: 0.78rem;
   color: var(--text-muted);
 }
 
+.time-lock-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.67rem;
+  font-weight: 600;
+  background: var(--bg-card-elevated);
+  border: 1px solid var(--border-color);
+  color: var(--accent-emerald);
+}
+
+/* Circular Streak Ring */
+.streak-circle-wrapper {
+  position: relative;
+  width: 104px;
+  height: 104px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.progress-ring-svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+  stroke: var(--ring-track);
+}
+
+.progress-ring-meter {
+  transition: stroke-dashoffset 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.streak-circle-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.streak-circle-inner .streak-flame {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.streak-circle-inner strong {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.15;
+  margin-top: 2px;
+}
+
+.streak-circle-inner small {
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  max-width: 72px;
+  line-height: 1.1;
+}
+
 .progress-track {
-  height: 10px;
-  background: rgba(255, 255, 255, 0.08);
+  height: 6px;
+  background: var(--ring-track);
   border-radius: 999px;
   margin: 14px 0 10px;
   overflow: hidden;
@@ -167,7 +283,8 @@ body {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-emerald), var(--accent-gold));
+  background: var(--accent-emerald);
+  border-radius: 999px;
   transition: width 0.35s ease;
 }
 
@@ -176,32 +293,50 @@ body {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 6px;
-  font-size: 0.75rem;
-  color: #a7f3d0;
+  font-size: 0.72rem;
+  color: var(--text-muted);
 }
 
+/* Floating Glassmorphic Bottom Navigation Dock */
 .tab-nav {
+  position: fixed;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 480px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin: 0 16px 14px;
+  gap: 4px;
+  padding: 5px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  box-shadow: var(--shadow-soft);
+  z-index: 50;
 }
 
 .tab-btn {
-  background: var(--bg-card);
+  background: transparent;
   color: var(--text-muted);
-  border: 1px solid var(--border-color);
-  padding: 10px 4px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 700;
+  border: none;
+  padding: 9px 4px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tab-btn.active {
   background: var(--accent-emerald);
-  color: #042f2e;
-  border-color: var(--accent-emerald);
+  color: #ffffff;
+  font-weight: 700;
 }
 
 .tab-content {
@@ -213,21 +348,43 @@ body {
   display: block;
 }
 
+/* Search & Phase Filter Chips */
 .search-row {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
-.search-box {
-  margin-bottom: 4px !important;
+.input-select,
+.input-text,
+.input-textarea {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 11px 14px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-text:focus,
+.input-textarea:focus,
+.input-select:focus {
+  border-color: var(--accent-emerald);
 }
 
 .filter-bar {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   overflow-x: auto;
   padding-bottom: 8px;
   margin-bottom: 6px;
   scrollbar-width: none;
+}
+
+.filter-bar::-webkit-scrollbar {
+  display: none;
 }
 
 .chip {
@@ -235,17 +392,19 @@ body {
   background: var(--bg-card);
   color: var(--text-muted);
   border: 1px solid var(--border-color);
-  padding: 7px 13px;
+  padding: 6px 12px;
   border-radius: 999px;
-  font-size: 0.75rem;
+  font-size: 0.73rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.15s ease;
 }
 
 .chip.active {
-  background: rgba(234, 179, 8, 0.18);
-  color: var(--accent-gold);
-  border-color: var(--accent-gold);
-  font-weight: 600;
+  background: var(--bg-card-elevated);
+  color: var(--accent-emerald);
+  border-color: var(--border-active);
+  font-weight: 700;
 }
 
 .quick-actions-bar {
@@ -256,7 +415,7 @@ body {
 }
 
 .muted-small {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--text-muted);
   line-height: 1.5;
 }
@@ -264,17 +423,18 @@ body {
 .link-btn {
   background: none;
   border: none;
-  color: var(--accent-gold);
-  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.73rem;
   cursor: pointer;
   text-decoration: underline;
 }
 
+/* Minimalist Habit Cards */
 .habit-list,
 .duas-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .habit-item {
@@ -282,15 +442,16 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 14px;
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  transition: transform 0.15s ease;
+  box-shadow: var(--shadow-soft);
+  transition: all 0.15s ease;
 }
 
 .habit-item.completed {
-  background: rgba(16, 185, 129, 0.12);
-  border-color: var(--accent-emerald);
+  border-color: var(--border-active);
+  background: var(--bg-card-elevated);
 }
 
 .habit-left {
@@ -301,9 +462,9 @@ body {
 }
 
 .habit-check {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   border: 2px solid var(--accent-emerald);
   display: flex;
   align-items: center;
@@ -311,17 +472,21 @@ body {
   cursor: pointer;
   flex-shrink: 0;
   margin-top: 2px;
+  font-size: 0.78rem;
+  transition: all 0.15s ease;
 }
 
 .habit-item.completed .habit-check {
   background: var(--accent-emerald);
-  color: #052e16;
-  font-weight: 900;
+  color: #ffffff;
+  font-weight: 800;
 }
 
 .habit-info h4 {
-  font-size: 0.93rem;
+  font-size: 0.9rem;
+  font-weight: 600;
   margin-bottom: 2px;
+  color: var(--text-primary);
 }
 
 .habit-item.completed .habit-info h4 {
@@ -329,58 +494,251 @@ body {
   color: var(--text-muted);
 }
 
+.habit-time-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+
 .habit-time {
-  font-size: 0.71rem;
-  color: var(--accent-gold);
+  font-size: 0.69rem;
+  color: var(--text-muted);
   font-weight: 600;
-  display: block;
 }
 
 .habit-snippet {
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 .info-btn {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--bg-card-elevated);
   border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  padding: 7px 10px;
-  border-radius: 10px;
-  font-size: 0.74rem;
+  color: var(--text-muted);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
   cursor: pointer;
   margin-left: 8px;
   flex-shrink: 0;
 }
 
+/* Time-Window Lock States */
+.habit-item.time-expired {
+  opacity: 0.68;
+}
+
+.habit-item.time-upcoming {
+  opacity: 0.82;
+}
+
+.habit-check.locked-expired {
+  border-color: rgba(239, 68, 68, 0.45);
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--danger);
+  cursor: not-allowed;
+  font-size: 0.7rem;
+}
+
+.habit-check.locked-upcoming {
+  border-color: rgba(234, 179, 8, 0.45);
+  background: rgba(234, 179, 8, 0.08);
+  color: var(--accent-gold);
+  cursor: not-allowed;
+  font-size: 0.7rem;
+}
+
+.time-status-badge {
+  font-size: 0.62rem;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.time-status-badge.status-open {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--accent-emerald);
+}
+
+.time-status-badge.status-expired {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--danger);
+}
+
+.time-status-badge.status-upcoming {
+  background: rgba(234, 179, 8, 0.12);
+  color: var(--accent-gold);
+}
+
+.time-status-badge.status-done {
+  background: rgba(16, 185, 129, 0.18);
+  color: var(--accent-emerald);
+}
+
+/* General Cards */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 16px;
   margin-bottom: 14px;
+  box-shadow: var(--shadow-soft);
 }
 
 .card h3 {
-  font-size: 1.05rem;
-  margin-bottom: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
 }
 
 .muted {
   color: var(--text-muted);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   margin-bottom: 12px;
 }
 
+/* Digital Tasbih Circular Ring */
+.tasbih-ring-container {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  margin: 14px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.tasbih-ring-svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.tasbih-ring-bg {
+  stroke: var(--ring-track);
+}
+
+.tasbih-ring-meter {
+  transition: stroke-dashoffset 0.2s ease-out;
+}
+
+.tasbih-wheel {
+  width: 204px;
+  height: 204px;
+  border-radius: 50%;
+  background: var(--bg-card-elevated);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+  transition: transform 0.12s ease;
+}
+
+.tasbih-wheel:active {
+  transform: scale(0.96);
+}
+
+#tasbih-current {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--accent-emerald);
+  line-height: 1.05;
+}
+
+#tasbih-target {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+#tasbih-label {
+  font-size: 0.67rem;
+  line-height: 1.35;
+  color: var(--text-primary);
+  margin-top: 6px;
+  max-width: 175px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tasbih-cycle-pill {
+  margin-top: 6px;
+  font-size: 0.63rem;
+  font-weight: 700;
+  color: var(--accent-emerald);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 2px 9px;
+  border-radius: 999px;
+}
+
+.stats-mini {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.stats-mini strong {
+  color: var(--text-primary);
+}
+
+/* Masnoon Duas */
+.duas-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.dua-mastery-ring-box {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#dua-progress-ring-circle {
+  transition: stroke-dashoffset 0.45s ease;
+}
+
+.dua-ring-label {
+  position: absolute;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
 .dua-card {
-  background: rgba(0, 0, 0, 0.28);
-  border-left: 3px solid var(--accent-emerald);
+  background: var(--bg-card-elevated);
+  border: 1px solid var(--border-color);
   padding: 14px;
-  border-radius: 12px;
-  border-top: 1px solid rgba(16, 185, 129, 0.14);
-  border-right: 1px solid rgba(16, 185, 129, 0.14);
-  border-bottom: 1px solid rgba(16, 185, 129, 0.14);
+  border-radius: 14px;
+}
+
+.dua-card.completed {
+  border-color: var(--border-active);
+}
+
+.dua-card.time-locked {
+  opacity: 0.68;
 }
 
 .dua-header {
@@ -392,29 +750,29 @@ body {
 }
 
 .dua-card h4 {
-  font-size: 0.9rem;
-  color: var(--accent-gold);
+  font-size: 0.88rem;
+  color: var(--text-primary);
   line-height: 1.4;
 }
 
 .dua-badge {
-  background: rgba(234, 179, 8, 0.16);
+  background: var(--bg-card);
   color: var(--accent-gold);
-  border: 1px solid rgba(234, 179, 8, 0.4);
-  font-size: 0.68rem;
+  border: 1px solid var(--border-color);
+  font-size: 0.65rem;
   font-weight: 700;
-  padding: 3px 8px;
+  padding: 2px 8px;
   border-radius: 999px;
   white-space: nowrap;
 }
 
 .dua-arabic {
-  font-size: 1.18rem;
+  font-size: 1.16rem;
   line-height: 1.95;
   text-align: right;
   direction: rtl;
-  color: #f8fafc;
-  background: rgba(6, 78, 59, 0.28);
+  color: var(--text-primary);
+  background: var(--bg-arabic);
   padding: 10px 12px;
   border-radius: 10px;
   margin-bottom: 8px;
@@ -422,82 +780,53 @@ body {
 }
 
 .translit {
-  font-size: 0.84rem;
+  font-size: 0.8rem;
   margin-bottom: 6px;
-  color: #a7f3d0;
-  line-height: 1.55;
+  color: var(--accent-emerald);
+  line-height: 1.5;
 }
 
 .dua-virtue {
   margin-top: 6px;
   padding-top: 6px;
-  border-top: 1px dashed rgba(148, 163, 184, 0.2);
-  font-size: 0.74rem;
-  color: #fde047;
+  border-top: 1px dashed var(--border-color);
+  font-size: 0.72rem;
+  color: var(--accent-gold);
 }
 
-.input-select,
-.input-text,
-.input-textarea {
-  width: 100%;
-  background: #05130e;
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  padding: 11px 12px;
-  border-radius: 10px;
-  margin-bottom: 12px;
-  font-size: 0.88rem;
-}
-
-.tasbih-wheel {
-  width: 230px;
-  min-height: 230px;
-  height: auto;
-  border-radius: 50%;
-  margin: 16px auto;
-  background: radial-gradient(circle, #134e3a, #071f17);
-  border: 3px solid var(--accent-gold);
+.dua-action-footer {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+  gap: 8px;
+}
+
+.dua-check-btn {
+  background: var(--bg-card);
+  color: var(--accent-emerald);
+  border: 1px solid var(--border-active);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 0 28px rgba(234, 179, 8, 0.22);
-  padding: 18px 14px;
-  text-align: center;
 }
 
-.tasbih-wheel:active {
-  transform: scale(0.96);
+.dua-check-btn.done {
+  background: var(--accent-emerald);
+  color: #ffffff;
 }
 
-#tasbih-current {
-  font-size: 3rem;
-  font-weight: 800;
-  color: var(--accent-gold);
-  line-height: 1.1;
-}
-
-#tasbih-label {
-  font-size: 0.68rem;
-  line-height: 1.4;
-  color: #cbd5e1;
-  margin-top: 6px;
-  white-space: pre-line;
-  max-width: 195px;
-}
-
-.stats-mini {
-  text-align: center;
-  font-size: 0.8rem;
+.dua-check-btn.locked {
   color: var(--text-muted);
-  margin-bottom: 12px;
+  border-color: var(--border-color);
+  cursor: not-allowed;
 }
 
-.stats-mini strong {
-  color: var(--accent-gold);
-}
-
+/* 7-Day Matrix & 12-Month Archive */
 .weekly-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -506,42 +835,35 @@ body {
 }
 
 .day-col {
-  background: rgba(0, 0, 0, 0.28);
+  background: var(--bg-card-elevated);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 8px 4px;
   text-align: center;
-  transition: transform 0.15s ease;
 }
 
 .day-col.today-active {
-  border-color: var(--accent-gold);
-  background: rgba(234, 179, 8, 0.14);
-}
-
-.day-col.has-progress {
   border-color: var(--accent-emerald);
 }
 
 .day-col strong {
   display: block;
-  font-size: 0.78rem;
-  color: var(--accent-gold);
+  font-size: 0.76rem;
+  color: var(--text-primary);
 }
 
 .day-col small {
   display: block;
-  font-size: 0.66rem;
+  font-size: 0.64rem;
   color: var(--text-muted);
 }
 
 .day-col .day-date-num {
-  font-size: 0.62rem;
-  color: #a7f3d0;
+  font-size: 0.6rem;
+  color: var(--accent-emerald);
   margin-top: 2px;
 }
 
-/* 6-Month Archive & Monthly Summary Styles */
 .archive-header-row {
   display: flex;
   justify-content: space-between;
@@ -552,36 +874,35 @@ body {
 
 .monthly-summary-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 8px;
   margin-bottom: 12px;
 }
 
 .month-summary-card {
-  background: rgba(6, 78, 59, 0.25);
+  background: var(--bg-card-elevated);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 10px;
 }
 
 .month-summary-card h4 {
-  font-size: 0.8rem;
-  color: var(--accent-gold);
+  font-size: 0.78rem;
+  color: var(--accent-emerald);
   margin-bottom: 3px;
 }
 
 .month-summary-card p {
-  font-size: 0.73rem;
+  font-size: 0.72rem;
   color: var(--text-primary);
 }
 
 .longterm-history-list {
-  max-height: 270px;
+  max-height: 250px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding-right: 4px;
 }
 
 .history-day-row {
@@ -589,30 +910,31 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 8px 12px;
-  background: rgba(0, 0, 0, 0.26);
-  border: 1px solid rgba(16, 185, 129, 0.18);
+  background: var(--bg-card-elevated);
+  border: 1px solid var(--border-color);
   border-radius: 10px;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
 }
 
 .history-day-row strong {
-  color: var(--accent-gold);
+  color: var(--accent-emerald);
 }
 
+/* Buttons & Diary */
 .btn-primary,
 .btn-secondary {
   width: 100%;
-  padding: 12px;
+  padding: 11px;
   border-radius: 12px;
   font-weight: 700;
   border: none;
   cursor: pointer;
-  font-size: 0.88rem;
+  font-size: 0.84rem;
 }
 
 .btn-primary {
   background: var(--accent-emerald);
-  color: #042f2e;
+  color: #ffffff;
 }
 
 .btn-secondary {
@@ -637,53 +959,71 @@ body {
 .mood-btn {
   padding: 9px;
   border-radius: 10px;
-  background: #05130e;
+  background: var(--bg-input);
   color: var(--text-muted);
   border: 1px solid var(--border-color);
   cursor: pointer;
+  font-size: 0.78rem;
 }
 
 .mood-btn.active {
-  border-color: var(--accent-gold);
-  color: var(--accent-gold);
-  background: rgba(234, 179, 8, 0.12);
+  border-color: var(--accent-emerald);
+  color: var(--accent-emerald);
+  font-weight: 700;
 }
 
 .field-label {
   display: block;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   margin-bottom: 5px;
-  color: #cbd5e1;
+  color: var(--text-muted);
 }
 
 .quote-box {
-  font-size: 0.78rem;
-  padding: 10px;
-  border-left: 3px solid var(--accent-gold);
-  background: rgba(234, 179, 8, 0.08);
+  font-size: 0.76rem;
+  padding: 10px 12px;
+  border-left: 3px solid var(--accent-emerald);
+  background: var(--bg-card-elevated);
+  border-radius: 8px;
   margin-bottom: 12px;
+  color: var(--text-muted);
+}
+
+.minimal-details {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+}
+
+.minimal-details summary {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-weight: 600;
 }
 
 .hash-box {
-  background: #040d0a;
-  padding: 10px;
+  background: var(--bg-input);
+  padding: 9px 10px;
   border-radius: 10px;
-  border: 1px dashed var(--accent-emerald);
-  margin-bottom: 12px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 8px;
   word-break: break-all;
 }
 
 .hash-box code {
   display: block;
-  font-size: 0.72rem;
-  color: var(--accent-gold);
-  margin-top: 4px;
+  font-size: 0.68rem;
+  color: var(--accent-emerald);
+  margin-top: 3px;
 }
 
+/* Modal & Splash & Toast */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.78);
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -697,299 +1037,65 @@ body {
 
 .modal-card {
   background: var(--bg-card);
-  border: 1px solid var(--accent-gold);
-  border-radius: 18px;
-  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 18px;
   max-width: 440px;
   width: 100%;
-}
-
-.modal-section {
-  margin: 12px 0;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.28);
-  border-radius: 10px;
-}
-
-.modal-section h4 {
-  font-size: 0.82rem;
-  color: var(--accent-gold);
-  margin-bottom: 4px;
-}
-
-.modal-section p {
-  font-size: 0.82rem;
-}
-
-.file-label {
-  text-align: center;
-  display: inline-block;
-}
-
-/* RTL Support for Arabic */
-html[dir="rtl"] .dua-card {
-  border-left: 1px solid rgba(16, 185, 129, 0.14);
-  border-right: 3px solid var(--accent-emerald);
-}
-
-html[dir="rtl"] .quote-box {
-  border-left: none;
-  border-right: 3px solid var(--accent-gold);
-}
-
-html[dir="rtl"] .info-btn {
-  margin-left: 0;
-  margin-right: 8px;
-}
-
-/* ==========================================================================
-   COMPACT SCROLLABLE MODAL & DAY HISTORY CHIPS (MOBILE SCREEN FIX)
-   ========================================================================== */
-.modal-card {
   max-height: 82vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 16px;
+  box-shadow: var(--shadow-soft);
 }
 
 .modal-card h3 {
-  font-size: 0.96rem;
-  line-height: 1.35;
+  font-size: 0.95rem;
   margin-bottom: 6px;
-  flex-shrink: 0;
-}
-
-.modal-card #modal-category {
-  align-self: flex-start;
-  margin-bottom: 6px;
-  flex-shrink: 0;
 }
 
 .modal-section {
   margin: 6px 0;
   padding: 10px 12px;
-  max-height: 36vh;
+  background: var(--bg-card-elevated);
+  border-radius: 12px;
+  max-height: 35vh;
   overflow-y: auto;
-  scrollbar-width: thin;
 }
 
-#modal-evidence {
-  white-space: pre-line;
+.modal-section h4 {
   font-size: 0.78rem;
-  line-height: 1.5;
+  color: var(--accent-emerald);
+  margin-bottom: 4px;
 }
 
-/* Compact Grid for 7-Day & 6-Month History Inspection */
+.modal-section p {
+  font-size: 0.78rem;
+}
+
 .compact-history-grid {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  max-height: 34vh;
-  overflow-y: auto;
-  padding-right: 4px;
 }
 
 .compact-history-item {
   font-size: 0.74rem;
-  line-height: 1.35;
   padding: 6px 9px;
-  background: rgba(16, 185, 129, 0.1);
+  background: var(--bg-card);
   border-left: 2px solid var(--accent-emerald);
   border-radius: 6px;
-  color: var(--text-primary);
 }
 
-html[dir="rtl"] .compact-history-item {
-  border-left: none;
-  border-right: 2px solid var(--accent-emerald);
-}
-
-.modal-card #close-modal-btn {
-  margin-top: 8px;
-  flex-shrink: 0;
-}
-
-/* Back-Button Exit Toast Notification */
-.exit-toast {
-  position: fixed;
-  bottom: 85px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(6, 78, 59, 0.96);
-  color: #f8fafc;
-  border: 1px solid var(--accent-gold);
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: 0.76rem;
-  font-weight: 600;
-  z-index: 200;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-
-/* ==========================================================================
-   WEBSITE-ONLY 1-CLICK APK INSTALL BUTTON
-   ========================================================================== */
-.apk-install-btn {
-  background: linear-gradient(135deg, var(--accent-gold), #ca8a04);
-  color: #05130e;
-  border: 1px solid #fde047;
-  padding: 5px 11px;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  box-shadow: 0 0 14px rgba(234, 179, 8, 0.35);
-  white-space: nowrap;
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
-}
-
-.apk-install-btn:active {
-  transform: scale(0.95);
-}
-
-.apk-install-btn.hidden {
-  display: none !important;
-}
-
-/* ==========================================================================
-   IN-APP UPDATE NOTIFICATION BANNER STYLES
-   ========================================================================== */
-.update-banner-card {
-  position: fixed;
-  bottom: 80px;
-  left: 16px;
-  right: 16px;
-  background: linear-gradient(145deg, #0f382a, #071913);
-  border: 2px solid var(--accent-gold);
-  border-radius: 16px;
-  padding: 14px 16px;
-  z-index: 250;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  animation: slideUpFade 0.35s ease;
-}
-
-@keyframes slideUpFade {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.update-banner-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.update-banner-content span {
-  font-size: 1.6rem;
-}
-
-.update-banner-content strong {
-  display: block;
-  font-size: 0.88rem;
-  color: var(--accent-gold);
-  line-height: 1.3;
-}
-
-.update-banner-content small {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-}
-
-.update-banner-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.btn-update-action {
-  flex: 2;
-  background: var(--accent-emerald);
-  color: #042f2e;
-  text-align: center;
-  padding: 9px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 0.82rem;
-  text-decoration: none;
-}
-
-.btn-update-dismiss {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-muted);
-  border: 1px solid var(--border-color);
-  padding: 9px;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 0.82rem;
-  cursor: pointer;
-}
-
-/* ==========================================================================
-   VERTICAL STACKING FOR HEADER CONTROLS (LANGUAGE + APK INSTALL)
-   ========================================================================== */
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.header-controls-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 5px;
-}
-
-.apk-install-btn {
-  background: linear-gradient(135deg, var(--accent-gold), #ca8a04);
-  color: #05130e;
-  border: 1px solid #fde047;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 0.68rem;
-  font-weight: 800;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  box-shadow: 0 0 12px rgba(234, 179, 8, 0.3);
-  white-space: nowrap;
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
-}
-
-.apk-install-btn:active {
-  transform: scale(0.95);
-}
-
-.apk-install-btn.hidden {
-  display: none !important;
-}
-
-
-
-/* ==========================================================================
-   WORLD-STANDARD CIRCULAR PROGRESS RINGS & STRICT TIME-WINDOW LOCK ENGINE
-   ========================================================================== */
-
-/* Smooth Startup Splash */
 .startup-splash {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, #064e3b 0%, #05130e 75%);
+  background: var(--bg-main);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 
 .startup-splash.splash-hidden {
@@ -1000,290 +1106,104 @@ html[dir="rtl"] .compact-history-item {
 
 .splash-inner {
   text-align: center;
-  padding: 24px;
 }
 
 .splash-logo {
-  width: 76px;
-  height: 76px;
-  border-radius: 18px;
-  border: 2px solid var(--accent-gold);
-  box-shadow: 0 0 28px rgba(234, 179, 8, 0.35);
-  margin-bottom: 12px;
+  width: 68px;
+  height: 68px;
+  border-radius: 16px;
+  margin-bottom: 10px;
 }
 
 .splash-inner h2 {
-  font-size: 1.25rem;
-  color: var(--accent-gold);
-  margin-bottom: 4px;
+  font-size: 1.15rem;
+  color: var(--text-primary);
 }
 
 .splash-inner p {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
 
-/* Home Hero Circular Progress Ring around Daily Streak */
-.hero-left-info {
-  flex: 1;
-  padding-right: 10px;
-}
-
-.time-lock-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 7px;
-  padding: 3px 10px;
+.exit-toast {
+  position: fixed;
+  bottom: 88px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-active);
+  padding: 8px 16px;
   border-radius: 999px;
-  font-size: 0.68rem;
-  font-weight: 700;
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: #6ee7b7;
-}
-
-.streak-circle-wrapper {
-  position: relative;
-  width: 108px;
-  height: 108px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.progress-ring-svg {
-  position: absolute;
-  inset: 0;
-  transform: rotate(-90deg);
-}
-
-.progress-ring-bg {
-  stroke: rgba(255, 255, 255, 0.09);
-}
-
-.progress-ring-meter {
-  transition: stroke-dashoffset 0.55s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: drop-shadow(0 0 6px rgba(234, 179, 8, 0.35));
-}
-
-.streak-circle-inner {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 6px;
-}
-
-.streak-circle-inner .streak-flame {
-  font-size: 1.15rem;
-  line-height: 1;
-}
-
-.streak-circle-inner strong {
-  font-size: 1.18rem;
-  color: var(--accent-gold);
-  line-height: 1.15;
-  margin-top: 2px;
-}
-
-.streak-circle-inner small {
-  font-size: 0.58rem;
-  color: var(--text-muted);
-  max-width: 76px;
-  line-height: 1.15;
-}
-
-/* Digital Tasbih Circular Progress Ring */
-.tasbih-ring-container {
-  position: relative;
-  width: 250px;
-  height: 250px;
-  margin: 14px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.tasbih-ring-svg {
-  position: absolute;
-  inset: 0;
-  transform: rotate(-90deg);
+  font-size: 0.74rem;
+  font-weight: 600;
+  z-index: 200;
+  box-shadow: var(--shadow-soft);
   pointer-events: none;
+  transition: opacity 0.25s ease;
 }
 
-.tasbih-ring-bg {
-  stroke: rgba(255, 255, 255, 0.08);
+.update-banner-card {
+  position: fixed;
+  bottom: 84px;
+  left: 16px;
+  right: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-active);
+  border-radius: 16px;
+  padding: 14px 16px;
+  z-index: 250;
+  box-shadow: var(--shadow-soft);
 }
 
-.tasbih-ring-meter {
-  transition: stroke-dashoffset 0.22s ease-out;
-  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.45));
-}
-
-.tasbih-ring-container .tasbih-wheel {
-  width: 210px;
-  min-height: 210px;
-  height: 210px;
-  margin: 0;
-  border: 2px solid rgba(234, 179, 8, 0.5);
-}
-
-.tasbih-cycle-pill {
-  margin-top: 6px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #6ee7b7;
-  background: rgba(16, 185, 129, 0.16);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  padding: 2px 9px;
-  border-radius: 999px;
-}
-
-/* Daily Masnoon Duas Circular Ring & Completion Check */
-.duas-header-top {
+.update-banner-content {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 12px;
   margin-bottom: 10px;
 }
 
-.dua-mastery-ring-box {
-  position: relative;
-  width: 58px;
-  height: 58px;
-  flex-shrink: 0;
+.update-banner-actions {
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#dua-progress-ring-circle {
-  transition: stroke-dashoffset 0.45s ease;
-}
-
-.dua-ring-label {
-  position: absolute;
-  font-size: 0.68rem;
-  font-weight: 800;
-  color: var(--accent-gold);
-}
-
-.dua-card.completed {
-  border-left-color: var(--accent-gold);
-  background: rgba(16, 185, 129, 0.11);
-}
-
-.dua-card.time-locked {
-  opacity: 0.68;
-}
-
-.dua-action-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(16, 185, 129, 0.18);
   gap: 8px;
 }
 
-.dua-check-btn {
-  background: rgba(16, 185, 129, 0.15);
-  color: #6ee7b7;
-  border: 1px solid var(--accent-emerald);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.dua-check-btn.done {
+.btn-update-action {
+  flex: 2;
   background: var(--accent-emerald);
-  color: #042f2e;
-}
-
-.dua-check-btn.locked {
-  background: rgba(239, 68, 68, 0.14);
-  color: #fca5a5;
-  border-color: rgba(239, 68, 68, 0.4);
-  cursor: not-allowed;
-}
-
-/* Strict Time-Window Habit Lock Styles */
-.habit-item.time-expired {
-  border-color: rgba(239, 68, 68, 0.32);
-  background: rgba(15, 23, 42, 0.55);
-  opacity: 0.76;
-}
-
-.habit-item.time-upcoming {
-  border-color: rgba(234, 179, 8, 0.25);
-  opacity: 0.85;
-}
-
-.habit-check.locked-expired {
-  border-color: rgba(239, 68, 68, 0.55);
-  background: rgba(239, 68, 68, 0.12);
-  color: #f87171;
-  cursor: not-allowed;
-  font-size: 0.78rem;
-}
-
-.habit-check.locked-upcoming {
-  border-color: rgba(234, 179, 8, 0.5);
-  background: rgba(234, 179, 8, 0.1);
-  color: var(--accent-gold);
-  cursor: not-allowed;
-  font-size: 0.78rem;
-}
-
-.habit-time-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 3px;
-}
-
-.time-status-badge {
-  font-size: 0.64rem;
+  color: #ffffff;
+  border: none;
+  padding: 8px;
+  border-radius: 10px;
   font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
+  font-size: 0.8rem;
+  cursor: pointer;
 }
 
-.time-status-badge.status-open {
-  background: rgba(16, 185, 129, 0.16);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.35);
+.btn-update-dismiss {
+  flex: 1;
+  background: var(--bg-card-elevated);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
 }
 
-.time-status-badge.status-expired {
-  background: rgba(239, 68, 68, 0.16);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.35);
+.file-label {
+  text-align: center;
+  display: inline-block;
 }
 
-.time-status-badge.status-upcoming {
-  background: rgba(234, 179, 8, 0.14);
-  color: #facc15;
-  border: 1px solid rgba(234, 179, 8, 0.35);
+html[dir="rtl"] .quote-box {
+  border-left: none;
+  border-right: 3px solid var(--accent-emerald);
 }
 
-.time-status-badge.status-done {
-  background: rgba(16, 185, 129, 0.25);
-  color: #a7f3d0;
-  border: 1px solid var(--accent-emerald);
+html[dir="rtl"] .info-btn {
+  margin-left: 0;
+  margin-right: 8px;
 }
