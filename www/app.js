@@ -125,7 +125,7 @@ const I18N_DICTIONARIES = deepFreeze({
     diary_lbl_niyyah: "নিয়ত:",
     vault_matrix_title: "📊 ৭-দিনের সুন্নাহ ধারাবাহিকতা ম্যাট্রিক্স",
     vault_matrix_sub: "গত ৭ দিনে আপনার দৈনিক সুন্নাহ পালনের অগ্রগতি (দিনে ট্যাপ করে বিস্তারিত দেখুন)।",
-    vault_archive_title: "🗓️ দীর্ঘমেয়াদী সুন্নাহ আর্কাইভ (৬ মাস / ১৮০ দিন)",
+    vault_archive_title: "🗓️ দীর্ঘমেয়াদী সুন্নাহ আর্কাইভ (১২ মাস / ৩৬৫ দিন)",
     vault_archive_sub: "আপনার বিগত কয়েক মাসের সকল দিনের রেকর্ড ডিভাইসে স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকে।",
     archive_empty: "নির্বাচিত সময়সীমার মধ্যে এখনও কোনো সম্পন্ন আমলের রেকর্ড নেই।",
     archive_active_days: "সক্রিয় দিন:",
@@ -233,7 +233,7 @@ const I18N_DICTIONARIES = deepFreeze({
     diary_lbl_niyyah: "النية:",
     vault_matrix_title: "📊 مصفوفة الاستقامة لـ ٧ أيام",
     vault_matrix_sub: "معدل إتمامك للسنن النبوية خلال الأيام السبعة الماضية (اضغط على اليوم للتفاصيل).",
-    vault_archive_title: "🗓️ أرشيف السنن طويل المدى (٦ أشهر / ١٨٠ يوماً)",
+    vault_archive_title: "🗓️ أرشيف السنن طويل المدى (١٢ شهراً / ٣٦٥ يوماً)",
     vault_archive_sub: "يتم حفظ سجل أيامك وأشهرك السابقة تلقائياً في الجهاز.",
     archive_empty: "لا توجد سجلات مكتملة في هذه الفترة بعد.",
     archive_active_days: "الأيام النشطة:",
@@ -341,7 +341,7 @@ const I18N_DICTIONARIES = deepFreeze({
     diary_lbl_niyyah: "Niyyah:",
     vault_matrix_title: "📊 7-Day Sunnah Consistency Matrix",
     vault_matrix_sub: "Your daily habit completion momentum across the past 7 days (tap any day to inspect).",
-    vault_archive_title: "🗓️ Long-Term Sunnah Archive (6 Months / 180 Days)",
+    vault_archive_title: "🗓️ Long-Term Sunnah Archive (12 Months / 365 Days)",
     vault_archive_sub: "Your multi-month daily history is automatically preserved across 3 device storage layers.",
     archive_empty: "No completed habit records found in this range yet.",
     archive_active_days: "Active Days:",
@@ -1148,7 +1148,7 @@ let selectedMood = "Khushu";
 let tasbihCount = 0;
 let tasbihTarget = 33;
 let verifiedI18nDigest = "";
-let historyRangeDays = 180;
+let historyRangeDays = 365;
 let lastObservedDateKey = getTodayKey();
 
 function t(key, replacements = {}) {
@@ -1519,62 +1519,323 @@ function updateIntegrityUI(isVerified) {
 
 
 // ============================================================================
-// WORLD-STANDARD STRICT TIME-WINDOW LOCK & SVG CIRCULAR RING ENGINE
+// WORLD-STANDARD STRICT TIME-WINDOW LOCK, REGIONAL SEASONAL ISLAMIC PRAYER
+// ASTRONOMICAL ENGINE (BANGLADESH • MIDDLE EAST • WESTERN) & SVG RINGS
 // ============================================================================
 const HERO_RING_CIRCUMFERENCE = 289.03;   // 2 * PI * 46
 const TASBIH_RING_CIRCUMFERENCE = 703.72; // 2 * PI * 112
 const DUA_RING_CIRCUMFERENCE = 150.8;     // 2 * PI * 24
 
-// Strict Daily Waqt & Time Windows (in minutes from 00:00 local time)
-const HABIT_TIME_WINDOWS = deepFreeze({
-  s24_01_waking_dua: { start: 3 * 60, end: 9 * 60, label_bn: "ভোর ৩:০০ – সকাল ৯:০০", label_ar: "٣:٠٠ ص – ٩:٠٠ ص", label_en: "03:00 AM – 09:00 AM" },
-  s24_02_miswak_wudu: { start: 3 * 60, end: 23 * 60 + 59, label_bn: "সারাদিন (পাঁচ ওয়াক্ত)", label_ar: "طوال اليوم", label_en: "All Day (5 Prayers)" },
-  s24_03_tahajjud: { start: 1 * 60, end: 5 * 60 + 25, label_bn: "রাত ১:০০ – ভোর ৫:২৫", label_ar: "١:٠٠ ص – ٥:٢٥ ص", label_en: "01:00 AM – 05:25 AM" },
-  s24_04_fajr_sunnah_fard: { start: 4 * 60 + 15, end: 6 * 60 + 30, label_bn: "ভোর ৪:১৫ – সকাল ৬:৩০", label_ar: "٤:١٥ ص – ٦:٣٠ ص", label_en: "04:15 AM – 06:30 AM" },
-  s24_05_post_fajr_barakah: { start: 4 * 60 + 45, end: 7 * 60 + 30, label_bn: "ভোর ৪:৪৫ – সকাল ৭:৩০", label_ar: "٤:٤٥ ص – ٧:٣٠ ص", label_en: "04:45 AM – 07:30 AM" },
-  s24_06_ishraq_reflection: { start: 5 * 60 + 45, end: 8 * 60 + 30, label_bn: "সকাল ৫:৪৫ – সকাল ৮:৩০", label_ar: "٥:٤٥ ص – ٨:٣٠ ص", label_en: "05:45 AM – 08:30 AM" },
-  s24_07_home_exit_dua: { start: 5 * 60, end: 21 * 60, label_bn: "সকাল ৫:০০ – রাত ৯:০০", label_ar: "٥:٠٠ ص – ٩:٠٠ م", label_en: "05:00 AM – 09:00 PM" },
-  s24_08_salat_duha: { start: 7 * 60 + 30, end: 11 * 60 + 50, label_bn: "সকাল ৭:৩০ – দুপুর ১১:৫০", label_ar: "٧:٣٠ ص – ١١:٥٠ ص", label_en: "07:30 AM – 11:50 AM" },
-  s24_09_halal_ihsan_work: { start: 7 * 60, end: 21 * 60, label_bn: "সকাল ৭:০০ – রাত ৯:০০", label_ar: "٧:٠٠ ص – ٩:٠٠ م", label_en: "07:00 AM – 09:00 PM" },
-  s24_10_tayammun_right: { start: 0, end: 23 * 60 + 59, label_bn: "সারাদিন উন্মুক্ত", label_ar: "طوال اليوم", label_en: "Open All Day" },
-  s24_11_dhuhr_rawatib: { start: 12 * 60, end: 16 * 60 + 15, label_bn: "দুপুর ১২:০০ – বিকেল ৪:১৫", label_ar: "١٢:٠٠ م – ٤:١٥ م", label_en: "12:00 PM – 04:15 PM" },
-  s24_12_qaylulah_nap: { start: 12 * 60 + 30, end: 16 * 60, label_bn: "দুপুর ১২:৩০ – বিকেল ৪:০০", label_ar: "١٢:٣٠ م – ٤:٠٠ م", label_en: "12:30 PM – 04:00 PM" },
-  s24_13_asr_prayer: { start: 15 * 60 + 30, end: 18 * 60 + 5, label_bn: "বিকেল ৩:৩০ – সন্ধ্যা ৬:০৫", label_ar: "٣:٣٠ م – ٦:٠٥ م", label_en: "03:30 PM – 06:05 PM" },
-  s24_14_evening_adhkar: { start: 15 * 60 + 45, end: 19 * 60 + 30, label_bn: "বিকেল ৩:৪৫ – সন্ধ্যা ৭:৩০", label_ar: "٣:٤٥ م – ٧:٣٠ م", label_en: "03:45 PM – 07:30 PM" },
-  s24_15_maghrib_sunnah: { start: 17 * 60 + 10, end: 19 * 60 + 45, label_bn: "বিকেল ৫:১০ – রাত ৭:৪৫", label_ar: "٥:١٠ م – ٧:٤٥ م", label_en: "05:10 PM – 07:45 PM" },
-  s24_16_family_silat_rahim: { start: 17 * 60, end: 23 * 60 + 30, label_bn: "বিকেল ৫:০০ – রাত ১১:৩০", label_ar: "٥:٠٠ م – ١١:٣٠ م", label_en: "05:00 PM – 11:30 PM" },
-  s24_17_isha_witr: { start: 19 * 60, end: 23 * 60 + 59, label_bn: "রাত ৭:০০ – রাত ১১:৫৯", label_ar: "٧:٠٠ م – ١١:٥٩ م", label_en: "07:00 PM – 11:59 PM" },
-  s24_18_surah_mulk_baqarah: { start: 19 * 60 + 30, end: 23 * 60 + 59, label_bn: "রাত ৭:৩০ – রাত ১১:৫৯", label_ar: "٧:٣٠ م – ١١:٥٩ م", label_en: "07:30 PM – 11:59 PM" },
-  s24_19_sleep_wudu_dusting: { start: 20 * 60 + 30, end: 23 * 60 + 59, label_bn: "রাত ৮:৩০ – রাত ১১:৫৯", label_ar: "٨:٣٠ م – ١١:٥٩ م", label_en: "08:30 PM – 11:59 PM" },
-  s24_20_kursi_3quls: { start: 20 * 60 + 30, end: 23 * 60 + 59, label_bn: "রাত ৮:৩০ – রাত ১১:৫৯", label_ar: "٨:٣٠ م – ١١:٥٩ م", label_en: "08:30 PM – 11:59 PM" },
-  s24_21_tasbih_fatimah: { start: 20 * 60 + 30, end: 23 * 60 + 59, label_bn: "রাত ৮:৩০ – রাত ১১:৫৯", label_ar: "٨:٣٠ م – ١١:٥٩ م", label_en: "08:30 PM – 11:59 PM" },
-  s24_22_forgiving_before_sleep: { start: 20 * 60 + 30, end: 23 * 60 + 59, label_bn: "রাত ৮:৩০ – রাত ১১:৫৯", label_ar: "٨:٣٠ م – ١١:٥٩ م", label_en: "08:30 PM – 11:59 PM" },
-  s24_31_mon_thu_fasting: { start: 3 * 60 + 30, end: 19 * 60 + 30, label_bn: "ভোর ৩:৩০ – সন্ধ্যা ৭:৩০", label_ar: "٣:٣٠ ص – ٧:٣٠ م", label_en: "03:30 AM – 07:30 PM" },
-  s24_32_jumuah_kahf_salawat: { start: 4 * 60 + 30, end: 18 * 60 + 30, fridayOnly: true, label_bn: "জুমু'আর দিন (ভোর ৪:৩০ – সন্ধ্যা ৬:৩০)", label_ar: "يوم الجمعة (٤:٣٠ ص – ٦:٣٠ م)", label_en: "Friday (04:30 AM – 06:30 PM)" }
+// Regional Astronomical Profiles mapped to Language & Timezone
+// - bn (Bangladesh): Islamic Foundation Bangladesh / Karachi Method (18° Fajr, 18° Isha, Hanafi Asr shadow=2, Lat 24.0°N, Lon 90.0°E, UTC+6)
+// - ar (Middle East): Umm al-Qura University Makkah Method (18.5° Fajr, +90m Isha, Shafi'i Asr shadow=1, Lat 21.42°N, Lon 39.82°E, UTC+3)
+// - en (Western Countries): ISNA / MWL Method with High-Latitude Seasonal Rule (15° Fajr, 15° Isha, Shafi'i Asr shadow=1, Auto-Timezone)
+const REGIONAL_PRAYER_PROFILES = deepFreeze({
+  bn: {
+    regionName_bn: "বাংলাদেশ (ইসলামিক ফাউন্ডেশন ঋতুভিত্তিক সময়সূচী)",
+    regionName_ar: "بنغلاديش (التوقيت الموسمي)",
+    regionName_en: "Bangladesh (Seasonal Waqt)",
+    lat: 24.0,
+    lon: 90.0,
+    tzHours: 6.0,
+    fajrAngle: 18.0,
+    ishaAngle: 18.0,
+    ishaFixedMins: 0,
+    asrShadowFactor: 2 // Hanafi standard in Bangladesh
+  },
+  ar: {
+    regionName_bn: "মধ্যপ্রাচ্য (উম্মুল কুরা মক্কা ঋতুভিত্তিক সময়সূচী)",
+    regionName_ar: "الشرق الأوسط (تقويم أم القرى الموسمي)",
+    regionName_en: "Middle East (Umm al-Qura Seasonal Waqt)",
+    lat: 21.4225,
+    lon: 39.8262,
+    tzHours: 3.0,
+    fajrAngle: 18.5,
+    ishaAngle: 0,
+    ishaFixedMins: 90, // Umm al-Qura 90 mins after Maghrib
+    asrShadowFactor: 1 // Shafi'i / Hanbali / Maliki standard in Middle East
+  },
+  en: {
+    regionName_bn: "পশ্চিমা বিশ্ব (ISNA/MWL ঋতুভিত্তিক সময়সূচী)",
+    regionName_ar: "الدول الغربية (التوقيت الموسمي ISNA/MWL)",
+    regionName_en: "Western Countries (ISNA/MWL Seasonal Waqt)",
+    lat: 43.0,
+    lon: -79.0,
+    tzHours: -5.0,
+    fajrAngle: 15.0,
+    ishaAngle: 15.0,
+    ishaFixedMins: 0,
+    asrShadowFactor: 1
+  }
 });
 
-const PHASE_FALLBACK_WINDOWS = deepFreeze({
-  tahajjud_fajr: { start: 1 * 60, end: 8 * 60 + 30, label_bn: "রাত ১:০০ – সকাল ৮:৩০", label_ar: "١:٠٠ ص – ٨:٣٠ ص", label_en: "01:00 AM – 08:30 AM" },
-  duha_work: { start: 7 * 60, end: 13 * 60, label_bn: "সকাল ৭:০০ – দুপুর ১:০০", label_ar: "٧:٠٠ ص – ١:٠٠ م", label_en: "07:00 AM – 01:00 PM" },
-  dhuhr_asr: { start: 12 * 60, end: 18 * 60 + 15, label_bn: "দুপুর ১২:০০ – সন্ধ্যা ৬:১৫", label_ar: "١٢:٠٠ م – ٦:١٥ م", label_en: "12:00 PM – 06:15 PM" },
-  maghrib_isha: { start: 17 * 60 + 10, end: 23 * 60 + 59, label_bn: "বিকেল ৫:১০ – রাত ১১:৫৯", label_ar: "٥:١٠ م – ١١:٥٩ م", label_en: "05:10 PM – 11:59 PM" },
-  sleep_sunnah: { start: 20 * 60 + 30, end: 23 * 60 + 59, label_bn: "রাত ৮:৩০ – রাত ১১:৫৯", label_ar: "٨:٣٠ م – ١١:٥٩ م", label_en: "08:30 PM – 11:59 PM" },
-  diet_hygiene: { start: 0, end: 23 * 60 + 59, label_bn: "সারাদিন উন্মুক্ত", label_ar: "طوال اليوم", label_en: "Open All Day" },
-  character_social: { start: 0, end: 23 * 60 + 59, label_bn: "সারাদিন উন্মুক্ত", label_ar: "طوال اليوم", label_en: "Open All Day" }
-});
+// Auto-refines Western / device coordinates using local IANA timezone when available
+function resolveActiveRegionalProfile(dateObj = new Date()) {
+  const lang = appState.locale || "bn";
+  const base = { ...(REGIONAL_PRAYER_PROFILES[lang] || REGIONAL_PRAYER_PROFILES.bn) };
 
-function getWindowLabel(winObj) {
-  if (!winObj) return "";
-  if (appState.locale === "ar") return winObj.label_ar || winObj.label_en;
-  if (appState.locale === "en") return winObj.label_en;
-  return winObj.label_bn || winObj.label_en;
+  if (lang === "en") {
+    const localTzOffsetHours = -dateObj.getTimezoneOffset() / 60;
+    base.tzHours = localTzOffsetHours;
+    let tzName = "";
+    try {
+      tzName = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    } catch {}
+    if (tzName.startsWith("Europe/")) {
+      base.lat = 51.5074; // London / Western Europe benchmark
+      base.lon = localTzOffsetHours * 15;
+    } else if (tzName.startsWith("America/")) {
+      base.lat = 40.7128; // North America benchmark
+      base.lon = localTzOffsetHours * 15;
+    } else if (tzName.startsWith("Australia/")) {
+      base.lat = -33.8688; // Southern Hemisphere seasonal inversion handled automatically!
+      base.lon = localTzOffsetHours * 15;
+    } else {
+      base.lon = localTzOffsetHours * 15;
+    }
+  }
+  return base;
 }
 
-// Evaluates whether a habit is currently "open", "upcoming", or "expired" based on real device time
+// Astronomical Solar Declination & Equation of Time Calculator (NOAA / Jean Meeus algorithm)
+function computeSeasonalPrayerSchedule(dateObj = new Date()) {
+  const profile = resolveActiveRegionalProfile(dateObj);
+  const startOfYear = new Date(dateObj.getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((dateObj - startOfYear) / 86400000);
+
+  const deg2rad = (d) => (d * Math.PI) / 180;
+  const rad2deg = (r) => (r * 180) / Math.PI;
+
+  // Fractional year gamma (radians)
+  const gamma = ((2 * Math.PI) / 365.25) * (dayOfYear - 1 + 0.5);
+
+  // Equation of time (in minutes)
+  const eqTime =
+    229.18 *
+    (0.000075 +
+      0.001868 * Math.cos(gamma) -
+      0.032077 * Math.sin(gamma) -
+      0.014615 * Math.cos(2 * gamma) -
+      0.040849 * Math.sin(2 * gamma));
+
+  // Solar declination angle (in radians & degrees)
+  const declRad =
+    0.006918 -
+    0.399912 * Math.cos(gamma) +
+    0.070257 * Math.sin(gamma) -
+    0.006758 * Math.cos(2 * gamma) +
+    0.000907 * Math.sin(2 * gamma) -
+    0.002697 * Math.cos(3 * gamma) +
+    0.00148 * Math.sin(3 * gamma);
+  const declDeg = rad2deg(declRad);
+
+  const latRad = deg2rad(profile.lat);
+
+  // Solar Noon (Dhuhr start) in local minutes from 00:00
+  const solarNoonMins = Math.round(720 - 4 * profile.lon - eqTime + profile.tzHours * 60);
+
+  // Helper to compute hour-angle offset (in minutes) for any zenith/altitude angle below horizon
+  function getHourAngleMinutes(altitudeDeg) {
+    const altRad = deg2rad(altitudeDeg);
+    const cosH =
+      (Math.sin(altRad) - Math.sin(latRad) * Math.sin(declRad)) /
+      (Math.cos(latRad) * Math.cos(declRad));
+    // High-latitude seasonal protection (1/7th night rule fallback for extreme summer/winter)
+    if (cosH < -0.98) return 310;
+    if (cosH > 0.98) return 150;
+    const hDeg = rad2deg(Math.acos(Math.max(-1, Math.min(1, cosH))));
+    return Math.round(hDeg * 4);
+  }
+
+  // Sunrise & Sunset (-0.833° atmospheric refraction)
+  const sunHalfDayMins = getHourAngleMinutes(-0.833);
+  const sunriseMins = solarNoonMins - sunHalfDayMins;
+  const sunsetMins = solarNoonMins + sunHalfDayMins;
+
+  // Fajr
+  const fajrOffsetMins = getHourAngleMinutes(-profile.fajrAngle);
+  const fajrMins = Math.max(150, solarNoonMins - fajrOffsetMins);
+
+  // Ishraq (15 mins after sunrise) & Duha start (20 mins after sunrise) to Zawal (10 mins before Dhuhr)
+  const ishraqMins = sunriseMins + 15;
+  const duhaStartMins = sunriseMins + 20;
+  const zawalMins = solarNoonMins - 10;
+  const dhuhrMins = solarNoonMins + 3; // 3 mins precaution after meridian transit
+
+  // Asr (Shadow factor: 2 for Bangladesh Hanafi, 1 for Middle East & Western standard)
+  const zenithDiffRad = Math.abs(latRad - declRad);
+  const asrAltRad = Math.atan(1 / (profile.asrShadowFactor + Math.tan(zenithDiffRad)));
+  const asrAltDeg = rad2deg(asrAltRad);
+  const asrOffsetMins = getHourAngleMinutes(asrAltDeg);
+  const asrMins = solarNoonMins + asrOffsetMins;
+
+  // Maghrib (3 mins after sunset)
+  const maghribMins = sunsetMins + 3;
+
+  // Isha
+  let ishaMins;
+  if (profile.ishaFixedMins > 0) {
+    ishaMins = maghribMins + profile.ishaFixedMins;
+  } else {
+    const ishaOffsetMins = getHourAngleMinutes(-profile.ishaAngle);
+    ishaMins = Math.min(22 * 60 + 30, solarNoonMins + ishaOffsetMins);
+  }
+
+  // Islamic Last Third of Night (Tahajjud peak window)
+  const nightDuration = 1440 - maghribMins + fajrMins;
+  const lastThirdStart = Math.max(60, Math.round(fajrMins - nightDuration / 3));
+
+  // Season indicator (Summer, Winter, Spring/Autumn)
+  const isNorthern = profile.lat >= 0;
+  const month = dateObj.getMonth(); // 0..11
+  let seasonType = "equinox";
+  if (month >= 10 || month <= 1) {
+    seasonType = isNorthern ? "winter" : "summer";
+  } else if (month >= 4 && month <= 7) {
+    seasonType = isNorthern ? "summer" : "winter";
+  }
+
+  return {
+    profile,
+    seasonType,
+    lastThirdStart,
+    fajr: fajrMins,
+    sunrise: sunriseMins,
+    ishraq: ishraqMins,
+    duhaStart: duhaStartMins,
+    zawal: zawalMins,
+    dhuhr: dhuhrMins,
+    asr: asrMins,
+    sunset: sunsetMins,
+    maghrib: maghribMins,
+    isha: ishaMins
+  };
+}
+
+// Formats minute-of-day (0..1439) into localized 12-hour time string (e.g., ভোর ০৪:৫২, ٠٤:٥٢ ص, 04:52 AM)
+function formatMinutesToLocalizedTime(totalMins, locale = appState.locale) {
+  const clamped = ((Math.round(totalMins) % 1440) + 1440) % 1440;
+  const h24 = Math.floor(clamped / 60);
+  const mins = clamped % 60;
+  const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+  const hStr = localizeDigits(String(h12).padStart(2, "0"), locale);
+  const mStr = localizeDigits(String(mins).padStart(2, "0"), locale);
+
+  if (locale === "bn") {
+    let period = "রাত";
+    if (h24 >= 4 && h24 < 6) period = "ভোর";
+    else if (h24 >= 6 && h24 < 12) period = "সকাল";
+    else if (h24 >= 12 && h24 < 15) period = "দুপুর";
+    else if (h24 >= 15 && h24 < 18) period = "বিকেল";
+    else if (h24 >= 18 && h24 < 20) period = "সন্ধ্যা";
+    return `${period} ${hStr}:${mStr}`;
+  }
+
+  if (locale === "ar") {
+    const suffix = h24 < 12 ? "ص" : "م";
+    return `${hStr}:${mStr} ${suffix}`;
+  }
+
+  const suffix = h24 < 12 ? "AM" : "PM";
+  return `${hStr}:${mStr} ${suffix}`;
+}
+
+function formatWindowRangeLabel(startMins, endMins, locale = appState.locale) {
+  if (startMins <= 5 && endMins >= 1430) {
+    if (locale === "ar") return "طوال اليوم";
+    if (locale === "en") return "Open All Day";
+    return "সারাদিন উন্মুক্ত";
+  }
+  return `${formatMinutesToLocalizedTime(startMins, locale)} – ${formatMinutesToLocalizedTime(endMins, locale)}`;
+}
+
+// Dynamically computes the exact seasonal start & end minutes for each of the 32 Prophetic habits
+function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
+  const s = computeSeasonalPrayerSchedule(now);
+
+  switch (habit.id) {
+    case "s24_01_waking_dua":
+      return { start: Math.max(150, s.lastThirdStart - 30), end: s.sunrise + 150 };
+    case "s24_02_miswak_wudu":
+      return { start: 0, end: 1439 }; // Open across all 5 daily prayers
+    case "s24_03_tahajjud":
+      return { start: Math.max(60, s.lastThirdStart - 45), end: s.fajr - 2 };
+    case "s24_04_fajr_sunnah_fard":
+      return { start: s.fajr, end: s.sunrise - 2 };
+    case "s24_05_post_fajr_barakah":
+      return { start: s.fajr + 15, end: s.sunrise + 60 };
+    case "s24_06_ishraq_reflection":
+      return { start: s.ishraq, end: s.sunrise + 120 };
+    case "s24_07_home_exit_dua":
+      return { start: s.fajr, end: 22 * 60 };
+    case "s24_08_salat_duha":
+      return { start: s.duhaStart, end: s.zawal };
+    case "s24_09_halal_ihsan_work":
+      return { start: s.sunrise, end: 22 * 60 + 30 };
+    case "s24_10_tayammun_right":
+      return { start: 0, end: 1439 };
+    case "s24_11_dhuhr_rawatib":
+      return { start: s.dhuhr, end: s.asr - 2 };
+    case "s24_12_qaylulah_nap":
+      return { start: s.dhuhr + 15, end: s.asr - 10 };
+    case "s24_13_asr_prayer":
+      return { start: s.asr, end: s.sunset - 2 };
+    case "s24_14_evening_adhkar":
+      return { start: s.asr, end: s.maghrib + 75 };
+    case "s24_15_maghrib_sunnah":
+      return { start: s.maghrib, end: s.isha - 2 };
+    case "s24_16_family_silat_rahim":
+      return { start: s.maghrib, end: 23 * 60 + 45 };
+    case "s24_17_isha_witr":
+      return { start: s.isha, end: 23 * 60 + 59 };
+    case "s24_18_surah_mulk_baqarah":
+      return { start: s.isha, end: 23 * 60 + 59 };
+    case "s24_19_sleep_wudu_dusting":
+    case "s24_20_kursi_3quls":
+    case "s24_21_tasbih_fatimah":
+    case "s24_22_forgiving_before_sleep":
+      return { start: Math.max(s.isha, 20 * 60), end: 23 * 60 + 59 };
+    case "s24_31_mon_thu_fasting":
+      return { start: s.fajr - 30, end: s.maghrib + 90 };
+    case "s24_32_jumuah_kahf_salawat":
+      return { start: s.fajr, end: s.maghrib, fridayOnly: true };
+    default: {
+      // Custom habits or general diet/character habits mapped to seasonal Waqt phases
+      if (habit.phase === "tahajjud_fajr") return { start: Math.max(60, s.lastThirdStart), end: s.sunrise + 60 };
+      if (habit.phase === "duha_work") return { start: s.duhaStart, end: s.dhuhr };
+      if (habit.phase === "dhuhr_asr") return { start: s.dhuhr, end: s.sunset };
+      if (habit.phase === "maghrib_isha") return { start: s.maghrib, end: 23 * 60 + 59 };
+      if (habit.phase === "sleep_sunnah") return { start: s.isha, end: 23 * 60 + 59 };
+      return { start: 0, end: 1439 };
+    }
+  }
+}
+
+// Evaluates whether a habit is currently "open", "upcoming", or "expired" based on seasonal Waqt
 function evaluateHabitTimeWindow(habit, now = new Date()) {
-  const rule = HABIT_TIME_WINDOWS[habit.id] || PHASE_FALLBACK_WINDOWS[habit.phase] || PHASE_FALLBACK_WINDOWS.diet_hygiene;
+  const rule = getDynamicSeasonalHabitWindow(habit, now);
   const nowMins = now.getHours() * 60 + now.getMinutes();
-  const winLabel = getWindowLabel(rule);
+  const winLabel = formatWindowRangeLabel(rule.start, rule.end, appState.locale);
+
+  // Special check for Friday-only Sunnah (Surah Al-Kahf & Jumu'ah protocol)
+  if (rule.fridayOnly && now.getDay() !== 5) {
+    return {
+      status: "upcoming",
+      canTick: false,
+      windowLabel:
+        appState.locale === "ar"
+          ? "يوم الجمعة فقط"
+          : appState.locale === "en"
+          ? "Fridays Only"
+          : "শুধুমাত্র জুমু'আর দিন",
+      badgeText:
+        appState.locale === "ar"
+          ? "🕌 متاح يوم الجمعة فقط"
+          : appState.locale === "en"
+          ? "🕌 Active on Fridays Only"
+          : "🕌 শুধুমাত্র জুমু'আর দিন উন্মুক্ত"
+    };
+  }
 
   if (nowMins < rule.start) {
     return {
@@ -1617,35 +1878,65 @@ function evaluateHabitTimeWindow(habit, now = new Date()) {
   };
 }
 
-// Evaluates Morning/Evening Masnoon Dua Time Windows
+// Evaluates Morning/Evening Masnoon Dua Time Windows using seasonal Fajr, Zawal, Asr & Isha
 function evaluateDuaTimeWindow(dua, now = new Date()) {
+  const s = computeSeasonalPrayerSchedule(now);
   const nowMins = now.getHours() * 60 + now.getMinutes();
+
+  const morningStart = s.fajr;
+  const morningEnd = s.zawal;
+  const eveningStart = s.asr;
+  const eveningEnd = 23 * 60 + 59;
+
   // Morning-only Duas (dua_10_subhanallahi_adada, dua_11_ilman_nafia)
   if (dua.id === "dua_10_subhanallahi_adada" || dua.id === "dua_11_ilman_nafia") {
-    const start = 4 * 60;
-    const end = 11 * 60 + 45;
-    if (nowMins < start) return { status: "upcoming", canTick: false, windowLabel: "04:00 AM – 11:45 AM" };
-    if (nowMins > end) return { status: "expired", canTick: false, windowLabel: "04:00 AM – 11:45 AM" };
-    return { status: "open", canTick: true, windowLabel: "04:00 AM – 11:45 AM" };
+    const lbl = formatWindowRangeLabel(morningStart, morningEnd, appState.locale);
+    if (nowMins < morningStart) return { status: "upcoming", canTick: false, windowLabel: lbl };
+    if (nowMins > morningEnd) return { status: "expired", canTick: false, windowLabel: lbl };
+    return { status: "open", canTick: true, windowLabel: lbl };
   }
+
   // Evening-only Dua (dua_01_kalimat_tammat)
   if (dua.id === "dua_01_kalimat_tammat") {
-    const start = 15 * 60 + 30;
-    const end = 23 * 60 + 59;
-    if (nowMins < start) return { status: "upcoming", canTick: false, windowLabel: "03:30 PM – 11:59 PM" };
-    return { status: "open", canTick: true, windowLabel: "03:30 PM – 11:59 PM" };
+    const lbl = formatWindowRangeLabel(eveningStart, eveningEnd, appState.locale);
+    if (nowMins < eveningStart) return { status: "upcoming", canTick: false, windowLabel: lbl };
+    return { status: "open", canTick: true, windowLabel: lbl };
   }
-  // Morning & Evening Duas (Open during Morning 04:00-11:59 OR Evening 15:30-23:59)
-  const inMorning = nowMins >= 4 * 60 && nowMins <= 12 * 60;
-  const inEvening = nowMins >= 15 * 60 + 30 && nowMins <= 23 * 60 + 59;
-  if (inMorning || inEvening) {
-    return { status: "open", canTick: true, windowLabel: "Morning / Evening" };
+
+  // Morning & Evening Duas (Open during Seasonal Morning Fajr..Zawal OR Seasonal Evening Asr..Midnight)
+  const inMorning = nowMins >= morningStart && nowMins <= morningEnd;
+  const inEvening = nowMins >= eveningStart && nowMins <= eveningEnd;
+
+  if (inMorning) {
+    return {
+      status: "open",
+      canTick: true,
+      windowLabel: formatWindowRangeLabel(morningStart, morningEnd, appState.locale)
+    };
   }
-  if (nowMins < 4 * 60) {
-    return { status: "upcoming", canTick: false, windowLabel: "Starts 04:00 AM" };
+  if (inEvening) {
+    return {
+      status: "open",
+      canTick: true,
+      windowLabel: formatWindowRangeLabel(eveningStart, eveningEnd, appState.locale)
+    };
   }
-  // Between 12:01 PM and 03:29 PM -> Morning window expired, Evening window upcoming
-  return { status: "expired", canTick: false, windowLabel: "Morning Ended • Evening at 3:30 PM" };
+  if (nowMins < morningStart) {
+    return {
+      status: "upcoming",
+      canTick: false,
+      windowLabel: formatWindowRangeLabel(morningStart, morningEnd, appState.locale)
+    };
+  }
+  // Between Zawal and Asr -> Morning window expired, Evening window opens at Asr
+  const nextAsrTime = formatMinutesToLocalizedTime(eveningStart, appState.locale);
+  const midDayLbl =
+    appState.locale === "ar"
+      ? `انتهى الصباح • المساء عند ${nextAsrTime}`
+      : appState.locale === "en"
+      ? `Morning Ended • Evening at ${nextAsrTime}`
+      : `সকালের ওয়াক্ত শেষ • সন্ধ্যা শুরু ${nextAsrTime}`;
+  return { status: "expired", canTick: false, windowLabel: midDayLbl };
 }
 
 function showTimeLockToast(message) {
@@ -1957,23 +2248,44 @@ function renderHeaderDatesAndPhase() {
   });
 
   const hijri = getAccurateHijriDate(now, appState.locale);
-  document.getElementById("current-date-display").textContent = `${greg} • ${hijri}`;
+  const sched = computeSeasonalPrayerSchedule(now);
+  const regionTag =
+    appState.locale === "ar"
+      ? "مكة/الشرق الأوسط"
+      : appState.locale === "en"
+      ? "Western Seasonal"
+      : "বাংলাদেশ";
 
-  const hour = now.getHours();
+  document.getElementById("current-date-display").textContent = `${greg} • ${hijri} (${regionTag})`;
+
+  const nowMins = now.getHours() * 60 + now.getMinutes();
   let phaseLabel = t("phase_banner_night");
-  if (hour >= 4 && hour < 7) phaseLabel = t("phase_banner_fajr");
-  else if (hour >= 7 && hour < 12) phaseLabel = t("phase_banner_duha");
-  else if (hour >= 12 && hour < 17) phaseLabel = t("phase_banner_dhuhr");
-  else if (hour >= 17 && hour < 21) phaseLabel = t("phase_banner_maghrib");
-  else phaseLabel = t("phase_banner_sleep");
+  let activeWaqtWindow = "";
 
-  document.getElementById("next-phase-banner").textContent = phaseLabel;
+  if (nowMins >= sched.lastThirdStart && nowMins < sched.sunrise + 20) {
+    phaseLabel = t("phase_banner_fajr");
+    activeWaqtWindow = `${formatMinutesToLocalizedTime(sched.fajr)} – ${formatMinutesToLocalizedTime(sched.sunrise)}`;
+  } else if (nowMins >= sched.sunrise + 20 && nowMins < sched.dhuhr) {
+    phaseLabel = t("phase_banner_duha");
+    activeWaqtWindow = `${formatMinutesToLocalizedTime(sched.duhaStart)} – ${formatMinutesToLocalizedTime(sched.zawal)}`;
+  } else if (nowMins >= sched.dhuhr && nowMins < sched.maghrib) {
+    phaseLabel = t("phase_banner_dhuhr");
+    activeWaqtWindow = `${formatMinutesToLocalizedTime(sched.dhuhr)} – ${formatMinutesToLocalizedTime(sched.sunset)}`;
+  } else if (nowMins >= sched.maghrib && nowMins < sched.isha + 90) {
+    phaseLabel = t("phase_banner_maghrib");
+    activeWaqtWindow = `${formatMinutesToLocalizedTime(sched.maghrib)} – ${formatMinutesToLocalizedTime(sched.isha)}`;
+  } else {
+    phaseLabel = t("phase_banner_sleep");
+    activeWaqtWindow = `${formatMinutesToLocalizedTime(sched.isha)} – ${formatMinutesToLocalizedTime(sched.fajr)}`;
+  }
+
+  document.getElementById("next-phase-banner").textContent = `${phaseLabel} (${activeWaqtWindow})`;
 
   const dayOfWeek = now.getDay();
   const fastBanner = document.getElementById("fasting-banner");
 
   if (dayOfWeek === 1 || dayOfWeek === 4) {
-    fastBanner.textContent = t("fast_mon_thu");
+    fastBanner.textContent = `${t("fast_mon_thu")} • ইফতার/Maghrib: ${formatMinutesToLocalizedTime(sched.maghrib)}`;
   } else if (dayOfWeek === 5) {
     fastBanner.textContent = t("fast_jumuah");
   } else {
@@ -2031,12 +2343,32 @@ function renderHabits() {
   if (lockSummaryEl) {
     const openStr = localizeDigits(openCount, appState.locale);
     const expStr = localizeDigits(expiredMissedCount, appState.locale);
+    const sched = computeSeasonalPrayerSchedule(now);
+    const seasonBadge =
+      sched.seasonType === "winter"
+        ? appState.locale === "ar"
+          ? "❄️ الشتاء"
+          : appState.locale === "en"
+          ? "❄️ Winter Waqt"
+          : "❄️ শীতকালীন ওয়াক্ত"
+        : sched.seasonType === "summer"
+        ? appState.locale === "ar"
+          ? "☀️ الصيف"
+          : appState.locale === "en"
+          ? "☀️ Summer Waqt"
+          : "☀️ গ্রীষ্মকালীন ওয়াক্ত"
+        : appState.locale === "ar"
+        ? "🌿 معتدل"
+        : appState.locale === "en"
+        ? "🌿 Seasonal Waqt"
+        : "🌿 ঋতুভিত্তিক ওয়াক্ত";
+
     lockSummaryEl.textContent =
       appState.locale === "ar"
-        ? `⏱️ متاح الآن: ${openStr} • انتهى وقته: ${expStr}`
+        ? `${seasonBadge} • متاح: ${openStr} | انتهى: ${expStr}`
         : appState.locale === "en"
-        ? `⏱️ Open Now: ${openStr} • Time Expired: ${expStr}`
-        : `⏱️ চলমান ওয়াক্ত: ${openStr}টি • সময় সমাপ্ত: ${expStr}টি`;
+        ? `${seasonBadge} • Open: ${openStr} | Expired: ${expStr}`
+        : `${seasonBadge} • চলমান: ${openStr}টি | সমাপ্ত: ${expStr}টি`;
   }
 
   const filtered = allHabits.filter((h) => {
@@ -2169,7 +2501,7 @@ function renderWeeklyChart() {
   }
 }
 
-// 6-Month (180-Day) Long-Term Archive & Monthly Summary Renderer
+// 12-Month (365-Day) Long-Term Archive & Monthly Summary Renderer
 function renderLongTermArchive() {
   const monthlyEl = document.getElementById("monthly-summary-list");
   const historyListEl = document.getElementById("longterm-history-list");
@@ -2428,7 +2760,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const rangeSelect = document.getElementById("history-range-selector");
   if (rangeSelect) {
     rangeSelect.addEventListener("change", (e) => {
-      historyRangeDays = parseInt(e.target.value, 10) || 180;
+      historyRangeDays = parseInt(e.target.value, 10) || 365;
       renderLongTermArchive();
     });
   }
@@ -2483,7 +2815,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Click on any day in 7-Day Matrix or 6-Month Archive to inspect completed habits
+  // Click on any day in 7-Day Matrix or 12-Month Archive to inspect completed habits
   document.getElementById("tab-vault").addEventListener("click", (e) => {
     const dayEl = e.target.closest("[data-date-inspect]");
     if (dayEl) {
