@@ -1,5 +1,5 @@
 /**
- * SUNNAH 24 — ENTERPRISE PROPHETIC 24-HOUR LIFESTYLE & HABIT TRACKER (v3.5)
+ * SUNNAH 24 — ENTERPRISE PROPHETIC 24-HOUR LIFESTYLE & HABIT TRACKER (v4.2)
  * SHA-256 Tamper-Proof Engine + Triple-Redundant Multi-Month Vault (LocalStorage + IndexedDB + Native Android)
  * Local Timezone Date Engine + Accurate Hijri Calendar + Full Bangla (Default), Arabic & English Localization
  */
@@ -1130,11 +1130,12 @@ const SUNNAH_24_DUAS = deepFreeze([
 // Application State (Default Language set to Bangla: 'bn')
 let appState = {
   appName: "Sunnah 24",
-  version: 35,
+  version: 42,
   locale: "bn",
   i18nHash: "",
   customHabits: [],
   completionsByDate: {},
+  duaCompletionsByDate: {},
   diaryEntries: [],
   lifetimeDhikr: 0,
   lastUpdated: 0,
@@ -1228,6 +1229,7 @@ function getCanonicalStatePayload(stateObj) {
     i18nHash: stateObj.i18nHash || verifiedI18nDigest,
     customHabits: stateObj.customHabits || [],
     completionsByDate: canonicalizeObject(stateObj.completionsByDate || {}),
+    duaCompletionsByDate: canonicalizeObject(stateObj.duaCompletionsByDate || {}),
     diaryEntries: stateObj.diaryEntries || [],
     lifetimeDhikr: stateObj.lifetimeDhikr || 0
   });
@@ -1299,6 +1301,7 @@ function mergeHistoryStates(statesArray) {
   const base = { ...validStates[0] };
 
   const mergedCompletions = {};
+  const mergedDuaCompletions = {};
   const mergedCustomMap = new Map();
   const mergedDiaryMap = new Map();
   let maxDhikr = 0;
@@ -1314,6 +1317,15 @@ function mergeHistoryStates(statesArray) {
           mergedCompletions[dateKey] = new Set();
         }
         arr.forEach((hId) => mergedCompletions[dateKey].add(hId));
+      });
+    }
+    if (st.duaCompletionsByDate && typeof st.duaCompletionsByDate === "object") {
+      Object.keys(st.duaCompletionsByDate).forEach((dateKey) => {
+        const arr = Array.isArray(st.duaCompletionsByDate[dateKey]) ? st.duaCompletionsByDate[dateKey] : [];
+        if (!mergedDuaCompletions[dateKey]) {
+          mergedDuaCompletions[dateKey] = new Set();
+        }
+        arr.forEach((dId) => mergedDuaCompletions[dateKey].add(dId));
       });
     }
     if (Array.isArray(st.customHabits)) {
@@ -1342,13 +1354,24 @@ function mergeHistoryStates(statesArray) {
       }
     });
 
+  const finalDuaCompletions = {};
+  Object.keys(mergedDuaCompletions)
+    .sort()
+    .forEach((dateKey) => {
+      const list = Array.from(mergedDuaCompletions[dateKey]);
+      if (list.length > 0 || dateKey === getTodayKey()) {
+        finalDuaCompletions[dateKey] = list;
+      }
+    });
+
   return {
     appName: "Sunnah 24",
-    version: 35,
+    version: 42,
     locale: base.locale || "bn",
     i18nHash: verifiedI18nDigest,
     customHabits: Array.from(mergedCustomMap.values()),
     completionsByDate: finalCompletions,
+    duaCompletionsByDate: finalDuaCompletions,
     diaryEntries: Array.from(mergedDiaryMap.values()).sort((a, b) => Number(a.id) - Number(b.id)),
     lifetimeDhikr: maxDhikr,
     lastUpdated: Date.now(),
@@ -1358,7 +1381,7 @@ function mergeHistoryStates(statesArray) {
 
 async function saveAndSealState() {
   verifiedI18nDigest = await computeI18nDictionaryHash();
-  appState.version = 35;
+  appState.version = 42;
   appState.i18nHash = verifiedI18nDigest;
   appState.lastUpdated = Date.now();
   const payload = getCanonicalStatePayload(appState);
@@ -1406,7 +1429,13 @@ function updateStorageStatusIndicator(lsOk, idbOk, nativeOk) {
   const totalDays = Object.keys(appState.completionsByDate || {}).filter(
     (k) => (appState.completionsByDate[k] || []).length > 0
   ).length;
-  statusEl.textContent = `${layers.join(" • ")} | সংরক্ষিত সক্রিয় দিন: ${localizeDigits(totalDays, appState.locale)}`;
+  const activeDaysLbl =
+    appState.locale === "ar"
+      ? "الأيام المحفوظة:"
+      : appState.locale === "en"
+      ? "Saved Active Days:"
+      : "সংরক্ষিত সক্রিয় দিন:";
+  statusEl.textContent = `${layers.join(" • ")} | ${activeDaysLbl} ${localizeDigits(totalDays, appState.locale)}`;
 }
 
 async function loadAndVerifyState() {
@@ -1477,12 +1506,185 @@ function updateIntegrityUI(isVerified) {
   }
   if (badge) {
     if (isVerified) {
-      badge.textContent = t("badge_verified");
+      badge.textContent = window.AndroidDownloader
+        ? `🛡️ S24 • ${getInstalledAppVersionTag()}`
+        : t("badge_verified");
       badge.className = "badge-verified";
     } else {
       badge.textContent = t("badge_tampered");
       badge.className = "badge-verified badge-tampered";
     }
+  }
+}
+
+
+// ============================================================================
+// WORLD-STANDARD STRICT TIME-WINDOW LOCK & SVG CIRCULAR RING ENGINE
+// ============================================================================
+const HERO_RING_CIRCUMFERENCE = 289.03;   // 2 * PI * 46
+const TASBIH_RING_CIRCUMFERENCE = 703.72; // 2 * PI * 112
+const DUA_RING_CIRCUMFERENCE = 150.8;     // 2 * PI * 24
+
+// Strict Daily Waqt & Time Windows (in minutes from 00:00 local time)
+const HABIT_TIME_WINDOWS = deepFreeze({
+  s24_01_waking_dua: { start: 3 * 60, end: 9 * 60, label_bn: "ভোর ৩:০০ – সকাল ৯:০০", label_ar: "٣:٠٠ ص – ٩:٠٠ ص", label_en: "03:00 AM – 09:00 AM" },
+  s24_02_miswak_wudu: { start: 3 * 60, end: 23 * 60 + 59, label_bn: "সারাদিন (পাঁচ ওয়াক্ত)", label_ar: "طوال اليوم", label_en: "All Day (5 Prayers)" },
+  s24_03_tahajjud: { start: 1 * 60, end: 5 * 60 + 25, label_bn: "রাত ১:০০ – ভোর ৫:২৫", label_ar: "١:٠٠ ص – ٥:٢٥ ص", label_en: "01:00 AM – 05:25 AM" },
+  s24_04_fajr_sunnah_fard: { start: 4 * 60 + 15, end: 6 * 60 + 30, label_bn: "ভোর ৪:১৫ – সকাল ৬:৩০", label_ar: "٤:١٥ ص – ٦:٣٠ ص", label_en: "04:15 AM – 06:30 AM" },
+  s24_05_post_fajr_barakah: { start: 4 * 60 + 45, end: 7 * 60 + 30, label_bn: "ভোর ৪:৪৫ – সকাল ৭:৩০", label_ar: "٤:٤٥ ص – ٧:٣٠ ص", label_en: "04:45 AM – 07:30 AM" },
+  s24_06_ishraq_reflection: { start: 5 * 60 + 45, end: 8 * 60 + 30, label_bn: "সকাল ৫:৪৫ – সকাল ৮:৩০", label_ar: "٥:٤٥ ص – ٨:٣٠ ص", label_en: "05:45 AM – 08:30 AM" },
+  s24_07_home_exit_dua: { start: 5 * 60, end: 21 * 60, label_bn: "সকাল ৫:০০ – রাত ৯:০০", label_ar: "٥:٠٠ ص – ٩:٠٠ م", label_en: "05:00 AM – 09:00 PM" },
+  s24_08_salat_duha: { start: 7 * 60 + 30, end: 11 * 60 + 50, label_bn: "সকাল ৭:৩০ – দুপুর ১১:৫০", label_ar: "٧:٣٠ ص – ١١:٥٠ ص", label_en: "07:30 AM – 11:50 AM" },
+  s24_09_halal_ihsan_work: { start: 7 * 60, end: 21 * 60, label_bn: "সকাল ৭:০০ – রাত ৯:০০", label_ar: "٧:٠٠ ص – ٩:٠٠ م", label_en: "07:00 AM – 09:00 PM" },
+  s24_10_tayammun_right: { start: 0, end: 23 * 60 + 59, label_bn: "সারাদিন উন্মুক্ত", label_ar: "طوال اليوم", label_en: "Open All Day" },
+  s24_11_dhuhr_rawatib: { start: 12 * 60, end: 16 * 60 + 15, label_bn: "দুপুর ১২:০০ – বিকেল ৪:১৫", label_ar: "١٢:٠٠ م – ٤:١٥ م", label_en: "12:00 PM – 04:15 PM" },
+  s24_12_qaylulah_nap: { start: 12 * 60 + 30, end: 16 * 60, label_bn: "দুপুর ১২:৩০ – বিকেল ৪:০০", label_ar: "١٢:٣٠ م – ٤:٠٠ م", label_en: "12:30 PM – 04:00 PM" },
+  s24_13_asr_prayer: { start: 15 * 60 + 30, end: 18 * 60 + 5, label_bn: "বিকেল ৩:৩০ – সন্ধ্যা ৬:০৫", label_ar: "٣:٣٠ م – ٦:٠٥ م", label_en: "03:30 PM – 06:05 PM" },
+  s24_14_evening_adhkar: { start: 15 * 60 + 45, end: 19 * 60 + 30, label_bn: "বিকেল ৩:৪৫ – সন্ধ্যা ৭:৩০", label_ar: "٣:٤٥ م – ٧:٣٠ م", label_en: "03:45 PM – 07:30 PM" },
+  s24_15_maghrib_sunnah: { start: 17 * 60 + 10, end: 19 * 60 + 45, label_bn: "বিকেল ৫:১০ – রাত ৭:৪৫", label_ar: "٥:١٠ م – ٧:٤٥ م", label_en: "05:10 PM – 07:45 PM" },
+  s24_16_family_silat_rahim: { start: 17 * 60, end: 23 * 60 + 30, label_bn: "বিকেল ৫:০০ – রাত ১১:৩০", label_ar: "٥:٠٠ م – ١١:٣٠ م", label_en: "05:00 PM – 11:30 PM" },
+  s24_17_isha_witr: { start: 19 * 60, end: 23 * 60 + 59, label_bn: "রাত ৭:০০ – রাত ১১:৫৯", label_ar: "٧:٠٠ م – ١١:٥٩ م", label_en: "07:00 PM – 11:59 PM" },
+  s24_18_surah_mulk_baqarah: { start: 19 * 60 + 30, end: 23 * 60 + 59, label_bn: "রাত ৭:৩০ – রাত ১১:৫৯", label_ar: "٧:٣٠ م – ١١:٥٩ م", label_en: "07:30 PM – 11:59 PM" },
+  s24_19_sleep_wudu_dusting: { start: 20 * 60 + 30, end: 23 * 60 + 59, label_bn: "রাত ৮:৩০ – রাত ১১:৫৯", label_ar: "٨:٣٠ م – ١١:٥٩ م", label_en: "08:30 PM – 11:59 PM" },
+  s24_20_kursi_3quls: { start: 20 * 60 + 30, end: 23 * 60 + 59, label_bn: "রাত ৮:৩০ – রাত ১১:৫৯", label_ar: "٨:٣٠ م – ١١:٥٩ م", label_en: "08:30 PM – 11:59 PM" },
+  s24_21_tasbih_fatimah: { start: 20 * 60 + 30, end: 23 * 60 + 59, label_bn: "রাত ৮:৩০ – রাত ১১:৫৯", label_ar: "٨:٣٠ م – ١١:٥٩ م", label_en: "08:30 PM – 11:59 PM" },
+  s24_22_forgiving_before_sleep: { start: 20 * 60 + 30, end: 23 * 60 + 59, label_bn: "রাত ৮:৩০ – রাত ১১:৫৯", label_ar: "٨:٣٠ م – ١١:٥٩ م", label_en: "08:30 PM – 11:59 PM" },
+  s24_31_mon_thu_fasting: { start: 3 * 60 + 30, end: 19 * 60 + 30, label_bn: "ভোর ৩:৩০ – সন্ধ্যা ৭:৩০", label_ar: "٣:٣٠ ص – ٧:٣٠ م", label_en: "03:30 AM – 07:30 PM" },
+  s24_32_jumuah_kahf_salawat: { start: 4 * 60 + 30, end: 18 * 60 + 30, fridayOnly: true, label_bn: "জুমু'আর দিন (ভোর ৪:৩০ – সন্ধ্যা ৬:৩০)", label_ar: "يوم الجمعة (٤:٣٠ ص – ٦:٣٠ م)", label_en: "Friday (04:30 AM – 06:30 PM)" }
+});
+
+const PHASE_FALLBACK_WINDOWS = deepFreeze({
+  tahajjud_fajr: { start: 1 * 60, end: 8 * 60 + 30, label_bn: "রাত ১:০০ – সকাল ৮:৩০", label_ar: "١:٠٠ ص – ٨:٣٠ ص", label_en: "01:00 AM – 08:30 AM" },
+  duha_work: { start: 7 * 60, end: 13 * 60, label_bn: "সকাল ৭:০০ – দুপুর ১:০০", label_ar: "٧:٠٠ ص – ١:٠٠ م", label_en: "07:00 AM – 01:00 PM" },
+  dhuhr_asr: { start: 12 * 60, end: 18 * 60 + 15, label_bn: "দুপুর ১২:০০ – সন্ধ্যা ৬:১৫", label_ar: "١٢:٠٠ م – ٦:١٥ م", label_en: "12:00 PM – 06:15 PM" },
+  maghrib_isha: { start: 17 * 60 + 10, end: 23 * 60 + 59, label_bn: "বিকেল ৫:১০ – রাত ১১:৫৯", label_ar: "٥:١٠ م – ١١:٥٩ م", label_en: "05:10 PM – 11:59 PM" },
+  sleep_sunnah: { start: 20 * 60 + 30, end: 23 * 60 + 59, label_bn: "রাত ৮:৩০ – রাত ১১:৫৯", label_ar: "٨:٣٠ م – ١١:٥٩ م", label_en: "08:30 PM – 11:59 PM" },
+  diet_hygiene: { start: 0, end: 23 * 60 + 59, label_bn: "সারাদিন উন্মুক্ত", label_ar: "طوال اليوم", label_en: "Open All Day" },
+  character_social: { start: 0, end: 23 * 60 + 59, label_bn: "সারাদিন উন্মুক্ত", label_ar: "طوال اليوم", label_en: "Open All Day" }
+});
+
+function getWindowLabel(winObj) {
+  if (!winObj) return "";
+  if (appState.locale === "ar") return winObj.label_ar || winObj.label_en;
+  if (appState.locale === "en") return winObj.label_en;
+  return winObj.label_bn || winObj.label_en;
+}
+
+// Evaluates whether a habit is currently "open", "upcoming", or "expired" based on real device time
+function evaluateHabitTimeWindow(habit, now = new Date()) {
+  const rule = HABIT_TIME_WINDOWS[habit.id] || PHASE_FALLBACK_WINDOWS[habit.phase] || PHASE_FALLBACK_WINDOWS.diet_hygiene;
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+  const winLabel = getWindowLabel(rule);
+
+  if (nowMins < rule.start) {
+    return {
+      status: "upcoming",
+      canTick: false,
+      windowLabel: winLabel,
+      badgeText:
+        appState.locale === "ar"
+          ? `⏳ يبدأ قريباً (${winLabel})`
+          : appState.locale === "en"
+          ? `⏳ Upcoming (${winLabel})`
+          : `⏳ সময় শুরু হয়নি (${winLabel})`
+    };
+  }
+
+  if (nowMins > rule.end) {
+    return {
+      status: "expired",
+      canTick: false,
+      windowLabel: winLabel,
+      badgeText:
+        appState.locale === "ar"
+          ? `🔒 انتهى الوقت (${winLabel})`
+          : appState.locale === "en"
+          ? `🔒 Time Expired (${winLabel})`
+          : `🔒 সময় সমাপ্ত (${winLabel})`
+    };
+  }
+
+  return {
+    status: "open",
+    canTick: true,
+    windowLabel: winLabel,
+    badgeText:
+      appState.locale === "ar"
+        ? `🟢 متاح الآن (${winLabel})`
+        : appState.locale === "en"
+        ? `🟢 Active Window (${winLabel})`
+        : `🟢 চলমান ওয়াক্ত (${winLabel})`
+  };
+}
+
+// Evaluates Morning/Evening Masnoon Dua Time Windows
+function evaluateDuaTimeWindow(dua, now = new Date()) {
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+  // Morning-only Duas (dua_10_subhanallahi_adada, dua_11_ilman_nafia)
+  if (dua.id === "dua_10_subhanallahi_adada" || dua.id === "dua_11_ilman_nafia") {
+    const start = 4 * 60;
+    const end = 11 * 60 + 45;
+    if (nowMins < start) return { status: "upcoming", canTick: false, windowLabel: "04:00 AM – 11:45 AM" };
+    if (nowMins > end) return { status: "expired", canTick: false, windowLabel: "04:00 AM – 11:45 AM" };
+    return { status: "open", canTick: true, windowLabel: "04:00 AM – 11:45 AM" };
+  }
+  // Evening-only Dua (dua_01_kalimat_tammat)
+  if (dua.id === "dua_01_kalimat_tammat") {
+    const start = 15 * 60 + 30;
+    const end = 23 * 60 + 59;
+    if (nowMins < start) return { status: "upcoming", canTick: false, windowLabel: "03:30 PM – 11:59 PM" };
+    return { status: "open", canTick: true, windowLabel: "03:30 PM – 11:59 PM" };
+  }
+  // Morning & Evening Duas (Open during Morning 04:00-11:59 OR Evening 15:30-23:59)
+  const inMorning = nowMins >= 4 * 60 && nowMins <= 12 * 60;
+  const inEvening = nowMins >= 15 * 60 + 30 && nowMins <= 23 * 60 + 59;
+  if (inMorning || inEvening) {
+    return { status: "open", canTick: true, windowLabel: "Morning / Evening" };
+  }
+  if (nowMins < 4 * 60) {
+    return { status: "upcoming", canTick: false, windowLabel: "Starts 04:00 AM" };
+  }
+  // Between 12:01 PM and 03:29 PM -> Morning window expired, Evening window upcoming
+  return { status: "expired", canTick: false, windowLabel: "Morning Ended • Evening at 3:30 PM" };
+}
+
+function showTimeLockToast(message) {
+  let toast = document.getElementById("s24-exit-toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "s24-exit-toast";
+    toast.className = "exit-toast";
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.style.opacity = "1";
+  if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+  setTimeout(() => {
+    if (toast) toast.style.opacity = "0";
+  }, 2900);
+}
+
+function updateSvgCircleProgress(circleId, pct, circumference) {
+  const circle = document.getElementById(circleId);
+  if (!circle) return;
+  const clamped = Math.max(0, Math.min(100, pct));
+  const offset = circumference - (clamped / 100) * circumference;
+  circle.style.strokeDasharray = `${circumference}`;
+  circle.style.strokeDashoffset = `${offset.toFixed(2)}`;
+}
+
+function updateTasbihCircularUI() {
+  const pct = tasbihTarget > 0 ? Math.min(100, Math.round((tasbihCount / tasbihTarget) * 100)) : 0;
+  updateSvgCircleProgress("tasbih-progress-ring-circle", pct, TASBIH_RING_CIRCUMFERENCE);
+  const badge = document.getElementById("tasbih-cycle-badge");
+  if (badge) {
+    const pctStr = localizeDigits(pct, appState.locale);
+    badge.textContent =
+      appState.locale === "ar"
+        ? `${pctStr}% مكتمل`
+        : appState.locale === "en"
+        ? `${pctStr}% Cycle`
+        : `${pctStr}% সম্পন্ন`;
   }
 }
 
@@ -1516,8 +1718,40 @@ function renderTasbihOptions() {
   if (lifetimeEl) {
     lifetimeEl.textContent = localizeDigits(appState.lifetimeDhikr || 0, appState.locale);
   }
+  updateTasbihCircularUI();
 }
 
+async function toggleDuaCompletion(duaId) {
+  const dua = SUNNAH_24_DUAS.find((d) => d.id === duaId);
+  if (!dua) return;
+  const todayKey = getTodayKey();
+  if (!appState.duaCompletionsByDate) appState.duaCompletionsByDate = {};
+  if (!appState.duaCompletionsByDate[todayKey]) appState.duaCompletionsByDate[todayKey] = [];
+
+  const list = appState.duaCompletionsByDate[todayKey];
+  const isDone = list.includes(duaId);
+  const winState = evaluateDuaTimeWindow(dua, new Date());
+
+  if (!winState.canTick) {
+    const lockMsg =
+      appState.locale === "ar"
+        ? `🔒 لا يمكن تعديل هذا الذكر خارج وقته المحدد (${winState.windowLabel})`
+        : appState.locale === "en"
+        ? `🔒 Locked outside valid Adhkar time window (${winState.windowLabel})`
+        : `🔒 নির্ধারিত সময়ের বাইরে এই দোয়াটি টিক বা পরিবর্তন করা যাবে না (${winState.windowLabel})`;
+    showTimeLockToast(lockMsg);
+    return;
+  }
+
+  if (isDone) {
+    list.splice(list.indexOf(duaId), 1);
+  } else {
+    list.push(duaId);
+    if (navigator.vibrate) navigator.vibrate(20);
+  }
+  await saveAndSealState();
+  renderDuas();
+}
 
 function renderDuas() {
   const container = document.getElementById("duas-list-container");
@@ -1525,6 +1759,9 @@ function renderDuas() {
   container.innerHTML = "";
 
   const lang = appState.locale || "bn";
+  const todayKey = getTodayKey();
+  const completedDuas = (appState.duaCompletionsByDate && appState.duaCompletionsByDate[todayKey]) || [];
+  const now = new Date();
 
   SUNNAH_24_DUAS.forEach((dua) => {
     const title = lang === "bn" ? dua.title_bn : lang === "ar" ? dua.title_ar : dua.title_en;
@@ -1533,8 +1770,23 @@ function renderDuas() {
     const meaning = lang === "bn" ? dua.meaning_bn : lang === "ar" ? dua.meaning_ar : dua.meaning_en;
     const virtue = lang === "bn" ? dua.virtue_bn : lang === "ar" ? dua.virtue_ar : dua.virtue_en;
 
+    const isDone = completedDuas.includes(dua.id);
+    const winState = evaluateDuaTimeWindow(dua, now);
+    const isLocked = !winState.canTick && !isDone;
+
+    let btnLabel = "";
+    if (isDone) {
+      btnLabel = lang === "ar" ? "✓ تم الذكر اليوم" : lang === "en" ? "✓ Recited Today" : "✓ আজ পাঠ সম্পন্ন";
+    } else if (winState.status === "expired") {
+      btnLabel = lang === "ar" ? "🔒 انتهى الوقت" : lang === "en" ? "🔒 Window Expired" : "🔒 সময় সমাপ্ত";
+    } else if (winState.status === "upcoming") {
+      btnLabel = lang === "ar" ? "⏳ لم يحن الوقت" : lang === "en" ? "⏳ Window Upcoming" : "⏳ সময় শুরু হয়নি";
+    } else {
+      btnLabel = lang === "ar" ? "📿 تحديد كمقروء" : lang === "en" ? "📿 Mark Recited" : "📿 পাঠ সম্পন্ন করুন";
+    }
+
     const card = document.createElement("div");
-    card.className = "dua-card";
+    card.className = `dua-card ${isDone ? "completed" : ""} ${isLocked ? "time-locked" : ""}`;
     card.innerHTML = `
       <div class="dua-header">
         <h4>${title}</h4>
@@ -1544,9 +1796,24 @@ function renderDuas() {
       ${translit ? `<p class="translit">${translit}</p>` : ""}
       <p class="muted-small">${meaning}</p>
       <p class="dua-virtue">${virtue}</p>
+      <div class="dua-action-footer">
+        <span class="time-status-badge status-${isDone ? "done" : winState.status}">${winState.windowLabel}</span>
+        <button type="button" class="dua-check-btn ${isDone ? "done" : ""} ${!winState.canTick ? "locked" : ""}" data-dua-toggle="${dua.id}">
+          ${btnLabel}
+        </button>
+      </div>
     `;
     container.appendChild(card);
   });
+
+  const totalDuas = SUNNAH_24_DUAS.length;
+  const doneDuasCount = completedDuas.length;
+  const duaPct = totalDuas > 0 ? Math.round((doneDuasCount / totalDuas) * 100) : 0;
+  updateSvgCircleProgress("dua-progress-ring-circle", duaPct, DUA_RING_CIRCUMFERENCE);
+  const duaLabelEl = document.getElementById("dua-progress-text");
+  if (duaLabelEl) {
+    duaLabelEl.textContent = `${localizeDigits(doneDuasCount, lang)}/${localizeDigits(totalDuas, lang)}`;
+  }
 }
 
 function applyLanguageToDOM() {
@@ -1748,6 +2015,29 @@ function renderHabits() {
   const todayKey = getTodayKey();
   const completedToday = appState.completionsByDate[todayKey] || [];
   const allHabits = getAllHabits();
+  const now = new Date();
+
+  let openCount = 0;
+  let expiredMissedCount = 0;
+
+  allHabits.forEach((h) => {
+    const isDone = completedToday.includes(h.id);
+    const win = evaluateHabitTimeWindow(h, now);
+    if (win.status === "open") openCount++;
+    if (win.status === "expired" && !isDone) expiredMissedCount++;
+  });
+
+  const lockSummaryEl = document.getElementById("time-lock-summary");
+  if (lockSummaryEl) {
+    const openStr = localizeDigits(openCount, appState.locale);
+    const expStr = localizeDigits(expiredMissedCount, appState.locale);
+    lockSummaryEl.textContent =
+      appState.locale === "ar"
+        ? `⏱️ متاح الآن: ${openStr} • انتهى وقته: ${expStr}`
+        : appState.locale === "en"
+        ? `⏱️ Open Now: ${openStr} • Time Expired: ${expStr}`
+        : `⏱️ চলমান ওয়াক্ত: ${openStr}টি • সময় সমাপ্ত: ${expStr}টি`;
+  }
 
   const filtered = allHabits.filter((h) => {
     const matchesPhase = activePhase === "all" || h.phase === activePhase;
@@ -1774,16 +2064,50 @@ function renderHabits() {
 
   filtered.forEach((habit) => {
     const isDone = completedToday.includes(habit.id);
+    const winState = evaluateHabitTimeWindow(habit, now);
+
+    let itemStateClass = "";
+    let checkStateClass = "";
+    let checkSymbol = "";
+    let statusBadgeHtml = "";
+
+    if (isDone) {
+      itemStateClass = "completed";
+      checkSymbol = "✓";
+      const doneBadgeTxt =
+        appState.locale === "ar"
+          ? "✓ تم في وقته"
+          : appState.locale === "en"
+          ? "✓ Completed on Time"
+          : "✓ যথাসময়ে সম্পন্ন";
+      statusBadgeHtml = `<span class="time-status-badge status-done">${doneBadgeTxt}</span>`;
+    } else if (winState.status === "expired") {
+      itemStateClass = "time-expired";
+      checkStateClass = "locked-expired";
+      checkSymbol = "🔒";
+      statusBadgeHtml = `<span class="time-status-badge status-expired">${winState.badgeText}</span>`;
+    } else if (winState.status === "upcoming") {
+      itemStateClass = "time-upcoming";
+      checkStateClass = "locked-upcoming";
+      checkSymbol = "⏳";
+      statusBadgeHtml = `<span class="time-status-badge status-upcoming">${winState.badgeText}</span>`;
+    } else {
+      statusBadgeHtml = `<span class="time-status-badge status-open">${winState.badgeText}</span>`;
+    }
+
     const card = document.createElement("div");
-    card.className = `habit-item ${isDone ? "completed" : ""}`;
+    card.className = `habit-item ${itemStateClass}`;
 
     card.innerHTML = `
       <div class="habit-left">
-        <div class="habit-check" data-toggle="${habit.id}">
-          ${isDone ? "✓" : ""}
+        <div class="habit-check ${checkStateClass}" data-toggle="${habit.id}">
+          ${checkSymbol}
         </div>
         <div class="habit-info">
-          <span class="habit-time">${getHabitTime(habit)}</span>
+          <div class="habit-time-row">
+            <span class="habit-time">${getHabitTime(habit)}</span>
+            ${statusBadgeHtml}
+          </div>
           <h4>${getHabitTitle(habit)}</h4>
           <p class="habit-snippet">${getHabitWisdom(habit)}</p>
         </div>
@@ -1804,6 +2128,7 @@ function renderHabits() {
     total: localizeDigits(total, appState.locale)
   });
   document.getElementById("daily-progress-bar").style.width = `${pct}%`;
+  updateSvgCircleProgress("hero-progress-ring-circle", pct, HERO_RING_CIRCUMFERENCE);
   document.getElementById("streak-count").textContent = localizeDigits(
     calculateStreak(),
     appState.locale
@@ -1955,17 +2280,59 @@ function openDayHistoryModal(dateKey) {
 }
 
 async function toggleHabit(habitId) {
+  const habit = getAllHabits().find((h) => h.id === habitId);
+  if (!habit) return;
+
   const todayKey = getTodayKey();
   if (!appState.completionsByDate[todayKey]) {
     appState.completionsByDate[todayKey] = [];
   }
   const list = appState.completionsByDate[todayKey];
   const idx = list.indexOf(habitId);
-  if (idx > -1) {
+  const isDone = idx > -1;
+  const winState = evaluateHabitTimeWindow(habit, new Date());
+
+  // 1. Block ticking if daily time window has expired
+  if (!isDone && winState.status === "expired") {
+    const expiredMsg =
+      appState.locale === "ar"
+        ? `🔒 انتهى وقت هذه السنة اليوم (${winState.windowLabel}) — لا يمكن تأشيرها بعد انتهاء الوقت!`
+        : appState.locale === "en"
+        ? `🔒 Daily time window finished (${winState.windowLabel}) — cannot mark completed after time expires!`
+        : `🔒 এই আমলের আজকের নির্ধারিত সময় (${winState.windowLabel}) শেষ হয়ে গেছে! সময় শেষ হওয়ার পর টিক দেওয়া অসম্ভব।`;
+    showTimeLockToast(expiredMsg);
+    return;
+  }
+
+  // 2. Block ticking if daily time window has not started yet
+  if (!isDone && winState.status === "upcoming") {
+    const upcomingMsg =
+      appState.locale === "ar"
+        ? `⏳ لم يبدأ وقت هذه السنة بعد (${winState.windowLabel})`
+        : appState.locale === "en"
+        ? `⏳ Time window has not started yet (${winState.windowLabel})`
+        : `⏳ এই আমলের সময় এখনও শুরু হয়নি (${winState.windowLabel})`;
+    showTimeLockToast(upcomingMsg);
+    return;
+  }
+
+  // 3. Seal completed habit once its window finishes so past window records cannot be tampered with
+  if (isDone && !winState.canTick) {
+    const sealedMsg =
+      appState.locale === "ar"
+        ? `🛡️ تم ختم هذه السنة في وقتها (${winState.windowLabel}) ولا يمكن إلغاؤها بعد انتهاء الوقت`
+        : appState.locale === "en"
+        ? `🛡️ Completed deed is cryptographically sealed after its time window (${winState.windowLabel})`
+        : `🛡️ যথাসময়ে সম্পন্ন আমলটি সময় শেষ হওয়ার পর লক ও সিল করা হয়েছে (${winState.windowLabel})`;
+    showTimeLockToast(sealedMsg);
+    return;
+  }
+
+  if (isDone) {
     list.splice(idx, 1);
   } else {
     list.push(habitId);
-    if (navigator.vibrate) navigator.vibrate(15);
+    if (navigator.vibrate) navigator.vibrate(18);
   }
   await saveAndSealState();
   renderHabits();
@@ -2028,14 +2395,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
 
-  // Automatic Midnight Rollover Watcher (Preserves yesterday's record & refreshes UI cleanly at 12:00 AM local time)
+  // Automatic Real-Time Waqt Lock & Midnight Rollover Watcher (Refreshes time-window locks every 30s)
   setInterval(() => {
     const currentKey = getTodayKey();
     if (currentKey !== lastObservedDateKey) {
       lastObservedDateKey = currentKey;
-      renderHeaderDatesAndPhase();
-      renderHabits();
     }
+    renderHeaderDatesAndPhase();
+    renderHabits();
+    renderDuas();
   }, 30000);
 
   const langSwitcher = document.getElementById("lang-switcher");
@@ -2081,7 +2449,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById("reset-today-btn").addEventListener("click", async () => {
     const todayKey = getTodayKey();
-    appState.completionsByDate[todayKey] = [];
+    const currentList = appState.completionsByDate[todayKey] || [];
+    const allHabits = getAllHabits();
+    const now = new Date();
+    // Keep deeds whose time window has already expired (sealed) and only reset currently open windows
+    appState.completionsByDate[todayKey] = currentList.filter((hId) => {
+      const h = allHabits.find((item) => item.id === hId);
+      if (!h) return false;
+      return !evaluateHabitTimeWindow(h, now).canTick;
+    });
     await saveAndSealState();
     renderHabits();
   });
@@ -2131,6 +2507,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("tasbih-current").textContent = localizeDigits(0, appState.locale);
       document.getElementById("tasbih-target").textContent = `/ ${localizeDigits(tasbihTarget, appState.locale)}`;
       document.getElementById("tasbih-label").textContent = chosen.label;
+      updateTasbihCircularUI();
     });
   }
 
@@ -2139,7 +2516,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     tapArea.addEventListener("click", async () => {
       tasbihCount++;
       appState.lifetimeDhikr = (appState.lifetimeDhikr || 0) + 1;
-      if (navigator.vibrate) navigator.vibrate(25);
+      if (tasbihCount === tasbihTarget) {
+        if (navigator.vibrate) navigator.vibrate([40, 60, 80]);
+      } else if (navigator.vibrate) {
+        navigator.vibrate(25);
+      }
       if (tasbihCount > tasbihTarget) {
         tasbihCount = 1;
       }
@@ -2151,6 +2532,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         appState.lifetimeDhikr,
         appState.locale
       );
+      updateTasbihCircularUI();
       await saveAndSealState();
     });
   }
@@ -2163,7 +2545,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (currentEl) {
         currentEl.textContent = localizeDigits(0, appState.locale);
       }
+      updateTasbihCircularUI();
       if (navigator.vibrate) navigator.vibrate(15);
+    });
+  }
+
+  const duasContainer = document.getElementById("duas-list-container");
+  if (duasContainer) {
+    duasContainer.addEventListener("click", (e) => {
+      const duaBtn = e.target.closest("[data-dua-toggle]");
+      if (duaBtn) {
+        toggleDuaCompletion(duaBtn.getAttribute("data-dua-toggle"));
+      }
     });
   }
 
@@ -2285,8 +2678,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     const text = await file.text();
     try {
       const imported = JSON.parse(text);
+      if (!imported || typeof imported !== "object" || !imported.completionsByDate) {
+        alert(t("alert_invalid"));
+        e.target.value = "";
+        return;
+      }
       if (!imported.locale) imported.locale = "bn";
       if (!imported.i18nHash) imported.i18nHash = verifiedI18nDigest;
+
+      if (imported.signature) {
+        const expectedSig = await computeSHA256(getCanonicalStatePayload(imported));
+        if (expectedSig !== imported.signature) {
+          updateIntegrityUI(false);
+          alert(t("alert_tamper"));
+          e.target.value = "";
+          return;
+        }
+      }
 
       // Deep-merge imported backup with existing history so importing never wipes other days
       const merged = mergeHistoryStates([imported, appState]);
@@ -2498,7 +2906,7 @@ function initWebsiteOnlyApkInstaller() {
       }
     })
     .catch(() => {
-      // Fallback stays on /releases/latest/download/Sunnah-24-v3.6-Enterprise-Signed.apk
+      apkBtn.href = "https://github.com/MKRWeb/sunnah-24/releases/latest/download/Sunnah-24-v4.2-Enterprise-Signed.apk";
     });
 }
 
@@ -2741,3 +3149,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 550);
   }
 });
+
