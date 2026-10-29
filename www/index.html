@@ -115,6 +115,68 @@
 
   <!-- TAB 1: 24-HOUR PROPHETIC ROUTINE -->
   <main id="tab-routine" class="tab-content active">
+    <!-- WORLD-STANDARD COLLAPSIBLE PROHIBITED TIME FOR SALAH (নামাজের নিষিদ্ধ সময়) CARD -->
+    <div id="prohibited-salah-card" class="prohibited-card status-safe is-collapsed">
+      <button
+        type="button"
+        id="prohibited-toggle-btn"
+        class="prohibited-header-btn"
+        aria-expanded="false"
+        aria-controls="prohibited-collapsible-body"
+      >
+        <div class="prohibited-title-wrap">
+          <span id="prohibited-status-icon" class="prohibited-icon-box">🕌</span>
+          <div class="prohibited-title-text">
+            <h4 data-i18n="prohibited_title">🚫 নামাজের নিষিদ্ধ সময়সূচী</h4>
+            <p id="prohibited-live-status" class="prohibited-sub">যাচাই করা হচ্ছে...</p>
+          </div>
+        </div>
+        <div class="prohibited-header-right">
+          <span id="prohibited-badge" class="prohibited-badge">✅ সালাত জায়েয</span>
+          <span id="prohibited-chevron" class="prohibited-chevron" aria-hidden="true">▼</span>
+        </div>
+      </button>
+
+      <!-- Default Hidden Collapsible Drawer (Opens smoothly on click) -->
+      <div id="prohibited-collapsible-body" class="prohibited-collapsible-body">
+        <div class="prohibited-body-inner">
+          <div class="prohibited-grid">
+            <div id="slot-sunrise" class="prohibited-slot">
+              <div class="slot-top">
+                <span class="slot-dot"></span>
+                <small data-i18n="prohibited_sunrise">🌅 সূর্যোদয় কাল (১৫ মি.)</small>
+              </div>
+              <strong id="time-slot-sunrise">--:-- – --:--</strong>
+              <span class="slot-desc" data-i18n="prohibited_sunrise_desc">সূর্য সম্পূর্ণ উদিত হওয়া পর্যন্ত</span>
+            </div>
+
+            <div id="slot-zawal" class="prohibited-slot">
+              <div class="slot-top">
+                <span class="slot-dot"></span>
+                <small data-i18n="prohibited_zawal">☀️ দ্বিপ্রহর / যাওয়াল</small>
+              </div>
+              <strong id="time-slot-zawal">--:-- – --:--</strong>
+              <span class="slot-desc" data-i18n="prohibited_zawal_desc">সূর্য মাথার ঠিক ওপরে থাকা অবস্থায়</span>
+            </div>
+
+            <div id="slot-sunset" class="prohibited-slot">
+              <div class="slot-top">
+                <span class="slot-dot"></span>
+                <small data-i18n="prohibited_sunset">🌇 সূর্যাস্ত কাল (১৫ মি.)</small>
+              </div>
+              <strong id="time-slot-sunset">--:-- – --:--</strong>
+              <span class="slot-desc" data-i18n="prohibited_sunset_desc">সূর্য সম্পূর্ণ অস্ত যাওয়া পর্যন্ত</span>
+            </div>
+          </div>
+
+          <div class="prohibited-footer-bar">
+            <small class="prohibited-hadith-note" data-i18n="prohibited_hadith_ref">
+              📖 দলিল: সহীহ মুসলিম ৮৩১ — উকবাহ ইবনু আমির (রা.) বর্ণিত এই তিন সময়ে যেকোনো সালাত আদায় নিষিদ্ধ।
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="search-row">
       <input type="search" id="habit-search-input" class="input-text search-box" data-i18n-placeholder="search_placeholder" placeholder="🔍 ৩২+ সুন্নাহ আমল, হাদিস, দোয়া বা উপকারিতা খুঁজুন..." />
     </div>
@@ -341,4 +403,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
