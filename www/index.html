@@ -105,12 +105,67 @@
     </div>
   </section>
 
-  <!-- Main Navigation Tabs -->
+  <!-- MUSLIM BANGLA / MUSLIM'S DAY STYLE 5-WAQT LIVE PRAYER TRACKER STRIP -->
+  <section class="waqt-strip-card" aria-label="Five Daily Prayers">
+    <div id="five-waqt-grid" class="five-waqt-grid"></div>
+  </section>
+
+  <!-- MUSLIM BANGLA / MUSLIM'S DAY CIRCULAR ICON FEATURE LAUNCHER PORTAL -->
+  <section class="portal-launcher-card" aria-label="Quick Feature Portal">
+    <div class="portal-launcher-grid">
+      <button type="button" class="portal-item active" data-portal-tab="tab-routine" data-portal-phase="all">
+        <div class="portal-circle-icon emerald-glow">🕒</div>
+        <span data-i18n="tab_routine">২৪ ঘণ্টা রুটিন</span>
+      </button>
+      <button type="button" class="portal-item" data-portal-action="toggle-prohibited">
+        <div class="portal-circle-icon crimson-glow">⛔</div>
+        <span data-i18n="portal_prohibited">নিষিদ্ধ সময়</span>
+      </button>
+      <button type="button" class="portal-item" data-portal-tab="tab-adhkar" data-portal-scroll="tasbih">
+        <div class="portal-circle-icon gold-glow">📿</div>
+        <span data-i18n="portal_tasbih">ডিজিটাল তাসবীহ</span>
+      </button>
+      <button type="button" class="portal-item" data-portal-tab="tab-adhkar" data-portal-scroll="duas">
+        <div class="portal-circle-icon teal-glow">🤲</div>
+        <span data-i18n="portal_duas">মাসনূন দোয়া</span>
+      </button>
+      <button type="button" class="portal-item" data-portal-tab="tab-diary">
+        <div class="portal-circle-icon purple-glow">📖</div>
+        <span data-i18n="tab_diary">মুহাসাবা ডায়েরি</span>
+      </button>
+      <button type="button" class="portal-item" data-portal-tab="tab-routine" data-portal-phase="diet_hygiene">
+        <div class="portal-circle-icon amber-glow">🍯</div>
+        <span data-i18n="portal_tibb">তিব্বে নববী</span>
+      </button>
+      <button type="button" class="portal-item" data-portal-tab="tab-vault" data-portal-scroll="matrix">
+        <div class="portal-circle-icon cyan-glow">📊</div>
+        <span data-i18n="portal_analytics">আমল গ্রাফ</span>
+      </button>
+      <button type="button" class="portal-item" data-portal-tab="tab-vault" data-portal-scroll="vault">
+        <div class="portal-circle-icon slate-glow">🔐</div>
+        <span data-i18n="tab_vault">ভল্ট ও ব্যাকআপ</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Main Navigation Tabs (Muslim Bangla / Muslim's Day Circular Icon Style) -->
   <nav class="tab-nav" role="tablist">
-    <button class="tab-btn active" data-tab="tab-routine" data-i18n="tab_routine">🕒 ২৪ ঘণ্টা রুটিন</button>
-    <button class="tab-btn" data-tab="tab-adhkar" data-i18n="tab_adhkar">📿 আযকার ও তাসবীহ</button>
-    <button class="tab-btn" data-tab="tab-diary" data-i18n="tab_diary">📖 মুহাসাবা ডায়েরি</button>
-    <button class="tab-btn" data-tab="tab-vault" data-i18n="tab_vault">🔐 ভল্ট ও তথ্য</button>
+    <button class="tab-btn active" data-tab="tab-routine">
+      <span class="tab-circle-icon">🕒</span>
+      <span class="tab-label-text" data-i18n="tab_routine">🕒 ২৪ ঘণ্টা রুটিন</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-adhkar">
+      <span class="tab-circle-icon">📿</span>
+      <span class="tab-label-text" data-i18n="tab_adhkar">📿 আযকার ও তাসবীহ</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-diary">
+      <span class="tab-circle-icon">📖</span>
+      <span class="tab-label-text" data-i18n="tab_diary">📖 মুহাসাবা ডায়েরি</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-vault">
+      <span class="tab-circle-icon">🔐</span>
+      <span class="tab-label-text" data-i18n="tab_vault">🔐 ভল্ট ও তথ্য</span>
+    </button>
   </nav>
 
   <!-- TAB 1: 24-HOUR PROPHETIC ROUTINE -->
@@ -182,14 +237,14 @@
     </div>
 
     <div class="filter-bar">
-      <button class="chip active" data-phase="all" data-i18n="phase_all">সব ২৪ ঘণ্টা</button>
-      <button class="chip" data-phase="tahajjud_fajr" data-i18n="phase_tahajjud">🌌 তাহাজ্জুদ ও ফজর</button>
-      <button class="chip" data-phase="duha_work" data-i18n="phase_duha">☀️ সকাল ও কর্মক্ষেত্র</button>
-      <button class="chip" data-phase="dhuhr_asr" data-i18n="phase_dhuhr">🌤️ যোহর, কাইলুলা ও আসর</button>
-      <button class="chip" data-phase="maghrib_isha" data-i18n="phase_maghrib">🌆 মাগরিব ও ইশা</button>
-      <button class="chip" data-phase="sleep_sunnah" data-i18n="phase_sleep">🛌 সুন্নাহ সম্মত ঘুম</button>
-      <button class="chip" data-phase="diet_hygiene" data-i18n="phase_diet">🍯 তিব্বে নববী ও ফিতরাত</button>
-      <button class="chip" data-phase="character_social" data-i18n="phase_character">🤝 আখলাক ও সুন্নাহ দিবস</button>
+      <button class="chip active" data-phase="all"><span class="chip-circle-avatar">☪️</span><span data-i18n="phase_all">সব ২৪ ঘণ্টা</span></button>
+      <button class="chip" data-phase="tahajjud_fajr"><span class="chip-circle-avatar">🌌</span><span data-i18n="phase_tahajjud">🌌 তাহাজ্জুদ ও ফজর</span></button>
+      <button class="chip" data-phase="duha_work"><span class="chip-circle-avatar">☀️</span><span data-i18n="phase_duha">☀️ সকাল ও কর্মক্ষেত্র</span></button>
+      <button class="chip" data-phase="dhuhr_asr"><span class="chip-circle-avatar">🌤️</span><span data-i18n="phase_dhuhr">🌤️ যোহর, কাইলুলা ও আসর</span></button>
+      <button class="chip" data-phase="maghrib_isha"><span class="chip-circle-avatar">🌆</span><span data-i18n="phase_maghrib">🌆 মাগরিব ও ইশা</span></button>
+      <button class="chip" data-phase="sleep_sunnah"><span class="chip-circle-avatar">🛌</span><span data-i18n="phase_sleep">🛌 সুন্নাহ সম্মত ঘুম</span></button>
+      <button class="chip" data-phase="diet_hygiene"><span class="chip-circle-avatar">🍯</span><span data-i18n="phase_diet">🍯 তিব্বে নববী ও ফিতরাত</span></button>
+      <button class="chip" data-phase="character_social"><span class="chip-circle-avatar">🤝</span><span data-i18n="phase_character">🤝 আখলাক ও সুন্নাহ দিবস</span></button>
     </div>
 
     <div class="quick-actions-bar">
