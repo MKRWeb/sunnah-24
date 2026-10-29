@@ -155,25 +155,6 @@ const I18N_DICTIONARIES = deepFreeze({
     alert_invalid: "অকার্যকর সুন্নাহ ২৪ ব্যাকআপ ফাইল।",
     day_detail_title: "📅 দিনের আমল বিবরণী:",
     day_detail_none: "এই তারিখে কোনো সুন্নাহ আমল চিহ্নিত করা হয়নি।",
-    prohibited_title: "নামাজের নিষিদ্ধ সময় (Prohibited Salah Times)",
-    prohibited_subtitle: "সহীহ মুসলিম ৮৩১ অনুযায়ী দৈনিক ৩টি হারাম/মাকরূহ তাহরীমী ওয়াক্ত",
-    prohibited_slot1_title: "🌅 ১. সূর্যোদয় কাল (তুলু)",
-    prohibited_slot1_desc: "সূর্য ওঠার শুরু থেকে ১৫ মিনিট",
-    prohibited_slot2_title: "☀️ ২. দ্বিপ্রহর (ইস্তিওয়া/যাওয়াল)",
-    prohibited_slot2_desc: "যোহরের ওয়াক্ত শুরুর পূর্বের ~১০ মিনিট",
-    prohibited_slot3_title: "🌇 ৩. সূর্যাস্ত কাল (গুরুব)",
-    prohibited_slot3_desc: "মাগরিবের পূর্বের শেষ ১৫ মিনিট (ঐ দিনের আসর ব্যতীত)",
-    prohibited_nafl_note: "⚠️ সাধারণ নফল নিষিদ্ধ: ফজরের পর সূর্যোদয় পর্যন্ত এবং আসরের পর সূর্যাস্ত পর্যন্ত কোনো নফল সালাত পড়া যাবে না (সহীহ বুখারী ৫৮৬)।",
-    prohibited_status_safe: "🟢 এখন সালাত আদায় বৈধ",
-    prohibited_status_danger: "🚫 এখন নামাজের নিষিদ্ধ সময় চলছে!",
-    prohibited_status_nafl: "⚠️ এখন নফল সালাত নিষিদ্ধ (ফরজ/কাযা বৈধ)",
-    prohibited_slot_upcoming: "আসন্ন",
-    prohibited_slot_active: "🚫 নিষিদ্ধ চলছে",
-    prohibited_slot_passed: "সম্পন্ন",
-    prohibited_modal_title: "🚫 নামাজের নিষিদ্ধ সময়সমূহ ও শরয়ী বিধান",
-    prohibited_modal_cat: "সহীহ মুসলিম ৮৩১ • সহীহ বুখারী ৫৮৬",
-    prohibited_modal_evidence: "১. উকবাহ ইবনু আমির (রা.) বলেন: «ثَلاَثُ سَاعَاتٍ كَانَ رَسُولُ اللَّهِ ﷺ يَنْهَانَا أَنْ نُصَلِّيَ فِيهِنَّ أَوْ أَنْ نَقْبُرَ فِيهِنَّ مَوْتَانَا: حِينَ تَطْلُعُ الشَّمْسُ بَازِغَةً حَتَّى تَرْتَفِعَ، وَحِينَ يَقُومُ قَائِمُ الظَّهِيرَةِ حَتَّى تَمِيلَ الشَّمْسُ، وَحِينَ تَضَيَّفُ الشَّمْسُ لِلْغُرُوبِ حَتَّى تَغْرُبَ»\n'রাসূলুল্লাহ ﷺ আমাদেরকে তিনটি সময়ে সালাত আদায় করতে এবং আমাদের মৃতদের দাফন (জানাযা) করতে নিষেধ করতেন: (ক) সূর্য উদিত হওয়ার সময় যতক্ষণ না তা পুরোপুরি ওপরে ওঠে (~১৫ মিনিট), (খ) ঠিক দ্বিপ্রহরে সূর্য মাথার ওপর স্থির থাকার সময় যতক্ষণ না তা পশ্চিম আকাশে ঢলে পড়ে (~১০ মিনিট), এবং (গ) সূর্য অস্ত যাওয়ার জন্য হলুদ/নিষ্প্রভ বর্ণ ধারণ করার পর থেকে সম্পূর্ণ অস্ত যাওয়া পর্যন্ত (~১৫ মিনিট)।' (সহীহ মুসলিম ৮৩১)\n\n২. আবু সাঈদ খুদরী (রা.) হতে বর্ণিত: রাসূলুল্লাহ ﷺ বলেছেন, 'ফজরের সালাতের পর সূর্য ওঠা পর্যন্ত কোনো (নফল) সালাত নেই এবং আসরের সালাতের পর সূর্য ডোবা পর্যন্ত কোনো (নফল) সালাত নেই।' (সহীহ বুখারী ৫৮৬, মুসলিম ৮২৭)",
-    prohibited_modal_wisdom: "• সূর্যপূজারীদের সাথে সাদৃশ্য (তাশাব্বুহ) পরিহার করা, যারা সূর্যোদয়, সূর্যাস্ত ও মধ্যাকাশে সূর্যের উপাসনা করে (সহীহ মুসলিম ৮৩২)।\n• ফিকহি মাসআলা: এই ৩টি মূল নিষিদ্ধ সময়ে ফরজ, ওয়াজিব, সুন্নাত, নফল, কাযা বা সিজদায়ে তিলাওয়াত—কোনোটিই আদায় করা জায়েয নয় (তবে কেবল ঐ দিনের আসরের ফরজ সালাত সূর্যাস্তের আগেও পড়া যাবে)। অন্যদিকে ফজর ও আসরের পরের ওয়াক্তে কেবল সাধারণ নফল সালাত নিষিদ্ধ, কিন্তু কাযা সালাত বা জানাযা পড়া জায়েয।",
     tasbih_options: [
       { target: 33, label: "সুবহানাল্লাহ (আল্লাহ পবিত্র ও মহান)", text: "সুবহানাল্লাহ — ৩৩ বার" },
       { target: 33, label: "আলহামদুলিল্লাহ (সকল প্রশংসা আল্লাহর)", text: "আলহামদুলিল্লাহ — ৩৩ বার" },
@@ -282,25 +263,6 @@ const I18N_DICTIONARIES = deepFreeze({
     alert_invalid: "ملف النسخة الاحتياطية غير صالح.",
     day_detail_title: "📅 تفاصيل إنجاز اليوم:",
     day_detail_none: "لم يتم تسجيل سنن مكتملة في هذا التاريخ.",
-    prohibited_title: "الأوقات المنهي عن الصلاة فيها",
-    prohibited_subtitle: "الأوقات الثلاثة المغلظة للنهي عن الصلاة (صحيح مسلم ٨٣١)",
-    prohibited_slot1_title: "🌅 ١. عند طلوع الشمس",
-    prohibited_slot1_desc: "من الشروق حتى ترتفع قيد رمح (~١٥ دقيقة)",
-    prohibited_slot2_title: "☀️ ٢. عند الاستواء (الزوال)",
-    prohibited_slot2_desc: "قبيل أذان الظهر (~١٠ دقائق)",
-    prohibited_slot3_title: "🌇 ٣. عند غروب الشمس",
-    prohibited_slot3_desc: "آخر ١٥ دقيقة قبل المغرب (إلا عصر اليوم)",
-    prohibited_nafl_note: "⚠️ النهي عن التطوع المطلق: لا صلاة نافلة بعد صلاة الفجر حتى تطلع الشمس، ولا بعد صلاة العصر حتى تغرب الشمس (صحيح البخاري ٥٨٦).",
-    prohibited_status_safe: "🟢 وقت مباح للصلاة الآن",
-    prohibited_status_danger: "🚫 وقت نهي مغلظ عن الصلاة الآن!",
-    prohibited_status_nafl: "⚠️ وقت نهي عن النافلة المطلقة",
-    prohibited_slot_upcoming: "قادم",
-    prohibited_slot_active: "🚫 وقت نهي الآن",
-    prohibited_slot_passed: "انقضى",
-    prohibited_modal_title: "🚫 الأوقات المنهي عن الصلاة فيها وأحكامها الفقهية",
-    prohibited_modal_cat: "صحيح مسلم ٨٣١ • صحيح البخاري ٥٨٦",
-    prohibited_modal_evidence: "١. عن عقبة بن عامر الجهني رضي الله عنه قال: «ثَلاَثُ سَاعَاتٍ كَانَ رَسُولُ اللَّهِ ﷺ يَنْهَانَا أَنْ نُصَلِّيَ فِيهِنَّ أَوْ أَنْ نَقْبُرَ فِيهِنَّ مَوْتَانَا: حِينَ تَطْلُعُ الشَّمْسُ بَازِغَةً حَتَّى تَرْتَفِعَ، وَحِينَ يَقُومُ قَائِمُ الظَّهِيرَةِ حَتَّى تَمِيلَ الشَّمْسُ، وَحِينَ تَضَيَّفُ الشَّمْسُ لِلْغُرُوبِ حَتَّى تَغْرُبَ» (صحيح مسلم ٨٣١).\n\n٢. عن أبي سعيد الخدري رضي الله عنه قال: سمعت رسول الله ﷺ يقول: «لا صلاة بعد الصبح حتى ترتفع الشمس، ولا صلاة بعد العصر حتى تغيب الشمس» (صحيح البخاري ٥٨٦).",
-    prohibited_modal_wisdom: "• الحكمة الشرعية: سد الذريعة ومخالفة المشركين الذين يسجدون للشمس عند طلوعها وعند غروبها وحين تستوي في كبد السماء (صحيح مسلم ٨٣٢).\n• الحكم الفقهي: تحرم الصلاة (النافلة وغيرها) في الأوقات الثلاثة القصيرة (الطلوع، الاستواء، الغروب) إلا عصر اليوم الحاضر عند الضرورة، بينما يقتصر النهي بعد الفجر وبعد العصر على النوافل المطلقة دون الفوائت وذوات الأسباب.",
     tasbih_options: [
       { target: 33, label: "سبحان الله", text: "سبحان الله — ٣٣ مرة" },
       { target: 33, label: "الحمد لله", text: "الحمد لله — ٣٣ مرة" },
@@ -409,25 +371,6 @@ const I18N_DICTIONARIES = deepFreeze({
     alert_invalid: "Invalid Sunnah 24 backup file.",
     day_detail_title: "📅 Completed Sunnahs on:",
     day_detail_none: "No habits were marked completed on this date.",
-    prohibited_title: "Prohibited Times for Salah",
-    prohibited_subtitle: "3 Strictly Forbidden Prayer Windows Daily (Sahih Muslim 831)",
-    prohibited_slot1_title: "🌅 1. Sunrise (Tulu' al-Shams)",
-    prohibited_slot1_desc: "From sunrise until it rises (~15 mins)",
-    prohibited_slot2_title: "☀️ 2. Solar Zenith (Istiwa/Zawal)",
-    prohibited_slot2_desc: "Last ~10 mins before Dhuhr Waqt begins",
-    prohibited_slot3_title: "🌇 3. Sunset (Ghurub al-Shams)",
-    prohibited_slot3_desc: "Final 15 mins before Maghrib (except today's Asr)",
-    prohibited_nafl_note: "⚠️ Voluntary (Nafl) Restriction: No general Nafl prayer after praying Fajr until sunrise grows clear, nor after praying Asr until sunset (Sahih al-Bukhari 586).",
-    prohibited_status_safe: "🟢 Permissible Time for Salah",
-    prohibited_status_danger: "🚫 Prohibited Salah Window Active!",
-    prohibited_status_nafl: "⚠️ Nafl Prayer Restricted (Fard/Qada Valid)",
-    prohibited_slot_upcoming: "Upcoming",
-    prohibited_slot_active: "🚫 Active Now",
-    prohibited_slot_passed: "Passed",
-    prohibited_modal_title: "🚫 Prohibited Times for Salah & Jurisprudential Rulings",
-    prohibited_modal_cat: "Sahih Muslim 831 • Sahih al-Bukhari 586",
-    prohibited_modal_evidence: "1. 'Uqbah ibn 'Amir (RA) reported: 'There were three times at which the Messenger of Allah ﷺ forbade us to pray or bury our dead: (a) when the sun begins to rise until it is fully up (~15 mins), (b) when the sun is at its height at midday until it passes the meridian (~10 mins before Dhuhr), and (c) when the sun draws near to setting until it sets (~15 mins).' (Sahih Muslim 831)\n\n2. Abu Sa'id al-Khudri (RA) reported: 'No voluntary prayer is to be offered after the morning (Fajr) prayer until the sun rises, and no voluntary prayer is to be offered after the Asr prayer until the sun sets.' (Sahih al-Bukhari 586, Muslim 827)",
-    prohibited_modal_wisdom: "• Prophetic Wisdom: Differentiating pure Islamic monotheism (Tawheed) from sun-worshippers who prostrate to the sun at its rising, zenith, and setting (Sahih Muslim 832).\n• Fiqh Ruling: During the 3 peak solar transitions (Sunrise, Zenith/Zawal, Sunset), initiating any Nafl, Sunnah, or missed (Qada) prayer is strictly prohibited (except praying that day's Asr Fard before sunset). Between Fajr–Sunrise and Asr–Sunset, only voluntary (Nafl) prayers are disallowed while Qada and Janazah remain valid.",
     tasbih_options: [
       { target: 33, label: "SubhanAllah (Glory be to Allah)", text: "SubhanAllah — 33x" },
       { target: 33, label: "Alhamdulillah (Praise be to Allah)", text: "Alhamdulillah — 33x" },
@@ -2348,128 +2291,7 @@ function renderHeaderDatesAndPhase() {
   } else {
     fastBanner.textContent = t("fast_default");
   }
-
-  renderProhibitedSalahPanel(now);
 }
-
-// Computes the 3 Strictly Prohibited Salah Windows (Sahih Muslim 831) + 2 Nafl-Restricted Periods (Bukhari 586)
-function computeProhibitedSalahWindows(dateObj = new Date()) {
-  const sched = computeSeasonalPrayerSchedule(dateObj);
-  const sunriseStart = sched.sunrise;
-  const sunriseEnd = sched.ishraq; // sunrise + 15 mins
-  const zawalStart = sched.zawal;  // solarNoon - 10 mins
-  const zawalEnd = sched.dhuhr;    // solarNoon + 3 mins
-  const sunsetStart = sched.sunset - 15;
-  const sunsetEnd = sched.sunset + 2;
-
-  return {
-    sunriseSlot: { start: sunriseStart, end: sunriseEnd },
-    zawalSlot: { start: zawalStart, end: zawalEnd },
-    sunsetSlot: { start: sunsetStart, end: sunsetEnd },
-    naflFajrWindow: { start: sched.fajr, end: sunriseStart },
-    naflAsrWindow: { start: sched.asr, end: sunsetStart }
-  };
-}
-
-function renderProhibitedSalahPanel(now = new Date()) {
-  const card = document.getElementById("prohibited-salah-card");
-  if (!card) return;
-
-  const wins = computeProhibitedSalahWindows(now);
-  const nowMins = now.getHours() * 60 + now.getMinutes();
-  const locale = appState.locale || "bn";
-
-  // Populate exact localized time ranges
-  const sunriseTimeEl = document.getElementById("prohibited-sunrise-time");
-  const zawalTimeEl = document.getElementById("prohibited-zawal-time");
-  const sunsetTimeEl = document.getElementById("prohibited-sunset-time");
-
-  if (sunriseTimeEl) {
-    sunriseTimeEl.textContent = formatWindowRangeLabel(wins.sunriseSlot.start, wins.sunriseSlot.end, locale);
-  }
-  if (zawalTimeEl) {
-    zawalTimeEl.textContent = formatWindowRangeLabel(wins.zawalSlot.start, wins.zawalSlot.end, locale);
-  }
-  if (sunsetTimeEl) {
-    sunsetTimeEl.textContent = formatWindowRangeLabel(wins.sunsetSlot.start, wins.sunsetSlot.end, locale);
-  }
-
-  const slots = [
-    {
-      boxId: "prohibited-slot-sunrise",
-      dotId: "prohibited-slot1-state",
-      start: wins.sunriseSlot.start,
-      end: wins.sunriseSlot.end
-    },
-    {
-      boxId: "prohibited-slot-zawal",
-      dotId: "prohibited-slot2-state",
-      start: wins.zawalSlot.start,
-      end: wins.zawalSlot.end
-    },
-    {
-      boxId: "prohibited-slot-sunset",
-      dotId: "prohibited-slot3-state",
-      start: wins.sunsetSlot.start,
-      end: wins.sunsetSlot.end
-    }
-  ];
-
-  let isStrictlyProhibitedNow = false;
-
-  slots.forEach((s) => {
-    const box = document.getElementById(s.boxId);
-    const dot = document.getElementById(s.dotId);
-    if (!box || !dot) return;
-
-    box.classList.remove("slot-active-danger", "slot-passed");
-    if (nowMins >= s.start && nowMins <= s.end) {
-      isStrictlyProhibitedNow = true;
-      box.classList.add("slot-active-danger");
-      dot.textContent = t("prohibited_slot_active");
-    } else if (nowMins > s.end) {
-      box.classList.add("slot-passed");
-      dot.textContent = t("prohibited_slot_passed");
-    } else {
-      dot.textContent = t("prohibited_slot_upcoming");
-    }
-  });
-
-  const inNaflRestricted =
-    !isStrictlyProhibitedNow &&
-    ((nowMins >= wins.naflFajrWindow.start && nowMins < wins.naflFajrWindow.end) ||
-      (nowMins >= wins.naflAsrWindow.start && nowMins < wins.naflAsrWindow.end));
-
-  const liveBadge = document.getElementById("prohibited-live-badge");
-  card.classList.toggle("prohibited-danger-active", isStrictlyProhibitedNow);
-
-  if (liveBadge) {
-    liveBadge.className = "prohibited-status-pill";
-    if (isStrictlyProhibitedNow) {
-      liveBadge.classList.add("status-danger");
-      liveBadge.textContent = t("prohibited_status_danger");
-    } else if (inNaflRestricted) {
-      liveBadge.classList.add("status-nafl-warn");
-      liveBadge.textContent = t("prohibited_status_nafl");
-    } else {
-      liveBadge.classList.add("status-safe");
-      liveBadge.textContent = t("prohibited_status_safe");
-    }
-  }
-}
-
-function openProhibitedSalahModal() {
-  const wisdomSection = document.getElementById("modal-wisdom")?.parentElement;
-  if (wisdomSection) wisdomSection.style.display = "block";
-
-  document.getElementById("modal-title").textContent = t("prohibited_modal_title");
-  document.getElementById("modal-category").textContent = t("prohibited_modal_cat");
-  document.getElementById("modal-evidence").textContent = t("prohibited_modal_evidence");
-  document.getElementById("modal-wisdom").textContent = t("prohibited_modal_wisdom");
-  document.getElementById("fact-modal").classList.remove("hidden");
-  if (typeof pushAppHistoryState === "function") pushAppHistoryState("modal");
-}
-
 
 function getAllHabits() {
   return [...SUNNAH_24_HABITS, ...(appState.customHabits || [])];
@@ -3004,13 +2826,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("close-modal-btn").addEventListener("click", () => {
     document.getElementById("fact-modal").classList.add("hidden");
   });
-
-  const prohibitedProofBtn = document.getElementById("prohibited-proof-btn");
-  if (prohibitedProofBtn) {
-    prohibitedProofBtn.addEventListener("click", () => {
-      openProhibitedSalahModal();
-    });
-  }
 
   
   const selector = document.getElementById("tasbih-selector");
@@ -3666,3 +3481,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 550);
   }
 });
+
