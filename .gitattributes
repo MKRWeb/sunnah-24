@@ -1,0 +1,2 @@
+# Exclude large data files or treat documentation/json-like objects appropriately for language stats
+app.js linguist-detectable=true
