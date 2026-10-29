@@ -1207,9 +1207,24 @@ function getHabitTitle(habit) {
 
 function getHabitTime(habit) {
   if (habit.isCustom) return t("custom_time_label");
-  if (appState.locale === "bn") return habit.time_bn || habit.time;
-  if (appState.locale === "ar") return habit.time_ar || habit.time;
-  return habit.time;
+  const rawLabel =
+    appState.locale === "bn"
+      ? habit.time_bn || habit.time
+      : appState.locale === "ar"
+      ? habit.time_ar || habit.time
+      : habit.time;
+
+  // Extract the descriptive subtitle after '•' and pair it with the exact live seasonal Waqt start time!
+  if (typeof computeSeasonalPrayerSchedule === "function" && rawLabel && rawLabel.includes("•")) {
+    const parts = rawLabel.split("•");
+    const descPart = parts.slice(1).join("•").trim();
+    const rule = getDynamicSeasonalHabitWindow(habit, new Date());
+    if (rule && !(rule.start <= 5 && rule.end >= 1430) && !rule.fridayOnly) {
+      const dynamicStartStr = formatMinutesToLocalizedTime(rule.start, appState.locale);
+      return `${dynamicStartStr} • ${descPart}`;
+    }
+  }
+  return rawLabel;
 }
 
 function getHabitWisdom(habit) {
@@ -1565,24 +1580,26 @@ const HERO_RING_CIRCUMFERENCE = 289.03;   // 2 * PI * 46
 const TASBIH_RING_CIRCUMFERENCE = 703.72; // 2 * PI * 112
 const DUA_RING_CIRCUMFERENCE = 150.8;     // 2 * PI * 24
 
-// Regional Astronomical Profiles mapped to Language & Timezone
-// - bn (Bangladesh): Islamic Foundation Bangladesh / Karachi Method (18° Fajr, 18° Isha, Hanafi Asr shadow=2, Lat 24.0°N, Lon 90.0°E, UTC+6)
-// - ar (Middle East): Umm al-Qura University Makkah Method (18.5° Fajr, +90m Isha, Shafi'i Asr shadow=1, Lat 21.42°N, Lon 39.82°E, UTC+3)
-// - en (Western Countries): ISNA / MWL Method with High-Latitude Seasonal Rule (15° Fajr, 15° Isha, Shafi'i Asr shadow=1, Auto-Timezone)
+// Regional Astronomical Profiles mapped to Device Timezone & Language
+// - Bangladesh (Asia/Dhaka, UTC+6): Islamic Foundation Bangladesh (18° Fajr, 18° Isha, Hanafi Asr shadow=2, Shafi'i Asr shadow=1)
+// - Middle East (Asia/Riyadh, Dubai, Doha, Kuwait, Cairo, etc.): Umm al-Qura / Gulf / Egypt seasonal parameters
+// - Western Countries (Europe, North America, Australia): ISNA / MWL with High-Latitude Seventh-of-Night seasonal protection
 const REGIONAL_PRAYER_PROFILES = deepFreeze({
   bn: {
+    regionCode: "BD",
     regionName_bn: "বাংলাদেশ (ইসলামিক ফাউন্ডেশন ঋতুভিত্তিক সময়সূচী)",
-    regionName_ar: "بنغلاديش (التوقيت الموسمي)",
-    regionName_en: "Bangladesh (Seasonal Waqt)",
+    regionName_ar: "بنغلاديش (التوقيت الموسمي - المؤسسة الإسلامية)",
+    regionName_en: "Bangladesh (Islamic Foundation Seasonal Waqt)",
     lat: 24.0,
-    lon: 90.0,
+    lon: 89.85,
     tzHours: 6.0,
     fajrAngle: 18.0,
     ishaAngle: 18.0,
     ishaFixedMins: 0,
-    asrShadowFactor: 2 // Hanafi standard in Bangladesh
+    asrShadowFactor: 2 // Hanafi standard (Islamic Foundation Bangladesh)
   },
   ar: {
+    regionCode: "ME",
     regionName_bn: "মধ্যপ্রাচ্য (উম্মুল কুরা মক্কা ঋতুভিত্তিক সময়সূচী)",
     regionName_ar: "الشرق الأوسط (تقويم أم القرى الموسمي)",
     regionName_en: "Middle East (Umm al-Qura Seasonal Waqt)",
@@ -1592,14 +1609,15 @@ const REGIONAL_PRAYER_PROFILES = deepFreeze({
     fajrAngle: 18.5,
     ishaAngle: 0,
     ishaFixedMins: 90, // Umm al-Qura 90 mins after Maghrib
-    asrShadowFactor: 1 // Shafi'i / Hanbali / Maliki standard in Middle East
+    asrShadowFactor: 1 // Jumhur / Shafi'i / Hanbali standard
   },
   en: {
+    regionCode: "WEST",
     regionName_bn: "পশ্চিমা বিশ্ব (ISNA/MWL ঋতুভিত্তিক সময়সূচী)",
     regionName_ar: "الدول الغربية (التوقيت الموسمي ISNA/MWL)",
     regionName_en: "Western Countries (ISNA/MWL Seasonal Waqt)",
-    lat: 43.0,
-    lon: -79.0,
+    lat: 40.7128,
+    lon: -74.006,
     tzHours: -5.0,
     fajrAngle: 15.0,
     ishaAngle: 15.0,
@@ -1608,44 +1626,108 @@ const REGIONAL_PRAYER_PROFILES = deepFreeze({
   }
 });
 
-// Auto-refines Western / device coordinates using local IANA timezone when available
+// Detects exact physical region from device IANA timezone & UTC offset first so changing UI language
+// never corrupts local prayer times, while still supporting Bangladesh, Middle East & Western countries!
 function resolveActiveRegionalProfile(dateObj = new Date()) {
-  const lang = appState.locale || "bn";
-  const base = { ...(REGIONAL_PRAYER_PROFILES[lang] || REGIONAL_PRAYER_PROFILES.bn) };
+  const localTzOffsetHours = -dateObj.getTimezoneOffset() / 60;
+  let tzName = "";
+  try {
+    tzName = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+  } catch {}
 
-  if (lang === "en") {
-    const localTzOffsetHours = -dateObj.getTimezoneOffset() / 60;
-    base.tzHours = localTzOffsetHours;
-    let tzName = "";
-    try {
-      tzName = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
-    } catch {}
-    if (tzName.startsWith("Europe/")) {
-      base.lat = 51.5074; // London / Western Europe benchmark
-      base.lon = localTzOffsetHours * 15;
-    } else if (tzName.startsWith("America/")) {
-      base.lat = 40.7128; // North America benchmark
-      base.lon = localTzOffsetHours * 15;
-    } else if (tzName.startsWith("Australia/")) {
-      base.lat = -33.8688; // Southern Hemisphere seasonal inversion handled automatically!
-      base.lon = localTzOffsetHours * 15;
-    } else {
-      base.lon = localTzOffsetHours * 15;
-    }
+  const tzLower = tzName.toLowerCase();
+
+  // 1. Physical Device in Bangladesh (Asia/Dhaka or UTC+6)
+  if (tzLower.includes("dhaka") || tzLower.includes("dacca") || Math.abs(localTzOffsetHours - 6.0) < 0.15) {
+    const bdBase = { ...REGIONAL_PRAYER_PROFILES.bn, tzHours: 6.0 };
+    return bdBase;
   }
-  return base;
+
+  // 2. Physical Device in Middle East (UTC+2 to UTC+4 with Arab/Gulf timezones)
+  if (
+    tzLower.includes("riyadh") ||
+    tzLower.includes("makkah") ||
+    tzLower.includes("mecca") ||
+    tzLower.includes("dubai") ||
+    tzLower.includes("muscat") ||
+    tzLower.includes("kuwait") ||
+    tzLower.includes("qatar") ||
+    tzLower.includes("bahrain") ||
+    tzLower.includes("baghdad") ||
+    tzLower.includes("amman") ||
+    tzLower.includes("jerusalem") ||
+    tzLower.includes("cairo")
+  ) {
+    const meBase = { ...REGIONAL_PRAYER_PROFILES.ar, tzHours: localTzOffsetHours };
+    if (tzLower.includes("dubai") || tzLower.includes("muscat") || Math.abs(localTzOffsetHours - 4.0) < 0.15) {
+      meBase.lat = 25.2048;
+      meBase.lon = 55.2708;
+      meBase.fajrAngle = 18.2;
+      meBase.ishaAngle = 18.2;
+      meBase.ishaFixedMins = 0;
+    } else if (tzLower.includes("cairo") || Math.abs(localTzOffsetHours - 2.0) < 0.15) {
+      meBase.lat = 30.0444;
+      meBase.lon = 31.2357;
+      meBase.fajrAngle = 19.5;
+      meBase.ishaAngle = 17.5;
+      meBase.ishaFixedMins = 0;
+    } else {
+      meBase.lon = localTzOffsetHours * 15 - 5;
+    }
+    return meBase;
+  }
+
+  // 3. Physical Device in Western Countries (Europe, Americas, Australia/NZ)
+  if (
+    tzLower.startsWith("europe/") ||
+    tzLower.startsWith("america/") ||
+    tzLower.startsWith("australia/") ||
+    tzLower.startsWith("pacific/") ||
+    localTzOffsetHours <= 2.0
+  ) {
+    const westBase = { ...REGIONAL_PRAYER_PROFILES.en, tzHours: localTzOffsetHours };
+    if (tzLower.startsWith("europe/")) {
+      westBase.lat = 51.5074; // London / Western Europe
+      westBase.lon = localTzOffsetHours * 15;
+      westBase.fajrAngle = 18.0; // MWL Europe standard
+      westBase.ishaAngle = 17.0;
+    } else if (tzLower.startsWith("america/")) {
+      westBase.lat = 40.7128; // North America ISNA standard
+      westBase.lon = localTzOffsetHours * 15;
+      westBase.fajrAngle = 15.0;
+      westBase.ishaAngle = 15.0;
+    } else if (tzLower.startsWith("australia/")) {
+      westBase.lat = -33.8688; // Sydney / Southern Hemisphere
+      westBase.lon = localTzOffsetHours * 15;
+      westBase.fajrAngle = 18.0;
+      westBase.ishaAngle = 17.0;
+    } else {
+      westBase.lon = localTzOffsetHours * 15;
+    }
+    return westBase;
+  }
+
+  // Fallback to selected locale profile
+  const lang = appState.locale || "bn";
+  return { ...(REGIONAL_PRAYER_PROFILES[lang] || REGIONAL_PRAYER_PROFILES.bn) };
 }
 
-// Astronomical Solar Declination & Equation of Time Calculator (NOAA / Jean Meeus algorithm)
+// Astronomical Solar Declination & Equation of Time Calculator (NOAA / Jean Meeus High-Precision)
 function computeSeasonalPrayerSchedule(dateObj = new Date()) {
   const profile = resolveActiveRegionalProfile(dateObj);
-  const startOfYear = new Date(dateObj.getFullYear(), 0, 0);
-  const dayOfYear = Math.floor((dateObj - startOfYear) / 86400000);
+
+  // Compute exact day of year (1..366) in local calendar
+  const year = dateObj.getFullYear();
+  const month = dateObj.getMonth();
+  const day = dateObj.getDate();
+  const dayOfYear = Math.floor(
+    (Date.UTC(year, month, day) - Date.UTC(year, 0, 0)) / 86400000
+  );
 
   const deg2rad = (d) => (d * Math.PI) / 180;
   const rad2deg = (r) => (r * 180) / Math.PI;
 
-  // Fractional year gamma (radians)
+  // Fractional year gamma (radians) evaluated at local solar noon
   const gamma = ((2 * Math.PI) / 365.25) * (dayOfYear - 1 + 0.5);
 
   // Equation of time (in minutes)
@@ -1666,67 +1748,84 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
     0.000907 * Math.sin(2 * gamma) -
     0.002697 * Math.cos(3 * gamma) +
     0.00148 * Math.sin(3 * gamma);
-  const declDeg = rad2deg(declRad);
 
   const latRad = deg2rad(profile.lat);
 
-  // Solar Noon (Dhuhr start) in local minutes from 00:00
+  // Exact Solar Noon (Istiwa / Meridian Transit) in local minutes from 00:00
   const solarNoonMins = Math.round(720 - 4 * profile.lon - eqTime + profile.tzHours * 60);
 
-  // Helper to compute hour-angle offset (in minutes) for any zenith/altitude angle below horizon
-  function getHourAngleMinutes(altitudeDeg) {
+  // Sunrise & Sunset (-0.833° atmospheric refraction + solar limb radius)
+  function getSolarElevationMinutes(altitudeDeg, fallbackPortionOfNight = null, nightLen = 660) {
     const altRad = deg2rad(altitudeDeg);
     const cosH =
       (Math.sin(altRad) - Math.sin(latRad) * Math.sin(declRad)) /
       (Math.cos(latRad) * Math.cos(declRad));
-    // High-latitude seasonal protection (1/7th night rule fallback for extreme summer/winter)
-    if (cosH < -0.98) return 310;
-    if (cosH > 0.98) return 150;
+
+    // High-latitude seasonal protection (UK/Europe/Canada summer nights where twilight persists)
+    if (cosH < -0.985 || cosH > 0.985) {
+      if (fallbackPortionOfNight !== null) {
+        return Math.round(nightLen * fallbackPortionOfNight);
+      }
+      return 240;
+    }
     const hDeg = rad2deg(Math.acos(Math.max(-1, Math.min(1, cosH))));
     return Math.round(hDeg * 4);
   }
 
-  // Sunrise & Sunset (-0.833° atmospheric refraction)
-  const sunHalfDayMins = getHourAngleMinutes(-0.833);
+  const sunHalfDayMins = getSolarElevationMinutes(-0.833);
   const sunriseMins = solarNoonMins - sunHalfDayMins;
   const sunsetMins = solarNoonMins + sunHalfDayMins;
+  const nightDuration = 1440 - (sunsetMins - sunriseMins);
 
-  // Fajr
-  const fajrOffsetMins = getHourAngleMinutes(-profile.fajrAngle);
-  const fajrMins = Math.max(150, solarNoonMins - fajrOffsetMins);
+  // Subh Sadiq / Fajr (with 1/7th night high-latitude seasonal protection for Western summer)
+  const fajrOffsetFromNoon = getSolarElevationMinutes(-profile.fajrAngle, null, nightDuration);
+  const maxSafeFajrOffset = sunHalfDayMins + Math.round(nightDuration / 7) + 35;
+  const fajrMins = Math.max(
+    120,
+    solarNoonMins - Math.min(fajrOffsetFromNoon, maxSafeFajrOffset)
+  );
 
-  // Ishraq (15 mins after sunrise) & Duha start (20 mins after sunrise) to Zawal (10 mins before Dhuhr)
+  // Authentic Prohibited & Nafl Windows around Sunrise & Solar Noon (Sahih Muslim 831):
+  // 1. Sunrise Prohibited Window: From Sunrise until +15 mins after sunrise (Ishraq start)
+  // 2. Zawal (Istiwa) Prohibited Window: From 6 mins before Solar Noon until Dhuhr start (+3 mins after Solar Noon)
+  // 3. Sunset Prohibited Window: From 15 mins before Sunset until Sunset (Maghrib start)
   const ishraqMins = sunriseMins + 15;
   const duhaStartMins = sunriseMins + 20;
-  const zawalMins = solarNoonMins - 10;
-  const dhuhrMins = solarNoonMins + 3; // 3 mins precaution after meridian transit
+  const zawalStartMins = solarNoonMins - 6;
+  const dhuhrMins = solarNoonMins + 3; // Dhuhr begins right after sun passes meridian zenith
 
-  // Asr (Shadow factor: 2 for Bangladesh Hanafi, 1 for Middle East & Western standard)
+  // Asr Calculation:
+  // - Shafi'i / Jumhur (shadow factor = 1): Standard in Middle East & Western countries, and early Asr in BD
+  // - Hanafi (shadow factor = 2): Standard Islamic Foundation in Bangladesh
   const zenithDiffRad = Math.abs(latRad - declRad);
-  const asrAltRad = Math.atan(1 / (profile.asrShadowFactor + Math.tan(zenithDiffRad)));
-  const asrAltDeg = rad2deg(asrAltRad);
-  const asrOffsetMins = getHourAngleMinutes(asrAltDeg);
-  const asrMins = solarNoonMins + asrOffsetMins;
+  const asrShafiiAltDeg = rad2deg(Math.atan(1 / (1 + Math.tan(zenithDiffRad))));
+  const asrHanafiAltDeg = rad2deg(Math.atan(1 / (2 + Math.tan(zenithDiffRad))));
+  const asrShafiiMins = solarNoonMins + getSolarElevationMinutes(asrShafiiAltDeg);
+  const asrHanafiMins = solarNoonMins + getSolarElevationMinutes(asrHanafiAltDeg);
+  const asrMins = profile.asrShadowFactor === 2 ? asrHanafiMins : asrShafiiMins;
 
-  // Maghrib (3 mins after sunset)
-  const maghribMins = sunsetMins + 3;
+  // Maghrib begins immediately after Sunset (+2 mins precaution)
+  const maghribMins = sunsetMins + 2;
 
-  // Isha
+  // Isha Calculation
   let ishaMins;
   if (profile.ishaFixedMins > 0) {
     ishaMins = maghribMins + profile.ishaFixedMins;
   } else {
-    const ishaOffsetMins = getHourAngleMinutes(-profile.ishaAngle);
-    ishaMins = Math.min(22 * 60 + 30, solarNoonMins + ishaOffsetMins);
+    const ishaOffsetFromNoon = getSolarElevationMinutes(-profile.ishaAngle, null, nightDuration);
+    const maxSafeIshaOffset = sunHalfDayMins + Math.round(nightDuration / 7) + 35;
+    ishaMins = Math.min(
+      23 * 60,
+      solarNoonMins + Math.min(ishaOffsetFromNoon, maxSafeIshaOffset)
+    );
   }
 
-  // Islamic Last Third of Night (Tahajjud peak window)
-  const nightDuration = 1440 - maghribMins + fajrMins;
-  const lastThirdStart = Math.max(60, Math.round(fajrMins - nightDuration / 3));
+  // Islamic Last Third of the Night (Tahajjud golden window)
+  const totalNightMins = 1440 - maghribMins + fajrMins;
+  const lastThirdStart = ((Math.round(fajrMins - totalNightMins / 3) % 1440) + 1440) % 1440;
 
-  // Season indicator (Summer, Winter, Spring/Autumn)
+  // Season indicator (Winter, Summer, Equinox)
   const isNorthern = profile.lat >= 0;
-  const month = dateObj.getMonth(); // 0..11
   let seasonType = "equinox";
   if (month >= 10 || month <= 1) {
     seasonType = isNorthern ? "winter" : "summer";
@@ -1737,17 +1836,25 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
   return {
     profile,
     seasonType,
+    solarNoon: solarNoonMins,
     lastThirdStart,
     fajr: fajrMins,
     sunrise: sunriseMins,
     ishraq: ishraqMins,
     duhaStart: duhaStartMins,
-    zawal: zawalMins,
+    zawal: zawalStartMins,
     dhuhr: dhuhrMins,
+    asrShafii: asrShafiiMins,
+    asrHanafi: asrHanafiMins,
     asr: asrMins,
     sunset: sunsetMins,
     maghrib: maghribMins,
-    isha: ishaMins
+    isha: ishaMins,
+    prohibitedWindows: {
+      sunrise: { start: sunriseMins, end: sunriseMins + 15 },
+      zawal: { start: zawalStartMins, end: dhuhrMins },
+      sunset: { start: sunsetMins - 15, end: sunsetMins }
+    }
   };
 }
 
@@ -1818,7 +1925,7 @@ function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
     case "s24_12_qaylulah_nap":
       return { start: s.dhuhr + 15, end: s.asr - 10 };
     case "s24_13_asr_prayer":
-      return { start: s.asr, end: s.sunset - 2 };
+      return { start: Math.min(s.asrShafii || s.asr, s.asr), end: s.sunset - 2 };
     case "s24_14_evening_adhkar":
       return { start: s.asr, end: s.maghrib + 75 };
     case "s24_15_maghrib_sunnah":
@@ -2290,10 +2397,10 @@ function renderHeaderDatesAndPhase() {
   const sched = computeSeasonalPrayerSchedule(now);
   const regionTag =
     appState.locale === "ar"
-      ? "مكة/الشرق الأوسط"
+      ? sched.profile.regionName_ar
       : appState.locale === "en"
-      ? "Western Seasonal"
-      : "বাংলাদেশ";
+      ? sched.profile.regionName_en
+      : sched.profile.regionName_bn;
 
   document.getElementById("current-date-display").textContent = `${greg} • ${hijri} (${regionTag})`;
 
@@ -3562,9 +3669,9 @@ function renderProhibitedSalahTimes() {
   // 1. Sunrise Window: From Sunrise until Ishraq (+15 minutes)
   // 2. Zawal (Solar Zenith) Window: From Zawal (10 mins before Dhuhr) until Dhuhr start
   // 3. Sunset Window: From 15 minutes before Sunset until Sunset
-  const windows = {
+  const windows = sched.prohibitedWindows || {
     sunrise: { start: sched.sunrise, end: sched.sunrise + 15 },
-    zawal: { start: sched.zawal, end: sched.dhuhr - 1 },
+    zawal: { start: sched.zawal, end: sched.dhuhr },
     sunset: { start: sched.sunset - 15, end: sched.sunset }
   };
 
@@ -3679,3 +3786,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderProhibitedSalahTimes();
 });
+
