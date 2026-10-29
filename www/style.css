@@ -1287,3 +1287,258 @@ html[dir="rtl"] .compact-history-item {
   color: #a7f3d0;
   border: 1px solid var(--accent-emerald);
 }
+
+
+/* ==========================================================================
+   WORLD-STANDARD COLLAPSIBLE PROHIBITED TIME FOR SALAH ACCORDION WIDGET
+   ========================================================================== */
+.prohibited-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.prohibited-card.status-safe {
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.09), rgba(11, 34, 26, 0.96));
+  border-color: rgba(16, 185, 129, 0.32);
+}
+
+.prohibited-card.status-danger {
+  background: linear-gradient(145deg, rgba(239, 68, 68, 0.18), rgba(18, 16, 22, 0.96));
+  border-color: var(--danger);
+  box-shadow: 0 0 22px rgba(239, 68, 68, 0.25);
+}
+
+.prohibited-header-btn {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+html[dir="rtl"] .prohibited-header-btn {
+  text-align: right;
+}
+
+.prohibited-header-btn:active {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.prohibited-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.prohibited-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(234, 179, 8, 0.14);
+  border: 1px solid rgba(234, 179, 8, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.prohibited-card.status-danger .prohibited-icon-box {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: var(--danger);
+}
+
+.prohibited-title-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.prohibited-title-text h4 {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  line-height: 1.25;
+}
+
+.prohibited-sub {
+  font-size: 0.71rem;
+  color: var(--text-primary);
+  margin-top: 2px;
+  line-height: 1.35;
+}
+
+.prohibited-header-right {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.prohibited-badge {
+  font-size: 0.66rem;
+  font-weight: 800;
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  border: 1px solid var(--accent-emerald);
+}
+
+.prohibited-card.status-danger .prohibited-badge {
+  background: rgba(239, 68, 68, 0.24);
+  color: #fca5a5;
+  border-color: var(--danger);
+}
+
+.prohibited-chevron {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--accent-gold);
+  font-size: 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease;
+}
+
+.prohibited-card:not(.is-collapsed) .prohibited-chevron {
+  transform: rotate(180deg);
+  background: rgba(234, 179, 8, 0.2);
+  border-color: var(--accent-gold);
+}
+
+/* Smooth Up-Down Collapsible Body (Default Hidden when .is-collapsed is present) */
+.prohibited-collapsible-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.28s ease;
+  opacity: 1;
+}
+
+.prohibited-card.is-collapsed .prohibited-collapsible-body {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+.prohibited-body-inner {
+  overflow: hidden;
+  padding: 0 14px 12px;
+}
+
+.prohibited-card.is-collapsed .prohibited-body-inner {
+  padding-bottom: 0;
+}
+
+.prohibited-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(16, 185, 129, 0.16);
+  margin-bottom: 8px;
+}
+
+.prohibited-slot {
+  background: rgba(0, 0, 0, 0.34);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 11px;
+  padding: 8px 6px;
+  text-align: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.prohibited-slot.active-prohibited-slot {
+  background: rgba(239, 68, 68, 0.22);
+  border-color: var(--danger);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
+}
+
+.slot-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 3px;
+}
+
+.slot-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+}
+
+.prohibited-slot.active-prohibited-slot .slot-dot {
+  background: var(--danger);
+  box-shadow: 0 0 6px var(--danger);
+}
+
+.prohibited-slot small {
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+.prohibited-slot strong {
+  display: block;
+  font-size: 0.71rem;
+  color: var(--accent-gold);
+  font-weight: 800;
+  margin: 2px 0;
+}
+
+.prohibited-slot.active-prohibited-slot strong {
+  color: #fca5a5;
+}
+
+.slot-desc {
+  display: block;
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.prohibited-footer-bar {
+  border-top: 1px dashed rgba(148, 163, 184, 0.2);
+  padding-top: 6px;
+}
+
+.prohibited-hadith-note {
+  display: block;
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+@media (max-width: 390px) {
+  .prohibited-grid {
+    grid-template-columns: 1fr;
+  }
+  .prohibited-slot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 10px;
+    text-align: left;
+  }
+  .slot-desc {
+    display: none;
+  }
+}
