@@ -172,12 +172,8 @@ const I18N_DICTIONARIES = deepFreeze({
     prohibited_slot_passed: "সম্পন্ন",
     prohibited_modal_title: "🚫 নামাজের নিষিদ্ধ সময়সমূহ ও শরয়ী বিধান",
     prohibited_modal_cat: "সহীহ মুসলিম ৮৩১ • সহীহ বুখারী ৫৮৬",
-    prohibited_modal_evidence: "১. উকবাহ ইবনু আমির (রা.) বলেন: «ثَلاَثُ سَاعَاتٍ كَانَ رَسُولُ اللَّهِ ﷺ يَنْهَانَا أَنْ نُصَلِّيَ فِيهِنَّ أَوْ أَنْ نَقْبُرَ فِيهِنَّ مَوْتَانَا: حِينَ تَطْلُعُ الشَّمْسُ بَازِغَةً حَتَّى تَرْتَفِعَ، وَحِينَ يَقُومُ قَائِمُ الظَّهِيرَةِ حَتَّى تَمِيلَ الشَّمْسُ، وَحِينَ تَضَيَّفُ الشَّمْسُ لِلْغُرُوبِ حَتَّى تَغْرُبَ»
-'রাসূলুল্লাহ ﷺ আমাদেরকে তিনটি সময়ে সালাত আদায় করতে এবং আমাদের মৃতদের দাফন (জানাযা) করতে নিষেধ করতেন: (ক) সূর্য উদিত হওয়ার সময় যতক্ষণ না তা পুরোপুরি ওপরে ওঠে (~১৫ মিনিট), (খ) ঠিক দ্বিপ্রহরে সূর্য মাথার ওপর স্থির থাকার সময় যতক্ষণ না তা পশ্চিম আকাশে ঢলে পড়ে (~১০ মিনিট), এবং (গ) সূর্য অস্ত যাওয়ার জন্য হলুদ/নিষ্প্রভ বর্ণ ধারণ করার পর থেকে সম্পূর্ণ অস্ত যাওয়া পর্যন্ত (~১৫ মিনিট)।' (সহীহ মুসলিম ৮৩১)
-
-২. আবু সাঈদ খুদরী (রা.) হতে বর্ণিত: রাসূলুল্লাহ ﷺ বলেছেন, 'ফজরের সালাতের পর সূর্য ওঠা পর্যন্ত কোনো (নফল) সালাত নেই এবং আসরের সালাতের পর সূর্য ডোবা পর্যন্ত কোনো (নফল) সালাত নেই।' (সহীহ বুখারী ৫৮৬, মুসলিম ৮২৭)",
-    prohibited_modal_wisdom: "• সূর্যপূজারীদের সাথে সাদৃশ্য (তাশাব্বুহ) পরিহার করা, যারা সূর্যোদয়, সূর্যাস্ত ও মধ্যাকাশে সূর্যের উপাসনা করে (সহীহ মুসলিম ৮৩২)।
-• ফিকহি মাসআলা: এই ৩টি মূল নিষিদ্ধ সময়ে ফরজ, ওয়াজিব, সুন্নাত, নফল, কাযা বা সিজদায়ে তিলাওয়াত—কোনোটিই আদায় করা জায়েয নয় (তবে কেবল ঐ দিনের আসরের ফরজ সালাত সূর্যাস্তের আগেও পড়া যাবে)। অন্যদিকে ফজর ও আসরের পরের ওয়াক্তে কেবল সাধারণ নফল সালাত নিষিদ্ধ, কিন্তু কাযা সালাত বা জানাযা পড়া জায়েয।",
+    prohibited_modal_evidence: "১. উকবাহ ইবনু আমির (রা.) বলেন: «ثَلاَثُ سَاعَاتٍ كَانَ رَسُولُ اللَّهِ ﷺ يَنْهَانَا أَنْ نُصَلِّيَ فِيهِنَّ أَوْ أَنْ نَقْبُرَ فِيهِنَّ مَوْتَانَا: حِينَ تَطْلُعُ الشَّمْسُ بَازِغَةً حَتَّى تَرْتَفِعَ، وَحِينَ يَقُومُ قَائِمُ الظَّهِيرَةِ حَتَّى تَمِيلَ الشَّمْسُ، وَحِينَ تَضَيَّفُ الشَّمْسُ لِلْغُرُوبِ حَتَّى تَغْرُبَ»\n'রাসূলুল্লাহ ﷺ আমাদেরকে তিনটি সময়ে সালাত আদায় করতে এবং আমাদের মৃতদের দাফন (জানাযা) করতে নিষেধ করতেন: (ক) সূর্য উদিত হওয়ার সময় যতক্ষণ না তা পুরোপুরি ওপরে ওঠে (~১৫ মিনিট), (খ) ঠিক দ্বিপ্রহরে সূর্য মাথার ওপর স্থির থাকার সময় যতক্ষণ না তা পশ্চিম আকাশে ঢলে পড়ে (~১০ মিনিট), এবং (গ) সূর্য অস্ত যাওয়ার জন্য হলুদ/নিষ্প্রভ বর্ণ ধারণ করার পর থেকে সম্পূর্ণ অস্ত যাওয়া পর্যন্ত (~১৫ মিনিট)।' (সহীহ মুসলিম ৮৩১)\n\n২. আবু সাঈদ খুদরী (রা.) হতে বর্ণিত: রাসূলুল্লাহ ﷺ বলেছেন, 'ফজরের সালাতের পর সূর্য ওঠা পর্যন্ত কোনো (নফল) সালাত নেই এবং আসরের সালাতের পর সূর্য ডোবা পর্যন্ত কোনো (নফল) সালাত নেই।' (সহীহ বুখারী ৫৮৬, মুসলিম ৮২৭)",
+    prohibited_modal_wisdom: "• সূর্যপূজারীদের সাথে সাদৃশ্য (তাশাব্বুহ) পরিহার করা, যারা সূর্যোদয়, সূর্যাস্ত ও মধ্যাকাশে সূর্যের উপাসনা করে (সহীহ মুসলিম ৮৩২)।\n• ফিকহি মাসআলা: এই ৩টি মূল নিষিদ্ধ সময়ে ফরজ, ওয়াজিব, সুন্নাত, নফল, কাযা বা সিজদায়ে তিলাওয়াত—কোনোটিই আদায় করা জায়েয নয় (তবে কেবল ঐ দিনের আসরের ফরজ সালাত সূর্যাস্তের আগেও পড়া যাবে)। অন্যদিকে ফজর ও আসরের পরের ওয়াক্তে কেবল সাধারণ নফল সালাত নিষিদ্ধ, কিন্তু কাযা সালাত বা জানাযা পড়া জায়েয।",
     tasbih_options: [
       { target: 33, label: "সুবহানাল্লাহ (আল্লাহ পবিত্র ও মহান)", text: "সুবহানাল্লাহ — ৩৩ বার" },
       { target: 33, label: "আলহামদুলিল্লাহ (সকল প্রশংসা আল্লাহর)", text: "আলহামদুলিল্লাহ — ৩৩ বার" },
@@ -303,11 +299,8 @@ const I18N_DICTIONARIES = deepFreeze({
     prohibited_slot_passed: "انقضى",
     prohibited_modal_title: "🚫 الأوقات المنهي عن الصلاة فيها وأحكامها الفقهية",
     prohibited_modal_cat: "صحيح مسلم ٨٣١ • صحيح البخاري ٥٨٦",
-    prohibited_modal_evidence: "١. عن عقبة بن عامر الجهني رضي الله عنه قال: «ثَلاَثُ سَاعَاتٍ كَانَ رَسُولُ اللَّهِ ﷺ يَنْهَانَا أَنْ نُصَلِّيَ فِيهِنَّ أَوْ أَنْ نَقْبُرَ فِيهِنَّ مَوْتَانَا: حِينَ تَطْلُعُ الشَّمْسُ بَازِغَةً حَتَّى تَرْتَفِعَ، وَحِينَ يَقُومُ قَائِمُ الظَّهِيرَةِ حَتَّى تَمِيلَ الشَّمْسُ، وَحِينَ تَضَيَّفُ الشَّمْسُ لِلْغُرُوبِ حَتَّى تَغْرُبَ» (صحيح مسلم ٨٣١).
-
-٢. عن أبي سعيد الخدري رضي الله عنه قال: سمعت رسول الله ﷺ يقول: «لا صلاة بعد الصبح حتى ترتفع الشمس، ولا صلاة بعد العصر حتى تغيب الشمس» (صحيح البخاري ٥٨٦).",
-    prohibited_modal_wisdom: "• الحكمة الشرعية: سد الذريعة ومخالفة المشركين الذين يسجدون للشمس عند طلوعها وعند غروبها وحين تستوي في كبد السماء (صحيح مسلم ٨٣٢).
-• الحكم الفقهي: تحرم الصلاة (النافلة وغيرها) في الأوقات الثلاثة القصيرة (الطلوع، الاستواء، الغروب) إلا عصر اليوم الحاضر عند الضرورة، بينما يقتصر النهي بعد الفجر وبعد العصر على النوافل المطلقة دون الفوائت وذوات الأسباب.",
+    prohibited_modal_evidence: "١. عن عقبة بن عامر الجهني رضي الله عنه قال: «ثَلاَثُ سَاعَاتٍ كَانَ رَسُولُ اللَّهِ ﷺ يَنْهَانَا أَنْ نُصَلِّيَ فِيهِنَّ أَوْ أَنْ نَقْبُرَ فِيهِنَّ مَوْتَانَا: حِينَ تَطْلُعُ الشَّمْسُ بَازِغَةً حَتَّى تَرْتَفِعَ، وَحِينَ يَقُومُ قَائِمُ الظَّهِيرَةِ حَتَّى تَمِيلَ الشَّمْسُ، وَحِينَ تَضَيَّفُ الشَّمْسُ لِلْغُرُوبِ حَتَّى تَغْرُبَ» (صحيح مسلم ٨٣١).\n\n٢. عن أبي سعيد الخدري رضي الله عنه قال: سمعت رسول الله ﷺ يقول: «لا صلاة بعد الصبح حتى ترتفع الشمس، ولا صلاة بعد العصر حتى تغيب الشمس» (صحيح البخاري ٥٨٦).",
+    prohibited_modal_wisdom: "• الحكمة الشرعية: سد الذريعة ومخالفة المشركين الذين يسجدون للشمس عند طلوعها وعند غروبها وحين تستوي في كبد السماء (صحيح مسلم ٨٣٢).\n• الحكم الفقهي: تحرم الصلاة (النافلة وغيرها) في الأوقات الثلاثة القصيرة (الطلوع، الاستواء، الغروب) إلا عصر اليوم الحاضر عند الضرورة، بينما يقتصر النهي بعد الفجر وبعد العصر على النوافل المطلقة دون الفوائت وذوات الأسباب.",
     tasbih_options: [
       { target: 33, label: "سبحان الله", text: "سبحان الله — ٣٣ مرة" },
       { target: 33, label: "الحمد لله", text: "الحمد لله — ٣٣ مرة" },
@@ -433,11 +426,8 @@ const I18N_DICTIONARIES = deepFreeze({
     prohibited_slot_passed: "Passed",
     prohibited_modal_title: "🚫 Prohibited Times for Salah & Jurisprudential Rulings",
     prohibited_modal_cat: "Sahih Muslim 831 • Sahih al-Bukhari 586",
-    prohibited_modal_evidence: "1. 'Uqbah ibn 'Amir (RA) reported: 'There were three times at which the Messenger of Allah ﷺ forbade us to pray or bury our dead: (a) when the sun begins to rise until it is fully up (~15 mins), (b) when the sun is at its height at midday until it passes the meridian (~10 mins before Dhuhr), and (c) when the sun draws near to setting until it sets (~15 mins).' (Sahih Muslim 831)
-
-2. Abu Sa'id al-Khudri (RA) reported: 'No voluntary prayer is to be offered after the morning (Fajr) prayer until the sun rises, and no voluntary prayer is to be offered after the Asr prayer until the sun sets.' (Sahih al-Bukhari 586, Muslim 827)",
-    prohibited_modal_wisdom: "• Prophetic Wisdom: Differentiating pure Islamic monotheism (Tawheed) from sun-worshippers who prostrate to the sun at its rising, zenith, and setting (Sahih Muslim 832).
-• Fiqh Ruling: During the 3 peak solar transitions (Sunrise, Zenith/Zawal, Sunset), initiating any Nafl, Sunnah, or missed (Qada) prayer is strictly prohibited (except praying that day's Asr Fard before sunset). Between Fajr–Sunrise and Asr–Sunset, only voluntary (Nafl) prayers are disallowed while Qada and Janazah remain valid.",
+    prohibited_modal_evidence: "1. 'Uqbah ibn 'Amir (RA) reported: 'There were three times at which the Messenger of Allah ﷺ forbade us to pray or bury our dead: (a) when the sun begins to rise until it is fully up (~15 mins), (b) when the sun is at its height at midday until it passes the meridian (~10 mins before Dhuhr), and (c) when the sun draws near to setting until it sets (~15 mins).' (Sahih Muslim 831)\n\n2. Abu Sa'id al-Khudri (RA) reported: 'No voluntary prayer is to be offered after the morning (Fajr) prayer until the sun rises, and no voluntary prayer is to be offered after the Asr prayer until the sun sets.' (Sahih al-Bukhari 586, Muslim 827)",
+    prohibited_modal_wisdom: "• Prophetic Wisdom: Differentiating pure Islamic monotheism (Tawheed) from sun-worshippers who prostrate to the sun at its rising, zenith, and setting (Sahih Muslim 832).\n• Fiqh Ruling: During the 3 peak solar transitions (Sunrise, Zenith/Zawal, Sunset), initiating any Nafl, Sunnah, or missed (Qada) prayer is strictly prohibited (except praying that day's Asr Fard before sunset). Between Fajr–Sunrise and Asr–Sunset, only voluntary (Nafl) prayers are disallowed while Qada and Janazah remain valid.",
     tasbih_options: [
       { target: 33, label: "SubhanAllah (Glory be to Allah)", text: "SubhanAllah — 33x" },
       { target: 33, label: "Alhamdulillah (Praise be to Allah)", text: "Alhamdulillah — 33x" },
@@ -3676,5 +3666,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 550);
   }
 });
-
-
