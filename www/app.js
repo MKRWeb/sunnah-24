@@ -155,6 +155,19 @@ const I18N_DICTIONARIES = deepFreeze({
     alert_invalid: "অকার্যকর সুন্নাহ ২৪ ব্যাকআপ ফাইল।",
     day_detail_title: "📅 দিনের আমল বিবরণী:",
     day_detail_none: "এই তারিখে কোনো সুন্নাহ আমল চিহ্নিত করা হয়নি।",
+    prohibited_title: "🚫 নামাজের নিষিদ্ধ সময়সূচী (ট্যাপ করে দেখুন)",
+    prohibited_sunrise: "🌅 সূর্যোদয় (১৫ মি.)",
+    prohibited_sunrise_desc: "সূর্য সম্পূর্ণ উদিত হওয়া পর্যন্ত",
+    prohibited_zawal: "☀️ দ্বিপ্রহর / যাওয়াল",
+    prohibited_zawal_desc: "সূর্য ঠিক মাথার ওপরে থাকা অবস্থায়",
+    prohibited_sunset: "🌇 সূর্যাস্ত (১৫ মি.)",
+    prohibited_sunset_desc: "সূর্য সম্পূর্ণ অস্ত যাওয়া পর্যন্ত",
+    prohibited_badge_safe: "✅ সালাত জায়েয",
+    prohibited_badge_danger: "⛔ নিষিদ্ধ সময়",
+    prohibited_now_active: "⚠️ এখন সালাতের নিষিদ্ধ সময় চলছে ({slot}) — শেষ হতে বাকি {mins} মিনিট।",
+    prohibited_next_info: "🟢 এখন সালাত আদায় জায়েয • পরবর্তী নিষিদ্ধ সময়: {slot} ({time})",
+    prohibited_done_today: "🟢 আজকের ৩টি নিষিদ্ধ সময় পার হয়েছে • এখন সালাত জায়েয",
+    prohibited_hadith_ref: "📖 দলিল: সহীহ মুসলিম ৮৩১ — উকবাহ ইবনু আমির (রা.) বর্ণিত সূর্যোদয়, ঠিক দ্বিপ্রহর (যাওয়াল) ও সূর্যাস্তের সময় সালাত আদায় নিষিদ্ধ।",
     tasbih_options: [
       { target: 33, label: "সুবহানাল্লাহ (আল্লাহ পবিত্র ও মহান)", text: "সুবহানাল্লাহ — ৩৩ বার" },
       { target: 33, label: "আলহামদুলিল্লাহ (সকল প্রশংসা আল্লাহর)", text: "আলহামদুলিল্লাহ — ৩৩ বার" },
@@ -263,6 +276,19 @@ const I18N_DICTIONARIES = deepFreeze({
     alert_invalid: "ملف النسخة الاحتياطية غير صالح.",
     day_detail_title: "📅 تفاصيل إنجاز اليوم:",
     day_detail_none: "لم يتم تسجيل سنن مكتملة في هذا التاريخ.",
+    prohibited_title: "🚫 أوقات النهي عن الصلاة (اضغط للتفاصيل)",
+    prohibited_sunrise: "🌅 الشروق (١٥ د)",
+    prohibited_sunrise_desc: "من طلوع الشمس حتى ترتفع",
+    prohibited_zawal: "☀️ الزوال (الاستواء)",
+    prohibited_zawal_desc: "حين يقوم قائم الظهيرة حتى تزول",
+    prohibited_sunset: "🌇 الغروب (١٥ د)",
+    prohibited_sunset_desc: "حين تضيف الشمس للغروب حتى تغرب",
+    prohibited_badge_safe: "✅ وقت مباح",
+    prohibited_badge_danger: "⛔ وقت نهي",
+    prohibited_now_active: "⚠️ وقت النهي عن الصلاة جارٍ الآن ({slot}) — متبقي {mins} دقيقة.",
+    prohibited_next_info: "🟢 تجوز الصلاة الآن • وقت النهي القادم: {slot} ({time})",
+    prohibited_done_today: "🟢 انتهت أوقات النهي الثلاثة لليوم • تجوز الصلاة الآن",
+    prohibited_hadith_ref: "📖 الدليل: صحيح مسلم ٨٣١ — نهى رسول الله ﷺ عن الصلاة في ثلاث ساعات: عند طلوع الشمس، وعند استوائها، وعند غروبها.",
     tasbih_options: [
       { target: 33, label: "سبحان الله", text: "سبحان الله — ٣٣ مرة" },
       { target: 33, label: "الحمد لله", text: "الحمد لله — ٣٣ مرة" },
@@ -371,6 +397,19 @@ const I18N_DICTIONARIES = deepFreeze({
     alert_invalid: "Invalid Sunnah 24 backup file.",
     day_detail_title: "📅 Completed Sunnahs on:",
     day_detail_none: "No habits were marked completed on this date.",
+    prohibited_title: "🚫 Prohibited Times for Salah (Tap to Expand)",
+    prohibited_sunrise: "🌅 Sunrise (15m)",
+    prohibited_sunrise_desc: "While the sun rises until fully elevated",
+    prohibited_zawal: "☀️ Zawal (Zenith)",
+    prohibited_zawal_desc: "When the sun is directly overhead at meridian",
+    prohibited_sunset: "🌇 Sunset (15m)",
+    prohibited_sunset_desc: "When the sun begins setting until fully set",
+    prohibited_badge_safe: "✅ Salah Permitted",
+    prohibited_badge_danger: "⛔ Prohibited Now",
+    prohibited_now_active: "⚠️ Prohibited Salah window active ({slot}) — {mins} min remaining.",
+    prohibited_next_info: "🟢 Salah permitted now • Next prohibited window: {slot} ({time})",
+    prohibited_done_today: "🟢 All 3 prohibited windows passed today • Salah permitted",
+    prohibited_hadith_ref: "📖 Proof: Sahih Muslim 831 — The Prophet ﷺ forbade praying during sunrise, solar zenith (Zawal), and sunset.",
     tasbih_options: [
       { target: 33, label: "SubhanAllah (Glory be to Allah)", text: "SubhanAllah — 33x" },
       { target: 33, label: "Alhamdulillah (Praise be to Allah)", text: "Alhamdulillah — 33x" },
@@ -2291,6 +2330,10 @@ function renderHeaderDatesAndPhase() {
   } else {
     fastBanner.textContent = t("fast_default");
   }
+
+  if (typeof renderProhibitedSalahTimes === "function") {
+    renderProhibitedSalahTimes();
+  }
 }
 
 function getAllHabits() {
@@ -3482,3 +3525,157 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+
+
+// ============================================================================
+// WORLD-STANDARD COLLAPSIBLE PROHIBITED TIME FOR SALAH ENGINE (SAHIH MUSLIM 831)
+// Integrates directly with computeSeasonalPrayerSchedule() without altering
+// the Strict Time-Window Lock system on habits or Duas.
+// ============================================================================
+let userToggledProhibitedCard = false;
+
+function formatProhibitedClockRange(startMins, endMins, locale = appState.locale) {
+  const formatShortClock = (totalMinutes) => {
+    const clamped = ((Math.round(totalMinutes) % 1440) + 1440) % 1440;
+    const h24 = Math.floor(clamped / 60);
+    const m = clamped % 60;
+    const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+    const hStr = localizeDigits(String(h12).padStart(2, "0"), locale);
+    const mStr = localizeDigits(String(m).padStart(2, "0"), locale);
+    if (locale === "bn") return `${hStr}:${mStr}`;
+    const suffix = locale === "ar" ? (h24 < 12 ? "ص" : "م") : h24 < 12 ? "AM" : "PM";
+    return `${hStr}:${mStr} ${suffix}`;
+  };
+  return `${formatShortClock(startMins)} – ${formatShortClock(endMins)}`;
+}
+
+function renderProhibitedSalahTimes() {
+  const card = document.getElementById("prohibited-salah-card");
+  if (!card) return;
+
+  const now = new Date();
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
+  const lang = appState.locale || "bn";
+  const sched = computeSeasonalPrayerSchedule(now);
+
+  // Authentic 3 Prohibited Salah Windows (Sahih Muslim 831):
+  // 1. Sunrise Window: From Sunrise until Ishraq (+15 minutes)
+  // 2. Zawal (Solar Zenith) Window: From Zawal (10 mins before Dhuhr) until Dhuhr start
+  // 3. Sunset Window: From 15 minutes before Sunset until Sunset
+  const windows = {
+    sunrise: { start: sched.sunrise, end: sched.sunrise + 15 },
+    zawal: { start: sched.zawal, end: sched.dhuhr - 1 },
+    sunset: { start: sched.sunset - 15, end: sched.sunset }
+  };
+
+  const srText = formatProhibitedClockRange(windows.sunrise.start, windows.sunrise.end, lang);
+  const zwText = formatProhibitedClockRange(windows.zawal.start, windows.zawal.end, lang);
+  const ssText = formatProhibitedClockRange(windows.sunset.start, windows.sunset.end, lang);
+
+  const srEl = document.getElementById("time-slot-sunrise");
+  const zwEl = document.getElementById("time-slot-zawal");
+  const ssEl = document.getElementById("time-slot-sunset");
+
+  if (srEl) srEl.textContent = srText;
+  if (zwEl) zwEl.textContent = zwText;
+  if (ssEl) ssEl.textContent = ssText;
+
+  const slotSunriseBox = document.getElementById("slot-sunrise");
+  const slotZawalBox = document.getElementById("slot-zawal");
+  const slotSunsetBox = document.getElementById("slot-sunset");
+
+  [slotSunriseBox, slotZawalBox, slotSunsetBox].forEach((el) => {
+    if (el) el.classList.remove("active-prohibited-slot");
+  });
+
+  const slotsList = [
+    {
+      key: "sunrise",
+      label: t("prohibited_sunrise"),
+      start: windows.sunrise.start,
+      end: windows.sunrise.end,
+      rangeStr: srText,
+      el: slotSunriseBox
+    },
+    {
+      key: "zawal",
+      label: t("prohibited_zawal"),
+      start: windows.zawal.start,
+      end: windows.zawal.end,
+      rangeStr: zwText,
+      el: slotZawalBox
+    },
+    {
+      key: "sunset",
+      label: t("prohibited_sunset"),
+      start: windows.sunset.start,
+      end: windows.sunset.end,
+      rangeStr: ssText,
+      el: slotSunsetBox
+    }
+  ];
+
+  const activeSlot = slotsList.find(
+    (s) => nowMinutes >= s.start && nowMinutes < s.end
+  );
+  const nextSlot = slotsList.find((s) => nowMinutes < s.start);
+
+  const statusTextEl = document.getElementById("prohibited-live-status");
+  const badgeEl = document.getElementById("prohibited-badge");
+  const iconEl = document.getElementById("prohibited-status-icon");
+  const toggleBtn = document.getElementById("prohibited-toggle-btn");
+
+  if (activeSlot) {
+    card.classList.remove("status-safe");
+    card.classList.add("status-danger");
+    if (activeSlot.el) activeSlot.el.classList.add("active-prohibited-slot");
+    if (iconEl) iconEl.textContent = "⛔";
+    if (badgeEl) badgeEl.textContent = t("prohibited_badge_danger");
+
+    const minsLeft = localizeDigits(
+      Math.max(1, activeSlot.end - nowMinutes),
+      lang
+    );
+    if (statusTextEl) {
+      statusTextEl.textContent = t("prohibited_now_active", {
+        slot: activeSlot.label,
+        mins: minsLeft
+      });
+    }
+    // Auto-expand when a prohibited time is actively in progress unless user manually collapsed it
+    if (!userToggledProhibitedCard) {
+      card.classList.remove("is-collapsed");
+      if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "true");
+    }
+  } else {
+    card.classList.remove("status-danger");
+    card.classList.add("status-safe");
+    if (iconEl) iconEl.textContent = "🕌";
+    if (badgeEl) badgeEl.textContent = t("prohibited_badge_safe");
+
+    if (nextSlot && statusTextEl) {
+      statusTextEl.textContent = t("prohibited_next_info", {
+        slot: nextSlot.label,
+        time: nextSlot.rangeStr
+      });
+    } else if (statusTextEl) {
+      statusTextEl.textContent = t("prohibited_done_today");
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.getElementById("prohibited-toggle-btn");
+  const card = document.getElementById("prohibited-salah-card");
+
+  if (toggleBtn && card) {
+    toggleBtn.addEventListener("click", () => {
+      userToggledProhibitedCard = true;
+      const isNowCollapsed = card.classList.toggle("is-collapsed");
+      toggleBtn.setAttribute("aria-expanded", isNowCollapsed ? "false" : "true");
+      if (navigator.vibrate) navigator.vibrate(12);
+    });
+  }
+
+  renderProhibitedSalahTimes();
+});
