@@ -168,6 +168,16 @@ const I18N_DICTIONARIES = deepFreeze({
     prohibited_next_info: "🟢 এখন সালাত আদায় জায়েয • পরবর্তী নিষিদ্ধ সময়: {slot} ({time})",
     prohibited_done_today: "🟢 আজকের ৩টি নিষিদ্ধ সময় পার হয়েছে • এখন সালাত জায়েয",
     prohibited_hadith_ref: "📖 দলিল: সহীহ মুসলিম ৮৩১ — উকবাহ ইবনু আমির (রা.) বর্ণিত সূর্যোদয়, ঠিক দ্বিপ্রহর (যাওয়াল) ও সূর্যাস্তের সময় সালাত আদায় নিষিদ্ধ।",
+    portal_prohibited: "নিষিদ্ধ সময়",
+    portal_tasbih: "ডিজিটাল তাসবীহ",
+    portal_duas: "মাসনূন দোয়া",
+    portal_tibb: "তিব্বে নববী",
+    portal_analytics: "আমল গ্রাফ",
+    waqt_fajr: "ফজর",
+    waqt_dhuhr: "যোহর",
+    waqt_asr: "আসর",
+    waqt_maghrib: "মাগরিব",
+    waqt_isha: "ইশা",
     tasbih_options: [
       { target: 33, label: "সুবহানাল্লাহ (আল্লাহ পবিত্র ও মহান)", text: "সুবহানাল্লাহ — ৩৩ বার" },
       { target: 33, label: "আলহামদুলিল্লাহ (সকল প্রশংসা আল্লাহর)", text: "আলহামদুলিল্লাহ — ৩৩ বার" },
@@ -289,6 +299,16 @@ const I18N_DICTIONARIES = deepFreeze({
     prohibited_next_info: "🟢 تجوز الصلاة الآن • وقت النهي القادم: {slot} ({time})",
     prohibited_done_today: "🟢 انتهت أوقات النهي الثلاثة لليوم • تجوز الصلاة الآن",
     prohibited_hadith_ref: "📖 الدليل: صحيح مسلم ٨٣١ — نهى رسول الله ﷺ عن الصلاة في ثلاث ساعات: عند طلوع الشمس، وعند استوائها، وعند غروبها.",
+    portal_prohibited: "أوقات النهي",
+    portal_tasbih: "السبحة الرقمية",
+    portal_duas: "أذكار الصباح",
+    portal_tibb: "الطب النبوي",
+    portal_analytics: "مصفوفة السنن",
+    waqt_fajr: "الفجر",
+    waqt_dhuhr: "الظهر",
+    waqt_asr: "العصر",
+    waqt_maghrib: "المغرب",
+    waqt_isha: "العشاء",
     tasbih_options: [
       { target: 33, label: "سبحان الله", text: "سبحان الله — ٣٣ مرة" },
       { target: 33, label: "الحمد لله", text: "الحمد لله — ٣٣ مرة" },
@@ -410,6 +430,16 @@ const I18N_DICTIONARIES = deepFreeze({
     prohibited_next_info: "🟢 Salah permitted now • Next prohibited window: {slot} ({time})",
     prohibited_done_today: "🟢 All 3 prohibited windows passed today • Salah permitted",
     prohibited_hadith_ref: "📖 Proof: Sahih Muslim 831 — The Prophet ﷺ forbade praying during sunrise, solar zenith (Zawal), and sunset.",
+    portal_prohibited: "Forbidden Time",
+    portal_tasbih: "Digital Tasbih",
+    portal_duas: "Masnoon Duas",
+    portal_tibb: "Tibb Nabawi",
+    portal_analytics: "Analytics",
+    waqt_fajr: "Fajr",
+    waqt_dhuhr: "Dhuhr",
+    waqt_asr: "Asr",
+    waqt_maghrib: "Maghrib",
+    waqt_isha: "Isha",
     tasbih_options: [
       { target: 33, label: "SubhanAllah (Glory be to Allah)", text: "SubhanAllah — 33x" },
       { target: 33, label: "Alhamdulillah (Praise be to Allah)", text: "Alhamdulillah — 33x" },
@@ -2190,6 +2220,162 @@ async function toggleDuaCompletion(duaId) {
   renderDuas();
 }
 
+
+// ============================================================================
+// MUSLIM BANGLA / MUSLIM'S DAY INDIVIDUAL CIRCULAR ICON & AVATAR REGISTRY
+// Every single habit, Dua, and Waqt item is wrapped in its own circular logo
+// ============================================================================
+const HABIT_CIRCULAR_ICONS = deepFreeze({
+  s24_01_waking_dua: { icon: "🌅", theme: "amber" },
+  s24_02_miswak_wudu: { icon: "🪥", theme: "teal" },
+  s24_03_tahajjud: { icon: "🌌", theme: "indigo" },
+  s24_04_fajr_sunnah_fard: { icon: "🕌", theme: "emerald" },
+  s24_05_post_fajr_barakah: { icon: "📖", theme: "gold" },
+  s24_06_ishraq_reflection: { icon: "☀️", theme: "amber" },
+  s24_07_home_exit_dua: { icon: "🚪", theme: "cyan" },
+  s24_08_salat_duha: { icon: "✨", theme: "gold" },
+  s24_09_halal_ihsan_work: { icon: "💼", theme: "emerald" },
+  s24_10_tayammun_right: { icon: "🤚", theme: "teal" },
+  s24_11_dhuhr_rawatib: { icon: "🕛", theme: "emerald" },
+  s24_12_qaylulah_nap: { icon: "🛋️", theme: "purple" },
+  s24_13_asr_prayer: { icon: "🌤️", theme: "amber" },
+  s24_14_evening_adhkar: { icon: "🛡️", theme: "gold" },
+  s24_15_maghrib_sunnah: { icon: "🌇", theme: "rose" },
+  s24_16_family_silat_rahim: { icon: "🏡", theme: "emerald" },
+  s24_17_isha_witr: { icon: "🌙", theme: "indigo" },
+  s24_18_surah_mulk_baqarah: { icon: "📜", theme: "gold" },
+  s24_19_sleep_wudu_dusting: { icon: "🛏️", theme: "teal" },
+  s24_20_kursi_3quls: { icon: "🤲", theme: "emerald" },
+  s24_21_tasbih_fatimah: { icon: "📿", theme: "gold" },
+  s24_22_forgiving_before_sleep: { icon: "💚", theme: "emerald" },
+  s24_23_one_third_stomach: { icon: "🍽️", theme: "amber" },
+  s24_24_water_three_sips: { icon: "💧", theme: "cyan" },
+  s24_25_tibb_nabawi_superfoods: { icon: "🍯", theme: "gold" },
+  s24_26_fitrah_grooming: { icon: "🌸", theme: "teal" },
+  s24_27_salam_smiling: { icon: "😊", theme: "emerald" },
+  s24_28_guarding_tongue_anger: { icon: "🤐", theme: "purple" },
+  s24_29_daily_sadaqah_istighfar: { icon: "🪙", theme: "gold" },
+  s24_30_honoring_parents: { icon: "🤍", theme: "rose" },
+  s24_31_mon_thu_fasting: { icon: "🌙", theme: "indigo" },
+  s24_32_jumuah_kahf_salawat: { icon: "🕋", theme: "gold" }
+});
+
+const DUA_CIRCULAR_ICONS = deepFreeze({
+  dua_01_kalimat_tammat: { icon: "🛡️", theme: "emerald" },
+  dua_02_tahlil: { icon: "☝️", theme: "gold" },
+  dua_03_sayyidul_istighfar: { icon: "💧", theme: "teal" },
+  dua_04_bismillahi_la_yadurru: { icon: "🔰", theme: "emerald" },
+  dua_05_hasbiyallah: { icon: "🤲", theme: "amber" },
+  dua_06_afiyah_badan: { icon: "🌿", theme: "teal" },
+  dua_07_afiyah_six_directions: { icon: "🕋", theme: "gold" },
+  dua_08_raditu_billahi: { icon: "☪️", theme: "emerald" },
+  dua_09_ya_hayyu_ya_qayyum: { icon: "✨", theme: "purple" },
+  dua_10_subhanallahi_adada: { icon: "📿", theme: "gold" },
+  dua_11_ilman_nafia: { icon: "📚", theme: "cyan" },
+  dua_12_bika_asbahna_sleep: { icon: "🌅", theme: "amber" }
+});
+
+function getHabitIconMeta(habit) {
+  if (habit && HABIT_CIRCULAR_ICONS[habit.id]) {
+    return HABIT_CIRCULAR_ICONS[habit.id];
+  }
+  const phaseIcons = {
+    tahajjud_fajr: { icon: "🌌", theme: "indigo" },
+    duha_work: { icon: "☀️", theme: "amber" },
+    dhuhr_asr: { icon: "🌤️", theme: "emerald" },
+    maghrib_isha: { icon: "🌆", theme: "purple" },
+    sleep_sunnah: { icon: "🛌", theme: "teal" },
+    diet_hygiene: { icon: "🍯", theme: "gold" },
+    character_social: { icon: "🤝", theme: "emerald" }
+  };
+  return phaseIcons[habit?.phase] || { icon: "☪️", theme: "emerald" };
+}
+
+function getDuaIconMeta(dua) {
+  if (dua && DUA_CIRCULAR_ICONS[dua.id]) {
+    return DUA_CIRCULAR_ICONS[dua.id];
+  }
+  return { icon: "🤲", theme: "emerald" };
+}
+
+function formatShortWaqtClock(totalMins, locale = appState.locale) {
+  const clamped = ((Math.round(totalMins) % 1440) + 1440) % 1440;
+  const h24 = Math.floor(clamped / 60);
+  const mins = clamped % 60;
+  const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+  const hStr = localizeDigits(String(h12).padStart(2, "0"), locale);
+  const mStr = localizeDigits(String(mins).padStart(2, "0"), locale);
+  return `${hStr}:${mStr}`;
+}
+
+function renderFiveWaqtStrip(now = new Date()) {
+  const gridEl = document.getElementById("five-waqt-grid");
+  if (!gridEl) return;
+  const sched = computeSeasonalPrayerSchedule(now);
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+  const lang = appState.locale || "bn";
+
+  const waqts = [
+    {
+      id: "fajr",
+      name: t("waqt_fajr"),
+      icon: "🌅",
+      start: sched.fajr,
+      end: sched.sunrise,
+      phase: "tahajjud_fajr"
+    },
+    {
+      id: "dhuhr",
+      name: t("waqt_dhuhr"),
+      icon: "☀️",
+      start: sched.dhuhr,
+      end: sched.asr,
+      phase: "dhuhr_asr"
+    },
+    {
+      id: "asr",
+      name: t("waqt_asr"),
+      icon: "🌤️",
+      start: sched.asr,
+      end: sched.sunset,
+      phase: "dhuhr_asr"
+    },
+    {
+      id: "maghrib",
+      name: t("waqt_maghrib"),
+      icon: "🌇",
+      start: sched.maghrib,
+      end: sched.isha,
+      phase: "maghrib_isha"
+    },
+    {
+      id: "isha",
+      name: t("waqt_isha"),
+      icon: "🌙",
+      start: sched.isha,
+      end: 1439,
+      phase: "maghrib_isha"
+    }
+  ];
+
+  gridEl.innerHTML = waqts
+    .map((w) => {
+      const isActive =
+        w.id === "isha"
+          ? nowMins >= w.start || nowMins < sched.fajr
+          : nowMins >= w.start && nowMins < w.end;
+      const isPassed = w.id !== "isha" && nowMins >= w.end;
+      return `
+        <button type="button" class="waqt-pill-card ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""}" data-waqt-phase="${w.phase}">
+          <div class="waqt-circle-logo">${w.icon}</div>
+          <span class="waqt-name">${w.name}</span>
+          <strong class="waqt-time">${formatShortWaqtClock(w.start, lang)}</strong>
+        </button>
+      `;
+    })
+    .join("");
+}
+
 function renderDuas() {
   const container = document.getElementById("duas-list-container");
   if (!container) return;
@@ -2224,9 +2410,15 @@ function renderDuas() {
 
     const card = document.createElement("div");
     card.className = `dua-card ${isDone ? "completed" : ""} ${isLocked ? "time-locked" : ""}`;
+    const duaMeta = getDuaIconMeta(dua);
     card.innerHTML = `
       <div class="dua-header">
-        <h4>${title}</h4>
+        <div class="dua-title-with-avatar">
+          <div class="item-circle-avatar theme-${duaMeta.theme}">
+            <span>${duaMeta.icon}</span>
+          </div>
+          <h4>${title}</h4>
+        </div>
         <span class="dua-badge">${badge}</span>
       </div>
       <p class="dua-arabic">${dua.arabic}</p>
@@ -2438,6 +2630,9 @@ function renderHeaderDatesAndPhase() {
     fastBanner.textContent = t("fast_default");
   }
 
+  if (typeof renderFiveWaqtStrip === "function") {
+    renderFiveWaqtStrip(now);
+  }
   if (typeof renderProhibitedSalahTimes === "function") {
     renderProhibitedSalahTimes();
   }
@@ -2580,10 +2775,12 @@ function renderHabits() {
     const card = document.createElement("div");
     card.className = `habit-item ${itemStateClass}`;
 
+    const iconMeta = getHabitIconMeta(habit);
     card.innerHTML = `
       <div class="habit-left">
-        <div class="habit-check ${checkStateClass}" data-toggle="${habit.id}">
-          ${checkSymbol}
+        <div class="item-circle-avatar theme-${iconMeta.theme}" data-info="${habit.id}" title="${t("proof_btn")}">
+          <span>${iconMeta.icon}</span>
+          ${isDone ? '<span class="avatar-done-dot">✓</span>' : ""}
         </div>
         <div class="habit-info">
           <div class="habit-time-row">
@@ -2594,7 +2791,12 @@ function renderHabits() {
           <p class="habit-snippet">${getHabitWisdom(habit)}</p>
         </div>
       </div>
-      <button class="info-btn" data-info="${habit.id}">${t("proof_btn")}</button>
+      <div class="habit-right-actions">
+        <div class="habit-check ${checkStateClass}" data-toggle="${habit.id}" role="button" aria-label="Toggle Habit">
+          ${checkSymbol || "○"}
+        </div>
+        <button class="info-btn" data-info="${habit.id}">${t("proof_btn")}</button>
+      </div>
     `;
 
     container.appendChild(card);
@@ -3785,5 +3987,77 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   renderProhibitedSalahTimes();
+});
+
+
+// ============================================================================
+// MUSLIM BANGLA / MUSLIM'S DAY PORTAL LAUNCHER & 5-WAQT STRIP INTERACTIONS
+// ============================================================================
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Quick Portal Launcher Grid
+  document.querySelectorAll(".portal-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      document.querySelectorAll(".portal-item").forEach((el) => el.classList.remove("active"));
+      item.classList.add("active");
+      if (navigator.vibrate) navigator.vibrate(12);
+
+      const action = item.getAttribute("data-portal-action");
+      if (action === "toggle-prohibited") {
+        switchTabProgrammatically("tab-routine", true);
+        const card = document.getElementById("prohibited-salah-card");
+        const toggleBtn = document.getElementById("prohibited-toggle-btn");
+        if (card) {
+          userToggledProhibitedCard = true;
+          card.classList.remove("is-collapsed");
+          if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "true");
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        return;
+      }
+
+      const targetTab = item.getAttribute("data-portal-tab");
+      const targetPhase = item.getAttribute("data-portal-phase");
+      const scrollTarget = item.getAttribute("data-portal-scroll");
+
+      if (targetTab) {
+        switchTabProgrammatically(targetTab, true);
+      }
+
+      if (targetPhase) {
+        activePhase = targetPhase;
+        document.querySelectorAll(".filter-bar .chip").forEach((c) => {
+          c.classList.toggle("active", c.dataset.phase === targetPhase);
+        });
+        renderHabits();
+      }
+
+      if (scrollTarget === "tasbih") {
+        document.getElementById("tasbih-tap-area")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else if (scrollTarget === "duas") {
+        document.getElementById("duas-list-container")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (scrollTarget === "matrix") {
+        document.getElementById("weekly-chart")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else if (scrollTarget === "vault") {
+        document.getElementById("export-backup-btn")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
+  });
+
+  // 2. 5-Waqt Strip Click -> Filters Routine to that Waqt Phase
+  const waqtGrid = document.getElementById("five-waqt-grid");
+  if (waqtGrid) {
+    waqtGrid.addEventListener("click", (e) => {
+      const pill = e.target.closest("[data-waqt-phase]");
+      if (!pill) return;
+      const phase = pill.getAttribute("data-waqt-phase");
+      switchTabProgrammatically("tab-routine", true);
+      activePhase = phase;
+      document.querySelectorAll(".filter-bar .chip").forEach((c) => {
+        c.classList.toggle("active", c.dataset.phase === phase);
+      });
+      renderHabits();
+      if (navigator.vibrate) navigator.vibrate(12);
+    });
+  }
 });
 
