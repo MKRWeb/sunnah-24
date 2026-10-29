@@ -90,8 +90,14 @@ jobs:
           echo "✅ All Sunnah 24 assets and JS syntax verified!"
 
       - name: 4. Build Capacitor Android Bridge, Splash Screen & SnapTube-Style Auto-Installer
+        env:
+          NODE_OPTIONS: "--tls-min-v1.2 --dns-result-order=ipv4first"
         run: |
-          npm install
+          npm config set registry https://registry.npmjs.org/
+          npm config set fetch-retries 5
+          npm config set fetch-retry-mintimeout 20000
+          npm config set fetch-retry-maxtimeout 120000
+          npm install --no-audit --no-fund || (sleep 5 && npm install --no-audit --no-fund)
           if [ ! -d "android" ]; then
             npx cap add android
           fi
@@ -658,3 +664,4 @@ jobs:
           files: |
             Sunnah-24-v4.2-Enterprise-Signed.apk
             Sunnah-24-v4.2-PlayStore-Signed.aab
+
