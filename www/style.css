@@ -977,313 +977,118 @@ html[dir="rtl"] .compact-history-item {
 
 
 /* ==========================================================================
-   WORLD-STANDARD CIRCULAR PROGRESS RINGS & STRICT TIME-WINDOW LOCK ENGINE
+   PROHIBITED TIME FOR SALAH (নামাজের নিষিদ্ধ সময়) CARD STYLES
    ========================================================================== */
-
-/* Smooth Startup Splash */
-.startup-splash {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at center, #064e3b 0%, #05130e 75%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
-}
-
-.startup-splash.splash-hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.splash-inner {
-  text-align: center;
-  padding: 24px;
-}
-
-.splash-logo {
-  width: 76px;
-  height: 76px;
-  border-radius: 18px;
-  border: 2px solid var(--accent-gold);
-  box-shadow: 0 0 28px rgba(234, 179, 8, 0.35);
+.prohibited-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 12px 14px;
   margin-bottom: 12px;
+  transition: border-color 0.25s ease, background 0.25s ease;
 }
 
-.splash-inner h2 {
-  font-size: 1.25rem;
-  color: var(--accent-gold);
-  margin-bottom: 4px;
+.prohibited-card.status-danger {
+  background: linear-gradient(145deg, rgba(239, 68, 68, 0.16), rgba(11, 34, 26, 0.95));
+  border-color: var(--danger);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
 }
 
-.splash-inner p {
-  font-size: 0.78rem;
-  color: var(--text-muted);
+.prohibited-card.status-safe {
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.1), rgba(11, 34, 26, 0.95));
+  border-color: var(--border-color);
 }
 
-/* Home Hero Circular Progress Ring around Daily Streak */
-.hero-left-info {
-  flex: 1;
-  padding-right: 10px;
-}
-
-.time-lock-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 7px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 0.68rem;
-  font-weight: 700;
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: #6ee7b7;
-}
-
-.streak-circle-wrapper {
-  position: relative;
-  width: 108px;
-  height: 108px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.progress-ring-svg {
-  position: absolute;
-  inset: 0;
-  transform: rotate(-90deg);
-}
-
-.progress-ring-bg {
-  stroke: rgba(255, 255, 255, 0.09);
-}
-
-.progress-ring-meter {
-  transition: stroke-dashoffset 0.55s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: drop-shadow(0 0 6px rgba(234, 179, 8, 0.35));
-}
-
-.streak-circle-inner {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 6px;
-}
-
-.streak-circle-inner .streak-flame {
-  font-size: 1.15rem;
-  line-height: 1;
-}
-
-.streak-circle-inner strong {
-  font-size: 1.18rem;
-  color: var(--accent-gold);
-  line-height: 1.15;
-  margin-top: 2px;
-}
-
-.streak-circle-inner small {
-  font-size: 0.58rem;
-  color: var(--text-muted);
-  max-width: 76px;
-  line-height: 1.15;
-}
-
-/* Digital Tasbih Circular Progress Ring */
-.tasbih-ring-container {
-  position: relative;
-  width: 250px;
-  height: 250px;
-  margin: 14px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.tasbih-ring-svg {
-  position: absolute;
-  inset: 0;
-  transform: rotate(-90deg);
-  pointer-events: none;
-}
-
-.tasbih-ring-bg {
-  stroke: rgba(255, 255, 255, 0.08);
-}
-
-.tasbih-ring-meter {
-  transition: stroke-dashoffset 0.22s ease-out;
-  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.45));
-}
-
-.tasbih-ring-container .tasbih-wheel {
-  width: 210px;
-  min-height: 210px;
-  height: 210px;
-  margin: 0;
-  border: 2px solid rgba(234, 179, 8, 0.5);
-}
-
-.tasbih-cycle-pill {
-  margin-top: 6px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #6ee7b7;
-  background: rgba(16, 185, 129, 0.16);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  padding: 2px 9px;
-  border-radius: 999px;
-}
-
-/* Daily Masnoon Duas Circular Ring & Completion Check */
-.duas-header-top {
+.prohibited-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   margin-bottom: 10px;
 }
 
-.dua-mastery-ring-box {
-  position: relative;
-  width: 58px;
-  height: 58px;
-  flex-shrink: 0;
+.prohibited-title-wrap {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
 }
 
-#dua-progress-ring-circle {
-  transition: stroke-dashoffset 0.45s ease;
+#prohibited-status-icon {
+  font-size: 1.35rem;
 }
 
-.dua-ring-label {
-  position: absolute;
+.prohibited-title-wrap h4 {
+  font-size: 0.88rem;
+  color: var(--accent-gold);
+  line-height: 1.25;
+}
+
+.prohibited-sub {
+  font-size: 0.72rem;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+
+.prohibited-badge {
   font-size: 0.68rem;
   font-weight: 800;
-  color: var(--accent-gold);
-}
-
-.dua-card.completed {
-  border-left-color: var(--accent-gold);
-  background: rgba(16, 185, 129, 0.11);
-}
-
-.dua-card.time-locked {
-  opacity: 0.68;
-}
-
-.dua-action-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(16, 185, 129, 0.18);
-  gap: 8px;
-}
-
-.dua-check-btn {
-  background: rgba(16, 185, 129, 0.15);
-  color: #6ee7b7;
-  border: 1px solid var(--accent-emerald);
-  padding: 6px 12px;
+  padding: 4px 9px;
   border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.dua-check-btn.done {
-  background: var(--accent-emerald);
-  color: #042f2e;
-}
-
-.dua-check-btn.locked {
-  background: rgba(239, 68, 68, 0.14);
-  color: #fca5a5;
-  border-color: rgba(239, 68, 68, 0.4);
-  cursor: not-allowed;
-}
-
-/* Strict Time-Window Habit Lock Styles */
-.habit-item.time-expired {
-  border-color: rgba(239, 68, 68, 0.32);
-  background: rgba(15, 23, 42, 0.55);
-  opacity: 0.76;
-}
-
-.habit-item.time-upcoming {
-  border-color: rgba(234, 179, 8, 0.25);
-  opacity: 0.85;
-}
-
-.habit-check.locked-expired {
-  border-color: rgba(239, 68, 68, 0.55);
-  background: rgba(239, 68, 68, 0.12);
-  color: #f87171;
-  cursor: not-allowed;
-  font-size: 0.78rem;
-}
-
-.habit-check.locked-upcoming {
-  border-color: rgba(234, 179, 8, 0.5);
-  background: rgba(234, 179, 8, 0.1);
-  color: var(--accent-gold);
-  cursor: not-allowed;
-  font-size: 0.78rem;
-}
-
-.habit-time-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 3px;
-}
-
-.time-status-badge {
-  font-size: 0.64rem;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-}
-
-.time-status-badge.status-open {
-  background: rgba(16, 185, 129, 0.16);
+  white-space: nowrap;
+  background: rgba(16, 185, 129, 0.18);
   color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.35);
-}
-
-.time-status-badge.status-expired {
-  background: rgba(239, 68, 68, 0.16);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.35);
-}
-
-.time-status-badge.status-upcoming {
-  background: rgba(234, 179, 8, 0.14);
-  color: #facc15;
-  border: 1px solid rgba(234, 179, 8, 0.35);
-}
-
-.time-status-badge.status-done {
-  background: rgba(16, 185, 129, 0.25);
-  color: #a7f3d0;
   border: 1px solid var(--accent-emerald);
 }
+
+.prohibited-card.status-danger .prohibited-badge {
+  background: rgba(239, 68, 68, 0.22);
+  color: #fca5a5;
+  border-color: var(--danger);
+}
+
+.prohibited-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.prohibited-slot {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  border-radius: 10px;
+  padding: 7px 6px;
+  text-align: center;
+}
+
+.prohibited-slot.active-prohibited-slot {
+  background: rgba(239, 68, 68, 0.22);
+  border-color: var(--danger);
+}
+
+.prohibited-slot small {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.prohibited-slot strong {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--accent-gold);
+  font-weight: 700;
+}
+
+.prohibited-slot.active-prohibited-slot strong {
+  color: #fca5a5;
+}
+
+.prohibited-hadith-note {
+  display: block;
+  font-size: 0.67rem;
+  color: var(--text-muted);
+  border-top: 1px dashed rgba(148, 163, 184, 0.18);
+  padding-top: 6px;
+}
+
