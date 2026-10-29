@@ -16,5 +16,5 @@
     "@capacitor/cli": "^6.0.0"
   },
   "author": "MKRWeb",
-  "license": "MIT"
+  "license": "AGPL-3"
 }
