@@ -168,11 +168,6 @@ const I18N_DICTIONARIES = deepFreeze({
     prohibited_next_info: "🟢 এখন সালাত আদায় জায়েয • পরবর্তী নিষিদ্ধ সময়: {slot} ({time})",
     prohibited_done_today: "🟢 আজকের ৩টি নিষিদ্ধ সময় পার হয়েছে • এখন সালাত জায়েয",
     prohibited_hadith_ref: "📖 দলিল: সহীহ মুসলিম ৮৩১ — উকবাহ ইবনু আমির (রা.) বর্ণিত সূর্যোদয়, ঠিক দ্বিপ্রহর (যাওয়াল) ও সূর্যাস্তের সময় সালাত আদায় নিষিদ্ধ।",
-    portal_prohibited: "নিষিদ্ধ সময়",
-    portal_tasbih: "ডিজিটাল তাসবীহ",
-    portal_duas: "মাসনূন দোয়া",
-    portal_tibb: "তিব্বে নববী",
-    portal_analytics: "আমল গ্রাফ",
     waqt_fajr: "ফজর",
     waqt_dhuhr: "যোহর",
     waqt_asr: "আসর",
@@ -299,11 +294,6 @@ const I18N_DICTIONARIES = deepFreeze({
     prohibited_next_info: "🟢 تجوز الصلاة الآن • وقت النهي القادم: {slot} ({time})",
     prohibited_done_today: "🟢 انتهت أوقات النهي الثلاثة لليوم • تجوز الصلاة الآن",
     prohibited_hadith_ref: "📖 الدليل: صحيح مسلم ٨٣١ — نهى رسول الله ﷺ عن الصلاة في ثلاث ساعات: عند طلوع الشمس، وعند استوائها، وعند غروبها.",
-    portal_prohibited: "أوقات النهي",
-    portal_tasbih: "السبحة الرقمية",
-    portal_duas: "أذكار الصباح",
-    portal_tibb: "الطب النبوي",
-    portal_analytics: "مصفوفة السنن",
     waqt_fajr: "الفجر",
     waqt_dhuhr: "الظهر",
     waqt_asr: "العصر",
@@ -430,11 +420,6 @@ const I18N_DICTIONARIES = deepFreeze({
     prohibited_next_info: "🟢 Salah permitted now • Next prohibited window: {slot} ({time})",
     prohibited_done_today: "🟢 All 3 prohibited windows passed today • Salah permitted",
     prohibited_hadith_ref: "📖 Proof: Sahih Muslim 831 — The Prophet ﷺ forbade praying during sunrise, solar zenith (Zawal), and sunset.",
-    portal_prohibited: "Forbidden Time",
-    portal_tasbih: "Digital Tasbih",
-    portal_duas: "Masnoon Duas",
-    portal_tibb: "Tibb Nabawi",
-    portal_analytics: "Analytics",
     waqt_fajr: "Fajr",
     waqt_dhuhr: "Dhuhr",
     waqt_asr: "Asr",
@@ -3991,59 +3976,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // ============================================================================
-// MUSLIM BANGLA / MUSLIM'S DAY PORTAL LAUNCHER & 5-WAQT STRIP INTERACTIONS
+// MUSLIM BANGLA / MUSLIM'S DAY 5-WAQT STRIP INTERACTION
 // ============================================================================
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Quick Portal Launcher Grid
-  document.querySelectorAll(".portal-item").forEach((item) => {
-    item.addEventListener("click", () => {
-      document.querySelectorAll(".portal-item").forEach((el) => el.classList.remove("active"));
-      item.classList.add("active");
-      if (navigator.vibrate) navigator.vibrate(12);
-
-      const action = item.getAttribute("data-portal-action");
-      if (action === "toggle-prohibited") {
-        switchTabProgrammatically("tab-routine", true);
-        const card = document.getElementById("prohibited-salah-card");
-        const toggleBtn = document.getElementById("prohibited-toggle-btn");
-        if (card) {
-          userToggledProhibitedCard = true;
-          card.classList.remove("is-collapsed");
-          if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "true");
-          card.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-        return;
-      }
-
-      const targetTab = item.getAttribute("data-portal-tab");
-      const targetPhase = item.getAttribute("data-portal-phase");
-      const scrollTarget = item.getAttribute("data-portal-scroll");
-
-      if (targetTab) {
-        switchTabProgrammatically(targetTab, true);
-      }
-
-      if (targetPhase) {
-        activePhase = targetPhase;
-        document.querySelectorAll(".filter-bar .chip").forEach((c) => {
-          c.classList.toggle("active", c.dataset.phase === targetPhase);
-        });
-        renderHabits();
-      }
-
-      if (scrollTarget === "tasbih") {
-        document.getElementById("tasbih-tap-area")?.scrollIntoView({ behavior: "smooth", block: "center" });
-      } else if (scrollTarget === "duas") {
-        document.getElementById("duas-list-container")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else if (scrollTarget === "matrix") {
-        document.getElementById("weekly-chart")?.scrollIntoView({ behavior: "smooth", block: "center" });
-      } else if (scrollTarget === "vault") {
-        document.getElementById("export-backup-btn")?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    });
-  });
-
-  // 2. 5-Waqt Strip Click -> Filters Routine to that Waqt Phase
   const waqtGrid = document.getElementById("five-waqt-grid");
   if (waqtGrid) {
     waqtGrid.addEventListener("click", (e) => {
