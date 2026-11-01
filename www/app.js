@@ -2995,9 +2995,10 @@ function renderHeaderDatesAndPhase() {
   if (lunarHeadlineEl) {
     lunarHeadlineEl.innerHTML = hijriDetails.cardHeadlineHtml;
   }
-  if (banglaSublineEl) {
-    banglaSublineEl.textContent = `${banglaDetails.fullSubline} • ${gregFull}`;
+    if (banglaSublineEl) {
+    banglaSublineEl.innerHTML = `${banglaDetails.fullSubline} • <span style="white-space: nowrap;">${gregFull}</span>`;
   }
+
 
   const nowMins = now.getHours() * 60 + now.getMinutes();
   let phaseLabel = t("phase_banner_night");
