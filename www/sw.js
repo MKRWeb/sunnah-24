@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v32-v5.0-lunar-maghrib-bangla-live-waqt-bar";
+const CACHE_NAME = "sunnah-24-enterprise-v34-v5.2-relocated-live-waqt-bar";
 const ASSETS = [
   "./",
   "./index.html",
