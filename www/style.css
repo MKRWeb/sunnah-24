@@ -2419,10 +2419,10 @@ html[data-theme="dark"] .update-banner-card {
    + LIVE ONGOING WAQT PROGRESS BAR & COUNTDOWN (MATCHING SCREENSHOTS 1 & 2)
    ========================================================================== */
 .lunar-ponjika-card {
-  margin: 0 14px 12px;
+  margin: 8px 14px 10px;
   padding: 13px 16px;
   background: #ffffff;
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.22);
   border-radius: 20px;
   box-shadow: var(--shadow-float);
   text-align: center;
@@ -2589,5 +2589,35 @@ html[data-theme="dark"] .live-waqt-running {
 
 html[data-theme="dark"] #live-waqt-remaining {
   color: #fde047;
+}
+
+
+/* ==========================================================================
+   STANDALONE FLOATING LIVE WAQT PROGRESS BAR & COUNTDOWN CARD
+   ========================================================================== */
+.live-waqt-standalone-card {
+  margin: 0 14px 12px;
+  padding: 14px 16px 12px;
+  background: #ffffff;
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: 20px;
+  box-shadow: var(--shadow-float);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.live-waqt-standalone-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-float-hover);
+}
+
+.live-waqt-standalone-card .live-waqt-countdown-box {
+  padding: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+html[data-theme="dark"] .live-waqt-standalone-card {
+  background: #0b221a;
+  border-color: rgba(16, 185, 129, 0.26);
 }
 
