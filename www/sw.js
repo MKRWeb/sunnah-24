@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v31-v4.9-native-phases-theme-toggle-compact-header";
+const CACHE_NAME = "sunnah-24-enterprise-v32-v5.0-lunar-maghrib-bangla-live-waqt-bar";
 const ASSETS = [
   "./",
   "./index.html",
@@ -38,3 +38,5 @@ self.addEventListener("fetch", (e) => {
     caches.match(e.request).then((cached) => cached || fetch(e.request))
   );
 });
+
+
