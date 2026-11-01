@@ -4528,18 +4528,31 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
   if (percent >= 100) {
     if (banner) banner.setAttribute("data-cached", "true");
     if (progBar) progBar.style.width = "100%";
+    const needsSourcePerm =
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.canRequestPackageInstalls === "function" &&
+      !window.AndroidDownloader.canRequestPackageInstalls();
+
     if (btn) {
       btn.disabled = false;
       btn.style.background = "var(--accent-emerald)";
       btn.style.color = "#ffffff";
-      btn.textContent =
-        appState.locale === "bn" ? "📦 এখনই ইনস্টল করুন" : "📦 Install Now";
+      btn.textContent = needsSourcePerm
+        ? appState.locale === "bn"
+          ? "⚙️ ইনস্টল অনুমতি দিন"
+          : "⚙️ Allow & Install"
+        : appState.locale === "bn"
+        ? "📦 এখনই ইনস্টল করুন"
+        : "📦 Install Now";
     }
-    if (statusEl) {
-      statusEl.textContent =
-        appState.locale === "bn"
-          ? "✅ ডাউনলোড সম্পন্ন! স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হয়েছে।"
-          : "✅ Download complete! Package installer launched automatically.";
+    if (statusEl && !statusText) {
+      statusEl.textContent = needsSourcePerm
+        ? appState.locale === "bn"
+          ? "⚙️ সেটিংস থেকে 'Allow from this source' চালু করলেই স্বয়ংক্রিয়ভাবে ইনস্টল হবে।"
+          : "⚙️ Enable 'Allow from this source' in Settings to auto-launch installer."
+        : appState.locale === "bn"
+        ? "✅ ডাউনলোড সম্পন্ন! স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হয়েছে।"
+        : "✅ Download complete! Package installer launched automatically.";
     }
   }
 };
@@ -4797,3 +4810,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
