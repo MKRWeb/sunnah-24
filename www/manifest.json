@@ -4,8 +4,8 @@
   "description": "Complete 24-Hour Islamic Routine Planner, Prophetic Habit Tracker & Muhasabah Diary",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#05130e",
-  "theme_color": "#064e3b",
+  "background_color": "#f1f6f3",
+  "theme_color": "#10b981",
   "orientation": "portrait",
   "icons": [
     {
