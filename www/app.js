@@ -4753,5 +4753,4 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => applyThemeMode(getCurrentThemeMode()), 20);
     });
   }
-});
-
+}); 
