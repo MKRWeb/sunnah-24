@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v30-v4.8-sunnah24-final-edition";
+const CACHE_NAME = "sunnah-24-enterprise-v31-v4.9-native-phases-theme-toggle-compact-header";
 const ASSETS = [
   "./",
   "./index.html",
