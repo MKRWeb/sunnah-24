@@ -2413,3 +2413,181 @@ html[data-theme="dark"] .update-banner-card {
   color: #f8fafc;
 }
 
+
+/* ==========================================================================
+   MOON-SIGHTING HIJRI (MAGHRIB ROLLOVER) & BANGLA PONJIKA CARD
+   + LIVE ONGOING WAQT PROGRESS BAR & COUNTDOWN (MATCHING SCREENSHOTS 1 & 2)
+   ========================================================================== */
+.lunar-ponjika-card {
+  margin: 0 14px 12px;
+  padding: 13px 16px;
+  background: #ffffff;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 20px;
+  box-shadow: var(--shadow-float);
+  text-align: center;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.lunar-ponjika-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-float-hover);
+}
+
+.lunar-hijri-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+#lunar-hijri-headline {
+  font-size: 1.02rem;
+  font-weight: 900;
+  color: #163a2c;
+  letter-spacing: 0.01em;
+}
+
+#lunar-hijri-headline .prev-hijri-day {
+  color: #7c9087;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  margin-right: 2px;
+  font-weight: 800;
+}
+
+.crescent-badge {
+  font-size: 1.05rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.25));
+}
+
+.bangla-ponjika-sub {
+  margin-top: 3px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #556b61;
+}
+
+/* Live Ongoing Waqt Progress & Countdown Box inside .waqt-strip-card */
+.live-waqt-countdown-box {
+  padding: 6px 6px 12px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed rgba(16, 185, 129, 0.22);
+}
+
+.live-waqt-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+#live-waqt-title {
+  font-size: 1.02rem;
+  font-weight: 900;
+  color: #163a2c;
+}
+
+.live-waqt-range {
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: #1e352b;
+}
+
+.live-waqt-track {
+  width: 100%;
+  height: 13px;
+  background: #e6ece8;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.live-waqt-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #12a829, #15803d);
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.live-waqt-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.live-waqt-running {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #15803d;
+}
+
+.live-waqt-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
+  animation: waqtPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes waqtPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 0.75;
+  }
+}
+
+#live-waqt-remaining {
+  font-size: 0.88rem;
+  font-weight: 900;
+  color: #1e4635;
+}
+
+/* Dark Theme Support for Lunar Ponjika Card & Live Waqt Countdown Box */
+html[data-theme="dark"] .lunar-ponjika-card {
+  background: #0b221a;
+  border-color: rgba(16, 185, 129, 0.26);
+}
+
+html[data-theme="dark"] #lunar-hijri-headline {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] #lunar-hijri-headline .prev-hijri-day {
+  color: #64748b;
+}
+
+html[data-theme="dark"] .bangla-ponjika-sub {
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] #live-waqt-title,
+html[data-theme="dark"] .live-waqt-range {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .live-waqt-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .live-waqt-running {
+  color: #34d399;
+}
+
+html[data-theme="dark"] #live-waqt-remaining {
+  color: #fde047;
+}
+
