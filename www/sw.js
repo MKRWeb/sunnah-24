@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v36-v5.2-relocated-live-waqt-bar";
+const CACHE_NAME = "sunnah-24-enterprise-v38-v5.3-rock-solid-tamper-proof-edition";
 const ASSETS = [
   "./",
   "./index.html",
