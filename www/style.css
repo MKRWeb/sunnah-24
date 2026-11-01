@@ -991,20 +991,21 @@ body {
 }
 
 .compact-history-item {
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.35;
-  padding: 7px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.4;
+  padding: 9px 12px;
   background: #ffffff;
-  border-left: 3px solid var(--accent-emerald);
-  border-radius: 8px;
-  color: var(--text-primary);
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-left: 3.5px solid var(--accent-emerald);
+  border-radius: 10px;
+  color: #1e352b;
   box-shadow: 0 2px 5px rgba(15, 45, 34, 0.05);
 }
 
 html[dir="rtl"] .compact-history-item {
-  border-left: none;
-  border-right: 3px solid var(--accent-emerald);
+  border-left: 1px solid rgba(16, 185, 129, 0.22);
+  border-right: 3.5px solid var(--accent-emerald);
 }
 
 .modal-card #close-modal-btn {
@@ -2609,5 +2610,36 @@ html[data-theme="dark"] .hero-embedded-waqt-box {
   background: rgba(7, 25, 19, 0.88);
   border-color: rgba(16, 185, 129, 0.28);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+
+
+/* ==========================================================================
+   DARK THEME FIX FOR DAY HISTORY MODAL ITEMS & EMPTY ARCHIVE NOTICE
+   ========================================================================== */
+html[data-theme="dark"] .compact-history-item {
+  background: #0b221a;
+  color: #f8fafc;
+  border-color: rgba(16, 185, 129, 0.32);
+  border-left: 3.5px solid var(--accent-emerald);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"][dir="rtl"] .compact-history-item {
+  border-left: 1px solid rgba(16, 185, 129, 0.32);
+  border-right: 3.5px solid var(--accent-emerald);
+}
+
+.category-advice-comment.empty-archive-notice {
+  background: #f1f5f9;
+  border: 1px dashed rgba(100, 116, 139, 0.4);
+  color: #475569;
+  text-align: center;
+}
+
+html[data-theme="dark"] .category-advice-comment.empty-archive-notice {
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px dashed rgba(148, 163, 184, 0.35);
+  color: #94a3b8;
 }
 
