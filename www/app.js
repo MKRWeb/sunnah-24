@@ -2973,30 +2973,29 @@ function renderHeaderDatesAndPhase() {
   const now = new Date();
   const localeTag = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).localeTag;
 
-  const gregFull = now.toLocaleDateString(localeTag, {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
+  const greg = now.toLocaleDateString(localeTag, {
+    month: "short",
+    day: "numeric"
   });
 
   const hijriDetails = getMoonBasedHijriDetails(now, appState.locale);
   const banglaDetails = getBanglaPonjikaDetails(now, appState.locale);
   const sched = computeSeasonalPrayerSchedule(now);
 
-  // If legacy #current-date-display exists, keep it empty/hidden since date is now in the 2nd-top Date Card
+  // Compact Header Date Line: Gregorian + Moon Hijri + Bangla Date
   const headerDateEl = document.getElementById("current-date-display");
   if (headerDateEl) {
-    headerDateEl.textContent = "";
+    headerDateEl.textContent = `${greg} • ${hijriDetails.shortHeaderText} • ${banglaDetails.shortText}`;
   }
 
-  // Unified 2nd-Top Date Card: Line 1 = Moon-Sighting Hijri + Yawm + Crescent; Line 2 = Weekday, Bangla Date + Season • Gregorian Date
+  // Dedicated Lunar & Bangla Ponjika Card (matching reference screenshot 1)
   const lunarHeadlineEl = document.getElementById("lunar-hijri-headline");
   const banglaSublineEl = document.getElementById("bangla-ponjika-subline");
   if (lunarHeadlineEl) {
     lunarHeadlineEl.innerHTML = hijriDetails.cardHeadlineHtml;
   }
   if (banglaSublineEl) {
-    banglaSublineEl.textContent = `${banglaDetails.fullSubline} • ${gregFull}`;
+    banglaSublineEl.textContent = banglaDetails.fullSubline;
   }
 
   const nowMins = now.getHours() * 60 + now.getMinutes();
@@ -4753,4 +4752,5 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => applyThemeMode(getCurrentThemeMode()), 20);
     });
   }
-}); 
+});
+
