@@ -136,7 +136,7 @@ jobs:
 
           # Generate Centered Splash Screen PNG from www/icon.svg for all Capacitor splash drawables
           rsvg-convert -w 512 -h 512 www/icon.svg -o /tmp/s24_logo_512.png
-          convert -size 1080x1920 xc:"#05130E" /tmp/s24_logo_512.png -gravity center -composite /tmp/s24_splash_screen.png
+          convert -size 1080x1920 xc:"#F1F6F3" /tmp/s24_logo_512.png -gravity center -composite /tmp/s24_splash_screen.png
           for existing_splash in $(find "$RES_DIR" -name "splash.png"); do
             cp -f /tmp/s24_splash_screen.png "$existing_splash"
           done
@@ -249,7 +249,7 @@ jobs:
 
                   if (this.bridge != null && this.bridge.getWebView() != null) {
                       WebView webView = this.bridge.getWebView();
-                      webView.setBackgroundColor(Color.parseColor("#05130E"));
+                      webView.setBackgroundColor(Color.parseColor("#F1F6F3"));
                       WebSettings ws = webView.getSettings();
                       ws.setDomStorageEnabled(true);
                       ws.setDatabaseEnabled(true);
