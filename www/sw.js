@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v35-v5-relocated-live-waqt-bar";
+const CACHE_NAME = "sunnah-24-enterprise-v36-v5.2-relocated-live-waqt-bar";
 const ASSETS = [
   "./",
   "./index.html",
@@ -38,5 +38,3 @@ self.addEventListener("fetch", (e) => {
     caches.match(e.request).then((cached) => cached || fetch(e.request))
   );
 });
-
-
