@@ -126,7 +126,26 @@ const I18N_DICTIONARIES = deepFreeze({
     vault_matrix_title: "📊 ৭-দিনের সুন্নাহ ধারাবাহিকতা ম্যাট্রিক্স",
     vault_matrix_sub: "গত ৭ দিনে আপনার দৈনিক সুন্নাহ পালনের অগ্রগতি (দিনে ট্যাপ করে বিস্তারিত দেখুন)।",
     vault_archive_title: "🗓️ দীর্ঘমেয়াদী সুন্নাহ আর্কাইভ (১২ মাস / ৩৬৫ দিন)",
-    vault_archive_sub: "আপনার বিগত কয়েক মাসের সকল দিনের রেকর্ড ডিভাইসে স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকে।",
+    vault_archive_sub: "আপনার বিগত কয়েক মাসের সকল দিনের রেকর্ড ডিভাইসে স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকে (অন্য মাসের কার্ডে ট্যাপ করে সেই মাসের বিস্তারিত দেখুন)।",
+    range_30d: "৩০ দিন (১ মাস)",
+    range_90d: "৯০ দিন (৩ মাস)",
+    range_180d: "১৮০ দিন (৬ মাস)",
+    range_365d: "৩৬৫ দিন (১ বছর)",
+    cat_weekly_title: "বিভাগভিত্তিক গড় (সাপ্তাহিক)",
+    cat_weekly_sub: "এই সপ্তাহে কোন দিকে বেশি মনোযোগ দরকার",
+    cat_monthly_title: "বিভাগভিত্তিক গড়",
+    cat_monthly_sub: "এই মাসে কোন দিকে বেশি মনোযোগ দরকার",
+    cat_salah: "নামায",
+    cat_nafl_salah: "নফল নামায",
+    cat_morning_evening: "সকাল-সন্ধ্যার আমল",
+    cat_sleep_sunnah: "ঘুমের আগের আমল",
+    cat_karaniya: "করণীয়",
+    cat_barjaniya: "বর্জনীয়",
+    cat_dayemi_sunnah: "দায়েমী সুন্নাহ",
+    advice_prefix_improve: "💡 পরামর্শ: আপনার সার্বিক গড় {overall}%। গড় হিসাব অনুযায়ী '{category}' বিভাগে আপনার অগ্রগতি সবচেয়ে কম ({pct}%) — আগামী দিনগুলোতে এই বিভাগের সুন্নাহ পালনে বিশেষ মনোযোগ দিন।",
+    advice_all_perfect: "🌟 মাশাআল্লাহ! আপনার সকল বিভাগেই ১০০% সুন্নাহ আমল সম্পন্ন হয়েছে। আল্লাহ আপনার ইস্তিকামাত কবুল করুন।",
+    selected_month_records: "📅 নির্বাচিত মাসের দৈনিক রেকর্ডসমূহ:",
+    tap_month_hint: "ট্যাপ করে নির্বাচন করুন",
     archive_empty: "নির্বাচিত সময়সীমার মধ্যে এখনও কোনো সম্পন্ন আমলের রেকর্ড নেই।",
     archive_active_days: "সক্রিয় দিন:",
     archive_avg_score: "গড় অর্জন:",
@@ -252,7 +271,26 @@ const I18N_DICTIONARIES = deepFreeze({
     vault_matrix_title: "📊 مصفوفة الاستقامة لـ ٧ أيام",
     vault_matrix_sub: "معدل إتمامك للسنن النبوية خلال الأيام السبعة الماضية (اضغط على اليوم للتفاصيل).",
     vault_archive_title: "🗓️ أرشيف السنن طويل المدى (١٢ شهراً / ٣٦٥ يوماً)",
-    vault_archive_sub: "يتم حفظ سجل أيامك وأشهرك السابقة تلقائياً في الجهاز.",
+    vault_archive_sub: "يتم حفظ سجل أيامك وأشهرك السابقة تلقائياً في الجهاز (اضغط على أي شهر لعرض تفاصيله).",
+    range_30d: "٣٠ يوماً (شهر)",
+    range_90d: "٩٠ يوماً (٣ أشهر)",
+    range_180d: "١٨٠ يوماً (٦ أشهر)",
+    range_365d: "٣٦٥ يوماً (سنة)",
+    cat_weekly_title: "المتوسط حسب الفئة (الأسبوعي)",
+    cat_weekly_sub: "الجوانب التي تحتاج إلى مزيد من العناية هذا الأسبوع",
+    cat_monthly_title: "المتوسط حسب الفئة",
+    cat_monthly_sub: "الجوانب التي تحتاج إلى مزيد من العناية هذا الشهر",
+    cat_salah: "الصلاة المفروضة والرواتب",
+    cat_nafl_salah: "صلاة النافلة",
+    cat_morning_evening: "أذكار الصباح والمساء",
+    cat_sleep_sunnah: "سنن ما قبل النوم",
+    cat_karaniya: "المأمورات والواجبات",
+    cat_barjaniya: "المنهيات وحفظ الجوارح",
+    cat_dayemi_sunnah: "السنن الدائمة اليومية",
+    advice_prefix_improve: "💡 نصيحة: متوسطك العام {overall}%. فئة «{category}» هي الأقل إنجازاً ({pct}%) — ننصحك بالتركيز على تحسينها في الأيام القادمة.",
+    advice_all_perfect: "🌟 ما شاء الله! أتممت ١٠٠٪ في جميع الفئات، ثبتك الله وزادك توفيقاً.",
+    selected_month_records: "📅 السجلات اليومية للشهر المحدد:",
+    tap_month_hint: "اضغط للعرض",
     archive_empty: "لا توجد سجلات مكتملة في هذه الفترة بعد.",
     archive_active_days: "الأيام النشطة:",
     archive_avg_score: "المعدل:",
@@ -378,7 +416,26 @@ const I18N_DICTIONARIES = deepFreeze({
     vault_matrix_title: "📊 7-Day Sunnah Consistency Matrix",
     vault_matrix_sub: "Your daily habit completion momentum across the past 7 days (tap any day to inspect).",
     vault_archive_title: "🗓️ Long-Term Sunnah Archive (12 Months / 365 Days)",
-    vault_archive_sub: "Your multi-month daily history is automatically preserved across 3 device storage layers.",
+    vault_archive_sub: "Your multi-month daily history is automatically preserved across 3 storage layers (tap any month card to inspect that month).",
+    range_30d: "30 Days (1M)",
+    range_90d: "90 Days (3M)",
+    range_180d: "180 Days (6M)",
+    range_365d: "365 Days (1Y)",
+    cat_weekly_title: "Category Average (Weekly)",
+    cat_weekly_sub: "Which areas need more focus this week",
+    cat_monthly_title: "Category Average",
+    cat_monthly_sub: "Which areas need more focus this month",
+    cat_salah: "Fard & Rawatib Salah",
+    cat_nafl_salah: "Nafl Prayer",
+    cat_morning_evening: "Morning & Evening Adhkar",
+    cat_sleep_sunnah: "Bedtime Sunnahs",
+    cat_karaniya: "Essential Duties (Karaniya)",
+    cat_barjaniya: "Restraint & Abstinence (Barjaniya)",
+    cat_dayemi_sunnah: "Perpetual Daily Sunnahs",
+    advice_prefix_improve: "💡 Recommendation: Your overall average is {overall}%. Based on the average breakdown, '{category}' is your lowest area ({pct}%) — focus on improving this category over the coming days.",
+    advice_all_perfect: "🌟 MashaAllah! You achieved 100% across all categories. May Allah grant you steadfastness.",
+    selected_month_records: "📅 Daily Records for Selected Month:",
+    tap_month_hint: "Tap to view month",
     archive_empty: "No completed habit records found in this range yet.",
     archive_active_days: "Active Days:",
     archive_avg_score: "Avg Score:",
@@ -1202,7 +1259,8 @@ let selectedMood = "Khushu";
 let tasbihCount = 0;
 let tasbihTarget = 33;
 let verifiedI18nDigest = "";
-let historyRangeDays = 365;
+let historyRangeDays = 30;
+let selectedArchiveMonthKey = getTodayKey().slice(0, 7);
 let lastObservedDateKey = getTodayKey();
 
 function t(key, replacements = {}) {
@@ -2203,6 +2261,8 @@ async function toggleDuaCompletion(duaId) {
   }
   await saveAndSealState();
   renderDuas();
+  renderWeeklyChart();
+  renderLongTermArchive();
 }
 
 
@@ -2807,7 +2867,217 @@ function renderHabits() {
   renderLongTermArchive();
 }
 
-// 7-Day Consistency Matrix Using Local Timezone Date Keys + Interactive Day Inspection
+// ============================================================================
+// 7-CATEGORY GRAPH ENGINE (MATCHING COMMERCIAL BENGALI ISLAMIC APP DESIGN)
+// Maps all 32 Prophetic habits + 12 Masnoon Duas + custom habits into the 7
+// categories shown in the reference screenshot:
+// 1. নামায (Fard & Rawatib Salah)
+// 2. নফল নামায (Nafl Prayer)
+// 3. সকাল-সন্ধ্যার আমল (Morning & Evening Adhkar + Duas)
+// 4. ঘুমের আগের আমল (Bedtime Sunnahs)
+// 5. করণীয় (Essential Duties / Karaniya)
+// 6. বর্জনীয় (Restraint & Self-Discipline / Barjaniya)
+// 7. দায়েমী সুন্নাহ (Perpetual Daily Sunnahs)
+// ============================================================================
+const CATEGORY_GRAPH_DEFINITIONS = deepFreeze([
+  {
+    id: "salah",
+    titleKey: "cat_salah",
+    colorClass: "cat-emerald",
+    barColor: "#0d7a49",
+    bgSoft: "#e2f2ea",
+    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#0d7a49" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L4 9h16L12 3z"/><path d="M6 9v8M10 9v8M14 9v8M18 9v8"/><path d="M3 17h18M2 20h20"/></svg>`,
+    habitIds: [
+      "s24_04_fajr_sunnah_fard",
+      "s24_11_dhuhr_rawatib",
+      "s24_13_asr_prayer",
+      "s24_15_maghrib_sunnah",
+      "s24_17_isha_witr"
+    ]
+  },
+  {
+    id: "nafl_salah",
+    titleKey: "cat_nafl_salah",
+    colorClass: "cat-teal",
+    barColor: "#0e8074",
+    bgSoft: "#dff2f0",
+    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#0e8074" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+    habitIds: [
+      "s24_03_tahajjud",
+      "s24_06_ishraq_reflection",
+      "s24_08_salat_duha",
+      "s24_31_mon_thu_fasting"
+    ]
+  },
+  {
+    id: "morning_evening",
+    titleKey: "cat_morning_evening",
+    colorClass: "cat-amber",
+    barColor: "#c2780e",
+    bgSoft: "#f9eedb",
+    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c2780e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M12 8.5c-1.2-1.2-3-.5-3 1.2 0 1.5 3 3.3 3 3.3s3-1.8 3-3.3c0-1.7-1.8-2.4-3-1.2z"/><line x1="8" y1="17" x2="16" y2="17"/></svg>`,
+    habitIds: [
+      "s24_01_waking_dua",
+      "s24_05_post_fajr_barakah",
+      "s24_07_home_exit_dua",
+      "s24_14_evening_adhkar"
+    ],
+    includeDuas: true
+  },
+  {
+    id: "sleep_sunnah",
+    titleKey: "cat_sleep_sunnah",
+    colorClass: "cat-indigo",
+    barColor: "#4f46e5",
+    bgSoft: "#e8e8f8",
+    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5"/><path d="M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/><line x1="3" y1="16" x2="21" y2="16"/><line x1="12" y1="6" x2="12" y2="11"/></svg>`,
+    habitIds: [
+      "s24_18_surah_mulk_baqarah",
+      "s24_19_sleep_wudu_dusting",
+      "s24_20_kursi_3quls",
+      "s24_21_tasbih_fatimah",
+      "s24_22_forgiving_before_sleep"
+    ]
+  },
+  {
+    id: "karaniya",
+    titleKey: "cat_karaniya",
+    colorClass: "cat-green",
+    barColor: "#3b8728",
+    bgSoft: "#e5f3e1",
+    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#3b8728" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.4-1.4-3.5-.6-3.5 1.4 0 1.8 3.5 3.8 3.5 3.8s3.5-2 3.5-3.8c0-2-2.1-2.8-3.5-1.4z"/><path d="M3 16l4-2h6l3 2h5l-4 4H8l-5-4z"/></svg>`,
+    habitIds: [
+      "s24_09_halal_ihsan_work",
+      "s24_16_family_silat_rahim",
+      "s24_29_daily_sadaqah_istighfar",
+      "s24_30_honoring_parents",
+      "s24_32_jumuah_kahf_salawat"
+    ]
+  },
+  {
+    id: "barjaniya",
+    titleKey: "cat_barjaniya",
+    colorClass: "cat-crimson",
+    barColor: "#cb443b",
+    bgSoft: "#fae5e3",
+    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#cb443b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="9.5" y1="9.5" x2="14.5" y2="14.5"/><line x1="14.5" y1="9.5" x2="9.5" y2="14.5"/></svg>`,
+    habitIds: [
+      "s24_23_one_third_stomach",
+      "s24_28_guarding_tongue_anger"
+    ]
+  },
+  {
+    id: "dayemi_sunnah",
+    titleKey: "cat_dayemi_sunnah",
+    colorClass: "cat-bronze",
+    barColor: "#9c6d12",
+    bgSoft: "#f8eedc",
+    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#9c6d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 21 2 9 6 3"/><line x1="2" y1="9" x2="22" y2="9"/><polyline points="12 21 8 9 10 3"/><polyline points="12 21 16 9 14 3"/></svg>`,
+    habitIds: [
+      "s24_02_miswak_wudu",
+      "s24_10_tayammun_right",
+      "s24_12_qaylulah_nap",
+      "s24_24_water_three_sips",
+      "s24_25_tibb_nabawi_superfoods",
+      "s24_26_fitrah_grooming",
+      "s24_27_salam_smiling"
+    ],
+    includeCustomHabits: true
+  }
+]);
+
+// Renders the 7-Category Horizontal Progress Bar Graph + Lowest Category Improvement Recommendation
+function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceContainerId) {
+  const barsContainer = document.getElementById(barsContainerId);
+  const adviceContainer = document.getElementById(adviceContainerId);
+  if (!barsContainer) return;
+
+  const lang = appState.locale || "bn";
+  const customHabitIds = (appState.customHabits || []).map((ch) => ch.id);
+
+  // Filter dateKeysArray to active days that have at least 1 completion or include today so denominator is fair
+  const activeDateKeys = dateKeysArray.filter((k) => {
+    const hDone = (appState.completionsByDate[k] || []).length;
+    const dDone = ((appState.duaCompletionsByDate && appState.duaCompletionsByDate[k]) || []).length;
+    return hDone > 0 || dDone > 0;
+  });
+  const effectiveDates = activeDateKeys.length > 0 ? activeDateKeys : [getTodayKey()];
+  const numDays = Math.max(1, effectiveDates.length);
+
+  const categoryResults = CATEGORY_GRAPH_DEFINITIONS.map((cat) => {
+    const trackedHabitIds = cat.includeCustomHabits
+      ? [...cat.habitIds, ...customHabitIds]
+      : [...cat.habitIds];
+
+    const perDayTarget = trackedHabitIds.length + (cat.includeDuas ? 4 : 0);
+    const totalPossible = Math.max(1, perDayTarget * numDays);
+    let totalCompleted = 0;
+
+    effectiveDates.forEach((dKey) => {
+      const completedH = appState.completionsByDate[dKey] || [];
+      trackedHabitIds.forEach((hId) => {
+        if (completedH.includes(hId)) totalCompleted++;
+      });
+      if (cat.includeDuas) {
+        const completedD = (appState.duaCompletionsByDate && appState.duaCompletionsByDate[dKey]) || [];
+        // Weight Duas proportionally (up to 4 points per day for completing daily Masnoon Duas)
+        const duaScore = Math.min(4, Math.ceil((completedD.length / Math.max(1, SUNNAH_24_DUAS.length)) * 4));
+        totalCompleted += duaScore;
+      }
+    });
+
+    const pct = Math.min(100, Math.round((totalCompleted / totalPossible) * 100));
+    return {
+      ...cat,
+      label: t(cat.titleKey),
+      pct
+    };
+  });
+
+  barsContainer.innerHTML = categoryResults
+    .map((item) => {
+      const pctLocalized = localizeDigits(item.pct, lang);
+      return `
+        <div class="cat-graph-row">
+          <div class="cat-icon-squircle" style="background:${item.bgSoft};">
+            ${item.svgIcon}
+          </div>
+          <div class="cat-bar-content">
+            <div class="cat-bar-top-row">
+              <span class="cat-bar-title">${item.label}</span>
+              <strong class="cat-bar-pct">${pctLocalized}%</strong>
+            </div>
+            <div class="cat-bar-track">
+              <div class="cat-bar-fill" style="width:${item.pct}%;background:${item.barColor};"></div>
+            </div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  if (adviceContainer) {
+    const overallAvg = Math.round(
+      categoryResults.reduce((acc, c) => acc + c.pct, 0) / categoryResults.length
+    );
+    const sortedByLowest = [...categoryResults].sort((a, b) => a.pct - b.pct);
+    const lowest = sortedByLowest[0];
+
+    if (lowest && lowest.pct < 100) {
+      adviceContainer.innerHTML = t("advice_prefix_improve", {
+        overall: localizeDigits(overallAvg, lang),
+        category: lowest.label,
+        pct: localizeDigits(lowest.pct, lang)
+      });
+      adviceContainer.className = "category-advice-comment needs-focus";
+    } else {
+      adviceContainer.innerHTML = t("advice_all_perfect");
+      adviceContainer.className = "category-advice-comment all-perfect";
+    }
+  }
+}
+
+// 7-Day Consistency Matrix Using Local Timezone Date Keys + Weekly Category Breakdown Graph
 function renderWeeklyChart() {
   const chart = document.getElementById("weekly-chart");
   if (!chart) return;
@@ -2815,11 +3085,13 @@ function renderWeeklyChart() {
   const totalHabits = getAllHabits().length;
   const localeTag = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).localeTag;
   const todayKey = getTodayKey();
+  const weekDateKeys = [];
 
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
     const key = getLocalDateKey(d);
+    weekDateKeys.push(key);
     const dayLabel = d.toLocaleDateString(localeTag, { weekday: "short" });
     const dayNum = localizeDigits(d.getDate(), appState.locale);
     const count = (appState.completionsByDate[key] || []).length;
@@ -2836,9 +3108,11 @@ function renderWeeklyChart() {
     `;
     chart.appendChild(col);
   }
+
+  renderCategoryBreakdownGraph(weekDateKeys, "weekly-category-bars", "weekly-category-advice");
 }
 
-// 12-Month (365-Day) Long-Term Archive & Monthly Summary Renderer
+// Multi-Month Archive (Default 30 Days / 1M, Current Month Selected by Default, Click Any Month to Switch)
 function renderLongTermArchive() {
   const monthlyEl = document.getElementById("monthly-summary-list");
   const historyListEl = document.getElementById("longterm-history-list");
@@ -2849,24 +3123,55 @@ function renderLongTermArchive() {
 
   const totalHabits = getAllHabits().length || 32;
   const localeTag = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).localeTag;
+  const currentMonthKey = getTodayKey().slice(0, 7);
 
-  const recordedRows = [];
+  // Sync range pill active state
+  document.querySelectorAll(".range-pill-btn").forEach((btn) => {
+    const days = parseInt(btn.getAttribute("data-range-days"), 10);
+    btn.classList.toggle("active", days === historyRangeDays);
+  });
+
   const monthlyStats = {};
+
+  // Ensure current month always exists first
+  {
+    const now = new Date();
+    const curMonthLabel = now.toLocaleDateString(localeTag, { month: "long", year: "numeric" });
+    monthlyStats[currentMonthKey] = {
+      monthKey: currentMonthKey,
+      label: curMonthLabel,
+      activeDays: 0,
+      totalPct: 0,
+      dateKeys: [],
+      recordedRows: []
+    };
+  }
 
   for (let i = 0; i < historyRangeDays; i++) {
     const d = new Date();
     d.setDate(d.getDate() - i);
     const key = getLocalDateKey(d);
+    const monthKey = key.slice(0, 7); // YYYY-MM
     const doneList = appState.completionsByDate[key] || [];
+    const duaList = (appState.duaCompletionsByDate && appState.duaCompletionsByDate[key]) || [];
     const count = doneList.length;
 
-    if (count > 0 || i === 0) {
+    if (!monthlyStats[monthKey]) {
+      const monthLabel = d.toLocaleDateString(localeTag, { month: "long", year: "numeric" });
+      monthlyStats[monthKey] = {
+        monthKey,
+        label: monthLabel,
+        activeDays: 0,
+        totalPct: 0,
+        dateKeys: [],
+        recordedRows: []
+      };
+    }
+
+    monthlyStats[monthKey].dateKeys.push(key);
+
+    if (count > 0 || duaList.length > 0 || i === 0) {
       const pct = Math.min(100, Math.round((count / totalHabits) * 100));
-      const monthKey = key.slice(0, 7); // YYYY-MM
-      if (!monthlyStats[monthKey]) {
-        const monthLabel = d.toLocaleDateString(localeTag, { month: "long", year: "numeric" });
-        monthlyStats[monthKey] = { label: monthLabel, activeDays: 0, totalPct: 0 };
-      }
       if (count > 0) {
         monthlyStats[monthKey].activeDays += 1;
         monthlyStats[monthKey].totalPct += pct;
@@ -2879,7 +3184,7 @@ function renderLongTermArchive() {
         year: "numeric"
       });
 
-      recordedRows.push({
+      monthlyStats[monthKey].recordedRows.push({
         key,
         readableDate,
         count,
@@ -2889,25 +3194,55 @@ function renderLongTermArchive() {
   }
 
   const monthKeys = Object.keys(monthlyStats).sort().reverse();
+  if (!selectedArchiveMonthKey || !monthlyStats[selectedArchiveMonthKey]) {
+    selectedArchiveMonthKey = currentMonthKey;
+  }
+
   monthKeys.forEach((mKey) => {
     const st = monthlyStats[mKey];
     const avg = st.activeDays > 0 ? Math.round(st.totalPct / st.activeDays) : 0;
-    const card = document.createElement("div");
-    card.className = "month-summary-card";
+    const isSelected = mKey === selectedArchiveMonthKey;
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = `month-summary-card ${isSelected ? "selected-month-card" : ""}`;
+    card.setAttribute("data-select-month", mKey);
     card.innerHTML = `
-      <h4>🗓️ ${st.label}</h4>
+      <div class="month-card-top">
+        <h4>🗓️ ${st.label}</h4>
+        ${isSelected ? '<span class="month-selected-dot">●</span>' : ""}
+      </div>
       <p>${t("archive_active_days")} <strong>${localizeDigits(st.activeDays, appState.locale)}</strong></p>
       <p>${t("archive_avg_score")} <strong>${localizeDigits(avg, appState.locale)}%</strong></p>
+      <small class="month-tap-hint">${t("tap_month_hint")}</small>
     `;
     monthlyEl.appendChild(card);
   });
 
-  if (recordedRows.length === 0) {
+  const activeMonthObj = monthlyStats[selectedArchiveMonthKey] || monthlyStats[currentMonthKey];
+  const monthlyHeadingEl = document.getElementById("monthly-cat-heading");
+  const selectedMonthLabelEl = document.getElementById("selected-month-records-label");
+
+  if (monthlyHeadingEl && activeMonthObj) {
+    monthlyHeadingEl.textContent = `${t("cat_monthly_title")} — ${activeMonthObj.label}`;
+  }
+  if (selectedMonthLabelEl && activeMonthObj) {
+    selectedMonthLabelEl.textContent = `${t("selected_month_records")} (${activeMonthObj.label})`;
+  }
+
+  // Render the 7-Category Horizontal Progress Bar Graph + Lowest Category Advice for the Selected Month!
+  renderCategoryBreakdownGraph(
+    activeMonthObj ? activeMonthObj.dateKeys : [getTodayKey()],
+    "monthly-category-bars",
+    "monthly-category-advice"
+  );
+
+  const rowsToShow = activeMonthObj ? activeMonthObj.recordedRows : [];
+  if (rowsToShow.length === 0) {
     historyListEl.innerHTML = `<p class="muted">${t("archive_empty")}</p>`;
     return;
   }
 
-  recordedRows.forEach((row) => {
+  rowsToShow.forEach((row) => {
     const item = document.createElement("div");
     item.className = "history-day-row";
     item.style.cursor = "pointer";
@@ -3050,7 +3385,7 @@ function renderDiaryHistory() {
       <p><strong>${t("diary_lbl_shukr")}</strong> ${entry.gratitude}</p>
       <p><strong>${t("diary_lbl_tawbah")}</strong> ${entry.shortcoming}</p>
       <p><strong>${t("diary_lbl_niyyah")}</strong> ${entry.niyyah}</p>
-      <small style="color:#10b981;font-size:0.68rem;">SHA-256: ${(entry.entryHash || "").slice(0, 28)}...</small>
+      <small style="color:#059669;font-size:0.68rem;font-weight:700;">SHA-256: ${(entry.entryHash || "").slice(0, 28)}...</small>
     `;
     listEl.appendChild(item);
   });
@@ -3094,10 +3429,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  const rangeSelect = document.getElementById("history-range-selector");
-  if (rangeSelect) {
-    rangeSelect.addEventListener("change", (e) => {
-      historyRangeDays = parseInt(e.target.value, 10) || 365;
+  const rangePillsContainer = document.getElementById("archive-range-pills");
+  if (rangePillsContainer) {
+    rangePillsContainer.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-range-days]");
+      if (!btn) return;
+      historyRangeDays = parseInt(btn.getAttribute("data-range-days"), 10) || 30;
+      if (navigator.vibrate) navigator.vibrate(10);
       renderLongTermArchive();
     });
   }
@@ -3152,8 +3490,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Click on any day in 7-Day Matrix or 12-Month Archive to inspect completed habits
+  // Click on any Month card to switch month archive OR any day row to inspect completed habits
   document.getElementById("tab-vault").addEventListener("click", (e) => {
+    const monthCard = e.target.closest("[data-select-month]");
+    if (monthCard) {
+      selectedArchiveMonthKey = monthCard.getAttribute("data-select-month");
+      if (navigator.vibrate) navigator.vibrate(12);
+      renderLongTermArchive();
+      return;
+    }
     const dayEl = e.target.closest("[data-date-inspect]");
     if (dayEl) {
       openDayHistoryModal(dayEl.getAttribute("data-date-inspect"));
@@ -3792,8 +4137,8 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
     if (progBar) progBar.style.width = "100%";
     if (btn) {
       btn.disabled = false;
-      btn.style.background = "var(--accent-gold)";
-      btn.style.color = "#05130e";
+      btn.style.background = "var(--accent-emerald)";
+      btn.style.color = "#ffffff";
       btn.textContent =
         appState.locale === "bn" ? "📦 এখনই ইনস্টল করুন" : "📦 Install Now";
     }
