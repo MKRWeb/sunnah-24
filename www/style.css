@@ -2144,3 +2144,272 @@ html[dir="rtl"] .month-summary-card {
   margin: 6px 2px 8px;
 }
 
+
+/* ==========================================================================
+   SHRINKED COMPACT COMMERCIAL HEADER & OPPOSITE THEME TOGGLE BUTTON
+   ========================================================================== */
+.app-header {
+  margin: 6px 12px 6px;
+  padding: 8px 12px;
+  border-radius: 16px;
+  gap: 8px;
+}
+
+.header-left {
+  gap: 9px;
+  min-width: 0;
+  flex: 1;
+}
+
+.header-brand-logo {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 9px !important;
+  border: 1.5px solid var(--accent-emerald) !important;
+  flex-shrink: 0;
+}
+
+.header-title-wrap {
+  min-width: 0;
+  flex: 1;
+}
+
+.app-header h1 {
+  font-size: 1.02rem;
+  line-height: 1.2;
+}
+
+.app-header p {
+  font-size: 0.67rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-right {
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.lang-select {
+  padding: 4px 8px;
+  font-size: 0.68rem;
+}
+
+/* Opposite Background Theme Toggle Button */
+.theme-toggle-btn {
+  background: #071f17;
+  color: #f8fafc;
+  border: 1.5px solid #10b981;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(5, 19, 14, 0.22);
+  transition: transform 0.18s ease, background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+  white-space: nowrap;
+}
+
+.theme-toggle-btn:hover {
+  transform: translateY(-1.5px);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.94);
+}
+
+/* ==========================================================================
+   FULL OPPOSITE THEME SYSTEM (DARK EMERALD MODE WHEN TOGGLED)
+   ========================================================================== */
+html[data-theme="dark"] {
+  --bg-main: #05130e;
+  --bg-card: #0b221a;
+  --bg-card-elevated: #123528;
+  --accent-gold: #eab308;
+  --accent-gold-soft: rgba(234, 179, 8, 0.16);
+  --accent-emerald: #10b981;
+  --accent-emerald-dark: #34d399;
+  --accent-emerald-soft: rgba(16, 185, 129, 0.16);
+  --text-primary: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: rgba(16, 185, 129, 0.25);
+  --danger: #ef4444;
+  --shadow-float: 0 10px 26px rgba(0, 0, 0, 0.45);
+  --shadow-float-hover: 0 14px 32px rgba(0, 0, 0, 0.6);
+  --shadow-pill: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] body {
+  background-color: #05130e;
+  background-image: radial-gradient(circle at 50% 0%, #092c20 0%, #05130e 65%);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .app-header {
+  background: rgba(11, 34, 26, 0.92);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+/* In Dark mode, the button displays the opposite Crisp White background */
+html[data-theme="dark"] .theme-toggle-btn {
+  background: #ffffff;
+  color: #05130e;
+  border-color: #eab308;
+  box-shadow: 0 4px 14px rgba(234, 179, 8, 0.28);
+}
+
+html[data-theme="dark"] .hero-card {
+  background: linear-gradient(145deg, #0f382a, #071913);
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+html[data-theme="dark"] .streak-circle-wrapper {
+  background: #071913;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .progress-ring-bg,
+html[data-theme="dark"] .tasbih-ring-bg {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .progress-track {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+html[data-theme="dark"] .waqt-strip-card,
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .habit-item,
+html[data-theme="dark"] .dua-card,
+html[data-theme="dark"] .prohibited-card,
+html[data-theme="dark"] .modal-card {
+  background: #0b221a;
+  border-color: rgba(16, 185, 129, 0.24);
+}
+
+html[data-theme="dark"] .prohibited-card.status-safe {
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.1), #0b221a);
+}
+
+html[data-theme="dark"] .prohibited-card.status-danger {
+  background: linear-gradient(145deg, rgba(239, 68, 68, 0.2), #161116);
+}
+
+html[data-theme="dark"] .waqt-pill-card,
+html[data-theme="dark"] .tab-btn,
+html[data-theme="dark"] .chip,
+html[data-theme="dark"] .day-col,
+html[data-theme="dark"] .month-summary-card,
+html[data-theme="dark"] .history-day-row,
+html[data-theme="dark"] .prohibited-slot,
+html[data-theme="dark"] .range-pill-btn,
+html[data-theme="dark"] .mood-btn,
+html[data-theme="dark"] .modal-section {
+  background: #071913;
+  color: var(--text-primary);
+  border-color: rgba(16, 185, 129, 0.22);
+}
+
+html[data-theme="dark"] .waqt-pill-card.waqt-active,
+html[data-theme="dark"] .tab-btn.active,
+html[data-theme="dark"] .month-summary-card.selected-month-card {
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.22), #0b221a);
+  border-color: var(--accent-gold);
+}
+
+html[data-theme="dark"] .habit-item.completed,
+html[data-theme="dark"] .dua-card.completed {
+  background: rgba(16, 185, 129, 0.14);
+  border-color: var(--accent-emerald);
+}
+
+html[data-theme="dark"] .habit-item.time-expired {
+  background: rgba(15, 23, 42, 0.65);
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+html[data-theme="dark"] .habit-item.time-upcoming {
+  background: rgba(11, 34, 26, 0.85);
+  border-color: rgba(234, 179, 8, 0.3);
+}
+
+html[data-theme="dark"] .search-box,
+html[data-theme="dark"] .input-select,
+html[data-theme="dark"] .input-text,
+html[data-theme="dark"] .input-textarea {
+  background: #05130e !important;
+  color: var(--text-primary) !important;
+  border-color: rgba(16, 185, 129, 0.28) !important;
+}
+
+html[data-theme="dark"] .dua-arabic {
+  background: rgba(6, 78, 59, 0.32);
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .translit {
+  color: #a7f3d0;
+}
+
+html[data-theme="dark"] .dua-virtue {
+  color: #fde047;
+}
+
+html[data-theme="dark"] .tasbih-wheel {
+  background: radial-gradient(circle, #134e3a, #071f17);
+  border-color: var(--accent-gold);
+}
+
+html[data-theme="dark"] .category-breakdown-panel {
+  background: #071913;
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+html[data-theme="dark"] .category-breakdown-header h4,
+html[data-theme="dark"] .cat-bar-title,
+html[data-theme="dark"] .cat-bar-pct {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .category-breakdown-header p {
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] .cat-bar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .category-advice-comment.needs-focus {
+  background: rgba(234, 179, 8, 0.12);
+  border-color: rgba(234, 179, 8, 0.4);
+  color: #fde047;
+}
+
+html[data-theme="dark"] .category-advice-comment.all-perfect {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #6ee7b7;
+}
+
+html[data-theme="dark"] .habit-check {
+  background: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+}
+
+html[data-theme="dark"] .quote-box,
+html[data-theme="dark"] .hash-box {
+  background: #071913;
+}
+
+html[data-theme="dark"] .exit-toast,
+html[data-theme="dark"] .update-banner-card {
+  background: #0b221a;
+  color: #f8fafc;
+}
+
