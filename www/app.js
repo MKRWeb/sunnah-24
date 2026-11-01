@@ -2973,29 +2973,30 @@ function renderHeaderDatesAndPhase() {
   const now = new Date();
   const localeTag = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).localeTag;
 
-  const greg = now.toLocaleDateString(localeTag, {
-    month: "short",
-    day: "numeric"
+  const gregFull = now.toLocaleDateString(localeTag, {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
   });
 
   const hijriDetails = getMoonBasedHijriDetails(now, appState.locale);
   const banglaDetails = getBanglaPonjikaDetails(now, appState.locale);
   const sched = computeSeasonalPrayerSchedule(now);
 
-  // Compact Header Date Line: Gregorian + Moon Hijri + Bangla Date
+  // If legacy #current-date-display exists, keep it empty/hidden since date is now in the 2nd-top Date Card
   const headerDateEl = document.getElementById("current-date-display");
   if (headerDateEl) {
-    headerDateEl.textContent = `${greg} • ${hijriDetails.shortHeaderText} • ${banglaDetails.shortText}`;
+    headerDateEl.textContent = "";
   }
 
-  // Dedicated Lunar & Bangla Ponjika Card (matching reference screenshot 1)
+  // Unified 2nd-Top Date Card: Line 1 = Moon-Sighting Hijri + Yawm + Crescent; Line 2 = Weekday, Bangla Date + Season • Gregorian Date
   const lunarHeadlineEl = document.getElementById("lunar-hijri-headline");
   const banglaSublineEl = document.getElementById("bangla-ponjika-subline");
   if (lunarHeadlineEl) {
     lunarHeadlineEl.innerHTML = hijriDetails.cardHeadlineHtml;
   }
   if (banglaSublineEl) {
-    banglaSublineEl.textContent = banglaDetails.fullSubline;
+    banglaSublineEl.textContent = `${banglaDetails.fullSubline} • ${gregFull}`;
   }
 
   const nowMins = now.getHours() * 60 + now.getMinutes();
@@ -3019,17 +3020,22 @@ function renderHeaderDatesAndPhase() {
     activeWaqtWindow = `${formatMinutesToLocalizedTime(sched.isha)} – ${formatMinutesToLocalizedTime(sched.fajr)}`;
   }
 
-  document.getElementById("next-phase-banner").textContent = `${phaseLabel} (${activeWaqtWindow})`;
+  // Null-safe update in case #next-phase-banner is replaced by the Live Waqt Countdown Bar
+  const nextPhaseBannerEl = document.getElementById("next-phase-banner");
+  if (nextPhaseBannerEl) {
+    nextPhaseBannerEl.textContent = `${phaseLabel} (${activeWaqtWindow})`;
+  }
 
   const dayOfWeek = now.getDay();
   const fastBanner = document.getElementById("fasting-banner");
-
-  if (dayOfWeek === 1 || dayOfWeek === 4) {
-    fastBanner.textContent = `${t("fast_mon_thu")} • ইফতার/Maghrib: ${formatMinutesToLocalizedTime(sched.maghrib)}`;
-  } else if (dayOfWeek === 5) {
-    fastBanner.textContent = t("fast_jumuah");
-  } else {
-    fastBanner.textContent = t("fast_default");
+  if (fastBanner) {
+    if (dayOfWeek === 1 || dayOfWeek === 4) {
+      fastBanner.textContent = `${t("fast_mon_thu")} • ইফতার/Maghrib: ${formatMinutesToLocalizedTime(sched.maghrib)}`;
+    } else if (dayOfWeek === 5) {
+      fastBanner.textContent = t("fast_jumuah");
+    } else {
+      fastBanner.textContent = t("fast_default");
+    }
   }
 
   if (typeof renderFiveWaqtStrip === "function") {
@@ -3071,6 +3077,7 @@ function calculateStreak() {
 
 function renderHabits() {
   const container = document.getElementById("habit-list-container");
+  if (!container) return;
   const todayKey = getTodayKey();
   const completedToday = appState.completionsByDate[todayKey] || [];
   const allHabits = getAllHabits();
@@ -3134,10 +3141,13 @@ function renderHabits() {
     return matchesPhase && matchesSearch;
   });
 
-  document.getElementById("filter-count-label").textContent = t("showing_habits", {
-    shown: localizeDigits(filtered.length, appState.locale),
-    total: localizeDigits(allHabits.length, appState.locale)
-  });
+  const filterCountEl = document.getElementById("filter-count-label");
+  if (filterCountEl) {
+    filterCountEl.textContent = t("showing_habits", {
+      shown: localizeDigits(filtered.length, appState.locale),
+      total: localizeDigits(allHabits.length, appState.locale)
+    });
+  }
 
   container.innerHTML = "";
 
@@ -3208,17 +3218,25 @@ function renderHabits() {
   const doneCount = completedToday.length;
   const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
 
-  document.getElementById("daily-score-text").textContent = `${localizeDigits(pct, appState.locale)}%`;
-  document.getElementById("completed-count-text").textContent = t("completed_habits", {
-    done: localizeDigits(doneCount, appState.locale),
-    total: localizeDigits(total, appState.locale)
-  });
-  document.getElementById("daily-progress-bar").style.width = `${pct}%`;
+  const dailyScoreEl = document.getElementById("daily-score-text");
+  if (dailyScoreEl) dailyScoreEl.textContent = `${localizeDigits(pct, appState.locale)}%`;
+  const completedCountEl = document.getElementById("completed-count-text");
+  if (completedCountEl) {
+    completedCountEl.textContent = t("completed_habits", {
+      done: localizeDigits(doneCount, appState.locale),
+      total: localizeDigits(total, appState.locale)
+    });
+  }
+  const dailyProgBarEl = document.getElementById("daily-progress-bar");
+  if (dailyProgBarEl) dailyProgBarEl.style.width = `${pct}%`;
   updateSvgCircleProgress("hero-progress-ring-circle", pct, HERO_RING_CIRCUMFERENCE);
-  document.getElementById("streak-count").textContent = localizeDigits(
-    calculateStreak(),
-    appState.locale
-  );
+  const streakCountEl = document.getElementById("streak-count");
+  if (streakCountEl) {
+    streakCountEl.textContent = localizeDigits(
+      calculateStreak(),
+      appState.locale
+    );
+  }
 
   renderWeeklyChart();
   renderLongTermArchive();
@@ -3727,16 +3745,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
 
-  // Automatic Real-Time Waqt Lock & Midnight Rollover Watcher (Refreshes time-window locks every 30s)
+  // Automatic Real-Time Waqt Lock, Live Prayer Progress Bar & Midnight Rollover Watcher (Refreshes every 15s)
   setInterval(() => {
-    const currentKey = getTodayKey();
-    if (currentKey !== lastObservedDateKey) {
-      lastObservedDateKey = currentKey;
+    try {
+      const currentKey = getTodayKey();
+      if (currentKey !== lastObservedDateKey) {
+        lastObservedDateKey = currentKey;
+      }
+      renderHeaderDatesAndPhase();
+      renderHabits();
+      renderDuas();
+    } catch (err) {
+      console.warn("Periodic UI sync warning:", err);
     }
-    renderHeaderDatesAndPhase();
-    renderHabits();
-    renderDuas();
-  }, 30000);
+  }, 15000);
 
   const langSwitcher = document.getElementById("lang-switcher");
   if (langSwitcher) {
