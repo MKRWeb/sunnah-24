@@ -27,7 +27,6 @@
       <img src="icon.svg" alt="Sunnah 24 Logo" class="header-brand-logo" />
       <div class="header-title-wrap">
         <h1 data-i18n="app_title">সুন্নাহ ২৪</h1>
-        <p id="current-date-display">হিজরি ও গ্রেগরিয়ান ক্যালেন্ডার সিঙ্ক হচ্ছে...</p>
       </div>
     </div>
 
@@ -61,6 +60,8 @@
       </button>
     </div>
   </header>
+
+
 
   <!-- Daily Progress & Circular Streak Hero Banner -->
   <section class="hero-card">
@@ -108,22 +109,12 @@
       <div id="daily-progress-bar" class="progress-fill" style="width: 0%"></div>
     </div>
     <div class="hero-meta">
-      <span id="next-phase-banner">🕒 চলমান সময়কাল...</span>
       <span id="fasting-banner">🌙 সুন্নাহ রোজা যাচাই...</span>
     </div>
   </section>
 
-  <!-- MOON-SIGHTING HIJRI (MAGHRIB ROLLOVER) & BANGLA ACADEMY PONJIKA DATE CARD -->
-  <section class="lunar-ponjika-card" aria-label="Lunar Hijri and Bangla Calendar">
-    <div class="lunar-hijri-row">
-      <strong id="lunar-hijri-headline">হিজরি তারিখ গণনা হচ্ছে...</strong>
-      <span class="crescent-badge" aria-hidden="true">🌙</span>
-    </div>
-    <p id="bangla-ponjika-subline" class="bangla-ponjika-sub">বাংলা তারিখ ও ঋতু সিঙ্ক হচ্ছে...</p>
-  </section>
-
-  <!-- MUSLIM BANGLA / MUSLIM'S DAY STYLE LIVE WAQT PROGRESS BAR + 5-WAQT TRACKER STRIP -->
-  <section class="waqt-strip-card" aria-label="Five Daily Prayers and Live Waqt">
+  <!-- LIVE ONGOING PRAYER PROGRESS BAR & COUNTDOWN CARD (Relocated right below Habit Tracker) -->
+  <section class="live-waqt-standalone-card" aria-label="Live Ongoing Prayer Progress">
     <div id="live-waqt-countdown-box" class="live-waqt-countdown-box">
       <div class="live-waqt-top-row">
         <strong id="live-waqt-title">--</strong>
@@ -140,6 +131,19 @@
         <strong id="live-waqt-remaining">-- বাকি</strong>
       </div>
     </div>
+  </section>
+
+  <!-- UNIFIED MOON-SIGHTING HIJRI, GREGORIAN & BANGLA PONJIKA DATE CARD -->
+  <section class="lunar-ponjika-card" aria-label="Lunar Hijri, Gregorian and Bangla Calendar">
+    <div class="lunar-hijri-row">
+      <strong id="lunar-hijri-headline">হিজরি তারিখ গণনা হচ্ছে...</strong>
+      <span class="crescent-badge" aria-hidden="true">🌙</span>
+    </div>
+    <p id="bangla-ponjika-subline" class="bangla-ponjika-sub">বাংলা ও ইংরেজি তারিখ সিঙ্ক হচ্ছে...</p>
+  </section>
+
+  <!-- MUSLIM BANGLA / MUSLIM'S DAY STYLE 5-WAQT TRACKER STRIP -->
+  <section class="waqt-strip-card" aria-label="Five Daily Prayers">
     <div id="five-waqt-grid" class="five-waqt-grid"></div>
   </section>
 
