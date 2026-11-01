@@ -2371,13 +2371,54 @@ function formatShortWaqtClock(totalMins, locale = appState.locale) {
   return `${hStr}:${mStr}`;
 }
 
+function formatRemainingDurationText(remainingMins, locale = appState.locale) {
+  const safeMins = Math.max(1, Math.ceil(remainingMins));
+  const hrs = Math.floor(safeMins / 60);
+  const mins = safeMins % 60;
+
+  if (locale === "bn") {
+    if (hrs > 0 && mins > 0) {
+      return `${localizeDigits(hrs, "bn")} ঘণ্টা ${localizeDigits(mins, "bn")} মিনিট বাকি`;
+    }
+    if (hrs > 0) {
+      return `${localizeDigits(hrs, "bn")} ঘণ্টা বাকি`;
+    }
+    return `${localizeDigits(mins, "bn")} মিনিট বাকি`;
+  }
+
+  if (locale === "ar") {
+    if (hrs > 0 && mins > 0) {
+      return `متبقي ${localizeDigits(hrs, "ar")} س و ${localizeDigits(mins, "ar")} د`;
+    }
+    if (hrs > 0) {
+      return `متبقي ${localizeDigits(hrs, "ar")} ساعة`;
+    }
+    return `متبقي ${localizeDigits(mins, "ar")} دقيقة`;
+  }
+
+  if (hrs > 0 && mins > 0) {
+    return `${hrs} hr ${mins} min left`;
+  }
+  if (hrs > 0) {
+    return `${hrs} hr left`;
+  }
+  return `${mins} min left`;
+}
+
 function renderFiveWaqtStrip(now = new Date()) {
   const gridEl = document.getElementById("five-waqt-grid");
   if (!gridEl) return;
   const sched = computeSeasonalPrayerSchedule(now);
-  const nowMins = now.getHours() * 60 + now.getMinutes();
+  const nowMins = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
   const lang = appState.locale || "bn";
 
+  // Authentic Waqt End Boundaries:
+  // - Fajr: Fajr start -> Sunrise
+  // - Duha / Ishraq (Forenoon): Ishraq -> Zawal
+  // - Dhuhr: Dhuhr start -> Asr start
+  // - Asr: Asr start -> Sunset
+  // - Maghrib: Maghrib start -> Isha start
+  // - Isha: Isha start -> Fajr start (next day)
   const waqts = [
     {
       id: "fajr",
@@ -2416,10 +2457,76 @@ function renderFiveWaqtStrip(now = new Date()) {
       name: t("waqt_isha"),
       icon: "🌙",
       start: sched.isha,
-      end: 1439,
+      end: sched.fajr + 1440,
       phase: "maghrib_isha"
     }
   ];
+
+  // Update the Live Ongoing Waqt Progress Bar & Countdown (Matching Screenshot 2!)
+  const titleEl = document.getElementById("live-waqt-title");
+  const rangeEl = document.getElementById("live-waqt-range");
+  const fillEl = document.getElementById("live-waqt-fill");
+  const statusEl = document.getElementById("live-waqt-status-label");
+  const remainingEl = document.getElementById("live-waqt-remaining");
+
+  if (titleEl && rangeEl && fillEl && statusEl && remainingEl) {
+    let activeWaqtTitle = "";
+    let winStart = 0;
+    let winEnd = 0;
+    let currentPos = nowMins;
+    let isRunningFardWaqt = true;
+
+    if (nowMins >= sched.fajr && nowMins < sched.sunrise) {
+      activeWaqtTitle = t("waqt_fajr");
+      winStart = sched.fajr;
+      winEnd = sched.sunrise;
+    } else if (nowMins >= sched.sunrise && nowMins < sched.dhuhr) {
+      // Forenoon / Duha window between Sunrise and Dhuhr
+      activeWaqtTitle =
+        lang === "bn"
+          ? "চাশত / ইশরাক (যোহরের পূর্ব পর্যন্ত)"
+          : lang === "ar"
+          ? "وقت الضحى (قبل الظهر)"
+          : "Duha / Forenoon (Until Dhuhr)";
+      winStart = sched.sunrise;
+      winEnd = sched.dhuhr;
+      isRunningFardWaqt = true;
+    } else if (nowMins >= sched.dhuhr && nowMins < sched.asr) {
+      activeWaqtTitle = t("waqt_dhuhr");
+      winStart = sched.dhuhr;
+      winEnd = sched.asr;
+    } else if (nowMins >= sched.asr && nowMins < sched.sunset) {
+      activeWaqtTitle = t("waqt_asr");
+      winStart = sched.asr;
+      winEnd = sched.sunset;
+    } else if (nowMins >= sched.sunset && nowMins < sched.isha) {
+      activeWaqtTitle = t("waqt_maghrib");
+      winStart = sched.maghrib;
+      winEnd = sched.isha;
+    } else {
+      // Isha & Tahajjud night window (crosses midnight until Fajr)
+      activeWaqtTitle = t("waqt_isha");
+      winStart = sched.isha;
+      winEnd = sched.fajr + 1440;
+      if (nowMins < sched.fajr) {
+        currentPos = nowMins + 1440;
+      }
+    }
+
+    const totalDuration = Math.max(1, winEnd - winStart);
+    const elapsed = Math.max(0, Math.min(totalDuration, currentPos - winStart));
+    const remaining = Math.max(0, winEnd - currentPos);
+    const pct = Math.max(4, Math.min(100, Math.round((elapsed / totalDuration) * 100)));
+
+    // Display end time minus 1 minute (e.g. 05:27 - 06:41 before next waqt at 06:42) just like commercial Islamic apps
+    const displayEndMins = (winEnd - 1 + 1440) % 1440;
+    titleEl.textContent = activeWaqtTitle;
+    rangeEl.textContent = `${formatShortWaqtClock(winStart, lang)} - ${formatShortWaqtClock(displayEndMins, lang)}`;
+    fillEl.style.width = `${pct}%`;
+    statusEl.textContent =
+      lang === "ar" ? "جارٍ الآن" : lang === "en" ? "Ongoing" : "চলমান";
+    remainingEl.textContent = formatRemainingDurationText(remaining, lang);
+  }
 
   gridEl.innerHTML = waqts
     .map((w) => {
@@ -2427,7 +2534,7 @@ function renderFiveWaqtStrip(now = new Date()) {
         w.id === "isha"
           ? nowMins >= w.start || nowMins < sched.fajr
           : nowMins >= w.start && nowMins < w.end;
-      const isPassed = w.id !== "isha" && nowMins >= w.end;
+      const isPassed = w.id !== "isha" && nowMins >= w.end && nowMins >= sched.fajr;
       return `
         <button type="button" class="waqt-pill-card ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""}" data-waqt-phase="${w.phase}">
           <div class="waqt-circle-logo">${w.icon}</div>
@@ -2534,16 +2641,70 @@ function applyLanguageToDOM() {
   updateIntegrityUI(true);
 }
 
-// Accurate Hijri Date Formatter with Authentic Bangla, Arabic & English Month Names
-function getAccurateHijriDate(dateObj, locale) {
+// ============================================================================
+// MOON-SIGHTING (HILAL) HIJRI ENGINE WITH MAGHRIB SUNSET ROLLOVER &
+// BANGLADESH / SOUTH ASIA VS MIDDLE EAST / GLOBAL REGIONAL ADJUSTMENT
+// + REVISED BANGLA ACADEMY PONJIKA (বঙ্গাব্দ ও ৬ ঋতু) ENGINE
+// ============================================================================
+function extractRawHijriParts(targetDateObj) {
+  let hDay = 1;
+  let hMonth = 1;
+  let hYear = 1448;
+  let extracted = false;
+
+  const calendars = ["islamic-umalqura", "islamic-civil", "islamic"];
+  for (const cal of calendars) {
+    try {
+      const parts = new Intl.DateTimeFormat(`en-u-ca-${cal}-nu-latn`, {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric"
+      }).formatToParts(targetDateObj);
+
+      const d = parseInt(parts.find((p) => p.type === "day")?.value, 10);
+      const m = parseInt(parts.find((p) => p.type === "month")?.value, 10);
+      const y = parseInt(parts.find((p) => p.type === "year")?.value, 10);
+
+      if (!isNaN(d) && !isNaN(m) && !isNaN(y) && y < 1700 && m >= 1 && m <= 12) {
+        hDay = d;
+        hMonth = m;
+        hYear = y;
+        extracted = true;
+        break;
+      }
+    } catch {}
+  }
+
+  if (!extracted) {
+    const jd = Math.floor(targetDateObj.getTime() / 86400000) + 2440588;
+    let l = jd - 1948440 + 10632;
+    const n = Math.floor((l - 1) / 10631);
+    l = l - 10631 * n + 354;
+    const j =
+      Math.floor((10985 - l) / 5316) * Math.floor((50 * l) / 17719) +
+      Math.floor(l / 5670) * Math.floor((43 * l) / 15238);
+    l =
+      l -
+      Math.floor((30 - j) / 15) * Math.floor((17719 * j) / 50) -
+      Math.floor(j / 16) * Math.floor((15238 * j) / 43) +
+      29;
+    hMonth = Math.floor((24 * l) / 709);
+    hDay = l - Math.floor((709 * hMonth) / 24);
+    hYear = 30 * n + j - 30;
+  }
+
+  return { hDay, hMonth, hYear };
+}
+
+function getMoonBasedHijriDetails(dateObj = new Date(), locale = appState.locale) {
   const hijriMonths = {
     bn: [
-      "মহররম",
+      "মুহাররম",
       "সফর",
       "রবিউল আউয়াল",
       "রবিউস সানি",
-      "জমাদিউল আউয়াল",
-      "জমাদিউস সানি",
+      "জুমাদাল উলা",
+      "জুমাদাল আখিরাহ",
       "রজব",
       "শাবান",
       "রমজান",
@@ -2581,60 +2742,231 @@ function getAccurateHijriDate(dateObj, locale) {
     ]
   };
 
-  let hDay = 1;
-  let hMonth = 1;
-  let hYear = 1448;
-  let extracted = false;
+  const arabicWeekdays = {
+    bn: [
+      "ইয়াওমুল আহাদ",
+      "ইয়াওমুল ইছনাইন",
+      "ইয়াওমুল ছুলাছা",
+      "ইয়াওমুল আরবিয়া",
+      "ইয়াওমুল খামীস",
+      "ইয়াওমুল জুমু'আহ",
+      "ইয়াওমুস সাবত"
+    ],
+    ar: [
+      "يوم الأحد",
+      "يوم الإثنين",
+      "يوم الثلاثاء",
+      "يوم الأربعاء",
+      "يوم الخميس",
+      "يوم الجمعة",
+      "يوم السبت"
+    ],
+    en: [
+      "Yawm al-Ahad",
+      "Yawm al-Ithnayn",
+      "Yawm al-Thulatha",
+      "Yawm al-Arbi'a",
+      "Yawm al-Khamis",
+      "Yawm al-Jumu'ah",
+      "Yawm al-Sabt"
+    ]
+  };
 
-  const calendars = ["islamic-umalqura", "islamic-civil", "islamic"];
-  for (const cal of calendars) {
-    try {
-      const parts = new Intl.DateTimeFormat(`en-u-ca-${cal}-nu-latn`, {
-        day: "numeric",
-        month: "numeric",
-        year: "numeric"
-      }).formatToParts(dateObj);
+  const sched = computeSeasonalPrayerSchedule(dateObj);
+  const nowMins = dateObj.getHours() * 60 + dateObj.getMinutes();
 
-      const d = parseInt(parts.find((p) => p.type === "day")?.value, 10);
-      const m = parseInt(parts.find((p) => p.type === "month")?.value, 10);
-      const y = parseInt(parts.find((p) => p.type === "year")?.value, 10);
+  // In Islamic Lunar Jurisprudence, the new Hijri date & Yawm begin at Sunset / Maghrib!
+  // Also, in Bangladesh / South Asia (regionCode === "BD"), local moon sighting (Hilal)
+  // starts 1 day after Umm al-Qura Saudi Arabia calendar.
+  const isBangladeshOrSouthAsia = sched.profile && sched.profile.regionCode === "BD";
+  const regionalMoonOffsetDays = isBangladeshOrSouthAsia ? -1 : 0;
+  const isAfterMaghrib = nowMins >= sched.sunset;
 
-      if (!isNaN(d) && !isNaN(m) && !isNaN(y) && y < 1700 && m >= 1 && m <= 12) {
-        hDay = d;
-        hMonth = m;
-        hYear = y;
-        extracted = true;
-        break;
-      }
-    } catch {}
+  const baseSolarDate = new Date(
+    dateObj.getFullYear(),
+    dateObj.getMonth(),
+    dateObj.getDate() + regionalMoonOffsetDays
+  );
+  const daytimeHijri = extractRawHijriParts(baseSolarDate);
+
+  let activeHijri = daytimeHijri;
+  let prevDaytimeHijri = null;
+
+  if (isAfterMaghrib) {
+    const nextLunarDate = new Date(
+      dateObj.getFullYear(),
+      dateObj.getMonth(),
+      dateObj.getDate() + regionalMoonOffsetDays + 1
+    );
+    activeHijri = extractRawHijriParts(nextLunarDate);
+    prevDaytimeHijri = daytimeHijri;
   }
 
-  if (!extracted) {
-    const jd = Math.floor(dateObj.getTime() / 86400000) + 2440588;
-    let l = jd - 1948440 + 10632;
-    const n = Math.floor((l - 1) / 10631);
-    l = l - 10631 * n + 354;
-    const j =
-      Math.floor((10985 - l) / 5316) * Math.floor((50 * l) / 17719) +
-      Math.floor(l / 5670) * Math.floor((43 * l) / 15238);
-    l =
-      l -
-      Math.floor((30 - j) / 15) * Math.floor((17719 * j) / 50) -
-      Math.floor(j / 16) * Math.floor((15238 * j) / 43) +
-      29;
-    hMonth = Math.floor((24 * l) / 709);
-    hDay = l - Math.floor((709 * hMonth) / 24);
-    hYear = 30 * n + j - 30;
-  }
+  // Islamic Yawm also rolls over to the next weekday at Maghrib!
+  const islamicWeekdayIndex = isAfterMaghrib
+    ? (dateObj.getDay() + 1) % 7
+    : dateObj.getDay();
 
   const lang = hijriMonths[locale] ? locale : "bn";
-  const monthName = hijriMonths[lang][hMonth - 1] || hijriMonths.bn[0];
-  const dayStr = localizeDigits(hDay, lang);
-  const yearStr = localizeDigits(hYear, lang);
+  const monthName = hijriMonths[lang][activeHijri.hMonth - 1] || hijriMonths.bn[0];
+  const dayStr = localizeDigits(activeHijri.hDay, lang);
+  const yearStr = localizeDigits(activeHijri.hYear, lang);
+  const yawmStr = (arabicWeekdays[lang] || arabicWeekdays.bn)[islamicWeekdayIndex];
 
-  if (lang === "bn") return `${dayStr} ${monthName}, ${yearStr} হিজরি`;
-  if (lang === "ar") return `${dayStr} ${monthName} ${yearStr} هـ`;
-  return `${dayStr} ${monthName} ${yearStr} AH`;
+  let shortHeaderText = "";
+  let cardHeadlineHtml = "";
+
+  if (lang === "bn") {
+    shortHeaderText = `${dayStr} ${monthName}, ${yearStr} হি.`;
+    if (isAfterMaghrib && prevDaytimeHijri && prevDaytimeHijri.hDay !== activeHijri.hDay) {
+      const prevDayStr = localizeDigits(prevDaytimeHijri.hDay, lang);
+      cardHeadlineHtml = `<s class="prev-hijri-day">${prevDayStr}</s>, ${dayStr} ${monthName} ${yearStr} হি. ${yawmStr}`;
+    } else {
+      cardHeadlineHtml = `${dayStr} ${monthName} ${yearStr} হি. ${yawmStr}`;
+    }
+  } else if (lang === "ar") {
+    shortHeaderText = `${dayStr} ${monthName} ${yearStr} هـ`;
+    if (isAfterMaghrib && prevDaytimeHijri && prevDaytimeHijri.hDay !== activeHijri.hDay) {
+      const prevDayStr = localizeDigits(prevDaytimeHijri.hDay, lang);
+      cardHeadlineHtml = `<s class="prev-hijri-day">${prevDayStr}</s> ، ${dayStr} ${monthName} ${yearStr} هـ • ${yawmStr}`;
+    } else {
+      cardHeadlineHtml = `${dayStr} ${monthName} ${yearStr} هـ • ${yawmStr}`;
+    }
+  } else {
+    shortHeaderText = `${dayStr} ${monthName} ${yearStr} AH`;
+    if (isAfterMaghrib && prevDaytimeHijri && prevDaytimeHijri.hDay !== activeHijri.hDay) {
+      cardHeadlineHtml = `<s class="prev-hijri-day">${prevDaytimeHijri.hDay}</s>, ${dayStr} ${monthName} ${yearStr} AH • ${yawmStr}`;
+    } else {
+      cardHeadlineHtml = `${dayStr} ${monthName} ${yearStr} AH • ${yawmStr}`;
+    }
+  }
+
+  return {
+    shortHeaderText,
+    cardHeadlineHtml,
+    isAfterMaghrib
+  };
+}
+
+function getAccurateHijriDate(dateObj, locale) {
+  return getMoonBasedHijriDetails(dateObj, locale).shortHeaderText;
+}
+
+// Official Revised Bangla Academy Calendar (বঙ্গাব্দ, বাংলা মাস ও ৬ ঋতু)
+function getBanglaPonjikaDetails(dateObj = new Date(), locale = appState.locale) {
+  const banglaMonths = {
+    bn: [
+      "বৈশাখ",
+      "জ্যৈষ্ঠ",
+      "আষাঢ়",
+      "শ্রাবণ",
+      "ভাদ্র",
+      "আশ্বিন",
+      "কার্তিক",
+      "অগ্রহায়ণ",
+      "পৌষ",
+      "মাঘ",
+      "ফাল্গুন",
+      "চৈত্র"
+    ],
+    ar: [
+      "بويشاخ",
+      "جويشثو",
+      "آشار",
+      "شرابون",
+      "بهادرو",
+      "آشين",
+      "كارتيك",
+      "أغروهايون",
+      "بوش",
+      "ماغ",
+      "فالغون",
+      "تشويترو"
+    ],
+    en: [
+      "Boishakh",
+      "Jyoishtho",
+      "Asharh",
+      "Shrabon",
+      "Bhadro",
+      "Ashwin",
+      "Kartik",
+      "Ogrohayon",
+      "Poush",
+      "Magh",
+      "Falgun",
+      "Choitro"
+    ]
+  };
+
+  const banglaSeasons = {
+    bn: ["গ্রীষ্মকাল", "বর্ষাকাল", "শরৎকাল", "হেমন্তকাল", "শীতকাল", "বসন্তকাল"],
+    ar: ["فصل الصيف", "فصل الأمطار", "فصل الخريف", "فصل الخريف المتأخر", "فصل الشتاء", "فصل الربيع"],
+    en: ["Grishmo (Summer)", "Borsha (Monsoon)", "Shorot (Autumn)", "Hemonto (Late Autumn)", "Sheet (Winter)", "Bosonto (Spring)"]
+  };
+
+  const banglaWeekdays = {
+    bn: ["রবিবার", "সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার", "শনিবার"],
+    ar: ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"],
+    en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  };
+
+  const gYear = dateObj.getFullYear();
+  const isLeap = (gYear % 4 === 0 && gYear % 100 !== 0) || gYear % 400 === 0;
+
+  // Revised Bangla Academy Month Lengths:
+  // First 6 months (Boishakh..Ashwin) = 31 days; Kartik..Choitro = 30 days (Falgun = 29 in non-leap, 30 in leap year)
+  const monthLengths = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, isLeap ? 30 : 29, 30];
+
+  const startOfBoishakhThisYear = Date.UTC(gYear, 3, 14); // April 14
+  const currentUtcMidnight = Date.UTC(gYear, dateObj.getMonth(), dateObj.getDate());
+  let dayDiff = Math.floor((currentUtcMidnight - startOfBoishakhThisYear) / 86400000);
+
+  let bYear = gYear - 593;
+  if (dayDiff < 0) {
+    bYear = gYear - 594;
+    const prevYear = gYear - 1;
+    const prevLeap = (prevYear % 4 === 0 && prevYear % 100 !== 0) || prevYear % 400 === 0;
+    const prevYearTotalDays = prevLeap ? 366 : 365;
+    dayDiff = prevYearTotalDays + dayDiff;
+    monthLengths[10] = prevLeap ? 30 : 29;
+  }
+
+  let bMonthIndex = 0;
+  let remainingDays = dayDiff;
+  for (let i = 0; i < 12; i++) {
+    if (remainingDays < monthLengths[i]) {
+      bMonthIndex = i;
+      break;
+    }
+    remainingDays -= monthLengths[i];
+  }
+  const bDay = remainingDays + 1;
+  const seasonIndex = Math.floor(bMonthIndex / 2);
+
+  const lang = banglaMonths[locale] ? locale : "bn";
+  const weekdayName = (banglaWeekdays[lang] || banglaWeekdays.bn)[dateObj.getDay()];
+  const bDayStr = localizeDigits(bDay, lang);
+  const bYearStr = localizeDigits(bYear, lang);
+  const bMonthName = (banglaMonths[lang] || banglaMonths.bn)[bMonthIndex];
+  const seasonName = (banglaSeasons[lang] || banglaSeasons.bn)[seasonIndex];
+
+  if (lang === "bn") {
+    return {
+      shortText: `${bDayStr} ${bMonthName} ${bYearStr}`,
+      fullSubline: `${weekdayName}, ${bDayStr} ${bMonthName} ${bYearStr} বঙ্গাব্দ, ${seasonName}`
+    };
+  }
+  if (lang === "ar") {
+    return {
+      shortText: `${bDayStr} ${bMonthName} ${bYearStr}`,
+      fullSubline: `${weekdayName}، ${bDayStr} ${bMonthName} ${bYearStr} بنغالي • ${seasonName}`
+    };
+  }
+  return {
+    shortText: `${bDayStr} ${bMonthName} ${bYearStr}`,
+    fullSubline: `${weekdayName}, ${bDayStr} ${bMonthName} ${bYearStr} BS, ${seasonName}`
+  };
 }
 
 function renderHeaderDatesAndPhase() {
@@ -2642,15 +2974,29 @@ function renderHeaderDatesAndPhase() {
   const localeTag = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).localeTag;
 
   const greg = now.toLocaleDateString(localeTag, {
-    weekday: "short",
     month: "short",
-    day: "numeric",
-    year: "numeric"
+    day: "numeric"
   });
 
-  const hijri = getAccurateHijriDate(now, appState.locale);
+  const hijriDetails = getMoonBasedHijriDetails(now, appState.locale);
+  const banglaDetails = getBanglaPonjikaDetails(now, appState.locale);
   const sched = computeSeasonalPrayerSchedule(now);
-  document.getElementById("current-date-display").textContent = `${greg} • ${hijri}`;
+
+  // Compact Header Date Line: Gregorian + Moon Hijri + Bangla Date
+  const headerDateEl = document.getElementById("current-date-display");
+  if (headerDateEl) {
+    headerDateEl.textContent = `${greg} • ${hijriDetails.shortHeaderText} • ${banglaDetails.shortText}`;
+  }
+
+  // Dedicated Lunar & Bangla Ponjika Card (matching reference screenshot 1)
+  const lunarHeadlineEl = document.getElementById("lunar-hijri-headline");
+  const banglaSublineEl = document.getElementById("bangla-ponjika-subline");
+  if (lunarHeadlineEl) {
+    lunarHeadlineEl.innerHTML = hijriDetails.cardHeadlineHtml;
+  }
+  if (banglaSublineEl) {
+    banglaSublineEl.textContent = banglaDetails.fullSubline;
+  }
 
   const nowMins = now.getHours() * 60 + now.getMinutes();
   let phaseLabel = t("phase_banner_night");
