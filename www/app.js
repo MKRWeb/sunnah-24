@@ -146,6 +146,12 @@ const I18N_DICTIONARIES = deepFreeze({
     advice_all_perfect: "🌟 মাশাআল্লাহ! আপনার সকল বিভাগেই ১০০% সুন্নাহ আমল সম্পন্ন হয়েছে। আল্লাহ আপনার ইস্তিকামাত কবুল করুন।",
     selected_month_records: "📅 নির্বাচিত মাসের দৈনিক রেকর্ডসমূহ:",
     tap_month_hint: "ট্যাপ করে নির্বাচন করুন",
+    theme_dark_btn: "ডার্ক",
+    theme_light_btn: "লাইট",
+    cat_range_30_title: "বিভাগভিত্তিক গড় (৩০ দিন / ১ মাস)",
+    cat_range_90_title: "বিভাগভিত্তিক গড় (৯০ দিন / ৩ মাস)",
+    cat_range_180_title: "বিভাগভিত্তিক গড় (১৮০ দিন / ৬ মাস)",
+    cat_range_365_title: "বিভাগভিত্তিক গড় (৩৬৫ দিন / ১ বছর)",
     archive_empty: "নির্বাচিত সময়সীমার মধ্যে এখনও কোনো সম্পন্ন আমলের রেকর্ড নেই।",
     archive_active_days: "সক্রিয় দিন:",
     archive_avg_score: "গড় অর্জন:",
@@ -291,6 +297,12 @@ const I18N_DICTIONARIES = deepFreeze({
     advice_all_perfect: "🌟 ما شاء الله! أتممت ١٠٠٪ في جميع الفئات، ثبتك الله وزادك توفيقاً.",
     selected_month_records: "📅 السجلات اليومية للشهر المحدد:",
     tap_month_hint: "اضغط للعرض",
+    theme_dark_btn: "داكن",
+    theme_light_btn: "فاتح",
+    cat_range_30_title: "المتوسط حسب المرحلة (٣٠ يوماً)",
+    cat_range_90_title: "المتوسط حسب المرحلة (٩٠ يوماً)",
+    cat_range_180_title: "المتوسط حسب المرحلة (١٨٠ يوماً)",
+    cat_range_365_title: "المتوسط حسب المرحلة (٣٦٥ يوماً)",
     archive_empty: "لا توجد سجلات مكتملة في هذه الفترة بعد.",
     archive_active_days: "الأيام النشطة:",
     archive_avg_score: "المعدل:",
@@ -436,6 +448,12 @@ const I18N_DICTIONARIES = deepFreeze({
     advice_all_perfect: "🌟 MashaAllah! You achieved 100% across all categories. May Allah grant you steadfastness.",
     selected_month_records: "📅 Daily Records for Selected Month:",
     tap_month_hint: "Tap to view month",
+    theme_dark_btn: "Dark",
+    theme_light_btn: "Light",
+    cat_range_30_title: "Phase Average (30 Days / 1M)",
+    cat_range_90_title: "Phase Average (90 Days / 3M)",
+    cat_range_180_title: "Phase Average (180 Days / 6M)",
+    cat_range_365_title: "Phase Average (365 Days / 1Y)",
     archive_empty: "No completed habit records found in this range yet.",
     archive_active_days: "Active Days:",
     archive_avg_score: "Avg Score:",
@@ -2632,14 +2650,7 @@ function renderHeaderDatesAndPhase() {
 
   const hijri = getAccurateHijriDate(now, appState.locale);
   const sched = computeSeasonalPrayerSchedule(now);
-  const regionTag =
-    appState.locale === "ar"
-      ? sched.profile.regionName_ar
-      : appState.locale === "en"
-      ? sched.profile.regionName_en
-      : sched.profile.regionName_bn;
-
-  document.getElementById("current-date-display").textContent = `${greg} • ${hijri} (${regionTag})`;
+  document.getElementById("current-date-display").textContent = `${greg} • ${hijri}`;
 
   const nowMins = now.getHours() * 60 + now.getMinutes();
   let phaseLabel = t("phase_banner_night");
@@ -2868,134 +2879,87 @@ function renderHabits() {
 }
 
 // ============================================================================
-// 7-CATEGORY GRAPH ENGINE (MATCHING COMMERCIAL BENGALI ISLAMIC APP DESIGN)
-// Maps all 32 Prophetic habits + 12 Masnoon Duas + custom habits into the 7
-// categories shown in the reference screenshot:
-// 1. নামায (Fard & Rawatib Salah)
-// 2. নফল নামায (Nafl Prayer)
-// 3. সকাল-সন্ধ্যার আমল (Morning & Evening Adhkar + Duas)
-// 4. ঘুমের আগের আমল (Bedtime Sunnahs)
-// 5. করণীয় (Essential Duties / Karaniya)
-// 6. বর্জনীয় (Restraint & Self-Discipline / Barjaniya)
-// 7. দায়েমী সুন্নাহ (Perpetual Daily Sunnahs)
+// NATIVE SUNNAH 24 7-PHASE GRAPH ENGINE (WEEKLY, MONTHLY, 90D, 180D, 365D)
+// Uses our own 7 Native APK Phases:
+// ১. তাহাজ্জুদ ও ফজর (tahajjud_fajr)
+// ২. সকাল ও কর্মক্ষেত্র (duha_work)
+// ৩. যোহর, কাইলুলা ও আসর (dhuhr_asr)
+// ৪. মাগরিব ও ইশা (maghrib_isha)
+// ৫. সুন্নাহ সম্মত ঘুম (sleep_sunnah)
+// ৬. তিব্বে নববী ও ফিতরাত (diet_hygiene)
+// ৭. আখলাক ও সুন্নাহ দিবস (character_social)
 // ============================================================================
 const CATEGORY_GRAPH_DEFINITIONS = deepFreeze([
   {
-    id: "salah",
-    titleKey: "cat_salah",
-    colorClass: "cat-emerald",
+    id: "tahajjud_fajr",
+    phaseKey: "tahajjud_fajr",
+    titleKey: "phase_tahajjud",
     barColor: "#0d7a49",
     bgSoft: "#e2f2ea",
     svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#0d7a49" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L4 9h16L12 3z"/><path d="M6 9v8M10 9v8M14 9v8M18 9v8"/><path d="M3 17h18M2 20h20"/></svg>`,
-    habitIds: [
-      "s24_04_fajr_sunnah_fard",
-      "s24_11_dhuhr_rawatib",
-      "s24_13_asr_prayer",
-      "s24_15_maghrib_sunnah",
-      "s24_17_isha_witr"
-    ]
+    includeMorningDuas: true
   },
   {
-    id: "nafl_salah",
-    titleKey: "cat_nafl_salah",
-    colorClass: "cat-teal",
+    id: "duha_work",
+    phaseKey: "duha_work",
+    titleKey: "phase_duha",
     barColor: "#0e8074",
     bgSoft: "#dff2f0",
-    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#0e8074" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
-    habitIds: [
-      "s24_03_tahajjud",
-      "s24_06_ishraq_reflection",
-      "s24_08_salat_duha",
-      "s24_31_mon_thu_fasting"
-    ]
+    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#0e8074" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`
   },
   {
-    id: "morning_evening",
-    titleKey: "cat_morning_evening",
-    colorClass: "cat-amber",
+    id: "dhuhr_asr",
+    phaseKey: "dhuhr_asr",
+    titleKey: "phase_dhuhr",
     barColor: "#c2780e",
     bgSoft: "#f9eedb",
     svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c2780e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M12 8.5c-1.2-1.2-3-.5-3 1.2 0 1.5 3 3.3 3 3.3s3-1.8 3-3.3c0-1.7-1.8-2.4-3-1.2z"/><line x1="8" y1="17" x2="16" y2="17"/></svg>`,
-    habitIds: [
-      "s24_01_waking_dua",
-      "s24_05_post_fajr_barakah",
-      "s24_07_home_exit_dua",
-      "s24_14_evening_adhkar"
-    ],
-    includeDuas: true
+    includeEveningDuas: true
+  },
+  {
+    id: "maghrib_isha",
+    phaseKey: "maghrib_isha",
+    titleKey: "phase_maghrib",
+    barColor: "#4f46e5",
+    bgSoft: "#e8e8f8",
+    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`
   },
   {
     id: "sleep_sunnah",
-    titleKey: "cat_sleep_sunnah",
-    colorClass: "cat-indigo",
-    barColor: "#4f46e5",
-    bgSoft: "#e8e8f8",
-    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5"/><path d="M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/><line x1="3" y1="16" x2="21" y2="16"/><line x1="12" y1="6" x2="12" y2="11"/></svg>`,
-    habitIds: [
-      "s24_18_surah_mulk_baqarah",
-      "s24_19_sleep_wudu_dusting",
-      "s24_20_kursi_3quls",
-      "s24_21_tasbih_fatimah",
-      "s24_22_forgiving_before_sleep"
-    ]
-  },
-  {
-    id: "karaniya",
-    titleKey: "cat_karaniya",
-    colorClass: "cat-green",
+    phaseKey: "sleep_sunnah",
+    titleKey: "phase_sleep",
     barColor: "#3b8728",
     bgSoft: "#e5f3e1",
-    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#3b8728" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.4-1.4-3.5-.6-3.5 1.4 0 1.8 3.5 3.8 3.5 3.8s3.5-2 3.5-3.8c0-2-2.1-2.8-3.5-1.4z"/><path d="M3 16l4-2h6l3 2h5l-4 4H8l-5-4z"/></svg>`,
-    habitIds: [
-      "s24_09_halal_ihsan_work",
-      "s24_16_family_silat_rahim",
-      "s24_29_daily_sadaqah_istighfar",
-      "s24_30_honoring_parents",
-      "s24_32_jumuah_kahf_salawat"
-    ]
+    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#3b8728" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5"/><path d="M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/><line x1="3" y1="16" x2="21" y2="16"/></svg>`
   },
   {
-    id: "barjaniya",
-    titleKey: "cat_barjaniya",
-    colorClass: "cat-crimson",
+    id: "diet_hygiene",
+    phaseKey: "diet_hygiene",
+    titleKey: "phase_diet",
     barColor: "#cb443b",
     bgSoft: "#fae5e3",
-    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#cb443b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="9.5" y1="9.5" x2="14.5" y2="14.5"/><line x1="14.5" y1="9.5" x2="9.5" y2="14.5"/></svg>`,
-    habitIds: [
-      "s24_23_one_third_stomach",
-      "s24_28_guarding_tongue_anger"
-    ]
+    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#cb443b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>`
   },
   {
-    id: "dayemi_sunnah",
-    titleKey: "cat_dayemi_sunnah",
-    colorClass: "cat-bronze",
+    id: "character_social",
+    phaseKey: "character_social",
+    titleKey: "phase_character",
     barColor: "#9c6d12",
     bgSoft: "#f8eedc",
-    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#9c6d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 21 2 9 6 3"/><line x1="2" y1="9" x2="22" y2="9"/><polyline points="12 21 8 9 10 3"/><polyline points="12 21 16 9 14 3"/></svg>`,
-    habitIds: [
-      "s24_02_miswak_wudu",
-      "s24_10_tayammun_right",
-      "s24_12_qaylulah_nap",
-      "s24_24_water_three_sips",
-      "s24_25_tibb_nabawi_superfoods",
-      "s24_26_fitrah_grooming",
-      "s24_27_salam_smiling"
-    ],
-    includeCustomHabits: true
+    svgIcon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#9c6d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5c-1.4-1.4-3.5-.6-3.5 1.4 0 1.8 3.5 3.8 3.5 3.8s3.5-2 3.5-3.8c0-2-2.1-2.8-3.5-1.4z"/><path d="M3 16l4-2h6l3 2h5l-4 4H8l-5-4z"/></svg>`
   }
 ]);
 
-// Renders the 7-Category Horizontal Progress Bar Graph + Lowest Category Improvement Recommendation
+// Renders the 7 Native Phase Horizontal Progress Bar Graph + Lowest Phase Improvement Recommendation
 function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceContainerId) {
   const barsContainer = document.getElementById(barsContainerId);
   const adviceContainer = document.getElementById(adviceContainerId);
   if (!barsContainer) return;
 
   const lang = appState.locale || "bn";
-  const customHabitIds = (appState.customHabits || []).map((ch) => ch.id);
+  const allHabits = getAllHabits();
 
-  // Filter dateKeysArray to active days that have at least 1 completion or include today so denominator is fair
+  // Filter dateKeysArray to active days that have at least 1 completion or include today
   const activeDateKeys = dateKeysArray.filter((k) => {
     const hDone = (appState.completionsByDate[k] || []).length;
     const dDone = ((appState.duaCompletionsByDate && appState.duaCompletionsByDate[k]) || []).length;
@@ -3005,25 +2969,19 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
   const numDays = Math.max(1, effectiveDates.length);
 
   const categoryResults = CATEGORY_GRAPH_DEFINITIONS.map((cat) => {
-    const trackedHabitIds = cat.includeCustomHabits
-      ? [...cat.habitIds, ...customHabitIds]
-      : [...cat.habitIds];
+    const phaseHabitIds = allHabits
+      .filter((h) => h.phase === cat.phaseKey)
+      .map((h) => h.id);
 
-    const perDayTarget = trackedHabitIds.length + (cat.includeDuas ? 4 : 0);
+    const perDayTarget = Math.max(1, phaseHabitIds.length);
     const totalPossible = Math.max(1, perDayTarget * numDays);
     let totalCompleted = 0;
 
     effectiveDates.forEach((dKey) => {
       const completedH = appState.completionsByDate[dKey] || [];
-      trackedHabitIds.forEach((hId) => {
+      phaseHabitIds.forEach((hId) => {
         if (completedH.includes(hId)) totalCompleted++;
       });
-      if (cat.includeDuas) {
-        const completedD = (appState.duaCompletionsByDate && appState.duaCompletionsByDate[dKey]) || [];
-        // Weight Duas proportionally (up to 4 points per day for completing daily Masnoon Duas)
-        const duaScore = Math.min(4, Math.ceil((completedD.length / Math.max(1, SUNNAH_24_DUAS.length)) * 4));
-        totalCompleted += duaScore;
-      }
     });
 
     const pct = Math.min(100, Math.round((totalCompleted / totalPossible) * 100));
@@ -3038,7 +2996,7 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
     .map((item) => {
       const pctLocalized = localizeDigits(item.pct, lang);
       return `
-        <div class="cat-graph-row">
+        <div class="cat-graph-row" data-jump-phase="${item.phaseKey}" style="cursor:pointer;" title="${item.label}">
           <div class="cat-icon-squircle" style="background:${item.bgSoft};">
             ${item.svgIcon}
           </div>
@@ -3112,7 +3070,9 @@ function renderWeeklyChart() {
   renderCategoryBreakdownGraph(weekDateKeys, "weekly-category-bars", "weekly-category-advice");
 }
 
-// Multi-Month Archive (Default 30 Days / 1M, Current Month Selected by Default, Click Any Month to Switch)
+let archiveFilterBySpecificMonth = true; // Default: show current month's archive by default; clicking a month card filters to that month, clicking 90D/180D/365D shows the multi-month range & updates the pipeline
+
+// Multi-Month Archive (Default 30 Days / 1M, Current Month Selected by Default, Click Any Month to Switch, plus 90D/180D/365D Pipeline)
 function renderLongTermArchive() {
   const monthlyEl = document.getElementById("monthly-summary-list");
   const historyListEl = document.getElementById("longterm-history-list");
@@ -3125,13 +3085,14 @@ function renderLongTermArchive() {
   const localeTag = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).localeTag;
   const currentMonthKey = getTodayKey().slice(0, 7);
 
-  // Sync range pill active state
+  // Sync range pill active state (30D default, 90D, 180D, 365D)
   document.querySelectorAll(".range-pill-btn").forEach((btn) => {
     const days = parseInt(btn.getAttribute("data-range-days"), 10);
     btn.classList.toggle("active", days === historyRangeDays);
   });
 
   const monthlyStats = {};
+  const allRangeDateKeys = [];
 
   // Ensure current month always exists first
   {
@@ -3151,6 +3112,7 @@ function renderLongTermArchive() {
     const d = new Date();
     d.setDate(d.getDate() - i);
     const key = getLocalDateKey(d);
+    allRangeDateKeys.push(key);
     const monthKey = key.slice(0, 7); // YYYY-MM
     const doneList = appState.completionsByDate[key] || [];
     const duaList = (appState.duaCompletionsByDate && appState.duaCompletionsByDate[key]) || [];
@@ -3222,20 +3184,40 @@ function renderLongTermArchive() {
   const monthlyHeadingEl = document.getElementById("monthly-cat-heading");
   const selectedMonthLabelEl = document.getElementById("selected-month-records-label");
 
+  // Determine whether the Category Graph shows the Selected Month OR the full 90D/180D/365D Range
+  const rangeTitleKey =
+    historyRangeDays === 90
+      ? "cat_range_90_title"
+      : historyRangeDays === 180
+      ? "cat_range_180_title"
+      : historyRangeDays === 365
+      ? "cat_range_365_title"
+      : "cat_range_30_title";
+
   if (monthlyHeadingEl && activeMonthObj) {
-    monthlyHeadingEl.textContent = `${t("cat_monthly_title")} — ${activeMonthObj.label}`;
+    if (archiveFilterBySpecificMonth) {
+      monthlyHeadingEl.textContent = `${t("cat_monthly_title")} — ${activeMonthObj.label}`;
+    } else {
+      monthlyHeadingEl.textContent = `${t(rangeTitleKey)} • ${activeMonthObj.label}`;
+    }
   }
   if (selectedMonthLabelEl && activeMonthObj) {
     selectedMonthLabelEl.textContent = `${t("selected_month_records")} (${activeMonthObj.label})`;
   }
 
-  // Render the 7-Category Horizontal Progress Bar Graph + Lowest Category Advice for the Selected Month!
+  const graphDateKeys = archiveFilterBySpecificMonth
+    ? activeMonthObj
+      ? activeMonthObj.dateKeys
+      : [getTodayKey()]
+    : allRangeDateKeys;
+
   renderCategoryBreakdownGraph(
-    activeMonthObj ? activeMonthObj.dateKeys : [getTodayKey()],
+    graphDateKeys,
     "monthly-category-bars",
     "monthly-category-advice"
   );
 
+  // Daily history list always shows the selected month's records (Current Month by default, or clicked Month)
   const rowsToShow = activeMonthObj ? activeMonthObj.recordedRows : [];
   if (rowsToShow.length === 0) {
     historyListEl.innerHTML = `<p class="muted">${t("archive_empty")}</p>`;
@@ -3435,6 +3417,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       const btn = e.target.closest("[data-range-days]");
       if (!btn) return;
       historyRangeDays = parseInt(btn.getAttribute("data-range-days"), 10) || 30;
+      // When user clicks 90D / 180D / 365D, inject the full 90/180/365-day pipeline into the category graph;
+      // when 30D is clicked, default to current month
+      archiveFilterBySpecificMonth = historyRangeDays === 30;
+      if (historyRangeDays === 30) {
+        selectedArchiveMonthKey = getTodayKey().slice(0, 7);
+      }
       if (navigator.vibrate) navigator.vibrate(10);
       renderLongTermArchive();
     });
@@ -3490,13 +3478,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Click on any Month card to switch month archive OR any day row to inspect completed habits
+  // Click on any Month card to switch month archive, or click a Category Bar row to jump to that phase, or click a day row
   document.getElementById("tab-vault").addEventListener("click", (e) => {
     const monthCard = e.target.closest("[data-select-month]");
     if (monthCard) {
       selectedArchiveMonthKey = monthCard.getAttribute("data-select-month");
+      archiveFilterBySpecificMonth = true;
       if (navigator.vibrate) navigator.vibrate(12);
       renderLongTermArchive();
+      return;
+    }
+    const phaseRow = e.target.closest("[data-jump-phase]");
+    if (phaseRow) {
+      const targetPhase = phaseRow.getAttribute("data-jump-phase");
+      if (targetPhase) {
+        switchTabProgrammatically("tab-routine", true);
+        activePhase = targetPhase;
+        document.querySelectorAll(".filter-bar .chip").forEach((c) => {
+          c.classList.toggle("active", c.dataset.phase === targetPhase);
+        });
+        renderHabits();
+        if (navigator.vibrate) navigator.vibrate(12);
+      }
       return;
     }
     const dayEl = e.target.closest("[data-date-inspect]");
@@ -4337,6 +4340,70 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       renderHabits();
       if (navigator.vibrate) navigator.vibrate(12);
+    });
+  }
+});
+
+
+// ============================================================================
+// COMMERCIAL LIGHT / DARK OPPOSITE THEME TOGGLE ENGINE
+// Default is Commercial White ('light'); clicking the button switches to the
+// opposite Dark Emerald ('dark') theme and persists across sessions.
+// ============================================================================
+const THEME_STORAGE_KEY = "SUNNAH_24_UI_THEME_MODE";
+
+function getCurrentThemeMode() {
+  try {
+    const saved = localStorage.getItem(THEME_STORAGE_KEY);
+    if (saved === "dark" || saved === "light") return saved;
+  } catch {}
+  return document.documentElement.getAttribute("data-theme") || "light";
+}
+
+function applyThemeMode(mode) {
+  const cleanMode = mode === "dark" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", cleanMode);
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, cleanMode);
+  } catch {}
+
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if (metaTheme) {
+    metaTheme.setAttribute("content", cleanMode === "dark" ? "#05130e" : "#f1f6f3");
+  }
+
+  const iconEl = document.getElementById("theme-toggle-icon");
+  const labelEl = document.getElementById("theme-toggle-label");
+  if (iconEl && labelEl) {
+    // Show the opposite mode icon & label on the button so user knows clicking switches to the opposite background
+    if (cleanMode === "light") {
+      iconEl.textContent = "🌙";
+      labelEl.setAttribute("data-i18n", "theme_dark_btn");
+      labelEl.textContent = t("theme_dark_btn");
+    } else {
+      iconEl.textContent = "☀️";
+      labelEl.setAttribute("data-i18n", "theme_light_btn");
+      labelEl.textContent = t("theme_light_btn");
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  applyThemeMode(getCurrentThemeMode());
+
+  const themeBtn = document.getElementById("theme-toggle-btn");
+  if (themeBtn) {
+    themeBtn.addEventListener("click", () => {
+      const nextMode = getCurrentThemeMode() === "light" ? "dark" : "light";
+      applyThemeMode(nextMode);
+      if (navigator.vibrate) navigator.vibrate(14);
+    });
+  }
+
+  const langSwitcher = document.getElementById("lang-switcher");
+  if (langSwitcher) {
+    langSwitcher.addEventListener("change", () => {
+      setTimeout(() => applyThemeMode(getCurrentThemeMode()), 20);
     });
   }
 });
