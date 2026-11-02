@@ -1309,8 +1309,12 @@ function getHabitTime(habit) {
   if (typeof computeSeasonalPrayerSchedule === "function" && rawLabel && rawLabel.includes("•")) {
     const parts = rawLabel.split("•");
     const descPart = parts.slice(1).join("•").trim();
-    const rule = getDynamicSeasonalHabitWindow(habit, new Date());
-    if (rule && !(rule.start <= 5 && rule.end >= 1430) && !rule.fridayOnly) {
+    const nowObj = new Date();
+    const rule = getDynamicSeasonalHabitWindow(habit, nowObj);
+    const isClosedDayGate =
+      (rule && rule.fridayOnly && nowObj.getDay() !== 5) ||
+      (rule && rule.fastingDaysOnly && !evaluateSunnahFastingDayStatus(nowObj).isFastingDay);
+    if (rule && !(rule.start <= 5 && rule.end >= 1430) && !isClosedDayGate) {
       const dynamicStartStr = formatMinutesToLocalizedTime(rule.start, appState.locale);
       return `${dynamicStartStr} • ${descPart}`;
     }
@@ -1671,27 +1675,39 @@ const HERO_RING_CIRCUMFERENCE = 289.03;   // 2 * PI * 46
 const TASBIH_RING_CIRCUMFERENCE = 703.72; // 2 * PI * 112
 const DUA_RING_CIRCUMFERENCE = 150.8;     // 2 * PI * 24
 
-// Regional Astronomical Profiles mapped to Device Timezone & Language
-// - Bangladesh (Asia/Dhaka, UTC+6): Islamic Foundation Bangladesh (18° Fajr, 18° Isha, Hanafi Asr shadow=2, Shafi'i Asr shadow=1)
-// - Middle East (Asia/Riyadh, Dubai, Doha, Kuwait, Cairo, etc.): Umm al-Qura / Gulf / Egypt seasonal parameters
-// - Western Countries (Europe, North America, Australia): ISNA / MWL with High-Latitude Seventh-of-Night seasonal protection
+// ============================================================================
+// X (TWITTER)-STYLE SILENT BACKGROUND MULTI-TIER GEOGRAPHIC LOCATION DETECTOR
+// & HANAFI ASR (MITHL-E-THANI, SHADOW FACTOR = 2) ISLAMIC PRAYER TIME ENGINE
+// ============================================================================
+// - Automatically & silently detects user's geographic location and timezone in the background
+//   using a 4-Tier X-style telemetry pipeline:
+//   Tier 1: Silent Zero-Permission IANA Timezone + UTC Meridian Telemetry (instant, 0 popups)
+//   Tier 2: Silent Permissions API Check (`navigator.permissions.query({name:'geolocation'})`)
+//           — only invokes GPS if already granted or cached, avoiding intrusive prompts
+//   Tier 3: Silent Background Timezone-Shift & Visibility Watcher (auto-updates if user travels)
+//   Tier 4: Hanafi Asr Timeline (asrShadowFactor: 2, Mithl-e-Thani) for Bangladesh & South Asia
+//           (and standard Hanafi timeline across all habit & Waqt trackers)
+const GEO_LOCATION_CACHE_KEY = "SUNNAH_24_X_GEO_COORDS_V1";
+
 const REGIONAL_PRAYER_PROFILES = deepFreeze({
   bn: {
     regionCode: "BD",
-    regionName_bn: "বাংলাদেশ (ইসলামিক ফাউন্ডেশন ঋতুভিত্তিক সময়সূচী)",
-    regionName_ar: "بنغلاديش (التوقيت الموسمي - المؤسسة الإسلامية)",
-    regionName_en: "Bangladesh (Islamic Foundation Seasonal Waqt)",
+    subRegion: "SOUTH_ASIA",
+    regionName_bn: "বাংলাদেশ (ইসলামিক ফাউন্ডেশন হানাফী ঋতুভিত্তিক সময়সূচী)",
+    regionName_ar: "بنغلاديش (التوقيت الموسمي الحنفي - المؤسسة الإسلامية)",
+    regionName_en: "Bangladesh (Islamic Foundation Hanafi Seasonal Waqt)",
     lat: 24.0,
     lon: 89.85,
     tzHours: 6.0,
     fajrAngle: 18.0,
     ishaAngle: 18.0,
     ishaFixedMins: 0,
-    asrShadowFactor: 2 // Hanafi standard (Islamic Foundation Bangladesh)
+    asrShadowFactor: 2 // Hanafi standard (Islamic Foundation Bangladesh — Mithl-e-Thani)
   },
   ar: {
     regionCode: "ME",
-    regionName_bn: "মধ্যপ্রাচ্য (উম্মুল কুরা মক্কা ঋতুভিত্তিক সময়সূচী)",
+    subRegion: "MIDDLE_EAST",
+    regionName_bn: "মধ্যপ্রাচ্য (উম্মুল কুরা ও হানাফী আসর সময়সূচী)",
     regionName_ar: "الشرق الأوسط (تقويم أم القرى الموسمي)",
     regionName_en: "Middle East (Umm al-Qura Seasonal Waqt)",
     lat: 21.4225,
@@ -1700,25 +1716,226 @@ const REGIONAL_PRAYER_PROFILES = deepFreeze({
     fajrAngle: 18.5,
     ishaAngle: 0,
     ishaFixedMins: 90, // Umm al-Qura 90 mins after Maghrib
-    asrShadowFactor: 1 // Jumhur / Shafi'i / Hanbali standard
+    asrShadowFactor: 2 // Hanafi Asr timeline preserved as requested
   },
   en: {
     regionCode: "WEST",
-    regionName_bn: "পশ্চিমা বিশ্ব (ISNA/MWL ঋতুভিত্তিক সময়সূচী)",
+    subRegion: "WESTERN",
+    regionName_bn: "পশ্চিমা বিশ্ব (ISNA/MWL ও হানাফী আসর ঋতুভিত্তিক সময়সূচী)",
     regionName_ar: "الدول الغربية (التوقيت الموسمي ISNA/MWL)",
-    regionName_en: "Western Countries (ISNA/MWL Seasonal Waqt)",
+    regionName_en: "Western Countries (ISNA/MWL Hanafi Seasonal Waqt)",
     lat: 40.7128,
     lon: -74.006,
     tzHours: -5.0,
     fajrAngle: 15.0,
     ishaAngle: 15.0,
     ishaFixedMins: 0,
-    asrShadowFactor: 1
+    asrShadowFactor: 2 // Hanafi Asr timeline preserved as requested
   }
 });
 
-// Detects exact physical region from device IANA timezone & UTC offset first so changing UI language
-// never corrupts local prayer times, while still supporting Bangladesh, Middle East & Western countries!
+// Comprehensive IANA Timezone -> Exact Geographic Hub & Calculation Authority Registry
+// Operates 100% silently in the background (like X/Twitter's automatic location-timeframe detector)
+const IANA_GEO_TIMEZONE_REGISTRY = deepFreeze({
+  // --- SOUTH ASIA (Islamic Foundation / Karachi Hanafi Standard: 18° Fajr/Isha, asrShadowFactor = 2) ---
+  "asia/dhaka": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 24.0, lon: 89.85, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/dacca": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 24.0, lon: 89.85, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/kolkata": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 22.5726, lon: 88.3639, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/calcutta": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 22.5726, lon: 88.3639, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/karachi": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 24.8607, lon: 67.0011, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/colombo": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 6.9271, lon: 79.8612, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/kathmandu": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 27.7172, lon: 85.324, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/katmandu": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 27.7172, lon: 85.324, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "indian/maldives": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 4.1755, lon: 73.5093, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/thimphu": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 27.4728, lon: 89.6393, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/kabul": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 34.5553, lon: 69.2075, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/yangon": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 16.8409, lon: 96.1735, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/rangoon": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 16.8409, lon: 96.1735, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+
+  // --- CENTRAL ASIA & TURKEY (Hanafi Standard: asrShadowFactor = 2) ---
+  "asia/tashkent": { regionCode: "ME", subRegion: "CENTRAL_ASIA", lat: 41.2995, lon: 69.2401, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/almaty": { regionCode: "ME", subRegion: "CENTRAL_ASIA", lat: 43.222, lon: 76.8512, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/bishkek": { regionCode: "ME", subRegion: "CENTRAL_ASIA", lat: 42.8746, lon: 74.5698, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/dushanbe": { regionCode: "ME", subRegion: "CENTRAL_ASIA", lat: 38.5598, lon: 68.787, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/ashgabat": { regionCode: "ME", subRegion: "CENTRAL_ASIA", lat: 37.9601, lon: 58.3261, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/baku": { regionCode: "ME", subRegion: "CENTRAL_ASIA", lat: 40.4093, lon: 49.8671, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/istanbul": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 41.0082, lon: 28.9784, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+
+  // --- MIDDLE EAST & GULF (Hanafi Asr Timeline Enabled: asrShadowFactor = 2) ---
+  "asia/riyadh": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 21.4225, lon: 39.8262, fajrAngle: 18.5, ishaAngle: 0, ishaFixedMins: 90, asrShadowFactor: 2 },
+  "asia/makkah": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 21.4225, lon: 39.8262, fajrAngle: 18.5, ishaAngle: 0, ishaFixedMins: 90, asrShadowFactor: 2 },
+  "asia/aden": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 15.3694, lon: 44.191, fajrAngle: 18.5, ishaAngle: 0, ishaFixedMins: 90, asrShadowFactor: 2 },
+  "asia/kuwait": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 29.3759, lon: 47.9774, fajrAngle: 18.0, ishaAngle: 17.5, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/qatar": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 25.2854, lon: 51.531, fajrAngle: 18.0, ishaAngle: 0, ishaFixedMins: 90, asrShadowFactor: 2 },
+  "asia/bahrain": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 26.2285, lon: 50.586, fajrAngle: 18.0, ishaAngle: 0, ishaFixedMins: 90, asrShadowFactor: 2 },
+  "asia/dubai": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 25.2048, lon: 55.2708, fajrAngle: 18.2, ishaAngle: 18.2, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/muscat": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 23.588, lon: 58.3829, fajrAngle: 18.2, ishaAngle: 18.2, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/baghdad": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 33.3152, lon: 44.3661, fajrAngle: 19.5, ishaAngle: 17.5, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/amman": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 31.9454, lon: 35.9284, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/jerusalem": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 31.7683, lon: 35.2137, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/beirut": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 33.8938, lon: 35.5018, fajrAngle: 18.0, ishaAngle: 17.5, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/damascus": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 33.5138, lon: 36.2765, fajrAngle: 18.0, ishaAngle: 17.5, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "africa/cairo": { regionCode: "ME", subRegion: "MIDDLE_EAST", lat: 30.0444, lon: 31.2357, fajrAngle: 19.5, ishaAngle: 17.5, ishaFixedMins: 0, asrShadowFactor: 2 },
+
+  // --- SOUTHEAST ASIA (20° Fajr, 18° Isha, Hanafi Asr Timeline) ---
+  "asia/kuala_lumpur": { regionCode: "ME", subRegion: "SE_ASIA", lat: 3.139, lon: 101.6869, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/singapore": { regionCode: "ME", subRegion: "SE_ASIA", lat: 1.3521, lon: 103.8198, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/jakarta": { regionCode: "ME", subRegion: "SE_ASIA", lat: -6.2088, lon: 106.8456, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/brunei": { regionCode: "ME", subRegion: "SE_ASIA", lat: 4.9031, lon: 114.9398, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+
+  // --- WESTERN COUNTRIES: EUROPE (MWL 18° Fajr, 17° Isha, Hanafi Asr Timeline) ---
+  "europe/london": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 51.5074, lon: -0.1278, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/dublin": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 53.3498, lon: -6.2603, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/paris": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 48.8566, lon: 2.3522, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/berlin": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 52.52, lon: 13.405, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/rome": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 41.9028, lon: 12.4964, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/madrid": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 40.4168, lon: -3.7038, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/amsterdam": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 52.3676, lon: 4.9041, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/brussels": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 50.8503, lon: 4.3517, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/zurich": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 47.3769, lon: 8.5417, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/vienna": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 48.2082, lon: 16.3738, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/stockholm": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 59.3293, lon: 18.0686, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/oslo": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 59.9139, lon: 10.7522, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/copenhagen": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 55.6761, lon: 12.5683, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/athens": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 37.9838, lon: 23.7275, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/lisbon": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 38.7223, lon: -9.1393, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "europe/warsaw": { regionCode: "WEST", subRegion: "WESTERN_EUROPE", lat: 52.2297, lon: 21.0122, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+
+  // --- WESTERN COUNTRIES: NORTH AMERICA (ISNA 15° Fajr, 15° Isha, Hanafi Asr Timeline) ---
+  "america/new_york": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 40.7128, lon: -74.006, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "america/toronto": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 43.6532, lon: -79.3832, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "america/chicago": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 41.8781, lon: -87.6298, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "america/winnipeg": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 49.8951, lon: -97.1384, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "america/denver": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 39.7392, lon: -104.9903, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "america/edmonton": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 53.5461, lon: -113.4938, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "america/los_angeles": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 34.0522, lon: -118.2437, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "america/vancouver": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 49.2827, lon: -123.1207, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "america/detroit": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 42.3314, lon: -83.0458, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "america/halifax": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 44.6488, lon: -63.5752, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "america/phoenix": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 33.4484, lon: -112.074, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+
+  // --- WESTERN COUNTRIES: OCEANIA (MWL 18° Fajr, 17° Isha, Hanafi Asr Timeline) ---
+  "australia/sydney": { regionCode: "WEST", subRegion: "OCEANIA", lat: -33.8688, lon: 151.2093, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "australia/melbourne": { regionCode: "WEST", subRegion: "OCEANIA", lat: -37.8136, lon: 144.9631, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "australia/brisbane": { regionCode: "WEST", subRegion: "OCEANIA", lat: -27.4705, lon: 153.026, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "australia/perth": { regionCode: "WEST", subRegion: "OCEANIA", lat: -31.9505, lon: 115.8605, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "australia/adelaide": { regionCode: "WEST", subRegion: "OCEANIA", lat: -34.9285, lon: 138.6007, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "pacific/auckland": { regionCode: "WEST", subRegion: "OCEANIA", lat: -36.8485, lon: 174.7633, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 }
+});
+
+let cachedDeviceGeoCoords = null;
+let lastObservedTimezoneId = "";
+
+function loadCachedDeviceGeoCoords() {
+  if (cachedDeviceGeoCoords) return cachedDeviceGeoCoords;
+  try {
+    const raw = localStorage.getItem(GEO_LOCATION_CACHE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (
+        parsed &&
+        typeof parsed.lat === "number" &&
+        typeof parsed.lon === "number" &&
+        Math.abs(parsed.lat) <= 90 &&
+        Math.abs(parsed.lon) <= 180
+      ) {
+        cachedDeviceGeoCoords = parsed;
+        return parsed;
+      }
+    }
+  } catch {}
+  return null;
+}
+
+function silentlyAcquireGpsPosition() {
+  if (!("geolocation" in navigator)) return;
+  try {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        if (!pos || !pos.coords) return;
+        const { latitude, longitude } = pos.coords;
+        if (typeof latitude === "number" && typeof longitude === "number") {
+          cachedDeviceGeoCoords = {
+            lat: Number(latitude.toFixed(4)),
+            lon: Number(longitude.toFixed(4)),
+            ts: Date.now()
+          };
+          try {
+            localStorage.setItem(GEO_LOCATION_CACHE_KEY, JSON.stringify(cachedDeviceGeoCoords));
+          } catch {}
+          renderHeaderDatesAndPhase();
+          renderHabits();
+          renderDuas();
+        }
+      },
+      () => {
+        // 100% silent fallback to IANA Timezone + UTC Meridian telemetry
+      },
+      {
+        enableHighAccuracy: false,
+        timeout: 6000,
+        maximumAge: 1000 * 60 * 60 * 12 // Reuse cached fix for up to 12 hours silently
+      }
+    );
+  } catch {}
+}
+
+// X (Twitter)-style Silent Background Multi-Tier Geographic Location Detector
+// Never interrupts the user with intrusive permission dialogs:
+// - Immediately resolves timezone & geographic hub via `Intl.DateTimeFormat().resolvedOptions().timeZone`
+// - Checks `navigator.permissions.query({ name: 'geolocation' })` and only queries GPS silently if already granted
+// - Monitors timezone shifts on app resume (`visibilitychange`) so travelling across regions updates prayer times silently
+function initXStyleAutoGeographicDetector() {
+  loadCachedDeviceGeoCoords();
+
+  try {
+    lastObservedTimezoneId =
+      Intl.DateTimeFormat().resolvedOptions().timeZone ||
+      String(new Date().getTimezoneOffset());
+  } catch {}
+
+  // Silent Permission Check: Only trigger hardware GPS if permission is already 'granted'
+  if (navigator.permissions && typeof navigator.permissions.query === "function") {
+    navigator.permissions
+      .query({ name: "geolocation" })
+      .then((permStatus) => {
+        if (permStatus && permStatus.state === "granted") {
+          silentlyAcquireGpsPosition();
+        }
+        if (permStatus) {
+          permStatus.onchange = () => {
+            if (permStatus.state === "granted") {
+              silentlyAcquireGpsPosition();
+            }
+          };
+        }
+      })
+      .catch(() => {});
+  }
+
+  // Silent Background Resume Watcher: If device changes timezone or returns to foreground, sync immediately
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      try {
+        const currentTz =
+          Intl.DateTimeFormat().resolvedOptions().timeZone ||
+          String(new Date().getTimezoneOffset());
+        if (currentTz !== lastObservedTimezoneId) {
+          lastObservedTimezoneId = currentTz;
+          renderHeaderDatesAndPhase();
+          renderHabits();
+          renderDuas();
+        }
+      } catch {}
+    }
+  });
+}
+
+// Automatically resolves the user's exact geographic calculation authority & coordinates
+// using X (Twitter)-style Multi-Tier Background Telemetry while preserving Hanafi Asr (asrShadowFactor = 2):
+// Tier 1: Exact IANA Timezone Registry (South Asia, Middle East, Western Europe, North America, Oceania)
+// Tier 2: Sub-continent / Regional Timezone & UTC Meridian Heuristics
+// Tier 3: Silent Cached GPS Coordinate Overlay (when consistent with device timezone)
 function resolveActiveRegionalProfile(dateObj = new Date()) {
   const localTzOffsetHours = -dateObj.getTimezoneOffset() / 60;
   let tzName = "";
@@ -1727,14 +1944,80 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
   } catch {}
 
   const tzLower = tzName.toLowerCase();
+  const gps = loadCachedDeviceGeoCoords();
 
-  // 1. Physical Device in Bangladesh (Asia/Dhaka or UTC+6)
-  if (tzLower.includes("dhaka") || tzLower.includes("dacca") || Math.abs(localTzOffsetHours - 6.0) < 0.15) {
-    const bdBase = { ...REGIONAL_PRAYER_PROFILES.bn, tzHours: 6.0 };
-    return bdBase;
+  // Overlay cached GPS coordinates if their longitude aligns with the device's active timezone
+  const applyGpsIfConsistent = (profileObj) => {
+    if (gps && typeof gps.lat === "number" && typeof gps.lon === "number") {
+      const expectedLon = localTzOffsetHours * 15;
+      if (Math.abs(gps.lon - expectedLon) <= 38) {
+        profileObj.lat = gps.lat;
+        profileObj.lon = gps.lon;
+        profileObj.geoSource = "GPS+IANA";
+        return profileObj;
+      }
+    }
+    profileObj.geoSource = "IANA_TZ";
+    return profileObj;
+  };
+
+  // Tier 1: Exact IANA Timezone Match from Global Registry
+  if (tzLower && IANA_GEO_TIMEZONE_REGISTRY[tzLower]) {
+    const matched = {
+      ...REGIONAL_PRAYER_PROFILES.bn,
+      ...IANA_GEO_TIMEZONE_REGISTRY[tzLower],
+      tzHours: localTzOffsetHours,
+      asrShadowFactor: 2 // Strictly Hanafi Asr (Mithl-e-Thani)
+    };
+    return applyGpsIfConsistent(matched);
   }
 
-  // 2. Physical Device in Middle East (UTC+2 to UTC+4 with Arab/Gulf timezones)
+  // Tier 2: South Asia Automatic Catcher (Bangladesh UTC+6, India/Sri Lanka UTC+5.5, Pakistan/Maldives UTC+5, Nepal UTC+5.75, Myanmar UTC+6.5)
+  if (
+    tzLower.includes("dhaka") ||
+    tzLower.includes("dacca") ||
+    tzLower.includes("kolkata") ||
+    tzLower.includes("calcutta") ||
+    tzLower.includes("karachi") ||
+    tzLower.includes("colombo") ||
+    tzLower.includes("kathmandu") ||
+    tzLower.includes("katmandu") ||
+    tzLower.includes("maldives") ||
+    tzLower.includes("thimphu") ||
+    tzLower.includes("rangoon") ||
+    tzLower.includes("yangon") ||
+    (localTzOffsetHours >= 4.9 && localTzOffsetHours <= 6.6)
+  ) {
+    const saProfile = {
+      ...REGIONAL_PRAYER_PROFILES.bn,
+      regionCode: "BD",
+      subRegion: "SOUTH_ASIA",
+      tzHours: localTzOffsetHours,
+      fajrAngle: 18.0,
+      ishaAngle: 18.0,
+      ishaFixedMins: 0,
+      asrShadowFactor: 2 // Hanafi standard (Islamic Foundation Bangladesh / Karachi)
+    };
+
+    if (Math.abs(localTzOffsetHours - 6.0) < 0.15) {
+      saProfile.lat = 24.0;
+      saProfile.lon = 89.85;
+    } else if (Math.abs(localTzOffsetHours - 5.5) < 0.15) {
+      saProfile.lat = 22.5726;
+      saProfile.lon = 82.5;
+    } else if (Math.abs(localTzOffsetHours - 5.0) < 0.15) {
+      saProfile.lat = 24.8607;
+      saProfile.lon = 67.0011;
+    } else if (Math.abs(localTzOffsetHours - 5.75) < 0.15) {
+      saProfile.lat = 27.7172;
+      saProfile.lon = 85.324;
+    } else {
+      saProfile.lon = localTzOffsetHours * 15;
+    }
+    return applyGpsIfConsistent(saProfile);
+  }
+
+  // Tier 3: Middle East Automatic Catcher (Saudi Arabia, UAE, Qatar, Kuwait, Oman, Jordan, Iraq, Palestine, Egypt, Turkey)
   if (
     tzLower.includes("riyadh") ||
     tzLower.includes("makkah") ||
@@ -1747,9 +2030,19 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
     tzLower.includes("baghdad") ||
     tzLower.includes("amman") ||
     tzLower.includes("jerusalem") ||
-    tzLower.includes("cairo")
+    tzLower.includes("beirut") ||
+    tzLower.includes("damascus") ||
+    tzLower.includes("cairo") ||
+    tzLower.includes("istanbul") ||
+    (localTzOffsetHours >= 2.5 && localTzOffsetHours <= 4.5)
   ) {
-    const meBase = { ...REGIONAL_PRAYER_PROFILES.ar, tzHours: localTzOffsetHours };
+    const meBase = {
+      ...REGIONAL_PRAYER_PROFILES.ar,
+      regionCode: "ME",
+      subRegion: "MIDDLE_EAST",
+      tzHours: localTzOffsetHours,
+      asrShadowFactor: 2 // Hanafi Asr timeline
+    };
     if (tzLower.includes("dubai") || tzLower.includes("muscat") || Math.abs(localTzOffsetHours - 4.0) < 0.15) {
       meBase.lat = 25.2048;
       meBase.lon = 55.2708;
@@ -1765,42 +2058,56 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
     } else {
       meBase.lon = localTzOffsetHours * 15 - 5;
     }
-    return meBase;
+    return applyGpsIfConsistent(meBase);
   }
 
-  // 3. Physical Device in Western Countries (Europe, Americas, Australia/NZ)
+  // Tier 4: Western Countries Automatic Catcher (North America, UK/Europe, Australia/New Zealand)
   if (
     tzLower.startsWith("europe/") ||
     tzLower.startsWith("america/") ||
     tzLower.startsWith("australia/") ||
     tzLower.startsWith("pacific/") ||
-    localTzOffsetHours <= 2.0
+    tzLower.startsWith("atlantic/") ||
+    localTzOffsetHours <= 2.0 ||
+    localTzOffsetHours >= 8.0
   ) {
-    const westBase = { ...REGIONAL_PRAYER_PROFILES.en, tzHours: localTzOffsetHours };
+    const westBase = {
+      ...REGIONAL_PRAYER_PROFILES.en,
+      regionCode: "WEST",
+      tzHours: localTzOffsetHours,
+      asrShadowFactor: 2 // Hanafi Asr timeline
+    };
     if (tzLower.startsWith("europe/")) {
-      westBase.lat = 51.5074; // London / Western Europe
+      westBase.subRegion = "WESTERN_EUROPE";
+      westBase.lat = 51.5074;
       westBase.lon = localTzOffsetHours * 15;
-      westBase.fajrAngle = 18.0; // MWL Europe standard
+      westBase.fajrAngle = 18.0;
       westBase.ishaAngle = 17.0;
     } else if (tzLower.startsWith("america/")) {
-      westBase.lat = 40.7128; // North America ISNA standard
+      westBase.subRegion = "NORTH_AMERICA";
+      westBase.lat = 40.7128;
       westBase.lon = localTzOffsetHours * 15;
       westBase.fajrAngle = 15.0;
       westBase.ishaAngle = 15.0;
-    } else if (tzLower.startsWith("australia/")) {
-      westBase.lat = -33.8688; // Sydney / Southern Hemisphere
+    } else if (tzLower.startsWith("australia/") || tzLower.startsWith("pacific/")) {
+      westBase.subRegion = "OCEANIA";
+      westBase.lat = -33.8688;
       westBase.lon = localTzOffsetHours * 15;
       westBase.fajrAngle = 18.0;
       westBase.ishaAngle = 17.0;
     } else {
       westBase.lon = localTzOffsetHours * 15;
     }
-    return westBase;
+    return applyGpsIfConsistent(westBase);
   }
 
-  // Fallback to selected locale profile
+  // Tier 5: Fallback to selected locale profile with Hanafi Asr (asrShadowFactor = 2)
   const lang = appState.locale || "bn";
-  return { ...(REGIONAL_PRAYER_PROFILES[lang] || REGIONAL_PRAYER_PROFILES.bn) };
+  const fallbackProfile = {
+    ...(REGIONAL_PRAYER_PROFILES[lang] || REGIONAL_PRAYER_PROFILES.bn),
+    asrShadowFactor: 2
+  };
+  return applyGpsIfConsistent(fallbackProfile);
 }
 
 // Astronomical Solar Declination & Equation of Time Calculator (NOAA / Jean Meeus High-Precision)
@@ -1885,9 +2192,7 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
   const zawalStartMins = solarNoonMins - 6;
   const dhuhrMins = solarNoonMins + 3; // Dhuhr begins right after sun passes meridian zenith
 
-  // Asr Calculation:
-  // - Shafi'i / Jumhur (shadow factor = 1): Standard in Middle East & Western countries, and early Asr in BD
-  // - Hanafi (shadow factor = 2): Standard Islamic Foundation in Bangladesh
+  // Asr Calculation (Hanafi Mithl-e-Thani Timeline, shadow factor = 2):
   const zenithDiffRad = Math.abs(latRad - declRad);
   const asrShafiiAltDeg = rad2deg(Math.atan(1 / (1 + Math.tan(zenithDiffRad))));
   const asrHanafiAltDeg = rad2deg(Math.atan(1 / (2 + Math.tan(zenithDiffRad))));
@@ -2016,7 +2321,7 @@ function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
     case "s24_12_qaylulah_nap":
       return { start: s.dhuhr + 15, end: s.asr - 10 };
     case "s24_13_asr_prayer":
-      return { start: Math.min(s.asrShafii || s.asr, s.asr), end: s.sunset - 16 };
+      return { start: s.asr, end: s.sunset - 16 };
     case "s24_14_evening_adhkar":
       return { start: s.asr, end: s.maghrib + 75 };
     case "s24_15_maghrib_sunnah":
@@ -2033,7 +2338,7 @@ function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
     case "s24_22_forgiving_before_sleep":
       return { start: Math.max(s.isha, 20 * 60), end: 23 * 60 + 59 };
     case "s24_31_mon_thu_fasting":
-      return { start: s.fajr - 30, end: s.maghrib + 90 };
+      return { start: s.fajr - 30, end: s.maghrib + 90, fastingDaysOnly: true };
     case "s24_32_jumuah_kahf_salawat":
       return { start: s.fajr, end: s.maghrib, fridayOnly: true };
     default: {
@@ -2046,6 +2351,49 @@ function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
       return { start: 0, end: 1439 };
     }
   }
+}
+
+// Computes the daytime (Suhoor-to-Iftar) Hijri day/month/year for any solar date,
+// respecting the regional moon-sighting offset (Bangladesh/South Asia vs Makkah/Global).
+function getDaytimeHijriPartsForSolarDate(dateObj = new Date()) {
+  const sched = computeSeasonalPrayerSchedule(dateObj);
+  const isBangladeshOrSouthAsia = sched.profile && sched.profile.regionCode === "BD";
+  const regionalMoonOffsetDays = isBangladeshOrSouthAsia ? -1 : 0;
+  const baseSolarDate = new Date(
+    dateObj.getFullYear(),
+    dateObj.getMonth(),
+    dateObj.getDate() + regionalMoonOffsetDays
+  );
+  return extractRawHijriParts(baseSolarDate);
+}
+
+// Evaluates whether today is an authentic Sunnah Fasting day:
+// - Monday (dayOfWeek === 1)
+// - Thursday (dayOfWeek === 4)
+// - 13th, 14th, or 15th of the Month (Ayyam al-Beed Hijri 13-15 OR Gregorian 13-15)
+function evaluateSunnahFastingDayStatus(now = new Date()) {
+  const dayOfWeek = now.getDay();
+  const isMonOrThu = dayOfWeek === 1 || dayOfWeek === 4;
+  const daytimeHijri = getDaytimeHijriPartsForSolarDate(now);
+  const hDay = daytimeHijri.hDay;
+  const gDay = now.getDate();
+
+  // Forbidden Eid / Tashreeq fasting days safeguard (1 Shawwal, 10-13 Dhu al-Hijjah)
+  const isEidAlFitr = daytimeHijri.hMonth === 10 && hDay === 1;
+  const isEidOrTashreeq = daytimeHijri.hMonth === 12 && hDay >= 10 && hDay <= 13;
+
+  const isHijriWhiteDay = hDay >= 13 && hDay <= 15 && !isEidOrTashreeq;
+  const isGregorianMidMonth = gDay >= 13 && gDay <= 15 && !isEidAlFitr && !isEidOrTashreeq;
+  const isFastingDay = !isEidAlFitr && !isEidOrTashreeq && (isMonOrThu || isHijriWhiteDay || isGregorianMidMonth);
+
+  return {
+    isFastingDay,
+    isMonOrThu,
+    isHijriWhiteDay,
+    isGregorianMidMonth,
+    hDay,
+    gDay
+  };
 }
 
 // Evaluates whether a habit is currently "open", "upcoming", or "expired" based on seasonal Waqt
@@ -2072,6 +2420,29 @@ function evaluateHabitTimeWindow(habit, now = new Date()) {
           ? "🕌 Active on Fridays Only"
           : "🕌 শুধুমাত্র জুমু'আর দিন উন্মুক্ত"
     };
+  }
+
+  // Special check for Sunnah Fasting (Habit #31): Strictly locked unless today is Monday, Thursday, or 13th–15th of the month!
+  if (rule.fastingDaysOnly) {
+    const fastStatus = evaluateSunnahFastingDayStatus(now);
+    if (!fastStatus.isFastingDay) {
+      return {
+        status: "upcoming",
+        canTick: false,
+        windowLabel:
+          appState.locale === "ar"
+            ? "الإثنين / الخميس و ١٣-١٥ فقط"
+            : appState.locale === "en"
+            ? "Mon, Thu & 13th–15th Only"
+            : "শুধুমাত্র সোম, বৃহস্পতি ও ১৩-১৫ তারিখ",
+        badgeText:
+          appState.locale === "ar"
+            ? "🌙 متاح يوم الإثنين والخميس و ١٣-١٥ فقط"
+            : appState.locale === "en"
+            ? "🌙 Active on Mon, Thu & 13th–15th Only"
+            : "🌙 শুধুমাত্র সোম, বৃহস্পতি ও ১৩-১৫ তারিখে উন্মুক্ত"
+      };
+    }
   }
 
   if (nowMins < rule.start) {
@@ -3098,8 +3469,16 @@ function renderHeaderDatesAndPhase() {
   const dayOfWeek = now.getDay();
   const fastBanner = document.getElementById("fasting-banner");
   if (fastBanner) {
-    if (dayOfWeek === 1 || dayOfWeek === 4) {
-      fastBanner.textContent = `${t("fast_mon_thu")} • ইফতার/Maghrib: ${formatMinutesToLocalizedTime(sched.maghrib)}`;
+    const fastStatus = evaluateSunnahFastingDayStatus(now);
+    if (fastStatus.isFastingDay) {
+      const fastReasonLabel = fastStatus.isMonOrThu
+        ? t("fast_mon_thu")
+        : appState.locale === "ar"
+        ? "🌙 اليوم: صيام الأيام البيض (١٣-١٥)"
+        : appState.locale === "en"
+        ? "🌙 Today: Sunnah Fast (13th–15th White Days)"
+        : "🌙 আজ: আইয়ামে বীজের সুন্নাহ রোজা (১৩-১৫ তারিখ)";
+      fastBanner.textContent = `${fastReasonLabel} • ইফতার/Maghrib: ${formatMinutesToLocalizedTime(sched.maghrib)}`;
     } else if (dayOfWeek === 5) {
       fastBanner.textContent = t("fast_jumuah");
     } else {
@@ -3831,6 +4210,7 @@ function renderDiaryHistory() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadAndVerifyState();
+  initXStyleAutoGeographicDetector();
   applyLanguageToDOM();
 
   if ("serviceWorker" in navigator) {
