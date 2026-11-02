@@ -5220,7 +5220,7 @@ function applyThemeMode(mode) {
 
   const metaTheme = document.querySelector('meta[name="theme-color"]');
   if (metaTheme) {
-    metaTheme.setAttribute("content", cleanMode === "dark" ? "#05130e" : "#f1f6f3");
+    metaTheme.setAttribute("content", cleanMode === "dark" ? "#0b221a" : "#ffffff");
   }
 
   const iconEl = document.getElementById("theme-toggle-icon");
@@ -5258,3 +5258,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
+// ============================================================================
+// FULL-BLEED STICKY MARGIN-BAR HEADER SCROLL ELEVATION GUARD
+// Ensures scrolling content strictly passes underneath the solid top header bar
+// ============================================================================
+document.addEventListener("DOMContentLoaded", () => {
+  const headerEl = document.querySelector(".app-header");
+  if (!headerEl) return;
+  const syncHeaderScrollState = () => {
+    headerEl.classList.toggle("is-scrolled", (window.scrollY || window.pageYOffset || 0) > 4);
+  };
+  window.addEventListener("scroll", syncHeaderScrollState, { passive: true });
+  syncHeaderScrollState();
+});
+
+
