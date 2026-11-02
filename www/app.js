@@ -2002,11 +2002,11 @@ function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
     case "s24_05_post_fajr_barakah":
       return { start: s.fajr + 15, end: s.sunrise + 60 };
     case "s24_06_ishraq_reflection":
-      return { start: s.ishraq, end: s.sunrise + 120 };
+      return { start: s.ishraq, end: s.zawal - 1 };
     case "s24_07_home_exit_dua":
       return { start: s.fajr, end: 22 * 60 };
     case "s24_08_salat_duha":
-      return { start: s.duhaStart, end: s.zawal };
+      return { start: s.duhaStart, end: s.zawal - 1 };
     case "s24_09_halal_ihsan_work":
       return { start: s.sunrise, end: 22 * 60 + 30 };
     case "s24_10_tayammun_right":
@@ -2016,7 +2016,7 @@ function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
     case "s24_12_qaylulah_nap":
       return { start: s.dhuhr + 15, end: s.asr - 10 };
     case "s24_13_asr_prayer":
-      return { start: Math.min(s.asrShafii || s.asr, s.asr), end: s.sunset - 2 };
+      return { start: Math.min(s.asrShafii || s.asr, s.asr), end: s.sunset - 16 };
     case "s24_14_evening_adhkar":
       return { start: s.asr, end: s.maghrib + 75 };
     case "s24_15_maghrib_sunnah":
@@ -2462,7 +2462,15 @@ function renderFiveWaqtStrip(now = new Date()) {
     }
   ];
 
-  // Update the Live Ongoing Waqt Progress Bar & Countdown (Matching Screenshot 2!)
+  // Authentic 3 Prohibited Salah Windows (Sahih Muslim 831) synchronized with Live Waqt Bar:
+  const pWindows = sched.prohibitedWindows || {
+    sunrise: { start: sched.sunrise, end: sched.sunrise + 15 },
+    zawal: { start: sched.zawal, end: sched.dhuhr },
+    sunset: { start: sched.sunset - 15, end: sched.sunset }
+  };
+
+  // Update the Live Ongoing Waqt Progress Bar & Countdown (100% Non-Contradictory with Prohibited Salah Times!)
+  const boxEl = document.getElementById("live-waqt-countdown-box");
   const titleEl = document.getElementById("live-waqt-title");
   const rangeEl = document.getElementById("live-waqt-range");
   const fillEl = document.getElementById("live-waqt-fill");
@@ -2474,37 +2482,77 @@ function renderFiveWaqtStrip(now = new Date()) {
     let winStart = 0;
     let winEnd = 0;
     let currentPos = nowMins;
-    let isRunningFardWaqt = true;
+    let isProhibitedNow = false;
+    let exactEndDisplay = false;
 
-    if (nowMins >= sched.fajr && nowMins < sched.sunrise) {
+    if (nowMins >= sched.fajr && nowMins < pWindows.sunrise.start) {
+      // 1. Fajr Fard Waqt: Fajr start -> Sunrise start (before sunrise prohibited time)
       activeWaqtTitle = t("waqt_fajr");
       winStart = sched.fajr;
-      winEnd = sched.sunrise;
-    } else if (nowMins >= sched.sunrise && nowMins < sched.dhuhr) {
-      // Forenoon / Duha window between Sunrise and Dhuhr
+      winEnd = pWindows.sunrise.start;
+    } else if (nowMins >= pWindows.sunrise.start && nowMins < pWindows.sunrise.end) {
+      // 2. Prohibited Window 1: Sunrise (15 mins) — 06:07 to 06:22
       activeWaqtTitle =
         lang === "bn"
-          ? "চাশত / ইশরাক (যোহরের পূর্ব পর্যন্ত)"
+          ? "⛔ নিষিদ্ধ সময়: সূর্যোদয় কাল"
           : lang === "ar"
-          ? "وقت الضحى (قبل الظهر)"
-          : "Duha / Forenoon (Until Dhuhr)";
-      winStart = sched.sunrise;
-      winEnd = sched.dhuhr;
-      isRunningFardWaqt = true;
-    } else if (nowMins >= sched.dhuhr && nowMins < sched.asr) {
+          ? "⛔ وقت نهي: طلوع الشمس"
+          : "⛔ Prohibited: Sunrise Window";
+      winStart = pWindows.sunrise.start;
+      winEnd = pWindows.sunrise.end;
+      isProhibitedNow = true;
+      exactEndDisplay = true;
+    } else if (nowMins >= pWindows.sunrise.end && nowMins < pWindows.zawal.start) {
+      // 3. Ishraq & Duha (Chasht) Permitted Window: strictly after Sunrise prohibited end (06:22) until Zawal start (11:37)
+      activeWaqtTitle =
+        lang === "bn"
+          ? "চাশত / ইশরাক (যাওয়ালের পূর্ব পর্যন্ত)"
+          : lang === "ar"
+          ? "وقت الإشراق والضحى (قبل الزوال)"
+          : "Ishraq & Duha (Until Zawal)";
+      winStart = pWindows.sunrise.end;
+      winEnd = pWindows.zawal.start;
+    } else if (nowMins >= pWindows.zawal.start && nowMins < pWindows.zawal.end) {
+      // 4. Prohibited Window 2: Zawal / Solar Zenith — 11:38 to 11:47
+      activeWaqtTitle =
+        lang === "bn"
+          ? "⛔ নিষিদ্ধ সময়: দ্বিপ্রহর / যাওয়াল"
+          : lang === "ar"
+          ? "⛔ وقت نهي: الزوال (الاستواء)"
+          : "⛔ Prohibited: Zawal (Zenith)";
+      winStart = pWindows.zawal.start;
+      winEnd = pWindows.zawal.end;
+      isProhibitedNow = true;
+      exactEndDisplay = true;
+    } else if (nowMins >= pWindows.zawal.end && nowMins < sched.asr) {
+      // 5. Dhuhr Fard Waqt: Dhuhr start (11:47) -> Asr start
       activeWaqtTitle = t("waqt_dhuhr");
-      winStart = sched.dhuhr;
+      winStart = pWindows.zawal.end;
       winEnd = sched.asr;
-    } else if (nowMins >= sched.asr && nowMins < sched.sunset) {
+    } else if (nowMins >= sched.asr && nowMins < pWindows.sunset.start) {
+      // 6. Asr Prime Permitted Waqt: Asr start -> Sunset prohibited start (15 mins before sunset)
       activeWaqtTitle = t("waqt_asr");
       winStart = sched.asr;
-      winEnd = sched.sunset;
-    } else if (nowMins >= sched.sunset && nowMins < sched.isha) {
+      winEnd = pWindows.sunset.start;
+    } else if (nowMins >= pWindows.sunset.start && nowMins < sched.maghrib) {
+      // 7. Prohibited Window 3: Sunset / Ghurub (15 mins before sunset until Maghrib) — 05:06 to 05:21
+      activeWaqtTitle =
+        lang === "bn"
+          ? "⛔ নিষিদ্ধ সময়: সূর্যাস্ত কাল"
+          : lang === "ar"
+          ? "⛔ وقت نهي: غروب الشمس"
+          : "⛔ Prohibited: Sunset Window";
+      winStart = pWindows.sunset.start;
+      winEnd = sched.maghrib;
+      isProhibitedNow = true;
+      exactEndDisplay = true;
+    } else if (nowMins >= sched.maghrib && nowMins < sched.isha) {
+      // 8. Maghrib Fard Waqt: Maghrib start -> Isha start
       activeWaqtTitle = t("waqt_maghrib");
       winStart = sched.maghrib;
       winEnd = sched.isha;
     } else {
-      // Isha & Tahajjud night window (crosses midnight until Fajr)
+      // 9. Isha & Tahajjud Night Window (crosses midnight until Fajr)
       activeWaqtTitle = t("waqt_isha");
       winStart = sched.isha;
       winEnd = sched.fajr + 1440;
@@ -2518,23 +2566,43 @@ function renderFiveWaqtStrip(now = new Date()) {
     const remaining = Math.max(0, winEnd - currentPos);
     const pct = Math.max(4, Math.min(100, Math.round((elapsed / totalDuration) * 100)));
 
-    // Display end time minus 1 minute (e.g. 05:27 - 06:41 before next waqt at 06:42) just like commercial Islamic apps
-    const displayEndMins = (winEnd - 1 + 1440) % 1440;
+    // For permitted prayer windows, display end time minus 1 minute (e.g., 06:22 - 11:37 before Zawal at 11:38)
+    // so there is ZERO overlap with prohibited times! For prohibited windows, display exact start-end (e.g. 06:07 - 06:22).
+    const displayEndMins = exactEndDisplay
+      ? winEnd % 1440
+      : (winEnd - 1 + 1440) % 1440;
+
     titleEl.textContent = activeWaqtTitle;
     rangeEl.textContent = `${formatShortWaqtClock(winStart, lang)} - ${formatShortWaqtClock(displayEndMins, lang)}`;
     fillEl.style.width = `${pct}%`;
-    statusEl.textContent =
-      lang === "ar" ? "جارٍ الآن" : lang === "en" ? "Ongoing" : "চলমান";
+
+    if (boxEl) {
+      boxEl.classList.toggle("waqt-prohibited-active", isProhibitedNow);
+    }
+
+    if (isProhibitedNow) {
+      statusEl.textContent =
+        lang === "ar"
+          ? "صلاة النافلة ممنوعة الآن"
+          : lang === "en"
+          ? "Nafl Salah Prohibited"
+          : "সালাত নিষিদ্ধ";
+    } else {
+      statusEl.textContent =
+        lang === "ar" ? "جارٍ الآن" : lang === "en" ? "Ongoing" : "চলমান";
+    }
     remainingEl.textContent = formatRemainingDurationText(remaining, lang);
   }
 
   gridEl.innerHTML = waqts
     .map((w) => {
+      // Ensure Asr pill ends at pWindows.sunset.start so it doesn't conflict with Sunset prohibited time
+      const effectiveEnd = w.id === "asr" ? pWindows.sunset.start : w.end;
       const isActive =
         w.id === "isha"
           ? nowMins >= w.start || nowMins < sched.fajr
-          : nowMins >= w.start && nowMins < w.end;
-      const isPassed = w.id !== "isha" && nowMins >= w.end && nowMins >= sched.fajr;
+          : nowMins >= w.start && nowMins < effectiveEnd;
+      const isPassed = w.id !== "isha" && nowMins >= effectiveEnd && nowMins >= sched.fajr;
       return `
         <button type="button" class="waqt-pill-card ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""}" data-waqt-phase="${w.phase}">
           <div class="waqt-circle-logo">${w.icon}</div>
@@ -2977,7 +3045,7 @@ function renderHeaderDatesAndPhase() {
     day: "numeric",
     month: "long",
     year: "numeric"
-  });
+  }).replace(/\s+/g, "\u00A0");
 
   const hijriDetails = getMoonBasedHijriDetails(now, appState.locale);
   const banglaDetails = getBanglaPonjikaDetails(now, appState.locale);
@@ -2995,10 +3063,9 @@ function renderHeaderDatesAndPhase() {
   if (lunarHeadlineEl) {
     lunarHeadlineEl.innerHTML = hijriDetails.cardHeadlineHtml;
   }
-    if (banglaSublineEl) {
+  if (banglaSublineEl) {
     banglaSublineEl.innerHTML = `${banglaDetails.fullSubline} • <span style="white-space: nowrap;">${gregFull}</span>`;
   }
-
 
   const nowMins = now.getHours() * 60 + now.getMinutes();
   let phaseLabel = t("phase_banner_night");
@@ -3324,26 +3391,16 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
   const lang = appState.locale || "bn";
   const allHabits = getAllHabits();
 
-  // Filter dateKeysArray to active days that actually have at least 1 completion in this specific period
-  const activeDateKeys = (dateKeysArray || []).filter((k) => {
+  // Filter dateKeysArray to active days that have at least 1 completion or include today
+  const activeDateKeys = dateKeysArray.filter((k) => {
     const hDone = (appState.completionsByDate[k] || []).length;
     const dDone = ((appState.duaCompletionsByDate && appState.duaCompletionsByDate[k]) || []).length;
     return hDone > 0 || dDone > 0;
   });
-
-  // Never fallback to [getTodayKey()] when an unused month/range has 0 active days
-  const hasActiveData = activeDateKeys.length > 0;
-  const numDays = hasActiveData ? activeDateKeys.length : 1;
+  const effectiveDates = activeDateKeys.length > 0 ? activeDateKeys : [getTodayKey()];
+  const numDays = Math.max(1, effectiveDates.length);
 
   const categoryResults = CATEGORY_GRAPH_DEFINITIONS.map((cat) => {
-    if (!hasActiveData) {
-      return {
-        ...cat,
-        label: t(cat.titleKey),
-        pct: 0
-      };
-    }
-
     const phaseHabitIds = allHabits
       .filter((h) => h.phase === cat.phaseKey)
       .map((h) => h.id);
@@ -3352,7 +3409,7 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
     const totalPossible = Math.max(1, perDayTarget * numDays);
     let totalCompleted = 0;
 
-    activeDateKeys.forEach((dKey) => {
+    effectiveDates.forEach((dKey) => {
       const completedH = appState.completionsByDate[dKey] || [];
       phaseHabitIds.forEach((hId) => {
         if (completedH.includes(hId)) totalCompleted++;
@@ -3390,12 +3447,6 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
     .join("");
 
   if (adviceContainer) {
-    if (!hasActiveData) {
-      adviceContainer.innerHTML = `ℹ️ ${t("archive_empty")}`;
-      adviceContainer.className = "category-advice-comment empty-archive-notice";
-      return;
-    }
-
     const overallAvg = Math.round(
       categoryResults.reduce((acc, c) => acc + c.pct, 0) / categoryResults.length
     );
@@ -3451,9 +3502,9 @@ function renderWeeklyChart() {
   renderCategoryBreakdownGraph(weekDateKeys, "weekly-category-bars", "weekly-category-advice");
 }
 
-let archiveFilterBySpecificMonth = true;
+let archiveFilterBySpecificMonth = true; // Default: show current month's archive by default; clicking a month card filters to that month, clicking 90D/180D/365D shows the multi-month range & updates the pipeline
 
-// Multi-Month Archive (Default 30 Days / 1M, Current Month Selected by Default, Click Any Month to Switch)
+// Multi-Month Archive (Default 30 Days / 1M, Current Month Selected by Default, Click Any Month to Switch, plus 90D/180D/365D Pipeline)
 function renderLongTermArchive() {
   const monthlyEl = document.getElementById("monthly-summary-list");
   const historyListEl = document.getElementById("longterm-history-list");
@@ -3513,7 +3564,7 @@ function renderLongTermArchive() {
 
     monthlyStats[monthKey].dateKeys.push(key);
 
-    if (count > 0 || duaList.length > 0) {
+    if (count > 0 || duaList.length > 0 || i === 0) {
       const pct = Math.min(100, Math.round((count / totalHabits) * 100));
       if (count > 0) {
         monthlyStats[monthKey].activeDays += 1;
@@ -3564,26 +3615,33 @@ function renderLongTermArchive() {
   const activeMonthObj = monthlyStats[selectedArchiveMonthKey] || monthlyStats[currentMonthKey];
   const monthlyHeadingEl = document.getElementById("monthly-cat-heading");
   const selectedMonthLabelEl = document.getElementById("selected-month-records-label");
-  const monthlyBreakdownPanel = document.querySelector(".monthly-breakdown-panel");
+
+  // Determine whether the Category Graph shows the Selected Month OR the full 90D/180D/365D Range
+  const rangeTitleKey =
+    historyRangeDays === 90
+      ? "cat_range_90_title"
+      : historyRangeDays === 180
+      ? "cat_range_180_title"
+      : historyRangeDays === 365
+      ? "cat_range_365_title"
+      : "cat_range_30_title";
 
   if (monthlyHeadingEl && activeMonthObj) {
-    monthlyHeadingEl.textContent = `${t("cat_monthly_title")} — ${activeMonthObj.label}`;
+    if (archiveFilterBySpecificMonth) {
+      monthlyHeadingEl.textContent = `${t("cat_monthly_title")} — ${activeMonthObj.label}`;
+    } else {
+      monthlyHeadingEl.textContent = `${t(rangeTitleKey)} • ${activeMonthObj.label}`;
+    }
   }
   if (selectedMonthLabelEl && activeMonthObj) {
     selectedMonthLabelEl.textContent = `${t("selected_month_records")} (${activeMonthObj.label})`;
   }
 
-  // Strictly bind the monthly graph to the selected month's own dateKeys
-  const graphDateKeys = activeMonthObj ? activeMonthObj.dateKeys : [];
-
-  // Hide the monthly category breakdown graph when the selected month has 0 active days
-  if (monthlyBreakdownPanel) {
-    if (!activeMonthObj || activeMonthObj.activeDays === 0) {
-      monthlyBreakdownPanel.style.display = "none";
-    } else {
-      monthlyBreakdownPanel.style.display = "block";
-    }
-  }
+  const graphDateKeys = archiveFilterBySpecificMonth
+    ? activeMonthObj
+      ? activeMonthObj.dateKeys
+      : [getTodayKey()]
+    : allRangeDateKeys;
 
   renderCategoryBreakdownGraph(
     graphDateKeys,
@@ -3591,7 +3649,7 @@ function renderLongTermArchive() {
     "monthly-category-advice"
   );
 
-  // Daily history list always shows the selected month's records
+  // Daily history list always shows the selected month's records (Current Month by default, or clicked Month)
   const rowsToShow = activeMonthObj ? activeMonthObj.recordedRows : [];
   if (rowsToShow.length === 0) {
     historyListEl.innerHTML = `<p class="muted">${t("archive_empty")}</p>`;
@@ -3623,17 +3681,8 @@ function openDayHistoryModal(dateKey) {
   document.getElementById("modal-category").textContent = `${localizeDigits(doneIds.length, appState.locale)} / ${localizeDigits(allHabits.length, appState.locale)} (${localizeDigits(Math.round((doneIds.length / (allHabits.length || 32)) * 100), appState.locale)}%)`;
 
   const evidenceEl = document.getElementById("modal-evidence");
-  const evidenceHeadingEl = evidenceEl?.parentElement?.querySelector("h4");
-  if (evidenceHeadingEl) {
-    evidenceHeadingEl.textContent =
-      appState.locale === "ar"
-        ? "✅ السنن والأعمال المنجزة في هذا اليوم"
-        : appState.locale === "en"
-        ? "✅ Completed Sunnah Deeds on This Day"
-        : "✅ এই দিনে সম্পন্নকৃত সুন্নাহ আমলসমূহ";
-  }
-
   const wisdomSection = document.getElementById("modal-wisdom")?.parentElement;
+
   if (wisdomSection) wisdomSection.style.display = "none";
 
   if (completedHabits.length > 0) {
@@ -3710,17 +3759,12 @@ async function toggleHabit(habitId) {
 function openHabitModal(habitId) {
   const habit = getAllHabits().find((h) => h.id === habitId);
   if (!habit) return;
-  const evidenceEl = document.getElementById("modal-evidence");
-  const evidenceHeadingEl = evidenceEl?.parentElement?.querySelector("h4");
-  if (evidenceHeadingEl) {
-    evidenceHeadingEl.textContent = t("modal_evidence_heading");
-  }
   const wisdomSection = document.getElementById("modal-wisdom")?.parentElement;
   if (wisdomSection) wisdomSection.style.display = "block";
 
   document.getElementById("modal-title").textContent = getHabitTitle(habit);
   document.getElementById("modal-category").textContent = getHabitTime(habit);
-  evidenceEl.textContent = getHabitEvidence(habit);
+  document.getElementById("modal-evidence").textContent = getHabitEvidence(habit);
   document.getElementById("modal-wisdom").textContent = getHabitWisdom(habit);
   document.getElementById("fact-modal").classList.remove("hidden");
   if (typeof pushAppHistoryState === "function") pushAppHistoryState("modal");
@@ -3809,7 +3853,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const btn = e.target.closest("[data-range-days]");
       if (!btn) return;
       historyRangeDays = parseInt(btn.getAttribute("data-range-days"), 10) || 30;
-      archiveFilterBySpecificMonth = true;
+      // When user clicks 90D / 180D / 365D, inject the full 90/180/365-day pipeline into the category graph;
+      // when 30D is clicked, default to current month
+      archiveFilterBySpecificMonth = historyRangeDays === 30;
       if (historyRangeDays === 30) {
         selectedArchiveMonthKey = getTodayKey().slice(0, 7);
       }
@@ -4528,31 +4574,18 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
   if (percent >= 100) {
     if (banner) banner.setAttribute("data-cached", "true");
     if (progBar) progBar.style.width = "100%";
-    const needsSourcePerm =
-      window.AndroidDownloader &&
-      typeof window.AndroidDownloader.canRequestPackageInstalls === "function" &&
-      !window.AndroidDownloader.canRequestPackageInstalls();
-
     if (btn) {
       btn.disabled = false;
       btn.style.background = "var(--accent-emerald)";
       btn.style.color = "#ffffff";
-      btn.textContent = needsSourcePerm
-        ? appState.locale === "bn"
-          ? "⚙️ ইনস্টল অনুমতি দিন"
-          : "⚙️ Allow & Install"
-        : appState.locale === "bn"
-        ? "📦 এখনই ইনস্টল করুন"
-        : "📦 Install Now";
+      btn.textContent =
+        appState.locale === "bn" ? "📦 এখনই ইনস্টল করুন" : "📦 Install Now";
     }
-    if (statusEl && !statusText) {
-      statusEl.textContent = needsSourcePerm
-        ? appState.locale === "bn"
-          ? "⚙️ সেটিংস থেকে 'Allow from this source' চালু করলেই স্বয়ংক্রিয়ভাবে ইনস্টল হবে।"
-          : "⚙️ Enable 'Allow from this source' in Settings to auto-launch installer."
-        : appState.locale === "bn"
-        ? "✅ ডাউনলোড সম্পন্ন! স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হয়েছে।"
-        : "✅ Download complete! Package installer launched automatically.";
+    if (statusEl) {
+      statusEl.textContent =
+        appState.locale === "bn"
+          ? "✅ ডাউনলোড সম্পন্ন! স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হয়েছে।"
+          : "✅ Download complete! Package installer launched automatically.";
     }
   }
 };
@@ -4810,5 +4843,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
 
