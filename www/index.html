@@ -70,8 +70,8 @@
     <p id="bangla-ponjika-subline" class="bangla-ponjika-sub">বাংলা ও ইংরেজি তারিখ সিঙ্ক হচ্ছে...</p>
   </section>
 
-  <!-- Daily Progress & Circular Streak Hero Banner -->
-  <section class="hero-card">
+  <!-- Sleek Compact Daily Progress & Circular Streak Hero Banner -->
+  <section class="hero-card hero-card-compact">
     <div class="hero-stats">
       <div class="hero-left-info">
         <span class="label" data-i18n="hero_mastery_label">দৈনিক সুন্নাহ ২৪ অনুশীলন</span>
@@ -80,28 +80,28 @@
         <div id="time-lock-summary" class="time-lock-pill">⏱️ রিয়েল-টাইম ওয়াক্ত লক সক্রিয়</div>
       </div>
 
-      <!-- World-Standard Animated SVG Circular Progress Ring around Daily Streak & Mastery -->
+      <!-- Compact Animated SVG Circular Progress Ring around Daily Streak & Mastery -->
       <div class="streak-circle-wrapper" title="Daily Progress & Streak Ring">
-        <svg class="progress-ring-svg" width="108" height="108" viewBox="0 0 108 108">
+        <svg class="progress-ring-svg" width="92" height="92" viewBox="0 0 92 92">
           <defs>
             <linearGradient id="s24RingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#10b981" />
               <stop offset="100%" stop-color="#eab308" />
             </linearGradient>
           </defs>
-          <circle class="progress-ring-bg" cx="54" cy="54" r="46" stroke-width="8" fill="transparent" />
+          <circle class="progress-ring-bg" cx="46" cy="46" r="39" stroke-width="7.5" fill="transparent" />
           <circle
             id="hero-progress-ring-circle"
             class="progress-ring-meter"
-            cx="54"
-            cy="54"
-            r="46"
+            cx="46"
+            cy="46"
+            r="39"
             stroke="url(#s24RingGrad)"
-            stroke-width="8"
+            stroke-width="7.5"
             stroke-linecap="round"
             fill="transparent"
-            stroke-dasharray="289.03"
-            stroke-dashoffset="289.03"
+            stroke-dasharray="245.04"
+            stroke-dashoffset="245.04"
           />
         </svg>
         <div class="streak-circle-inner">
@@ -112,8 +112,14 @@
       </div>
     </div>
 
-    <!-- LIVE ONGOING PRAYER PROGRESS BAR & COUNTDOWN (Replaces the old 'চলমান' section inside the Habit Tracker Card) -->
-    <div id="live-waqt-countdown-box" class="live-waqt-countdown-box hero-embedded-waqt-box">
+    <div class="hero-meta">
+      <span id="fasting-banner">🌙 সুন্নাহ রোজা যাচাই...</span>
+    </div>
+  </section>
+
+  <!-- UNIFIED 5-WAQT PRAYER TIME SECTION WITH LIVE ONGOING PRAYER PROGRESS BAR & COUNTDOWN -->
+  <section class="waqt-strip-card" aria-label="Five Daily Prayers & Live Ongoing Waqt">
+    <div id="live-waqt-countdown-box" class="live-waqt-countdown-box waqt-card-embedded-box">
       <div class="live-waqt-top-row">
         <strong id="live-waqt-title">--</strong>
         <span id="live-waqt-range" class="live-waqt-range">--:-- - --:--</span>
@@ -130,13 +136,6 @@
       </div>
     </div>
 
-    <div class="hero-meta">
-      <span id="fasting-banner">🌙 সুন্নাহ রোজা যাচাই...</span>
-    </div>
-  </section>
-
-  <!-- MUSLIM BANGLA / MUSLIM'S DAY STYLE 5-WAQT TRACKER STRIP -->
-  <section class="waqt-strip-card" aria-label="Five Daily Prayers">
     <div id="five-waqt-grid" class="five-waqt-grid"></div>
   </section>
 
