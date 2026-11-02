@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v51-v5.3-rock-solid-tamper-proof-edition";
+const CACHE_NAME = "sunnah-24-enterprise-v52-v6.0-sticky-static-appbar";
 const ASSETS = [
   "./",
   "./index.html",
