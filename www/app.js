@@ -2491,7 +2491,7 @@ function renderFiveWaqtStrip(now = new Date()) {
       winStart = sched.fajr;
       winEnd = pWindows.sunrise.start;
     } else if (nowMins >= pWindows.sunrise.start && nowMins < pWindows.sunrise.end) {
-      // 2. Prohibited Window 1: Sunrise (15 mins) — 06:07 to 06:22
+      // 2. Prohibited Window 1: Sunrise (15 mins) — e.g., 06:07 to 06:22
       activeWaqtTitle =
         lang === "bn"
           ? "⛔ নিষিদ্ধ সময়: সূর্যোদয় কাল"
@@ -2513,7 +2513,7 @@ function renderFiveWaqtStrip(now = new Date()) {
       winStart = pWindows.sunrise.end;
       winEnd = pWindows.zawal.start;
     } else if (nowMins >= pWindows.zawal.start && nowMins < pWindows.zawal.end) {
-      // 4. Prohibited Window 2: Zawal / Solar Zenith — 11:38 to 11:47
+      // 4. Prohibited Window 2: Zawal / Solar Zenith — e.g., 11:38 to 11:47
       activeWaqtTitle =
         lang === "bn"
           ? "⛔ নিষিদ্ধ সময়: দ্বিপ্রহর / যাওয়াল"
@@ -2535,7 +2535,7 @@ function renderFiveWaqtStrip(now = new Date()) {
       winStart = sched.asr;
       winEnd = pWindows.sunset.start;
     } else if (nowMins >= pWindows.sunset.start && nowMins < sched.maghrib) {
-      // 7. Prohibited Window 3: Sunset / Ghurub (15 mins before sunset until Maghrib) — 05:06 to 05:21
+      // 7. Prohibited Window 3: Sunset / Ghurub (15 mins before sunset until Maghrib) — e.g., 05:06 to 05:21
       activeWaqtTitle =
         lang === "bn"
           ? "⛔ নিষিদ্ধ সময়: সূর্যাস্ত কাল"
@@ -3063,9 +3063,10 @@ function renderHeaderDatesAndPhase() {
   if (lunarHeadlineEl) {
     lunarHeadlineEl.innerHTML = hijriDetails.cardHeadlineHtml;
   }
-  if (banglaSublineEl) {
+    if (banglaSublineEl) {
     banglaSublineEl.innerHTML = `${banglaDetails.fullSubline} • <span style="white-space: nowrap;">${gregFull}</span>`;
   }
+
 
   const nowMins = now.getHours() * 60 + now.getMinutes();
   let phaseLabel = t("phase_banner_night");
@@ -3391,16 +3392,26 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
   const lang = appState.locale || "bn";
   const allHabits = getAllHabits();
 
-  // Filter dateKeysArray to active days that have at least 1 completion or include today
-  const activeDateKeys = dateKeysArray.filter((k) => {
+  // Filter dateKeysArray to active days that actually have at least 1 completion in this specific period
+  const activeDateKeys = (dateKeysArray || []).filter((k) => {
     const hDone = (appState.completionsByDate[k] || []).length;
     const dDone = ((appState.duaCompletionsByDate && appState.duaCompletionsByDate[k]) || []).length;
     return hDone > 0 || dDone > 0;
   });
-  const effectiveDates = activeDateKeys.length > 0 ? activeDateKeys : [getTodayKey()];
-  const numDays = Math.max(1, effectiveDates.length);
+
+  // Never fallback to [getTodayKey()] when an unused month/range has 0 active days
+  const hasActiveData = activeDateKeys.length > 0;
+  const numDays = hasActiveData ? activeDateKeys.length : 1;
 
   const categoryResults = CATEGORY_GRAPH_DEFINITIONS.map((cat) => {
+    if (!hasActiveData) {
+      return {
+        ...cat,
+        label: t(cat.titleKey),
+        pct: 0
+      };
+    }
+
     const phaseHabitIds = allHabits
       .filter((h) => h.phase === cat.phaseKey)
       .map((h) => h.id);
@@ -3409,7 +3420,7 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
     const totalPossible = Math.max(1, perDayTarget * numDays);
     let totalCompleted = 0;
 
-    effectiveDates.forEach((dKey) => {
+    activeDateKeys.forEach((dKey) => {
       const completedH = appState.completionsByDate[dKey] || [];
       phaseHabitIds.forEach((hId) => {
         if (completedH.includes(hId)) totalCompleted++;
@@ -3447,6 +3458,12 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
     .join("");
 
   if (adviceContainer) {
+    if (!hasActiveData) {
+      adviceContainer.innerHTML = `ℹ️ ${t("archive_empty")}`;
+      adviceContainer.className = "category-advice-comment empty-archive-notice";
+      return;
+    }
+
     const overallAvg = Math.round(
       categoryResults.reduce((acc, c) => acc + c.pct, 0) / categoryResults.length
     );
@@ -3502,9 +3519,9 @@ function renderWeeklyChart() {
   renderCategoryBreakdownGraph(weekDateKeys, "weekly-category-bars", "weekly-category-advice");
 }
 
-let archiveFilterBySpecificMonth = true; // Default: show current month's archive by default; clicking a month card filters to that month, clicking 90D/180D/365D shows the multi-month range & updates the pipeline
+let archiveFilterBySpecificMonth = true;
 
-// Multi-Month Archive (Default 30 Days / 1M, Current Month Selected by Default, Click Any Month to Switch, plus 90D/180D/365D Pipeline)
+// Multi-Month Archive (Default 30 Days / 1M, Current Month Selected by Default, Click Any Month to Switch)
 function renderLongTermArchive() {
   const monthlyEl = document.getElementById("monthly-summary-list");
   const historyListEl = document.getElementById("longterm-history-list");
@@ -3564,7 +3581,7 @@ function renderLongTermArchive() {
 
     monthlyStats[monthKey].dateKeys.push(key);
 
-    if (count > 0 || duaList.length > 0 || i === 0) {
+    if (count > 0 || duaList.length > 0) {
       const pct = Math.min(100, Math.round((count / totalHabits) * 100));
       if (count > 0) {
         monthlyStats[monthKey].activeDays += 1;
@@ -3615,33 +3632,26 @@ function renderLongTermArchive() {
   const activeMonthObj = monthlyStats[selectedArchiveMonthKey] || monthlyStats[currentMonthKey];
   const monthlyHeadingEl = document.getElementById("monthly-cat-heading");
   const selectedMonthLabelEl = document.getElementById("selected-month-records-label");
-
-  // Determine whether the Category Graph shows the Selected Month OR the full 90D/180D/365D Range
-  const rangeTitleKey =
-    historyRangeDays === 90
-      ? "cat_range_90_title"
-      : historyRangeDays === 180
-      ? "cat_range_180_title"
-      : historyRangeDays === 365
-      ? "cat_range_365_title"
-      : "cat_range_30_title";
+  const monthlyBreakdownPanel = document.querySelector(".monthly-breakdown-panel");
 
   if (monthlyHeadingEl && activeMonthObj) {
-    if (archiveFilterBySpecificMonth) {
-      monthlyHeadingEl.textContent = `${t("cat_monthly_title")} — ${activeMonthObj.label}`;
-    } else {
-      monthlyHeadingEl.textContent = `${t(rangeTitleKey)} • ${activeMonthObj.label}`;
-    }
+    monthlyHeadingEl.textContent = `${t("cat_monthly_title")} — ${activeMonthObj.label}`;
   }
   if (selectedMonthLabelEl && activeMonthObj) {
     selectedMonthLabelEl.textContent = `${t("selected_month_records")} (${activeMonthObj.label})`;
   }
 
-  const graphDateKeys = archiveFilterBySpecificMonth
-    ? activeMonthObj
-      ? activeMonthObj.dateKeys
-      : [getTodayKey()]
-    : allRangeDateKeys;
+  // Strictly bind the monthly graph to the selected month's own dateKeys
+  const graphDateKeys = activeMonthObj ? activeMonthObj.dateKeys : [];
+
+  // Hide the monthly category breakdown graph when the selected month has 0 active days
+  if (monthlyBreakdownPanel) {
+    if (!activeMonthObj || activeMonthObj.activeDays === 0) {
+      monthlyBreakdownPanel.style.display = "none";
+    } else {
+      monthlyBreakdownPanel.style.display = "block";
+    }
+  }
 
   renderCategoryBreakdownGraph(
     graphDateKeys,
@@ -3649,7 +3659,7 @@ function renderLongTermArchive() {
     "monthly-category-advice"
   );
 
-  // Daily history list always shows the selected month's records (Current Month by default, or clicked Month)
+  // Daily history list always shows the selected month's records
   const rowsToShow = activeMonthObj ? activeMonthObj.recordedRows : [];
   if (rowsToShow.length === 0) {
     historyListEl.innerHTML = `<p class="muted">${t("archive_empty")}</p>`;
@@ -3681,8 +3691,17 @@ function openDayHistoryModal(dateKey) {
   document.getElementById("modal-category").textContent = `${localizeDigits(doneIds.length, appState.locale)} / ${localizeDigits(allHabits.length, appState.locale)} (${localizeDigits(Math.round((doneIds.length / (allHabits.length || 32)) * 100), appState.locale)}%)`;
 
   const evidenceEl = document.getElementById("modal-evidence");
-  const wisdomSection = document.getElementById("modal-wisdom")?.parentElement;
+  const evidenceHeadingEl = evidenceEl?.parentElement?.querySelector("h4");
+  if (evidenceHeadingEl) {
+    evidenceHeadingEl.textContent =
+      appState.locale === "ar"
+        ? "✅ السنن والأعمال المنجزة في هذا اليوم"
+        : appState.locale === "en"
+        ? "✅ Completed Sunnah Deeds on This Day"
+        : "✅ এই দিনে সম্পন্নকৃত সুন্নাহ আমলসমূহ";
+  }
 
+  const wisdomSection = document.getElementById("modal-wisdom")?.parentElement;
   if (wisdomSection) wisdomSection.style.display = "none";
 
   if (completedHabits.length > 0) {
@@ -3759,12 +3778,17 @@ async function toggleHabit(habitId) {
 function openHabitModal(habitId) {
   const habit = getAllHabits().find((h) => h.id === habitId);
   if (!habit) return;
+  const evidenceEl = document.getElementById("modal-evidence");
+  const evidenceHeadingEl = evidenceEl?.parentElement?.querySelector("h4");
+  if (evidenceHeadingEl) {
+    evidenceHeadingEl.textContent = t("modal_evidence_heading");
+  }
   const wisdomSection = document.getElementById("modal-wisdom")?.parentElement;
   if (wisdomSection) wisdomSection.style.display = "block";
 
   document.getElementById("modal-title").textContent = getHabitTitle(habit);
   document.getElementById("modal-category").textContent = getHabitTime(habit);
-  document.getElementById("modal-evidence").textContent = getHabitEvidence(habit);
+  evidenceEl.textContent = getHabitEvidence(habit);
   document.getElementById("modal-wisdom").textContent = getHabitWisdom(habit);
   document.getElementById("fact-modal").classList.remove("hidden");
   if (typeof pushAppHistoryState === "function") pushAppHistoryState("modal");
@@ -3853,9 +3877,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const btn = e.target.closest("[data-range-days]");
       if (!btn) return;
       historyRangeDays = parseInt(btn.getAttribute("data-range-days"), 10) || 30;
-      // When user clicks 90D / 180D / 365D, inject the full 90/180/365-day pipeline into the category graph;
-      // when 30D is clicked, default to current month
-      archiveFilterBySpecificMonth = historyRangeDays === 30;
+      archiveFilterBySpecificMonth = true;
       if (historyRangeDays === 30) {
         selectedArchiveMonthKey = getTodayKey().slice(0, 7);
       }
@@ -4574,18 +4596,31 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
   if (percent >= 100) {
     if (banner) banner.setAttribute("data-cached", "true");
     if (progBar) progBar.style.width = "100%";
+    const needsSourcePerm =
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.canRequestPackageInstalls === "function" &&
+      !window.AndroidDownloader.canRequestPackageInstalls();
+
     if (btn) {
       btn.disabled = false;
       btn.style.background = "var(--accent-emerald)";
       btn.style.color = "#ffffff";
-      btn.textContent =
-        appState.locale === "bn" ? "📦 এখনই ইনস্টল করুন" : "📦 Install Now";
+      btn.textContent = needsSourcePerm
+        ? appState.locale === "bn"
+          ? "⚙️ ইনস্টল অনুমতি দিন"
+          : "⚙️ Allow & Install"
+        : appState.locale === "bn"
+        ? "📦 এখনই ইনস্টল করুন"
+        : "📦 Install Now";
     }
-    if (statusEl) {
-      statusEl.textContent =
-        appState.locale === "bn"
-          ? "✅ ডাউনলোড সম্পন্ন! স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হয়েছে।"
-          : "✅ Download complete! Package installer launched automatically.";
+    if (statusEl && !statusText) {
+      statusEl.textContent = needsSourcePerm
+        ? appState.locale === "bn"
+          ? "⚙️ সেটিংস থেকে 'Allow from this source' চালু করলেই স্বয়ংক্রিয়ভাবে ইনস্টল হবে।"
+          : "⚙️ Enable 'Allow from this source' in Settings to auto-launch installer."
+        : appState.locale === "bn"
+        ? "✅ ডাউনলোড সম্পন্ন! স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হয়েছে।"
+        : "✅ Download complete! Package installer launched automatically.";
     }
   }
 };
@@ -4843,4 +4878,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
