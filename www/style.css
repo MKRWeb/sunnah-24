@@ -991,21 +991,20 @@ body {
 }
 
 .compact-history-item {
-  font-size: 0.78rem;
-  font-weight: 700;
-  line-height: 1.4;
-  padding: 9px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.35;
+  padding: 7px 10px;
   background: #ffffff;
-  border: 1px solid rgba(16, 185, 129, 0.22);
-  border-left: 3.5px solid var(--accent-emerald);
-  border-radius: 10px;
-  color: #1e352b;
+  border-left: 3px solid var(--accent-emerald);
+  border-radius: 8px;
+  color: var(--text-primary);
   box-shadow: 0 2px 5px rgba(15, 45, 34, 0.05);
 }
 
 html[dir="rtl"] .compact-history-item {
-  border-left: 1px solid rgba(16, 185, 129, 0.22);
-  border-right: 3.5px solid var(--accent-emerald);
+  border-left: none;
+  border-right: 3px solid var(--accent-emerald);
 }
 
 .modal-card #close-modal-btn {
@@ -2613,33 +2612,44 @@ html[data-theme="dark"] .hero-embedded-waqt-box {
 }
 
 
-
 /* ==========================================================================
-   DARK THEME FIX FOR DAY HISTORY MODAL ITEMS & EMPTY ARCHIVE NOTICE
+   PROHIBITED SALAH ALERT STATE FOR LIVE WAQT PROGRESS BAR
+   Automatically turns crimson-red during Sunrise (15m), Zawal, and Sunset (15m)
    ========================================================================== */
-html[data-theme="dark"] .compact-history-item {
-  background: #0b221a;
-  color: #f8fafc;
-  border-color: rgba(16, 185, 129, 0.32);
-  border-left: 3.5px solid var(--accent-emerald);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+.live-waqt-countdown-box.waqt-prohibited-active {
+  background: linear-gradient(145deg, #fff5f5, #fef2f2);
+  border-color: rgba(220, 38, 38, 0.45);
+  box-shadow: 0 6px 18px rgba(220, 38, 38, 0.12);
 }
 
-html[data-theme="dark"][dir="rtl"] .compact-history-item {
-  border-left: 1px solid rgba(16, 185, 129, 0.32);
-  border-right: 3.5px solid var(--accent-emerald);
+.live-waqt-countdown-box.waqt-prohibited-active #live-waqt-title,
+.live-waqt-countdown-box.waqt-prohibited-active .live-waqt-range,
+.live-waqt-countdown-box.waqt-prohibited-active #live-waqt-remaining {
+  color: #b91c1c;
 }
 
-.category-advice-comment.empty-archive-notice {
-  background: #f1f5f9;
-  border: 1px dashed rgba(100, 116, 139, 0.4);
-  color: #475569;
-  text-align: center;
+.live-waqt-countdown-box.waqt-prohibited-active .live-waqt-fill {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
 }
 
-html[data-theme="dark"] .category-advice-comment.empty-archive-notice {
-  background: rgba(15, 23, 42, 0.55);
-  border: 1px dashed rgba(148, 163, 184, 0.35);
-  color: #94a3b8;
+.live-waqt-countdown-box.waqt-prohibited-active .live-waqt-running {
+  color: #dc2626;
+}
+
+.live-waqt-countdown-box.waqt-prohibited-active .live-waqt-dot {
+  background: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.25);
+}
+
+html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active {
+  background: linear-gradient(145deg, rgba(239, 68, 68, 0.18), #1a0f12);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-waqt-title,
+html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-range,
+html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-waqt-remaining,
+html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-running {
+  color: #fca5a5;
 }
 
