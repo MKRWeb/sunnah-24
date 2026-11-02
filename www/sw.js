@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v52-v6.0-sticky-static-appbar";
+const CACHE_NAME = "sunnah-24-enterprise-v53-full-bleed-header-bar";
 const ASSETS = [
   "./",
   "./index.html",
@@ -38,3 +38,4 @@ self.addEventListener("fetch", (e) => {
     caches.match(e.request).then((cached) => cached || fetch(e.request))
   );
 });
+
