@@ -4706,8 +4706,8 @@ function switchTabProgrammatically(targetTabId, recordInStack = true) {
 }
 
 // Global handler invoked by both Android Native Back Button & Browser popstate
-// Strictly preserves section scroll positions during navigation, and brings the user
-// to the top (0) ONLY at the exact moment of exiting the app!
+// Strictly preserves section scroll positions during navigation and lets the user
+// exit upon clicking back twice from any scroll position without auto-scrolling to top.
 window.handleSunnahBackNavigation = function () {
   // 1. If Fact / History Modal is open -> Close modal first (stay at exact scroll position)
   const modal = document.getElementById("fact-modal");
@@ -4749,15 +4749,10 @@ window.handleSunnahBackNavigation = function () {
     return true;
   }
 
-  // 5. On the root section -> Require double back-press within 2s to exit.
-  // Bring the user to the top (0) AUTOMATICALLY ONLY at the exact moment of app exit!
+  // 5. On the root section -> Require double back-press within 2s to exit from any position (no auto-scroll to top)
   const now = Date.now();
   if (now - lastBackTapTime < 2000) {
-    tabScrollPositions["tab-routine"] = 0;
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    return false; // Allow native APK exit on second tap after snapping to top
+    return false; // Allow native APK exit on second tap from current position
   }
   lastBackTapTime = now;
   showExitToast();
