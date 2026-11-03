@@ -2976,58 +2976,75 @@ function renderFiveWaqtStrip(now = new Date()) {
     let currentPos = nowMins;
     let isProhibitedNow = false;
     let exactEndDisplay = false;
+    let customStatusText = "";
+    let customRangeText = "";
+    let customRemainingText = "";
+    let nightDualRowsHtml = "";
+
+    // Common Card-in-Card (Mix of Style 1 Modern Typography & Style 3 Structured Inner-Card) CSS styles
+    const innerCardStyle =
+      "margin-top:10px;padding:10px 12px;background:var(--bg-card-elevated, rgba(16,185,129,0.06));border:1px solid rgba(16,185,129,0.24);border-radius:14px;display:flex;flex-direction:column;gap:5px;font-size:0.81rem;";
+    const prohibitedInnerCardStyle =
+      "margin-top:10px;padding:10px 12px;background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.34);border-radius:14px;display:flex;flex-direction:column;gap:4px;font-size:0.8rem;";
 
     if (nowMins >= sched.fajr && nowMins < pWindows.sunrise.start) {
-      // 1. Fajr Prime Time (Al-Isfar / Fadhilah) & Sunnah Sub-Windows
-      activeWaqtTitle = t("waqt_fajr");
+      // 1. Fajr Fard Waqt + Prime Time (Al-Isfar) Card-in-Card
+      activeWaqtTitle =
+        lang === "bn"
+          ? "ফজর (সুবহে সাদিক হতে সূর্যোদয় পর্যন্ত)"
+          : lang === "ar"
+          ? "الفجر (من الصبح الصادق حتى الشروق)"
+          : "Fajr (Subh Sadiq until Sunrise)";
       winStart = sched.fajr;
       winEnd = pWindows.sunrise.start;
 
       const fajrStartClock = formatShortWaqtClock(sched.fajr, lang);
-      const sunriseClock = formatShortWaqtClock(sched.sunrise, lang);
-      const fajrSunnahStart = (sched.fajr - 30 + 1440) % 1440;
-      const fajrSunnahStartClock = formatShortWaqtClock(fajrSunnahStart, lang);
-      const fajrPrimeEnd = (sched.fajr + 35 + 1440) % 1440;
+      const fajrEndClock = formatShortWaqtClock((pWindows.sunrise.start - 1 + 1440) % 1440, lang);
+      const fajrPrimeEnd = Math.min(pWindows.sunrise.start - 5, sched.fajr + 38);
       const fajrPrimeClock = formatShortWaqtClock(fajrPrimeEnd, lang);
-      const minsLeftFajr = Math.max(1, pWindows.sunrise.start - nowMins);
-      const fajrLeftStr = formatRemainingDurationText(minsLeftFajr, lang);
-      const minsLeftPrimeFajr = Math.max(1, fajrPrimeEnd - nowMins);
-      const fajrPrimeLeftStr = nowMins <= fajrPrimeEnd ? formatRemainingDurationText(minsLeftPrimeFajr, lang) : (lang === "bn" ? "উত্তম প্রহর সমাপ্ত" : "Prime Concluded");
+      const isPrimeActive = nowMins < fajrPrimeEnd;
+      const minsLeftPrime = Math.max(1, fajrPrimeEnd - nowMins);
+      const primeLeftStr = formatRemainingDurationText(minsLeftPrime, lang);
 
       nightDualRowsHtml = `
-        <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.8rem;">
+        <div id="live-tahajjud-subrow" style="${innerCardStyle}">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
-            <span style="font-weight:800;color:var(--accent-emerald-dark);">
-              🌅 ${
-                lang === "bn"
-                  ? `ফজরের উত্তম সময় (আল-ইসফার): ${fajrStartClock} - ${fajrPrimeClock}`
-                  : lang === "ar"
-                  ? `وقت الإسفار الفاضل للفجر: ${fajrStartClock} - ${fajrPrimeClock}`
-                  : `Fajr Prime Time (Al-Isfar): ${fajrStartClock} - ${fajrPrimeClock}`
-              }
-            </span>
-            <strong style="font-weight:900;color:var(--danger, #dc2626);background:rgba(220,38,38,0.09);padding:2px 8px;border-radius:999px;border:1px solid rgba(220,38,38,0.28);">
-              ⏳ ${nowMins <= fajrPrimeEnd ? fajrPrimeLeftStr : (lang === "bn" ? "উত্তম সময় শেষ" : "Prime Ended")}
-            </strong>
-          </div>
-          <div style="padding-top:7px;border-top:1px dashed rgba(16,185,129,0.18);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
             <span style="font-weight:800;color:var(--accent-emerald-dark);">
               🕌 ${
                 lang === "bn"
-                  ? `ফজর ফরজ ওয়াক্ত (শেষ: ${sunriseClock})`
+                  ? `ফজরের উত্তম সময় (আল-ইসফার): ${fajrStartClock} - ${fajrPrimeClock}`
                   : lang === "ar"
-                  ? `وقت صلاة الفجر (حتى الشروق)`
-                  : `Fajr Fard Waqt (till ${sunriseClock})`
+                  ? `الوقت المختار للفجر (الإسفار): ${fajrStartClock} - ${fajrPrimeClock}`
+                  : `Fajr Prime Time (Al-Isfar): ${fajrStartClock} - ${fajrPrimeClock}`
               }
             </span>
-            <strong style="font-weight:900;color:var(--danger, #dc2626);">
-              ⏳ ${fajrLeftStr}
-            </strong>
+            ${
+              isPrimeActive
+                ? `<strong style="font-weight:900;color:var(--danger, #dc2626);background:rgba(220,38,38,0.09);padding:2px 9px;border-radius:999px;border:1px solid rgba(220,38,38,0.28);">${primeLeftStr}</strong>`
+                : ""
+            }
+          </div>
+          <div style="font-weight:700;font-size:0.77rem;color:${
+            isPrimeActive ? "var(--text-muted)" : "var(--danger, #dc2626)"
+          };">
+            ${
+              isPrimeActive
+                ? lang === "bn"
+                  ? `ফজরের ২ রাকাত সুন্নাত ফরজের পূর্বে আদায় করুন (ওয়াক্ত শেষ: ${fajrEndClock})`
+                  : lang === "ar"
+                  ? `ركعتا سنة الفجر قبل الفرض (ينتهي الفجر ${fajrEndClock})`
+                  : `Pray 2 Rak'ah Fajr Sunnah before Fard (Ends ${fajrEndClock})`
+                : lang === "bn"
+                ? `উত্তম সময় সমাপ্ত (ফজর সূর্যোদয়ের পূর্ব ${fajrEndClock} পর্যন্ত জায়েয)`
+                : lang === "ar"
+                ? `انتهى الوقت المختار (الفجر ممتد حتى ${fajrEndClock})`
+                : `Prime time ended (Fajr valid until ${fajrEndClock})`
+            }
           </div>
         </div>
       `;
     } else if (nowMins >= pWindows.sunrise.start && nowMins < pWindows.sunrise.end) {
-      // 2. Prohibited Window 1: Sunrise (15 mins) — e.g., 06:07 to 06:22
+      // 2. Prohibited Window 1: Sunrise (15 mins) — Card-in-Card Warning UI
       activeWaqtTitle =
         lang === "bn"
           ? "⛔ নিষিদ্ধ সময়: সূর্যোদয় কাল"
@@ -3038,8 +3055,32 @@ function renderFiveWaqtStrip(now = new Date()) {
       winEnd = pWindows.sunrise.end;
       isProhibitedNow = true;
       exactEndDisplay = true;
+
+      const ishraqStartClock = formatShortWaqtClock(pWindows.sunrise.end, lang);
+      nightDualRowsHtml = `
+        <div id="live-tahajjud-subrow" style="${prohibitedInnerCardStyle}">
+          <div style="font-weight:800;color:var(--danger, #b91c1c);line-height:1.4;">
+            ⚠️ ${
+              lang === "bn"
+                ? "এখন সূর্যোদয়ের নিষিদ্ধ সময় চলছে — সকল প্রকার নামাজ আদায় সম্পূর্ণ নিষিদ্ধ (সহীহ মুসলিম ৮৩১)"
+                : lang === "ar"
+                ? "وقت النهي عند طلوع الشمس جارٍ الآن — تحرم فيه الصلاة (صحيح مسلم ٨٣١)"
+                : "Sunrise prohibited window active — all Salah is forbidden now (Sahih Muslim 831)"
+            }
+          </div>
+          <div style="font-weight:700;font-size:0.76rem;color:var(--text-primary);">
+            ${
+              lang === "bn"
+                ? `পরবর্তী বৈধ ওয়াক্ত: ইশরাক / চাশত (${ishraqStartClock})`
+                : lang === "ar"
+                ? `الوقت المباح القادم: الإشراق / الضحى (${ishraqStartClock})`
+                : `Next Permitted Waqt: Ishraq / Duha (${ishraqStartClock})`
+            }
+          </div>
+        </div>
+      `;
     } else if (nowMins >= pWindows.sunrise.end && nowMins < pWindows.zawal.start) {
-      // 3. Ishraq & Duha (Chasht) Permitted Window: strictly after Sunrise prohibited end (06:22) until Zawal start (11:37)
+      // 3. Ishraq & Duha (Chasht) Permitted Window: after Sunrise prohibited end until Zawal start
       activeWaqtTitle =
         lang === "bn"
           ? "চাশত / ইশরাক (যাওয়ালের পূর্ব পর্যন্ত)"
@@ -3048,8 +3089,38 @@ function renderFiveWaqtStrip(now = new Date()) {
           : "Ishraq & Duha (Until Zawal)";
       winStart = pWindows.sunrise.end;
       winEnd = pWindows.zawal.start;
+
+      const ishraqStartClock = formatShortWaqtClock(pWindows.sunrise.end, lang);
+      const ishraqPrimeEnd = Math.min(pWindows.zawal.start - 15, pWindows.sunrise.end + 45);
+      const ishraqPrimeClock = formatShortWaqtClock(ishraqPrimeEnd, lang);
+      const zawalStartClock = formatShortWaqtClock(pWindows.zawal.start, lang);
+
+      nightDualRowsHtml = `
+        <div id="live-tahajjud-subrow" style="${innerCardStyle}">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+            <span style="font-weight:800;color:var(--accent-emerald-dark);">
+              ☀️ ${
+                lang === "bn"
+                  ? `ইশরাকের উত্তম সময়: ${ishraqStartClock} - ${ishraqPrimeClock}`
+                  : lang === "ar"
+                  ? `وقت صلاة الإشراق المختار: ${ishraqStartClock} - ${ishraqPrimeClock}`
+                  : `Ishraq Prime Window: ${ishraqStartClock} - ${ishraqPrimeClock}`
+              }
+            </span>
+            <span style="font-weight:800;color:var(--accent-gold);font-size:0.76rem;">
+              ${
+                lang === "bn"
+                  ? `দ্বিপ্রহর নিষিদ্ধ সময় শুরু: ${zawalStartClock}`
+                  : lang === "ar"
+                  ? `يبدأ وقت الزوال: ${zawalStartClock}`
+                  : `Zawal Prohibited at: ${zawalStartClock}`
+              }
+            </span>
+          </div>
+        </div>
+      `;
     } else if (nowMins >= pWindows.zawal.start && nowMins < pWindows.zawal.end) {
-      // 4. Prohibited Window 2: Zawal / Solar Zenith — e.g., 11:38 to 11:47
+      // 4. Prohibited Window 2: Zawal / Solar Zenith — Card-in-Card Warning UI
       activeWaqtTitle =
         lang === "bn"
           ? "⛔ নিষিদ্ধ সময়: দ্বিপ্রহর / যাওয়াল"
@@ -3060,102 +3131,144 @@ function renderFiveWaqtStrip(now = new Date()) {
       winEnd = pWindows.zawal.end;
       isProhibitedNow = true;
       exactEndDisplay = true;
+
+      const dhuhrStartClock = formatShortWaqtClock(pWindows.zawal.end, lang);
+      nightDualRowsHtml = `
+        <div id="live-tahajjud-subrow" style="${prohibitedInnerCardStyle}">
+          <div style="font-weight:800;color:var(--danger, #b91c1c);line-height:1.4;">
+            ⚠️ ${
+              lang === "bn"
+                ? "সূর্য ঠিক মাথার ওপরে (যাওয়াল) — যোহর শুরু হওয়া পর্যন্ত সালাত নিষিদ্ধ (সহীহ মুসলিম ৮৩১)"
+                : lang === "ar"
+                ? "الشمس في كبد السماء (الزوال) — تحرم الصلاة حتى تزول الشمس (مسلم ٨٣١)"
+                : "Sun at meridian zenith (Zawal) — Salah is forbidden until Dhuhr begins"
+            }
+          </div>
+          <div style="font-weight:700;font-size:0.76rem;color:var(--text-primary);">
+            ${
+              lang === "bn"
+                ? `পরবর্তী ওয়াক্ত: যোহর (${dhuhrStartClock})`
+                : lang === "ar"
+                ? `الصلاة القادمة: الظهر (${dhuhrStartClock})`
+                : `Next Waqt: Dhuhr (${dhuhrStartClock})`
+            }
+          </div>
+        </div>
+      `;
     } else if (nowMins >= pWindows.zawal.end && nowMins < sched.asr) {
-      // 5. Dhuhr Prime Time (Awwal Waqt) & Rawatib Sub-Windows
-      activeWaqtTitle = t("waqt_dhuhr");
+      // 5. Dhuhr Fard Waqt + Prime Time (Awwal Waqt) Card-in-Card
+      activeWaqtTitle =
+        lang === "bn"
+          ? "যোহর (মধ্যাহ্ন হতে আসরের পূর্ব পর্যন্ত)"
+          : lang === "ar"
+          ? "الظهر (من الزوال حتى العصر)"
+          : "Dhuhr (After Zawal until Asr)";
       winStart = pWindows.zawal.end;
       winEnd = sched.asr;
 
       const dhuhrStartClock = formatShortWaqtClock(pWindows.zawal.end, lang);
-      const asrStartClock = formatShortWaqtClock(sched.asr, lang);
-      const dhuhrPrimeEnd = (pWindows.zawal.end + 45 + 1440) % 1440;
+      const dhuhrEndClock = formatShortWaqtClock((sched.asr - 1 + 1440) % 1440, lang);
+      const dhuhrPrimeEnd = Math.min(sched.asr - 15, pWindows.zawal.end + 50);
       const dhuhrPrimeClock = formatShortWaqtClock(dhuhrPrimeEnd, lang);
-      const minsLeftDhuhr = Math.max(1, sched.asr - nowMins);
-      const dhuhrLeftStr = formatRemainingDurationText(minsLeftDhuhr, lang);
-      const minsLeftPrimeDhuhr = Math.max(1, dhuhrPrimeEnd - nowMins);
-      const dhuhrPrimeLeftStr = formatRemainingDurationText(minsLeftPrimeDhuhr, lang);
+      const isPrimeActive = nowMins < dhuhrPrimeEnd;
+      const minsLeftPrime = Math.max(1, dhuhrPrimeEnd - nowMins);
+      const primeLeftStr = formatRemainingDurationText(minsLeftPrime, lang);
 
       nightDualRowsHtml = `
-        <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.8rem;">
+        <div id="live-tahajjud-subrow" style="${innerCardStyle}">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
             <span style="font-weight:800;color:var(--accent-emerald-dark);">
-              ☀️ ${
+              🕌 ${
                 lang === "bn"
                   ? `যোহরের উত্তম সময় (আউয়াল ওয়াক্ত): ${dhuhrStartClock} - ${dhuhrPrimeClock}`
                   : lang === "ar"
-                  ? `الوقت الفاضل للظهر (أول الوقت): ${dhuhrStartClock} - ${dhuhrPrimeClock}`
+                  ? `الوقت المختار للظهر (أول الوقت): ${dhuhrStartClock} - ${dhuhrPrimeClock}`
                   : `Dhuhr Prime Time (Awwal Waqt): ${dhuhrStartClock} - ${dhuhrPrimeClock}`
               }
             </span>
-            <strong style="font-weight:900;color:var(--danger, #dc2626);background:rgba(220,38,38,0.09);padding:2px 8px;border-radius:999px;border:1px solid rgba(220,38,38,0.28);">
-              ⏳ ${nowMins <= dhuhrPrimeEnd ? dhuhrPrimeLeftStr : (lang === "bn" ? "উত্তম প্রহর সমাপ্ত" : "Prime Concluded")}
-            </strong>
+            ${
+              isPrimeActive
+                ? `<strong style="font-weight:900;color:var(--danger, #dc2626);background:rgba(220,38,38,0.09);padding:2px 9px;border-radius:999px;border:1px solid rgba(220,38,38,0.28);">${primeLeftStr}</strong>`
+                : ""
+            }
           </div>
-          <div style="padding-top:7px;border-top:1px dashed rgba(16,185,129,0.18);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
-            <span style="font-weight:800;color:var(--accent-emerald-dark);">
-              🕛 ${
-                lang === "bn"
-                  ? `যোহর ফরজ ওয়াক্ত (শেষ: ${asrStartClock})`
+          <div style="font-weight:700;font-size:0.77rem;color:${
+            isPrimeActive ? "var(--text-muted)" : "var(--danger, #dc2626)"
+          };">
+            ${
+              isPrimeActive
+                ? lang === "bn"
+                  ? `প্রথম অংশ ও সুন্নাত: ফরজের পূর্বে ৪ রাকাত ও পরে ২ রাকাত (যোহর আসরের পূর্ব ${dhuhrEndClock} পর্যন্ত জায়েয)`
                   : lang === "ar"
-                  ? `وقت صلاة الظهر (حتى العصر)`
-                  : `Dhuhr Fard Waqt (till ${asrStartClock})`
-              }
-            </span>
-            <strong style="font-weight:900;color:var(--danger, #dc2626);">
-              ⏳ ${dhuhrLeftStr}
-            </strong>
+                  ? `السنن الرواتب: ٤ قبلها و٢ بعدها (الظهر ممتد حتى ${dhuhrEndClock})`
+                  : `Rawatib Sunnah: 4 before & 2 after Fard (Valid until ${dhuhrEndClock})`
+                : lang === "bn"
+                ? `আউয়াল ওয়াক্ত সমাপ্ত (যোহর আসরের পূর্ব ${dhuhrEndClock} পর্যন্ত জায়েয)`
+                : lang === "ar"
+                ? `انتهى أول الوقت (الظهر ممتد حتى ${dhuhrEndClock})`
+                : `Awwal Waqt ended (Dhuhr valid until ${dhuhrEndClock})`
+            }
           </div>
         </div>
       `;
     } else if (nowMins >= sched.asr && nowMins < pWindows.sunset.start) {
-      // 6. Asr Prime Time (Awwal Waqt) & Evening Adhkar Sub-Windows
-      activeWaqtTitle = t("waqt_asr");
+      // 6. Asr Fard Waqt + Prime Time (Fadhilah Window before Sun Yellowing) Card-in-Card
+      activeWaqtTitle =
+        lang === "bn"
+          ? "আসর (দ্বিগুণ ছায়া হতে সূর্যাস্তের পূর্ব পর্যন্ত)"
+          : lang === "ar"
+          ? "العصر (من مصير الظل مثليه حتى الغروب)"
+          : "Asr (Hanafi Mithl-e-Thani until Sunset)";
       winStart = sched.asr;
       winEnd = pWindows.sunset.start;
 
       const asrStartClock = formatShortWaqtClock(sched.asr, lang);
-      const sunsetStartClock = formatShortWaqtClock(pWindows.sunset.start, lang);
-      const asrPrimeEnd = (sched.asr + 50 + 1440) % 1440;
+      const asrEndClock = formatShortWaqtClock((pWindows.sunset.start - 1 + 1440) % 1440, lang);
+      const asrPrimeEnd = Math.max(sched.asr + 30, pWindows.sunset.start - 25);
       const asrPrimeClock = formatShortWaqtClock(asrPrimeEnd, lang);
-      const minsLeftAsr = Math.max(1, pWindows.sunset.start - nowMins);
-      const asrLeftStr = formatRemainingDurationText(minsLeftAsr, lang);
-      const minsLeftPrimeAsr = Math.max(1, asrPrimeEnd - nowMins);
-      const asrPrimeLeftStr = formatRemainingDurationText(minsLeftPrimeAsr, lang);
+      const isPrimeActive = nowMins < asrPrimeEnd;
+      const minsLeftPrime = Math.max(1, asrPrimeEnd - nowMins);
+      const primeLeftStr = formatRemainingDurationText(minsLeftPrime, lang);
 
       nightDualRowsHtml = `
-        <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.8rem;">
+        <div id="live-tahajjud-subrow" style="${innerCardStyle}">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
             <span style="font-weight:800;color:var(--accent-emerald-dark);">
-              🌤️ ${
+              🕌 ${
                 lang === "bn"
-                  ? `আছরের উত্তম সময় (আউয়াল ওয়াক্ত): ${asrStartClock} - ${asrPrimeClock}`
+                  ? `আসরের উত্তম সময় (ফাদিলাহ): ${asrStartClock} - ${asrPrimeClock}`
                   : lang === "ar"
-                  ? `الوقت الفاضل للعصر (أول الوقت): ${asrStartClock} - ${asrPrimeClock}`
-                  : `Asr Prime Time (Awwal Waqt): ${asrStartClock} - ${asrPrimeClock}`
+                  ? `الوقت المختار للعصر (قبل الاصفرار): ${asrStartClock} - ${asrPrimeClock}`
+                  : `Asr Prime Time (Fadhilah): ${asrStartClock} - ${asrPrimeClock}`
               }
             </span>
-            <strong style="font-weight:900;color:var(--danger, #dc2626);background:rgba(220,38,38,0.09);padding:2px 8px;border-radius:999px;border:1px solid rgba(220,38,38,0.28);">
-              ⏳ ${nowMins <= asrPrimeEnd ? asrPrimeLeftStr : (lang === "bn" ? "উত্তম প্রহর সমাপ্ত" : "Prime Concluded")}
-            </strong>
+            ${
+              isPrimeActive
+                ? `<strong style="font-weight:900;color:var(--danger, #dc2626);background:rgba(220,38,38,0.09);padding:2px 9px;border-radius:999px;border:1px solid rgba(220,38,38,0.28);">${primeLeftStr}</strong>`
+                : ""
+            }
           </div>
-          <div style="padding-top:7px;border-top:1px dashed rgba(16,185,129,0.18);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
-            <span style="font-weight:800;color:var(--accent-emerald-dark);">
-              🛡️ ${
-                lang === "bn"
-                  ? `আসর ফরজ ওয়াক্ত (শেষ: ${sunsetStartClock})`
+          <div style="font-weight:700;font-size:0.77rem;color:${
+            isPrimeActive ? "var(--text-muted)" : "var(--danger, #dc2626)"
+          };">
+            ${
+              isPrimeActive
+                ? lang === "bn"
+                  ? `আসরের ফাদিলাহ সময় চলমান • সূর্যাস্তের পূর্বে সন্ধ্যার আযকার পাঠ করুন`
                   : lang === "ar"
-                  ? `وقت صلاة العصر (حتى الغروب)`
-                  : `Asr Fard Waqt (till ${sunsetStartClock})`
-              }
-            </span>
-            <strong style="font-weight:900;color:var(--danger, #dc2626);">
-              ⏳ ${asrLeftStr}
-            </strong>
+                  ? `وقت الفضيلة جارٍ • اقرأ أذكار المساء قبل الغروب`
+                  : `Asr Fadhilah active • Recite Evening Adhkar before sunset`
+                : lang === "bn"
+                ? `ফাদিলাহ সময় সমাপ্ত — সূর্যাস্তের আগে নামায মাকরূহ, দ্রুত আদায় করুন (শেষ: ${asrEndClock})`
+                : lang === "ar"
+                ? `انتهى وقت الاختيار — بادر بالصلاة قبل الغروب (${asrEndClock})`
+                : `Prime time ended — pray immediately before sunset (${asrEndClock})`
+            }
           </div>
         </div>
       `;
     } else if (nowMins >= pWindows.sunset.start && nowMins < sched.maghrib) {
-      // 7. Prohibited Window 3: Sunset / Ghurub (15 mins before sunset until Maghrib) — e.g., 05:06 to 05:21
+      // 7. Prohibited Window 3: Sunset / Ghurub (15 mins before sunset until Maghrib) — Card-in-Card Warning UI
       activeWaqtTitle =
         lang === "bn"
           ? "⛔ নিষিদ্ধ সময়: সূর্যাস্ত কাল"
@@ -3166,56 +3279,88 @@ function renderFiveWaqtStrip(now = new Date()) {
       winEnd = sched.maghrib;
       isProhibitedNow = true;
       exactEndDisplay = true;
+
+      const maghribStartClock = formatShortWaqtClock(sched.maghrib, lang);
+      nightDualRowsHtml = `
+        <div id="live-tahajjud-subrow" style="${prohibitedInnerCardStyle}">
+          <div style="font-weight:800;color:var(--danger, #b91c1c);line-height:1.4;">
+            ⚠️ ${
+              lang === "bn"
+                ? "সূর্যাস্তের নিষিদ্ধ সময় চলছে — মাগরিব শুরু হওয়া পর্যন্ত যেকোনো সালাত নিষিদ্ধ (সহীহ মুসলিম ৮৩১)"
+                : lang === "ar"
+                ? "وقت النهي عند غروب الشمس جارٍ الآن — تحرم الصلاة حتى تغرب (مسلم ٨٣١)"
+                : "Sunset prohibited window active — Salah is forbidden until Maghrib (Sahih Muslim 831)"
+            }
+          </div>
+          <div style="font-weight:700;font-size:0.76rem;color:var(--text-primary);">
+            ${
+              lang === "bn"
+                ? `পরবর্তী ওয়াক্ত: মাগরিব (${maghribStartClock})`
+                : lang === "ar"
+                ? `الصلاة القادمة: المغرب (${maghribStartClock})`
+                : `Next Waqt: Maghrib (${maghribStartClock})`
+            }
+          </div>
+        </div>
+      `;
     } else if (nowMins >= sched.maghrib && nowMins < sched.isha) {
-      // 8. Maghrib Prime Time (Ta'جيل / Prompt Awwal Waqt) & Sunnah Sub-Windows
-      activeWaqtTitle = t("waqt_maghrib");
+      // 8. Maghrib Fard Waqt + Prime Time (Ta'jil) Card-in-Card
+      activeWaqtTitle =
+        lang === "bn"
+          ? "মাগরিব (সূর্যাস্ত হতে সন্ধ্যার লাল আভা পর্যন্ত)"
+          : lang === "ar"
+          ? "المغرب (من الغروب حتى مغيب الشفق)"
+          : "Maghrib (Sunset until Red Twilight Ends)";
       winStart = sched.maghrib;
       winEnd = sched.isha;
 
       const maghribStartClock = formatShortWaqtClock(sched.maghrib, lang);
-      const ishaStartClock = formatShortWaqtClock(sched.isha, lang);
-      const maghribPrimeEnd = (sched.maghrib + 20 + 1440) % 1440;
+      const maghribEndClock = formatShortWaqtClock((sched.isha - 1 + 1440) % 1440, lang);
+      const maghribPrimeEnd = Math.min(sched.isha - 5, sched.maghrib + 25);
       const maghribPrimeClock = formatShortWaqtClock(maghribPrimeEnd, lang);
-      const minsLeftMaghrib = Math.max(1, sched.isha - nowMins);
-      const maghribLeftStr = formatRemainingDurationText(minsLeftMaghrib, lang);
-      const minsLeftPrimeMaghrib = Math.max(1, maghribPrimeEnd - nowMins);
-      const maghribPrimeLeftStr = formatRemainingDurationText(minsLeftPrimeMaghrib, lang);
+      const isPrimeActive = nowMins < maghribPrimeEnd;
+      const minsLeftPrime = Math.max(1, maghribPrimeEnd - nowMins);
+      const primeLeftStr = formatRemainingDurationText(minsLeftPrime, lang);
 
       nightDualRowsHtml = `
-        <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.8rem;">
+        <div id="live-tahajjud-subrow" style="${innerCardStyle}">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
             <span style="font-weight:800;color:var(--accent-emerald-dark);">
-              🌇 ${
+              🕌 ${
                 lang === "bn"
-                  ? `মাগরিবের উত্তম সময় (তা'জিল/শীঘ্র): ${maghribStartClock} - ${maghribPrimeClock}`
+                  ? `মাগরিবের উত্তম সময় (তা'জিল): ${maghribStartClock} - ${maghribPrimeClock}`
                   : lang === "ar"
-                  ? `الوقت الفاضل للمغرب (التعجيل): ${maghribStartClock} - ${maghribPrimeClock}`
-                  : `Maghrib Prime Time (Prompt): ${maghribStartClock} - ${maghribPrimeClock}`
+                  ? `الوقت المختار للمغرب (التعجيل): ${maghribStartClock} - ${maghribPrimeClock}`
+                  : `Maghrib Prime Time (Ta'jil): ${maghribStartClock} - ${maghribPrimeClock}`
               }
             </span>
-            <strong style="font-weight:900;color:var(--danger, #dc2626);background:rgba(220,38,38,0.09);padding:2px 8px;border-radius:999px;border:1px solid rgba(220,38,38,0.28);">
-              ⏳ ${nowMins <= maghribPrimeEnd ? maghribPrimeLeftStr : (lang === "bn" ? "উত্তম প্রহর সমাপ্ত" : "Prime Concluded")}
-            </strong>
+            ${
+              isPrimeActive
+                ? `<strong style="font-weight:900;color:var(--danger, #dc2626);background:rgba(220,38,38,0.09);padding:2px 9px;border-radius:999px;border:1px solid rgba(220,38,38,0.28);">${primeLeftStr}</strong>`
+                : ""
+            }
           </div>
-          <div style="padding-top:7px;border-top:1px dashed rgba(16,185,129,0.18);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
-            <span style="font-weight:800;color:var(--accent-emerald-dark);">
-              🌆 ${
-                lang === "bn"
-                  ? `মাগরিব ফরজ ওয়াক্ত (শেষ: ${ishaStartClock})`
+          <div style="font-weight:700;font-size:0.77rem;color:${
+            isPrimeActive ? "var(--text-muted)" : "var(--danger, #dc2626)"
+          };">
+            ${
+              isPrimeActive
+                ? lang === "bn"
+                  ? `তাৎক্ষণিক আদায়ের সময় ও ২ রাকাত সুন্নাত (মাগরিব ইশার পূর্ব ${maghribEndClock} পর্যন্ত জায়েয)`
                   : lang === "ar"
-                  ? `وقت صلاة المغرب (حتى العشاء)`
-                  : `Maghrib Fard Waqt (till ${ishaStartClock})`
-              }
-            </span>
-            <strong style="font-weight:900;color:var(--danger, #dc2626);">
-              ⏳ ${maghribLeftStr}
-            </strong>
+                  ? `وقت التعجيل وركعتا السنة (المغرب ممتد حتى ${maghribEndClock})`
+                  : `Prompt prayer & 2 Rak'ah Sunnah (Maghrib valid until ${maghribEndClock})`
+                : lang === "bn"
+                ? `তা'জিল সময় সমাপ্ত (মাগরিব ইশার পূর্ব ${maghribEndClock} পর্যন্ত জায়েয)`
+                : lang === "ar"
+                ? `انتهى وقت التعجيل (المغرب ممتد حتى ${maghribEndClock})`
+                : `Ta'jil window ended (Maghrib valid until ${maghribEndClock})`
+            }
           </div>
         </div>
       `;
     } else {
       // 9. World-Standard Dual-Layer Night Architecture (Isha Whole Night + Tahajjud After 1st Third & Last Third)
-      // Normalize timeline relative to Isha start (sched.isha .. sched.fajr + 1440)
       winStart = sched.isha;
       winEnd = sched.fajr + 1440;
       currentPos = nowMins < sched.fajr ? nowMins + 1440 : nowMins;
@@ -3223,9 +3368,6 @@ function renderFiveWaqtStrip(now = new Date()) {
 
     // Detect if we are currently inside the Night Isha + Tahajjud window
     const isNightIshaWindow = nowMins >= sched.isha || nowMins < sched.fajr;
-    let customStatusText = "";
-    let customRangeText = "";
-    let customRemainingText = "";
 
     if (isNightIshaWindow) {
       const normFirstThirdEnd =
@@ -3241,30 +3383,29 @@ function renderFiveWaqtStrip(now = new Date()) {
       const tahajjudEarlyStartClock = formatShortWaqtClock(sched.firstThirdEnd, lang);
       const lastThirdClock = formatShortWaqtClock(sched.lastThirdStart, lang);
 
+      activeWaqtTitle =
+        lang === "bn"
+          ? "ইশা (সারারাত ফজরের পূর্ব পর্যন্ত)"
+          : lang === "ar"
+          ? "العشاء (ممتد طوال الليل حتى الفجر)"
+          : "Isha (Valid Whole Night Until Fajr)";
+      customRangeText = `${ishaStartClock} - ${fajrEndClock}`;
+      customStatusText =
+        lang === "bn"
+          ? "চলমান"
+          : lang === "ar"
+          ? "جارٍ الآن"
+          : "Ongoing";
+
       if (currentPos < normFirstThirdEnd) {
         // Phase 9A: Prime 1st Third of the Night (Mustahabb Isha Window: Isha Start -> 1st Third End)
-        activeWaqtTitle =
-          lang === "bn"
-            ? "ইশা (সারারাত ফজরের পূর্ব পর্যন্ত)"
-            : lang === "ar"
-            ? "العشاء (ممتد طوال الليل حتى الفجر)"
-            : "Isha (Valid Whole Night Until Fajr)";
-        customRangeText = `${ishaStartClock} - ${fajrEndClock}`;
-        customStatusText =
-          lang === "bn"
-            ? "চলমান"
-            : lang === "ar"
-            ? "جارٍ الآن"
-            : "Ongoing";
-
         const minsLeftInFirstThird = Math.max(1, normFirstThirdEnd - currentPos);
         const firstThirdLeftStr = formatRemainingDurationText(minsLeftInFirstThird, lang);
         const minsUntilTahajjudOpen = Math.max(1, normFirstThirdEnd - currentPos);
         const tahajjudStartsInStr = formatRemainingDurationText(minsUntilTahajjudOpen, lang);
 
-        // World-Class Stacked Sub-Rows for Isha + Tahajjud with Crimson Red remaining time badge:
         nightDualRowsHtml = `
-          <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.8rem;">
+          <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.81rem;">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
               <span style="font-weight:800;color:var(--accent-emerald-dark);">
                 🕌 ${
@@ -3275,57 +3416,45 @@ function renderFiveWaqtStrip(now = new Date()) {
                     : `Isha Prime Time (1st Third): ${ishaStartClock} - ${firstThirdClock}`
                 }
               </span>
-              <strong style="font-weight:900;color:var(--danger, #dc2626);background:rgba(220,38,38,0.09);padding:2px 8px;border-radius:999px;border:1px solid rgba(220,38,38,0.28);">
+              <strong style="font-weight:900;color:var(--danger, #dc2626);background:rgba(220,38,38,0.09);padding:2px 9px;border-radius:999px;border:1px solid rgba(220,38,38,0.28);">
                 ⏳ ${firstThirdLeftStr}
               </strong>
             </div>
-            <div style="padding-top:7px;border-top:1px dashed rgba(16,185,129,0.18);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
-              <span style="font-weight:800;color:var(--accent-emerald-dark);">
-                🌌 ${
-                  lang === "bn"
-                    ? `তাহাজ্জুদ ওয়াক্ত (১ম প্রহর শেষে): ${tahajjudEarlyStartClock} - ${fajrEndClock}`
-                    : lang === "ar"
-                    ? `وقت التهجد (بعد الثلث الأول): ${tahajjudEarlyStartClock} - ${fajrEndClock}`
-                    : `Tahajjud Window (After 1st 1/3): ${tahajjudEarlyStartClock} - ${fajrEndClock}`
-                }
-              </span>
-              <strong style="font-weight:800;color:var(--accent-gold);">
-                ⏳ ${
-                  lang === "bn"
-                    ? `শুরু হতে ${tahajjudStartsInStr} (শ্রেষ্ঠ শেষ ১/৩: ${lastThirdClock})`
-                    : lang === "ar"
-                    ? `يبدأ بعد ${tahajjudStartsInStr} (الأفضل: ${lastThirdClock})`
-                    : `Starts in ${tahajjudStartsInStr} (Best 1/3: ${lastThirdClock})`
-                }
-              </strong>
+            <div style="${innerCardStyle}margin-top:2px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+                <span style="font-weight:800;color:var(--accent-emerald-dark);">
+                  🌌 ${
+                    lang === "bn"
+                      ? `তাহাজ্জুদ / কিয়ামুল লাইল: ${tahajjudEarlyStartClock} - ${fajrEndClock}`
+                      : lang === "ar"
+                      ? `التهجد / قيام الليل: ${tahajjudEarlyStartClock} - ${fajrEndClock}`
+                      : `Tahajjud / Qiyam al-Layl: ${tahajjudEarlyStartClock} - ${fajrEndClock}`
+                  }
+                </span>
+                <strong style="font-weight:800;color:var(--accent-gold);">
+                  ⏳ ${
+                    lang === "bn"
+                      ? `শুরু হতে ${tahajjudStartsInStr} (শ্রেষ্ঠ শেষ ১/৩: ${lastThirdClock})`
+                      : lang === "ar"
+                      ? `يبدأ بعد ${tahajjudStartsInStr} (الأفضل: ${lastThirdClock})`
+                      : `Starts in ${tahajjudStartsInStr} (Best 1/3: ${lastThirdClock})`
+                  }
+                </strong>
+              </div>
             </div>
           </div>
         `;
       } else if (currentPos >= normFirstThirdEnd && currentPos < normLastThirdStart) {
-        // Phase 9B: After 1st Third of the Night — Prime 1/3rd Isha has finished!
-        activeWaqtTitle =
-          lang === "bn"
-            ? "ইশা (সারারাত ফজরের পূর্ব পর্যন্ত)"
-            : lang === "ar"
-            ? "العشاء (ممتد طوال الليل حتى الفجر)"
-            : "Isha (Valid Whole Night Until Fajr)";
-        customRangeText = `${ishaStartClock} - ${fajrEndClock}`;
-        customStatusText =
-          lang === "bn"
-            ? "চলমান"
-            : lang === "ar"
-            ? "جارٍ الآن"
-            : "Ongoing";
-
+        // Phase 9B: After 1st Third of the Night — Prime 1/3rd Isha has finished! Card-in-Card Tahajjud Active
         const tahajjudTotal = Math.max(1, winEnd - normFirstThirdEnd);
         const tahajjudElapsed = Math.max(0, Math.min(tahajjudTotal, currentPos - normFirstThirdEnd));
         const tahajjudPct = Math.max(5, Math.min(100, Math.round((tahajjudElapsed / tahajjudTotal) * 100)));
         const tahajjudRemainingStr = formatRemainingDurationText(winEnd - currentPos, lang);
 
         nightDualRowsHtml = `
-          <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.8rem;">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
-              <span style="font-weight:800;color:var(--text-muted);">
+          <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.81rem;">
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <span style="font-weight:800;color:var(--text-primary);">
                 🕌 ${
                   lang === "bn"
                     ? `ইশার উত্তম সময় (১ম প্রহর): ${ishaStartClock} - ${firstThirdClock}`
@@ -3334,7 +3463,7 @@ function renderFiveWaqtStrip(now = new Date()) {
                     : `Isha Prime Time (1st Third): ${ishaStartClock} - ${firstThirdClock}`
                 }
               </span>
-              <strong style="font-weight:800;color:var(--danger, #dc2626);">
+              <strong style="font-weight:800;color:var(--danger, #dc2626);font-size:0.79rem;">
                 ${
                   lang === "bn"
                     ? "১ম প্রহর সমাপ্ত (ইশা ফজর পর্যন্ত জায়েয)"
@@ -3344,7 +3473,7 @@ function renderFiveWaqtStrip(now = new Date()) {
                 }
               </strong>
             </div>
-            <div style="padding-top:8px;border-top:1px dashed rgba(16,185,129,0.22);">
+            <div style="${innerCardStyle}margin-top:2px;">
               <div class="live-waqt-top-row" style="margin-bottom:5px;">
                 <strong style="font-size:0.9rem;font-weight:900;color:var(--accent-emerald-dark);">
                   🌌 ${
@@ -3380,29 +3509,15 @@ function renderFiveWaqtStrip(now = new Date()) {
         `;
       } else {
         // Phase 9C: Last Third of the Night (Al-Thuluth al-Akhir — Golden Tahajjud Window + Isha Whole Night before Fajr)
-        activeWaqtTitle =
-          lang === "bn"
-            ? "ইশা (সারারাত ফজরের পূর্ব পর্যন্ত)"
-            : lang === "ar"
-            ? "العشاء (ممتد طوال الليل حتى الفجر)"
-            : "Isha (Valid Whole Night Until Fajr)";
-        customRangeText = `${ishaStartClock} - ${fajrEndClock}`;
-        customStatusText =
-          lang === "bn"
-            ? "চলমান"
-            : lang === "ar"
-            ? "جارٍ الآن"
-            : "Ongoing";
-
         const lastThirdTotal = Math.max(1, winEnd - normLastThirdStart);
         const lastThirdElapsed = Math.max(0, Math.min(lastThirdTotal, currentPos - normLastThirdStart));
         const lastThirdPct = Math.max(6, Math.min(100, Math.round((lastThirdElapsed / lastThirdTotal) * 100)));
         const tahajjudRemainingStr = formatRemainingDurationText(winEnd - currentPos, lang);
 
         nightDualRowsHtml = `
-          <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.8rem;">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
-              <span style="font-weight:800;color:var(--text-muted);">
+          <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.81rem;">
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <span style="font-weight:800;color:var(--text-primary);">
                 🕌 ${
                   lang === "bn"
                     ? `ইশার উত্তম সময় (১ম প্রহর): ${ishaStartClock} - ${firstThirdClock}`
@@ -3411,7 +3526,7 @@ function renderFiveWaqtStrip(now = new Date()) {
                     : `Isha Prime Time (1st Third): ${ishaStartClock} - ${firstThirdClock}`
                 }
               </span>
-              <strong style="font-weight:800;color:var(--danger, #dc2626);">
+              <strong style="font-weight:800;color:var(--danger, #dc2626);font-size:0.79rem;">
                 ${
                   lang === "bn"
                     ? "১ম প্রহর সমাপ্ত (ইশা ফজর পর্যন্ত জায়েয)"
@@ -3421,7 +3536,7 @@ function renderFiveWaqtStrip(now = new Date()) {
                 }
               </strong>
             </div>
-            <div style="padding-top:8px;border-top:1px dashed rgba(16,185,129,0.22);">
+            <div style="${innerCardStyle}margin-top:2px;">
               <div class="live-waqt-top-row" style="margin-bottom:5px;">
                 <strong style="font-size:0.9rem;font-weight:900;color:var(--accent-emerald-dark);">
                   🌌 ${
@@ -3447,7 +3562,7 @@ function renderFiveWaqtStrip(now = new Date()) {
                       ? `চলমান (১ম প্রহর শেষে শুরু: ${tahajjudEarlyStartClock})`
                       : lang === "ar"
                       ? `جارٍ الآن (بدأ بعد الثلث الأول: ${tahajjudEarlyStartClock})`
-                      : `Opened after 1st 1/3 at ${tahajjudEarlyStartClock}`
+                      : `Ongoing (Opened after 1st 1/3 at ${tahajjudEarlyStartClock})`
                   }</span>
                 </span>
                 <strong style="color:var(--danger, #dc2626);font-weight:900;">${tahajjudRemainingStr}</strong>
@@ -3489,7 +3604,7 @@ function renderFiveWaqtStrip(now = new Date()) {
         lang === "ar"
           ? "صلاة النافلة ممنوعة الآن"
           : lang === "en"
-          ? "Nafl Salah Prohibited"
+          ? "Salah Prohibited"
           : "সালাত নিষিদ্ধ";
     } else if (customStatusText) {
       statusEl.textContent = customStatusText;
@@ -3499,6 +3614,7 @@ function renderFiveWaqtStrip(now = new Date()) {
     }
     remainingEl.textContent =
       customRemainingText || formatRemainingDurationText(remaining, lang);
+    remainingEl.style.color = "var(--danger, #dc2626)";
   }
 
   gridEl.innerHTML = waqts
