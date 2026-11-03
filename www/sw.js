@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v54-tahajjud-waqt-window";
+const CACHE_NAME = "sunnah-24-enterprise-v55-15duas-nonclickable-graph-backfix";
 const ASSETS = [
   "./",
   "./index.html",
