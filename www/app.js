@@ -3081,39 +3081,57 @@ function renderFiveWaqtStrip(now = new Date()) {
             ? "العشاء (ممتد طوال الليل حتى الفجر)"
             : "Isha (Valid Whole Night Until Fajr)";
         customRangeText = `${ishaStartClock} - ${fajrEndClock}`;
+        customStatusText =
+          lang === "bn"
+            ? "চলমান"
+            : lang === "ar"
+            ? "جارٍ الآن"
+            : "Ongoing";
 
         const minsLeftInFirstThird = Math.max(1, normFirstThirdEnd - currentPos);
         const firstThirdLeftStr = formatRemainingDurationText(minsLeftInFirstThird, lang);
-        customStatusText =
-          lang === "bn"
-            ? `চলমান (ইশার উত্তম ১ম প্রহর: ${ishaStartClock} - ${firstThirdClock} • ${firstThirdLeftStr})`
-            : lang === "ar"
-            ? `جارٍ الآن (الوقت المختار للعشاء: ${ishaStartClock} - ${firstThirdClock} • ${firstThirdLeftStr})`
-            : `Ongoing (Prime 1st 1/3 Isha: ${ishaStartClock} - ${firstThirdClock} • ${firstThirdLeftStr})`;
-
-        // Dedicated Tahajjud upcoming sub-row inside the Ongoing Prayer section
         const minsUntilTahajjudOpen = Math.max(1, normFirstThirdEnd - currentPos);
         const tahajjudStartsInStr = formatRemainingDurationText(minsUntilTahajjudOpen, lang);
+
+        // World-Class Stacked Sub-Rows:
+        // 1) Dedicated Isha Prime 1st-Third (Mustahabb) Line with remaining time in Crimson Red
+        // 2) Dedicated Tahajjud Prayer Window Line below it
         nightDualRowsHtml = `
-          <div id="live-tahajjud-subrow" style="margin-top:9px;padding-top:8px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;font-size:0.79rem;">
-            <span style="font-weight:800;color:var(--accent-emerald-dark);">
-              🌌 ${
-                lang === "bn"
-                  ? `তাহাজ্জুদ ওয়াক্ত (১ম প্রহর শেষে): ${tahajjudEarlyStartClock} - ${fajrEndClock}`
-                  : lang === "ar"
-                  ? `وقت التهجد (بعد الثلث الأول): ${tahajjudEarlyStartClock} - ${fajrEndClock}`
-                  : `Tahajjud Window (After 1st 1/3): ${tahajjudEarlyStartClock} - ${fajrEndClock}`
-              }
-            </span>
-            <strong style="font-weight:800;color:var(--accent-gold);">
-              ⏳ ${
-                lang === "bn"
-                  ? `শুরু হতে ${tahajjudStartsInStr} (শ্রেষ্ঠ শেষ ১/৩: ${lastThirdClock})`
-                  : lang === "ar"
-                  ? `يبدأ بعد ${tahajjudStartsInStr} (الأفضل: ${lastThirdClock})`
-                  : `Starts in ${tahajjudStartsInStr} (Best 1/3: ${lastThirdClock})`
-              }
-            </strong>
+          <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.8rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+              <span style="font-weight:800;color:var(--accent-emerald-dark);">
+                🕌 ${
+                  lang === "bn"
+                    ? `ইশার উত্তম সময় (১ম প্রহর): ${ishaStartClock} - ${firstThirdClock}`
+                    : lang === "ar"
+                    ? `الوقت المختار للعشاء (الثلث الأول): ${ishaStartClock} - ${firstThirdClock}`
+                    : `Isha Prime Time (1st Third): ${ishaStartClock} - ${firstThirdClock}`
+                }
+              </span>
+              <strong style="font-weight:900;color:var(--danger, #dc2626);background:rgba(220,38,38,0.09);padding:2px 8px;border-radius:999px;border:1px solid rgba(220,38,38,0.28);">
+                ⏳ ${firstThirdLeftStr}
+              </strong>
+            </div>
+            <div style="padding-top:7px;border-top:1px dashed rgba(16,185,129,0.18);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+              <span style="font-weight:800;color:var(--accent-emerald-dark);">
+                🌌 ${
+                  lang === "bn"
+                    ? `তাহাজ্জুদ ওয়াক্ত (১ম প্রহর শেষে): ${tahajjudEarlyStartClock} - ${fajrEndClock}`
+                    : lang === "ar"
+                    ? `وقت التهجد (بعد الثلث الأول): ${tahajjudEarlyStartClock} - ${fajrEndClock}`
+                    : `Tahajjud Window (After 1st 1/3): ${tahajjudEarlyStartClock} - ${fajrEndClock}`
+                }
+              </span>
+              <strong style="font-weight:800;color:var(--accent-gold);">
+                ⏳ ${
+                  lang === "bn"
+                    ? `শুরু হতে ${tahajjudStartsInStr} (শ্রেষ্ঠ শেষ ১/৩: ${lastThirdClock})`
+                    : lang === "ar"
+                    ? `يبدأ بعد ${tahajjudStartsInStr} (الأفضل: ${lastThirdClock})`
+                    : `Starts in ${tahajjudStartsInStr} (Best 1/3: ${lastThirdClock})`
+                }
+              </strong>
+            </div>
           </div>
         `;
       } else if (currentPos >= normFirstThirdEnd && currentPos < normLastThirdStart) {
@@ -3121,17 +3139,17 @@ function renderFiveWaqtStrip(now = new Date()) {
         // Both Isha (Whole Night before Fajr) AND Tahajjud Prayer Time are now simultaneously active in the Ongoing Prayer section!
         activeWaqtTitle =
           lang === "bn"
-            ? "ইশা (সারারাত) ও 🌌 তাহাজ্জুদ চলমান"
+            ? "ইশা (সারারাত ফজরের পূর্ব পর্যন্ত)"
             : lang === "ar"
-            ? "العشاء (طوال الليل) و 🌌 التهجد جارٍ"
-            : "Isha (Whole Night) & 🌌 Tahajjud Active";
+            ? "العشاء (ممتد طوال الليل حتى الفجر)"
+            : "Isha (Valid Whole Night Until Fajr)";
         customRangeText = `${ishaStartClock} - ${fajrEndClock}`;
         customStatusText =
           lang === "bn"
-            ? `চলমান (ইশার ১ম প্রহর ${firstThirdClock}-এ শেষ • ফজর পর্যন্ত ইশা ও তাহাজ্জুদ উন্মুক্ত)`
+            ? "চলমান"
             : lang === "ar"
-            ? `جارٍ الآن (انتهى الثلث الأول ${firstThirdClock} • العشاء والتهجد متاحان للفجر)`
-            : `Ongoing (1st 1/3 ended at ${firstThirdClock} • Isha & Tahajjud open till Fajr)`;
+            ? "جارٍ الآن"
+            : "Ongoing";
 
         const tahajjudTotal = Math.max(1, winEnd - normFirstThirdEnd);
         const tahajjudElapsed = Math.max(0, Math.min(tahajjudTotal, currentPos - normFirstThirdEnd));
@@ -3139,36 +3157,58 @@ function renderFiveWaqtStrip(now = new Date()) {
         const tahajjudRemainingStr = formatRemainingDurationText(winEnd - currentPos, lang);
 
         nightDualRowsHtml = `
-          <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.32);">
-            <div class="live-waqt-top-row" style="margin-bottom:5px;">
-              <strong style="font-size:0.9rem;font-weight:900;color:var(--accent-emerald-dark);">
-                🌌 ${
+          <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.8rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+              <span style="font-weight:800;color:var(--text-muted);">
+                🕌 ${
                   lang === "bn"
-                    ? "তাহাজ্জুদ / কিয়ামুল লাইল"
+                    ? `ইশার উত্তম সময় (১ম প্রহর): ${ishaStartClock} - ${firstThirdClock}`
                     : lang === "ar"
-                    ? "صلاة التهجد / قيام الليل"
-                    : "Tahajjud / Qiyam al-Layl"
+                    ? `الوقت المختار للعشاء (الثلث الأول): ${ishaStartClock} - ${firstThirdClock}`
+                    : `Isha Prime Time (1st Third): ${ishaStartClock} - ${firstThirdClock}`
+                }
+              </span>
+              <strong style="font-weight:800;color:var(--danger, #dc2626);">
+                ${
+                  lang === "bn"
+                    ? "১ম প্রহর সমাপ্ত (ইশা ফজর পর্যন্ত জায়েয)"
+                    : lang === "ar"
+                    ? "انتهى الثلث الأول (العشاء ممتد للفجر)"
+                    : "1st Third Ended (Valid till Fajr)"
                 }
               </strong>
-              <span class="live-waqt-range" style="font-size:0.86rem;">
-                ${tahajjudEarlyStartClock} - ${fajrEndClock}
-              </span>
             </div>
-            <div class="live-waqt-track" style="height:9px;margin-bottom:6px;">
-              <div class="live-waqt-fill" style="width:${tahajjudPct}%;background:linear-gradient(90deg,#0d9488,#10b981);"></div>
-            </div>
-            <div class="live-waqt-bottom-row" style="font-size:0.78rem;">
-              <span class="live-waqt-running">
-                <span class="live-waqt-dot"></span>
-                <span>${
-                  lang === "bn"
-                    ? `চলমান (শ্রেষ্ঠ শেষ ১/৩ প্রহর শুরু: ${lastThirdClock})`
-                    : lang === "ar"
-                    ? `جارٍ الآن (يبدأ الثلث الأخير الأفضل: ${lastThirdClock})`
-                    : `Ongoing (Golden Last 1/3 starts: ${lastThirdClock})`
-                }</span>
-              </span>
-              <strong>${tahajjudRemainingStr}</strong>
+            <div style="padding-top:8px;border-top:1px dashed rgba(16,185,129,0.22);">
+              <div class="live-waqt-top-row" style="margin-bottom:5px;">
+                <strong style="font-size:0.9rem;font-weight:900;color:var(--accent-emerald-dark);">
+                  🌌 ${
+                    lang === "bn"
+                      ? "তাহাজ্জুদ / কিয়ামুল লাইল"
+                      : lang === "ar"
+                      ? "صلاة التهجد / قيام الليل"
+                      : "Tahajjud / Qiyam al-Layl"
+                  }
+                </strong>
+                <span class="live-waqt-range" style="font-size:0.86rem;">
+                  ${tahajjudEarlyStartClock} - ${fajrEndClock}
+                </span>
+              </div>
+              <div class="live-waqt-track" style="height:9px;margin-bottom:6px;">
+                <div class="live-waqt-fill" style="width:${tahajjudPct}%;background:linear-gradient(90deg,#0d9488,#10b981);"></div>
+              </div>
+              <div class="live-waqt-bottom-row" style="font-size:0.78rem;">
+                <span class="live-waqt-running">
+                  <span class="live-waqt-dot"></span>
+                  <span>${
+                    lang === "bn"
+                      ? `চলমান (শ্রেষ্ঠ শেষ ১/৩ প্রহর শুরু: ${lastThirdClock})`
+                      : lang === "ar"
+                      ? `جارٍ الآن (يبدأ الثلث الأخير الأفضل: ${lastThirdClock})`
+                      : `Ongoing (Golden Last 1/3 starts: ${lastThirdClock})`
+                  }</span>
+                </span>
+                <strong style="color:var(--danger, #dc2626);font-weight:900;">${tahajjudRemainingStr}</strong>
+              </div>
             </div>
           </div>
         `;
@@ -3176,17 +3216,17 @@ function renderFiveWaqtStrip(now = new Date()) {
         // Phase 9C: Last Third of the Night (Al-Thuluth al-Akhir — Golden Tahajjud Window + Isha Whole Night before Fajr)
         activeWaqtTitle =
           lang === "bn"
-            ? "ইশা (সারারাত) ও 🌌 তাহাজ্জুদ (শেষ ১/৩ প্রহর)"
+            ? "ইশা (সারারাত ফজরের পূর্ব পর্যন্ত)"
             : lang === "ar"
-            ? "العشاء (طوال الليل) و 🌌 التهجد (الثلث الأخير)"
-            : "Isha (Whole Night) & 🌌 Tahajjud (Last 1/3)";
+            ? "العشاء (ممتد طوال الليل حتى الفجر)"
+            : "Isha (Valid Whole Night Until Fajr)";
         customRangeText = `${ishaStartClock} - ${fajrEndClock}`;
         customStatusText =
           lang === "bn"
-            ? `চলমান (ইশা ফজরের পূর্ব পর্যন্ত • এখন রাতের শ্রেষ্ঠ শেষ তৃতীয়াংশ)`
+            ? "চলমান"
             : lang === "ar"
-            ? `جارٍ الآن (العشاء حتى الفجر • الآن أفضل وقت التهجد بالثلث الأخير)`
-            : `Ongoing (Isha valid till Fajr • Now in Golden Last 1/3 Tahajjud)`;
+            ? "جارٍ الآن"
+            : "Ongoing";
 
         const lastThirdTotal = Math.max(1, winEnd - normLastThirdStart);
         const lastThirdElapsed = Math.max(0, Math.min(lastThirdTotal, currentPos - normLastThirdStart));
@@ -3194,36 +3234,58 @@ function renderFiveWaqtStrip(now = new Date()) {
         const tahajjudRemainingStr = formatRemainingDurationText(winEnd - currentPos, lang);
 
         nightDualRowsHtml = `
-          <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.32);">
-            <div class="live-waqt-top-row" style="margin-bottom:5px;">
-              <strong style="font-size:0.9rem;font-weight:900;color:var(--accent-emerald-dark);">
-                🌌 ${
+          <div id="live-tahajjud-subrow" style="margin-top:10px;padding-top:9px;border-top:1px dashed rgba(16,185,129,0.28);display:flex;flex-direction:column;gap:8px;font-size:0.8rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+              <span style="font-weight:800;color:var(--text-muted);">
+                🕌 ${
                   lang === "bn"
-                    ? "তাহাজ্জুদ — রাতের শেষ তৃতীয়াংশ (শ্রেষ্ঠ সময়)"
+                    ? `ইশার উত্তম সময় (১ম প্রহর): ${ishaStartClock} - ${firstThirdClock}`
                     : lang === "ar"
-                    ? "التهجد — الثلث الأخير من الليل (أفضل الوقت)"
-                    : "Tahajjud — Golden Last Third of Night"
+                    ? `الوقت المختار للعشاء (الثلث الأول): ${ishaStartClock} - ${firstThirdClock}`
+                    : `Isha Prime Time (1st Third): ${ishaStartClock} - ${firstThirdClock}`
+                }
+              </span>
+              <strong style="font-weight:800;color:var(--danger, #dc2626);">
+                ${
+                  lang === "bn"
+                    ? "১ম প্রহর সমাপ্ত (ইশা ফজর পর্যন্ত জায়েয)"
+                    : lang === "ar"
+                    ? "انتهى الثلث الأول (العشاء ممتد للفجر)"
+                    : "1st Third Ended (Valid till Fajr)"
                 }
               </strong>
-              <span class="live-waqt-range" style="font-size:0.86rem;">
-                ${lastThirdClock} - ${fajrEndClock}
-              </span>
             </div>
-            <div class="live-waqt-track" style="height:9px;margin-bottom:6px;">
-              <div class="live-waqt-fill" style="width:${lastThirdPct}%;background:linear-gradient(90deg,#10b981,#eab308);"></div>
-            </div>
-            <div class="live-waqt-bottom-row" style="font-size:0.78rem;">
-              <span class="live-waqt-running">
-                <span class="live-waqt-dot"></span>
-                <span>${
-                  lang === "bn"
-                    ? `চলমান (১ম প্রহর শেষে শুরু: ${tahajjudEarlyStartClock})`
-                    : lang === "ar"
-                    ? `جارٍ الآن (بدأ بعد الثلث الأول: ${tahajjudEarlyStartClock})`
-                    : `Ongoing (Opened after 1st 1/3 at ${tahajjudEarlyStartClock})`
-                }</span>
-              </span>
-              <strong>${tahajjudRemainingStr}</strong>
+            <div style="padding-top:8px;border-top:1px dashed rgba(16,185,129,0.22);">
+              <div class="live-waqt-top-row" style="margin-bottom:5px;">
+                <strong style="font-size:0.9rem;font-weight:900;color:var(--accent-emerald-dark);">
+                  🌌 ${
+                    lang === "bn"
+                      ? "তাহাজ্জুদ — রাতের শেষ তৃতীয়াংশ (শ্রেষ্ঠ সময়)"
+                      : lang === "ar"
+                      ? "التهجد — الثلث الأخير من الليل (أفضل الوقت)"
+                      : "Tahajjud — Golden Last Third of Night"
+                  }
+                </strong>
+                <span class="live-waqt-range" style="font-size:0.86rem;">
+                  ${lastThirdClock} - ${fajrEndClock}
+                </span>
+              </div>
+              <div class="live-waqt-track" style="height:9px;margin-bottom:6px;">
+                <div class="live-waqt-fill" style="width:${lastThirdPct}%;background:linear-gradient(90deg,#10b981,#eab308);"></div>
+              </div>
+              <div class="live-waqt-bottom-row" style="font-size:0.78rem;">
+                <span class="live-waqt-running">
+                  <span class="live-waqt-dot"></span>
+                  <span>${
+                    lang === "bn"
+                      ? `চলমান (১ম প্রহর শেষে শুরু: ${tahajjudEarlyStartClock})`
+                      : lang === "ar"
+                      ? `جارٍ الآن (بدأ بعد الثلث الأول: ${tahajjudEarlyStartClock})`
+                      : `Ongoing (Opened after 1st 1/3 at ${tahajjudEarlyStartClock})`
+                  }</span>
+                </span>
+                <strong style="color:var(--danger, #dc2626);font-weight:900;">${tahajjudRemainingStr}</strong>
+              </div>
             </div>
           </div>
         `;
