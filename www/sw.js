@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v57-exit-top-tabfocus-kursibadge";
+const CACHE_NAME = "sunnah-24-enterprise-v58-v4.2-perfect";
 const ASSETS = [
   "./",
   "./index.html",
