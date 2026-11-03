@@ -1991,6 +1991,8 @@ html[dir="rtl"] .habit-right-actions {
   display: flex;
   align-items: center;
   gap: 13px;
+  cursor: default;
+  pointer-events: none;
 }
 
 .cat-icon-squircle {
@@ -2812,4 +2814,3 @@ html[data-theme="dark"] .app-header.is-scrolled {
 .lunar-ponjika-card {
   margin-top: 2px;
 }
-
