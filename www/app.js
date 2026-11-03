@@ -1253,6 +1253,60 @@ const SUNNAH_24_DUAS = deepFreeze([
     virtue_bn: "✨ ফযীলত: নবীজি ﷺ সাহাবীগণকে সকাল ও সন্ধ্যায় এই দোয়াটি পাঠ করার শিক্ষা দিয়েছেন (জামে তিরমিযী ৩৩৯১, ইবনে মাজাহ ৩৮৬৮)।",
     virtue_ar: "✨ الفضيلة: علمها النبي ﷺ أصحابه ليقولوها عند الصباح والمساء (جامع الترمذي ٣٣٩١).",
     virtue_en: "✨ Virtue: Taught by the Prophet ﷺ to be recited at the start of every morning and evening (Jami` at-Tirmidhi 3391)."
+  },
+  {
+    id: "dua_13_surah_hashr_last3",
+    title_bn: "১৩. সূরা হাশরের শেষ তিন আয়াত (২২-২৪)",
+    title_ar: "١٣. أواخر سورة الحشر (الآيات ٢٢-٢٤)",
+    title_en: "13. Last Three Verses of Surah Al-Hashr (22–24)",
+    badge_bn: "সকাল-সন্ধ্যায় ১ বার",
+    badge_ar: "مرة واحدة صباحاً ومساءً",
+    badge_en: "Morning & Evening 1x",
+    arabic: "أَعُوذُ بِاللَّهِ السَّمِيعِ الْعَلِيمِ مِنَ الشَّيْطَانِ الرَّجِيمِ ۝ هُوَ اللَّهُ الَّذِي لَا إِلَٰهَ إِلَّا هُوَ ۖ عَالِمُ الْغَيْبِ وَالشَّهَادَةِ ۖ هُوَ الرَّحْمَٰنُ الرَّحِيمُ ۝ هُوَ اللَّهُ الَّذِي لَا إِلَٰهَ إِلَّا هُوَ الْمَلِكُ الْقُدُّوسُ السَّلَامُ الْمُؤْمِنُ الْمُهَيْمِنُ الْعَزِيزُ الْجَبَّارُ الْمُتَكَبِّرُ ۚ سُبْحَانَ اللَّهِ عَمَّا يُشْرِكُونَ ۝ هُوَ اللَّهُ الْخَالِقُ الْبَارِئُ الْمُصَوِّرُ ۖ لَهُ الْأَسْمَاءُ الْحُسْنَىٰ ۚ يُسَبِّحُ لَهُ مَا فِي السَّمَاوَاتِ وَالْأَرْضِ ۖ وَهُوَ الْعَزِيزُ الْحَكِيمُ",
+    translit_bn: "উচ্চারণ: (প্রথমে ৩ বার: আ'উযু বিল্লা-হিস সামী'ইল 'আলীমি মিনাশ শাইত্বা-নির রাজীম)। হুওয়াল্লা-হুল্লাযী লা- ইলা-হা ইল্লা- হুয়া, 'আ-লিমুল গাইবি ওয়াশ শাহা-দাহ, হুওয়ার রাহমা-নুর রাহীম। হুওয়াল্লা-হুল্লাযী লা- ইলা-হা ইল্লা- হুওয়াল মালিকুল ক্বুদ্দূসুস সালা-মুল মু'মিনুল মুহাইমিনুল 'আযীযুল জাব্বা-রুল মুতাকাব্বির; সুবহা-নাল্লা-হি 'আম্মা- ইউশরিকূন। হুওয়াল্লা-হুল খা-লিক্বুল বা-রিউল মুসাওয়িরু লাহুল আসমা-উল হুসনা-; ইউসাব্বিহু লাহু মা- ফিস সামা-ওয়া-তি ওয়াল আরদ্বি, ওয়া হুওয়াল 'আযীযুল হাকীম।",
+    translit_en: "Transliteration: (First 3x: A'udhu billahis-Sami'il-'Alimi minash-shaytanir-rajim). Huwallahul-ladhi la ilaha illa Huwa 'Alimul-ghaybi wash-shahadah, Huwar-Rahmanur-Rahim. Huwallahul-ladhi la ilaha illa Huwal-Malikul-Quddusus-Salamul-Mu'minul-Muhayminul-'Azizul-Jabbarul-Mutakabbir, Subhanallahi 'amma yushrikun. Huwallahul-Khaliqul-Bari'ul-Musawwiru lahul-Asma'ul-Husna, yusabbihu lahu ma fis-samawati wal-ardi wa Huwal-'Azizul-Hakim.",
+    meaning_bn: "অর্থ: তিনিই আল্লাহ, যিনি ছাড়া কোনো হক্ব ইলাহ নেই; তিনি দৃশ্য ও অদৃশ্যের পরিজ্ঞাতা; তিনি পরম করুণাময়, অসীম দয়ালু। তিনিই আল্লাহ, যিনি ছাড়া কোনো হক্ব ইলাহ নেই; তিনি অধিপতি, মহাপবিত্র, শান্তিদাতা, নিরাপত্তাবিধায়ক, রক্ষক, পরাক্রমশালী, প্রবল, অতীব মহিমান্বিত। তারা যা শরীক করে তা হতে আল্লাহ পবিত্র। তিনিই আল্লাহ, সৃষ্টিকর্তা, উদ্ভাবক, রূপদাতা; তাঁরই রয়েছে সুন্দরতম নামসমূহ। আসমান ও যমীনে যা কিছু আছে সবই তাঁর পবিত্রতা ও মহিমা ঘোষণা করে; আর তিনি পরাক্রমশালী, প্রজ্ঞাময়।",
+    meaning_ar: "المعنى: تمجيد الله بأسمائه الحسنى وصفاته العلى وتنزيهه عن الشرك وتفويض الأمر لعزته وحكمته.",
+    meaning_en: "Meaning: He is Allah, other than Whom there is no deity, Knower of the unseen and the witnessed; He is the Entirely Merciful, the Especially Merciful. He is Allah, other than Whom there is no deity, the Sovereign, the Pure, the Perfection, the Bestower of Faith, the Overseer, the Exalted in Might, the Compeller, the Superior. Exalted is Allah above whatever they associate with Him. He is Allah, the Creator, the Inventor, the Fashioner; to Him belong the best names. Whatever is in the heavens and earth is exalting Him. And He is the Exalted in Might, the Wise.",
+    virtue_bn: "✨ ফযীলত: সকালে বা সন্ধ্যায় ৩ বার 'আউযু বিল্লাহিস সামীইল আলিম মিনাশ শাইতানির রাজীম' পড়ে সূরা হাশরের শেষ তিন আয়াত তিলাওয়াত করলে আল্লাহ তার জন্য ৭০ হাজার ফেরেশতা নিযুক্ত করেন, যারা সন্ধ্যা/সকাল পর্যন্ত তার জন্য মাগফিরাতের দোয়া করতে থাকে; আর সেদিন মারা গেলে সে শহীদের মর্যাদা লাভ করে (জামে তিরমিযী ২৯২২, মুসনাদে আহমাদ ২০৩০৬)।",
+    virtue_ar: "✨ الفضيلة: من قالها حين يصبح ثلاث مرات وقرأ ثلاث آيات من آخر سورة الحشر وكّل الله به سبعين ألف ملك يصلون عليه حتى يمسي، وإن مات في ذلك اليوم مات شهيداً، ومن قالها حين يمسي كان بتلك المنزلة (جامع الترمذي ٢٩٢٢).",
+    virtue_en: "✨ Virtue: Whoever says 'A'udhu billahis-Sami'il-'Alim minash-shaytanir-rajim' 3 times in the morning/evening and recites the last 3 verses of Surah Al-Hashr, Allah appoints 70,000 angels to pray for his forgiveness until evening/morning, and if he dies that day/night, he dies as a martyr (Jami` at-Tirmidhi 2922)."
+  },
+  {
+    id: "dua_14_ayatul_kursi",
+    title_bn: "১৪. আয়াতুল কুরসী (সূরা আল-বাকারা: ২৫৫)",
+    title_ar: "١٤. آية الكرسي (سورة البقرة: ٢٥٥)",
+    title_en: "14. Ayat al-Kursi — The Verse of the Throne (Al-Baqarah: 255)",
+    badge_bn: "সকাল-সন্ধ্যা, ঘুমের পূর্বে ও ফরজ সালাতের পর",
+    badge_ar: "صباحاً ومساءً وعند النوم ودبر كل صلاة",
+    badge_en: "Morning, Evening, Bedtime & After Salah",
+    arabic: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ",
+    translit_bn: "উচ্চারণ: আল্লা-হু লা- ইলা-হা ইল্লা- হুওয়াল হাইয়্যুল ক্বাইয়্যূম। লা- তা'খুযুহু সিনাতুওঁ ওয়ালা- নাওম। লাহু মা- ফিস সামা-ওয়া-তি ওয়ামা- ফিল আরদ্ব। মান যাল্লাযী ইয়াশফা'উ 'ইনদাহু ইল্লা- বিইযনিহ। ইয়া'লামু মা- বাইনা আইদীহিম ওয়ামা- খালফাহুম, ওয়ালা- ইউহীত্বূনা বিশাইয়িম মিন 'ইলমিহী ইল্লা- বিমা- শা-আ। ওয়াসি'আ কুরসিইয়্যুহুস সামা-ওয়া-তি ওয়াল আরদ্ব, ওয়ালা- ইয়াঊদুহু হিফযুহুমা- ওয়া হুওয়াল 'আলিইয়্যুল 'আযীম।",
+    translit_en: "Transliteration: Allahu la ilaha illa Huwal-Hayyul-Qayyum. La ta'khudhuhu sinatun wa la nawm. Lahu ma fis-samawati wa ma fil-ard. Man dhal-ladhi yashfa'u 'indahu illa bi-idhnih. Ya'lamu ma bayna aydihim wa ma khalfahum, wa la yuhituna bishay'im-min 'ilmihi illa bima sha'a. Wasi'a Kursiyyuhus-samawati wal-ard, wa la ya'uduhu hifzuhuma, wa Huwal-'Aliyyul-'Azim.",
+    meaning_bn: "অর্থ: আল্লাহ, তিনি ছাড়া কোনো হক্ব ইলাহ নেই; তিনি চিরঞ্জীব, সর্বধারক। তাঁকে তন্দ্রা ও নিদ্রা স্পর্শ করে না। আসমানসমূহ ও যমীনে যা কিছু রয়েছে সবই তাঁর। কে আছে এমন যে তাঁর অনুমতি ছাড়া তাঁর কাছে সুপারিশ করবে? তাদের সামনে ও পেছনে যা কিছু আছে তা তিনি জানেন। আর যা তিনি ইচ্ছা করেন তা ছাড়া তাঁর জ্ঞানের কোনো কিছুই তারা পরিবেষ্টন করতে পারে না। তাঁর কুরসী আসমানসমূহ ও যমীনকে পরিব্যাপ্ত করে আছে এবং এ দুটির সংরক্ষণ তাঁকে ক্লান্ত করে না। আর তিনি সুউচ্চ, সুমহান।",
+    meaning_ar: "المعنى: أعظم آية في كتاب الله، تتضمن توحيد الله، وكمال حياته وقيوميته، وسعة علمه وملكه وقدرته وحفظه للكون.",
+    meaning_en: "Meaning: Allah — there is no deity except Him, the Ever-Living, the Sustainer of all existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursi extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great.",
+    virtue_bn: "✨ ফযীলত: কুরআনের সর্বশ্রেষ্ঠ আয়াত (সহীহ মুসলিম ৮১০)। প্রাতে ও সন্ধ্যায় পাঠ করলে সারাদিন ও সারারাত শয়তান ও জিনদের অনিষ্ট থেকে নিরাপদ থাকা যায় (নাসাঈ সুনানুল কুবরা ১০৭৯৭)। রাতে ঘুমানোর সময় পড়লে সকাল পর্যন্ত আল্লাহর পক্ষ থেকে একজন ফেরেশতা পাহারায় নিযুক্ত থাকেন (সহীহ বুখারী ২৩১১); আর প্রত্যেক ফরজ সালাতের পর পাঠ করলে জান্নাতে প্রবেশের পথে মৃত্যু ছাড়া আর কোনো বাধা থাকে না (নাসাঈ সুনানুল কুবরা ৯৮৪৮)।",
+    virtue_ar: "✨ الفضيلة: أعظم آية في كتاب الله (مسلم ٨١٠). من قرأها عند النوم لم يزل عليه من الله حافظ ولا يقربه شيطان حتى يصبح (البخاري ٢٣١١)، ومن قرأها دبر كل صلاة مكتوبة لم يمنعه من دخول الجنة إلا أن يموت (النسائي في الكبرى ٩٨٤٨).",
+    virtue_en: "✨ Virtue: The greatest verse in the Quran (Sahih Muslim 810). Reciting it morning and evening protects from Jinn and devils; reciting it at bedtime appoints a guardian angel from Allah until morning (Sahih al-Bukhari 2311); and reciting it after every Fard prayer leaves nothing standing between the believer and Paradise except death (An-Nasa'i 9848)."
+  },
+  {
+    id: "dua_15_baqarah_last2",
+    title_bn: "১৫. সূরা আল-বাকারার শেষ দুই আয়াত (২৮৫-২৮৬)",
+    title_ar: "١٥. الآيتان من آخر سورة البقرة (٢٨٥-٢٨٦)",
+    title_en: "15. Last Two Verses of Surah Al-Baqarah (285–286)",
+    badge_bn: "সন্ধ্যায় / রাতে ১ বার",
+    badge_ar: "مرة واحدة في الليل / المساء",
+    badge_en: "Evening / Night 1x",
+    arabic: "آمَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ مِنْ رَبِّهِ وَالْمُؤْمِنُونَ ۚ كُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِنْ رُسُلِهِ ۚ وَقَالُوا سَمِعْنَا وَأَطَعْنَا ۖ غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ ۝ لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا ۚ لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ ۗ رَبَّنَا لَا تُؤَاخِذْنَا إِنْ نَسِينَا أَوْ أَخْطَأْنَا ۚ رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِنْ قَبْلِنَا ۚ رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ ۖ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا ۚ أَنْتَ مَوْلَانَا فَانْصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ",
+    translit_bn: "উচ্চারণ: আ-মানার রাসূলু বিমা- উনযিলা ইলাইহি মির রাব্বিহী ওয়াল মু'মিনূন। কুল্লুন আ-মানা বিল্লা-হি ওয়া মালা-ইকাতিহী ওয়া কুতুবিহী ওয়া রুসুলিহী, লা- নুফাররিক্বু বাইনা আহাদিম মির রুসুলিহ। ওয়া ক্বা-লূ সামি'না- ওয়া আত্বা'না- গুফরা-নাকা রাব্বানা- ওয়া ইলাইকাল মাসীর। লা- ইউকাল্লিফুল্লা-হু নাফসান ইল্লা- উস'আহা-, লাহা- মা- কাসাবাত ওয়া 'আলাইহা- মাকতাসাবাত। রাব্বানা- লা- তুআ-খিযনা- ইন নাসীনা- আও আখত্বা'না-; রাব্বানা- ওয়ালা- তাহমিল 'আলাইনা- ইসরান কামা- হামালতাহু 'আলাল্লাযীনা মিন ক্বাবলিনা-; রাব্বানা- ওয়ালা- তুহাম্মিলনা- মা- লা- ত্বা-ক্বাতা লানা- বিহী; ওয়া'ফু 'আন্না- ওয়াগফির লানা- ওয়ারহামনা-; আনতা মাওলা-না- ফানসুরনা- 'আলাল ক্বাওমিল কা-ফিরীন।",
+    translit_en: "Transliteration: Amanar-Rasulu bima unzila ilayhi mir-Rabbihi wal-mu'minun. Kullun amana billahi wa mala'ikatihi wa kutubihi wa rusulihi la nufarriqu bayna ahadim-mir-rusulih. Wa qalu sami'na wa ata'na ghufranaka Rabbana wa ilaykal-masir. La yukallifullahu nafsan illa wus'aha, laha ma kasabat wa 'alayha maktasabat. Rabbana la tu'akhidhna in nasina aw akhta'na, Rabbana wa la tahmil 'alayna isran kama hamaltahu 'alal-ladhina min qablina, Rabbana wa la tuhammilna ma la taqata lana bih, wa'fu 'anna waghfir lana warhamna, Anta Mawlana fansurna 'alal-qawmil-kafirin.",
+    meaning_bn: "অর্থ: রাসূল তাঁর রবের পক্ষ থেকে যা তাঁর কাছে নাযিল করা হয়েছে তার ওপর ঈমান এনেছেন এবং মুমিনগণও। প্রত্যেকেই ঈমান এনেছে আল্লাহর ওপর, তাঁর ফেরেশতাকুল, তাঁর কিতাবসমূহ এবং তাঁর রাসূলগণের ওপর; (তারা বলে) আমরা তাঁর রাসূলগণের কারও মধ্যে তারতম্য করি না। আর তারা বলে, আমরা শুনলাম এবং আনুগত্য করলাম। হে আমাদের রব! আমরা আপনার ক্ষমা প্রার্থনা করি এবং আপনার দিকেই প্রত্যাবর্তনস্থল। আল্লাহ কোনো ব্যক্তিকে তার সামর্থ্যের বাইরে দায়িত্ব দেন না। সে যা অর্জন করে তা তারই জন্য এবং সে যা কামাই করে তা তারই ওপর বর্তাবে। হে আমাদের রব! আমরা যদি ভুলে যাই অথবা ভুল করি তবে আমাদেরকে অপরাধী করবেন না। হে আমাদের রব! আমাদের ওপর এমন বোঝা চাপিয়ে দেবেন না, যেমন আমাদের পূর্ববর্তীদের ওপর চাপিয়ে দিয়েছিলেন। হে আমাদের রব! আমাদের ওপর এমন কিছু চাপিয়ে দেবেন না যা বহন করার শক্তি আমাদের নেই। আর আমাদের পাপ মোচন করুন, আমাদের ক্ষমা করুন এবং আমাদের প্রতি দয়া করুন। আপনিই আমাদের অভিভাবক, অতএব কাফির সম্প্রদায়ের বিরুদ্ধে আমাদেরকে সাহায্য করুন।",
+    meaning_ar: "المعنى: إقرار المؤمنين بأركان الإيمان والسمع والطاعة، ودعاء جامع برفع الحرج والمغفرة والرحمة والنصرة.",
+    meaning_en: "Meaning: The Messenger has believed in what was revealed to him from his Lord, and so have the believers. All of them have believed in Allah and His angels and His books and His messengers, saying, 'We make no distinction between any of His messengers.' And they say, 'We hear and we obey. We seek Your forgiveness, our Lord, and to You is the final destination.' Allah does not charge a soul except with that within its capacity... 'Our Lord, do not impose blame upon us if we have forgotten or erred... Pardon us, forgive us, and have mercy upon us. You are our Protector, so give us victory over the disbelieving people.'",
+    virtue_bn: "✨ ফযীলত: যে ব্যক্তি রাতে সূরা আল-বাকারার শেষ দুটি আয়াত তিলাওয়াত করবে, তা তার জন্য (রাতের বিপদ-আপদ, শয়তানের অনিষ্ট ও ইবাদতের ঘাটতি পূরণে) যথেষ্ট হয়ে যাবে (সহীহ বুখারী ৫০০৯, সহীহ মুসলিম ৮০৭)। আরশের নিচের বিশেষভাণ্ডার থেকে এই দুই আয়াত দান করা হয়েছে এবং আল্লাহ প্রতিটি প্রার্থনার জবাবে বলেন: 'আমি তা কবুল করলাম' (সহীহ মুসলিম ১২৬)।",
+    virtue_ar: "✨ الفضيلة: «من قرأ بالآيتين من آخر سورة البقرة في ليلة كفتاه» (صحيح البخاري ٥٠٠٩ ومسلم ٨٠٧)، وقد أُعطيهما النبي ﷺ من كنز تحت العرش واستجاب الله كل دعاء فيهما (مسلم ١٢٦).",
+    virtue_en: "✨ Virtue: 'Whoever recites the last two verses of Surah Al-Baqarah at night, they will suffice him' against all harm and evil (Sahih al-Bukhari 5009, Sahih Muslim 807). Granted from a treasure beneath the Throne, Allah responded to every supplication within them saying, 'I have done so' (Sahih Muslim 126)."
   }
 ]);
 
@@ -2216,10 +2270,9 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
     );
   }
 
-  // Islamic Tahajjud Prayer Window (01:00 AM until Fajr start, e.g. 01:00 AM - 04:48 AM)
+  // Islamic Last Third of the Night (Tahajjud golden window)
   const totalNightMins = 1440 - maghribMins + fajrMins;
-  const lastThirdStart = 60; // 01:00 AM Tahajjud Start
-  const tahajjudStartMins = 60; // 01:00 AM
+  const lastThirdStart = ((Math.round(fajrMins - totalNightMins / 3) % 1440) + 1440) % 1440;
 
   // Season indicator (Winter, Summer, Equinox)
   const isNorthern = profile.lat >= 0;
@@ -2235,7 +2288,6 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
     seasonType,
     solarNoon: solarNoonMins,
     lastThirdStart,
-    tahajjudStart: tahajjudStartMins,
     fajr: fajrMins,
     sunrise: sunriseMins,
     ishraq: ishraqMins,
@@ -2299,11 +2351,11 @@ function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
 
   switch (habit.id) {
     case "s24_01_waking_dua":
-      return { start: 60, end: s.sunrise + 150 };
+      return { start: Math.max(150, s.lastThirdStart - 30), end: s.sunrise + 150 };
     case "s24_02_miswak_wudu":
       return { start: 0, end: 1439 }; // Open across all 5 daily prayers
     case "s24_03_tahajjud":
-      return { start: 60, end: s.fajr - 1 };
+      return { start: Math.max(60, s.lastThirdStart - 45), end: s.fajr - 2 };
     case "s24_04_fajr_sunnah_fard":
       return { start: s.fajr, end: s.sunrise - 2 };
     case "s24_05_post_fajr_barakah":
@@ -2506,10 +2558,17 @@ function evaluateDuaTimeWindow(dua, now = new Date()) {
     return { status: "open", canTick: true, windowLabel: lbl };
   }
 
-  // Evening-only Dua (dua_01_kalimat_tammat)
-  if (dua.id === "dua_01_kalimat_tammat") {
+  // Evening/Night-only Duas (dua_01_kalimat_tammat, dua_15_baqarah_last2)
+  if (dua.id === "dua_01_kalimat_tammat" || dua.id === "dua_15_baqarah_last2") {
     const lbl = formatWindowRangeLabel(eveningStart, eveningEnd, appState.locale);
     if (nowMins < eveningStart) return { status: "upcoming", canTick: false, windowLabel: lbl };
+    return { status: "open", canTick: true, windowLabel: lbl };
+  }
+
+  // Ayat al-Kursi (dua_14_ayatul_kursi) — Recited Morning, Evening, Bedtime & After Every Fard Salah (Open from Fajr to Midnight)
+  if (dua.id === "dua_14_ayatul_kursi") {
+    const lbl = formatWindowRangeLabel(morningStart, eveningEnd, appState.locale);
+    if (nowMins < morningStart) return { status: "upcoming", canTick: false, windowLabel: lbl };
     return { status: "open", canTick: true, windowLabel: lbl };
   }
 
@@ -2708,7 +2767,10 @@ const DUA_CIRCULAR_ICONS = deepFreeze({
   dua_09_ya_hayyu_ya_qayyum: { icon: "✨", theme: "purple" },
   dua_10_subhanallahi_adada: { icon: "📿", theme: "gold" },
   dua_11_ilman_nafia: { icon: "📚", theme: "cyan" },
-  dua_12_bika_asbahna_sleep: { icon: "🌅", theme: "amber" }
+  dua_12_bika_asbahna_sleep: { icon: "🌅", theme: "amber" },
+  dua_13_surah_hashr_last3: { icon: "🪽", theme: "gold" },
+  dua_14_ayatul_kursi: { icon: "👑", theme: "emerald" },
+  dua_15_baqarah_last2: { icon: "🌙", theme: "indigo" }
 });
 
 function getHabitIconMeta(habit) {
@@ -2830,7 +2892,7 @@ function renderFiveWaqtStrip(now = new Date()) {
       name: t("waqt_isha"),
       icon: "🌙",
       start: sched.isha,
-      end: 60 + 1440, // Isha prime window ends at 01:00 AM when Tahajjud begins
+      end: sched.fajr + 1440,
       phase: "maghrib_isha"
     }
   ];
@@ -2842,9 +2904,7 @@ function renderFiveWaqtStrip(now = new Date()) {
     sunset: { start: sched.sunset - 15, end: sched.sunset }
   };
 
-  const tahajjudStartMins = sched.tahajjudStart || 60; // 01:00 AM
-
-  // Update the Live Ongoing Waqt Progress Bar & Countdown (100% Non-Contradictory with Prohibited & Tahajjud Times!)
+  // Update the Live Ongoing Waqt Progress Bar & Countdown (100% Non-Contradictory with Prohibited Salah Times!)
   const boxEl = document.getElementById("live-waqt-countdown-box");
   const titleEl = document.getElementById("live-waqt-title");
   const rangeEl = document.getElementById("live-waqt-range");
@@ -2860,17 +2920,7 @@ function renderFiveWaqtStrip(now = new Date()) {
     let isProhibitedNow = false;
     let exactEndDisplay = false;
 
-    if (nowMins >= tahajjudStartMins && nowMins < sched.fajr) {
-      // 0. Tahajjud Window (01:00 AM until Fajr start, e.g., 01:00 - 04:48 just before Fajr)
-      activeWaqtTitle =
-        lang === "bn"
-          ? "🌌 তাহাজ্জুদ (কিয়ামুল লাইল)"
-          : lang === "ar"
-          ? "🌌 صلاة التهجد (قيام الليل)"
-          : "🌌 Tahajjud (Qiyam al-Layl)";
-      winStart = tahajjudStartMins;
-      winEnd = sched.fajr;
-    } else if (nowMins >= sched.fajr && nowMins < pWindows.sunrise.start) {
+    if (nowMins >= sched.fajr && nowMins < pWindows.sunrise.start) {
       // 1. Fajr Fard Waqt: Fajr start -> Sunrise start (before sunrise prohibited time)
       activeWaqtTitle = t("waqt_fajr");
       winStart = sched.fajr;
@@ -2937,11 +2987,11 @@ function renderFiveWaqtStrip(now = new Date()) {
       winStart = sched.maghrib;
       winEnd = sched.isha;
     } else {
-      // 9. Isha Night Window (from Isha start until 12:59 AM, right before 01:00 AM Tahajjud begins)
+      // 9. Isha & Tahajjud Night Window (crosses midnight until Fajr)
       activeWaqtTitle = t("waqt_isha");
       winStart = sched.isha;
-      winEnd = tahajjudStartMins + 1440;
-      if (nowMins < tahajjudStartMins) {
+      winEnd = sched.fajr + 1440;
+      if (nowMins < sched.fajr) {
         currentPos = nowMins + 1440;
       }
     }
@@ -2951,8 +3001,8 @@ function renderFiveWaqtStrip(now = new Date()) {
     const remaining = Math.max(0, winEnd - currentPos);
     const pct = Math.max(4, Math.min(100, Math.round((elapsed / totalDuration) * 100)));
 
-    // For permitted prayer windows, display end time minus 1 minute (e.g., 01:00 - 04:48 before Fajr at 04:49)
-    // so there is ZERO overlap with the next Waqt or prohibited times!
+    // For permitted prayer windows, display end time minus 1 minute (e.g., 06:22 - 11:37 before Zawal at 11:38)
+    // so there is ZERO overlap with prohibited times! For prohibited windows, display exact start-end (e.g. 06:07 - 06:22).
     const displayEndMins = exactEndDisplay
       ? winEnd % 1440
       : (winEnd - 1 + 1440) % 1440;
@@ -2981,17 +3031,13 @@ function renderFiveWaqtStrip(now = new Date()) {
 
   gridEl.innerHTML = waqts
     .map((w) => {
-      // Ensure Asr pill ends at pWindows.sunset.start and Isha pill ends at 01:00 AM (tahajjudStartMins)
-      // so Isha never overlaps with the 01:00 AM - 04:48 AM Tahajjud window
+      // Ensure Asr pill ends at pWindows.sunset.start so it doesn't conflict with Sunset prohibited time
       const effectiveEnd = w.id === "asr" ? pWindows.sunset.start : w.end;
       const isActive =
         w.id === "isha"
-          ? nowMins >= w.start || nowMins < tahajjudStartMins
+          ? nowMins >= w.start || nowMins < sched.fajr
           : nowMins >= w.start && nowMins < effectiveEnd;
-      const isPassed =
-        w.id === "isha"
-          ? nowMins >= tahajjudStartMins && nowMins < sched.fajr
-          : nowMins >= effectiveEnd && nowMins >= sched.fajr;
+      const isPassed = w.id !== "isha" && nowMins >= effectiveEnd && nowMins >= sched.fajr;
       return `
         <button type="button" class="waqt-pill-card ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""}" data-waqt-phase="${w.phase}">
           <div class="waqt-circle-logo">${w.icon}</div>
@@ -3836,7 +3882,7 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
     .map((item) => {
       const pctLocalized = localizeDigits(item.pct, lang);
       return `
-        <div class="cat-graph-row" data-jump-phase="${item.phaseKey}" style="cursor:pointer;" title="${item.label}">
+        <div class="cat-graph-row" style="cursor:default;pointer-events:none;" aria-disabled="true">
           <div class="cat-icon-squircle" style="background:${item.bgSoft};">
             ${item.svgIcon}
           </div>
@@ -4286,10 +4332,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.querySelectorAll(".tab-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-      document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
-      document.querySelectorAll(".tab-content").forEach((c) => c.classList.remove("active"));
-      btn.classList.add("active");
-      document.getElementById(btn.dataset.tab).classList.add("active");
+      switchTabProgrammatically(btn.dataset.tab, true);
     });
   });
 
@@ -4334,7 +4377,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Click on any Month card to switch month archive, or click a Category Bar row to jump to that phase, or click a day row
+  // Click on any Month card to switch month archive, or click a day row (Category Bar rows are strictly non-clickable)
   document.getElementById("tab-vault").addEventListener("click", (e) => {
     const monthCard = e.target.closest("[data-select-month]");
     if (monthCard) {
@@ -4342,20 +4385,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       archiveFilterBySpecificMonth = true;
       if (navigator.vibrate) navigator.vibrate(12);
       renderLongTermArchive();
-      return;
-    }
-    const phaseRow = e.target.closest("[data-jump-phase]");
-    if (phaseRow) {
-      const targetPhase = phaseRow.getAttribute("data-jump-phase");
-      if (targetPhase) {
-        switchTabProgrammatically("tab-routine", true);
-        activePhase = targetPhase;
-        document.querySelectorAll(".filter-bar .chip").forEach((c) => {
-          c.classList.toggle("active", c.dataset.phase === targetPhase);
-        });
-        renderHabits();
-        if (navigator.vibrate) navigator.vibrate(12);
-      }
       return;
     }
     const dayEl = e.target.closest("[data-date-inspect]");
@@ -4641,15 +4670,16 @@ function switchTabProgrammatically(targetTabId, recordInStack = true) {
 }
 
 // Global handler invoked by both Android Native Back Button & Browser popstate
+// Never forces a scroll-to-top jump; strictly returns user to the previous section/state!
 window.handleSunnahBackNavigation = function () {
-  // 1. If Fact / History Modal is open -> Close modal first
+  // 1. If Fact / History Modal is open -> Close modal first (stay at exact scroll position)
   const modal = document.getElementById("fact-modal");
   if (modal && !modal.classList.contains("hidden")) {
     modal.classList.add("hidden");
     return true;
   }
 
-  // 2. If Search box has text -> Clear search and stay on page
+  // 2. If Search box has text -> Clear search and stay at current scroll position
   const searchInput = document.getElementById("habit-search-input");
   if (searchQuery && searchInput) {
     searchQuery = "";
@@ -4658,7 +4688,7 @@ window.handleSunnahBackNavigation = function () {
     return true;
   }
 
-  // 3. If a Phase Filter Chip (other than "all") is active on Routine tab -> Reset to "All 24H"
+  // 3. If a Phase Filter Chip (other than "all") is active on Routine tab -> Reset to "All 24H" without scrolling to top
   const activeTab = document.querySelector(".tab-content.active")?.id;
   if (activeTab === "tab-routine" && activePhase !== "all") {
     activePhase = "all";
@@ -4666,13 +4696,12 @@ window.handleSunnahBackNavigation = function () {
       c.classList.toggle("active", c.dataset.phase === "all");
     });
     renderHabits();
-    window.scrollTo({ top: 0, behavior: "smooth" });
     return true;
   }
 
-  // 4. If user is on Adhkar, Muhasabah, or Vault tab -> Go back to previous tab in stack
+  // 4. If user navigated across tabs (Adhkar, Muhasabah, Vault, Routine) -> Return directly to the previous section with its exact saved scroll position
   if (navTabStack.length > 1) {
-    navTabStack.pop(); // remove current
+    navTabStack.pop(); // remove current section
     const prevTab = navTabStack[navTabStack.length - 1] || "tab-routine";
     switchTabProgrammatically(prevTab, false);
     return true;
@@ -4683,13 +4712,7 @@ window.handleSunnahBackNavigation = function () {
     return true;
   }
 
-  // 5. If scrolled far down on the Home Routine tab -> Smooth scroll back to top
-  if (window.scrollY > 220) {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    return true;
-  }
-
-  // 6. At the very top of Home Routine tab -> Require double back-press within 2s to exit
+  // 5. On the root section -> Require double back-press within 2s to exit (never scroll to top of APK)
   const now = Date.now();
   if (now - lastBackTapTime < 2000) {
     return false; // Allow native APK exit on second tap
@@ -4704,16 +4727,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Seed initial history state so back button is intercepted by WebView
   pushAppHistoryState("root-guard");
 
-  // Track Tab clicks in navigation stack
-  document.querySelectorAll(".tab-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const targetTab = btn.dataset.tab;
-      if (navTabStack[navTabStack.length - 1] !== targetTab) {
-        navTabStack.push(targetTab);
-        pushAppHistoryState(targetTab);
-      }
-    });
-  });
+  // Tab clicks are tracked & scroll-preserved via switchTabProgrammatically
 
   // Track Phase chip clicks
   document.querySelectorAll(".filter-bar .chip").forEach((chip) => {
@@ -5291,5 +5305,3 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", syncHeaderScrollState, { passive: true });
   syncHeaderScrollState();
 });
-
-
