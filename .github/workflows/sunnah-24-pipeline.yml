@@ -290,6 +290,7 @@ jobs:
                                   "(window.handleSunnahBackNavigation ? window.handleSunnahBackNavigation() : false)",
                                   result -> {
                                       if ("false".equals(result)) {
+                                          bridge.getWebView().scrollTo(0, 0);
                                           finish();
                                       }
                                   }
@@ -761,5 +762,4 @@ jobs:
           files: |
             Sunnah-24-v4.2-Enterprise-Signed.apk
             Sunnah-24-v4.2-PlayStore-Signed.aab
-
 
