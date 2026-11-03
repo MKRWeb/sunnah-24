@@ -2216,9 +2216,10 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
     );
   }
 
-  // Islamic Last Third of the Night (Tahajjud golden window)
+  // Islamic Tahajjud Prayer Window (01:00 AM until Fajr start, e.g. 01:00 AM - 04:48 AM)
   const totalNightMins = 1440 - maghribMins + fajrMins;
-  const lastThirdStart = ((Math.round(fajrMins - totalNightMins / 3) % 1440) + 1440) % 1440;
+  const lastThirdStart = 60; // 01:00 AM Tahajjud Start
+  const tahajjudStartMins = 60; // 01:00 AM
 
   // Season indicator (Winter, Summer, Equinox)
   const isNorthern = profile.lat >= 0;
@@ -2234,6 +2235,7 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
     seasonType,
     solarNoon: solarNoonMins,
     lastThirdStart,
+    tahajjudStart: tahajjudStartMins,
     fajr: fajrMins,
     sunrise: sunriseMins,
     ishraq: ishraqMins,
@@ -2297,11 +2299,11 @@ function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
 
   switch (habit.id) {
     case "s24_01_waking_dua":
-      return { start: Math.max(150, s.lastThirdStart - 30), end: s.sunrise + 150 };
+      return { start: 60, end: s.sunrise + 150 };
     case "s24_02_miswak_wudu":
       return { start: 0, end: 1439 }; // Open across all 5 daily prayers
     case "s24_03_tahajjud":
-      return { start: Math.max(60, s.lastThirdStart - 45), end: s.fajr - 2 };
+      return { start: 60, end: s.fajr - 1 };
     case "s24_04_fajr_sunnah_fard":
       return { start: s.fajr, end: s.sunrise - 2 };
     case "s24_05_post_fajr_barakah":
@@ -2828,7 +2830,7 @@ function renderFiveWaqtStrip(now = new Date()) {
       name: t("waqt_isha"),
       icon: "🌙",
       start: sched.isha,
-      end: sched.fajr + 1440,
+      end: 60 + 1440, // Isha prime window ends at 01:00 AM when Tahajjud begins
       phase: "maghrib_isha"
     }
   ];
@@ -2840,7 +2842,9 @@ function renderFiveWaqtStrip(now = new Date()) {
     sunset: { start: sched.sunset - 15, end: sched.sunset }
   };
 
-  // Update the Live Ongoing Waqt Progress Bar & Countdown (100% Non-Contradictory with Prohibited Salah Times!)
+  const tahajjudStartMins = sched.tahajjudStart || 60; // 01:00 AM
+
+  // Update the Live Ongoing Waqt Progress Bar & Countdown (100% Non-Contradictory with Prohibited & Tahajjud Times!)
   const boxEl = document.getElementById("live-waqt-countdown-box");
   const titleEl = document.getElementById("live-waqt-title");
   const rangeEl = document.getElementById("live-waqt-range");
@@ -2856,7 +2860,17 @@ function renderFiveWaqtStrip(now = new Date()) {
     let isProhibitedNow = false;
     let exactEndDisplay = false;
 
-    if (nowMins >= sched.fajr && nowMins < pWindows.sunrise.start) {
+    if (nowMins >= tahajjudStartMins && nowMins < sched.fajr) {
+      // 0. Tahajjud Window (01:00 AM until Fajr start, e.g., 01:00 - 04:48 just before Fajr)
+      activeWaqtTitle =
+        lang === "bn"
+          ? "🌌 তাহাজ্জুদ (কিয়ামুল লাইল)"
+          : lang === "ar"
+          ? "🌌 صلاة التهجد (قيام الليل)"
+          : "🌌 Tahajjud (Qiyam al-Layl)";
+      winStart = tahajjudStartMins;
+      winEnd = sched.fajr;
+    } else if (nowMins >= sched.fajr && nowMins < pWindows.sunrise.start) {
       // 1. Fajr Fard Waqt: Fajr start -> Sunrise start (before sunrise prohibited time)
       activeWaqtTitle = t("waqt_fajr");
       winStart = sched.fajr;
@@ -2923,11 +2937,11 @@ function renderFiveWaqtStrip(now = new Date()) {
       winStart = sched.maghrib;
       winEnd = sched.isha;
     } else {
-      // 9. Isha & Tahajjud Night Window (crosses midnight until Fajr)
+      // 9. Isha Night Window (from Isha start until 12:59 AM, right before 01:00 AM Tahajjud begins)
       activeWaqtTitle = t("waqt_isha");
       winStart = sched.isha;
-      winEnd = sched.fajr + 1440;
-      if (nowMins < sched.fajr) {
+      winEnd = tahajjudStartMins + 1440;
+      if (nowMins < tahajjudStartMins) {
         currentPos = nowMins + 1440;
       }
     }
@@ -2937,8 +2951,8 @@ function renderFiveWaqtStrip(now = new Date()) {
     const remaining = Math.max(0, winEnd - currentPos);
     const pct = Math.max(4, Math.min(100, Math.round((elapsed / totalDuration) * 100)));
 
-    // For permitted prayer windows, display end time minus 1 minute (e.g., 06:22 - 11:37 before Zawal at 11:38)
-    // so there is ZERO overlap with prohibited times! For prohibited windows, display exact start-end (e.g. 06:07 - 06:22).
+    // For permitted prayer windows, display end time minus 1 minute (e.g., 01:00 - 04:48 before Fajr at 04:49)
+    // so there is ZERO overlap with the next Waqt or prohibited times!
     const displayEndMins = exactEndDisplay
       ? winEnd % 1440
       : (winEnd - 1 + 1440) % 1440;
@@ -2967,13 +2981,17 @@ function renderFiveWaqtStrip(now = new Date()) {
 
   gridEl.innerHTML = waqts
     .map((w) => {
-      // Ensure Asr pill ends at pWindows.sunset.start so it doesn't conflict with Sunset prohibited time
+      // Ensure Asr pill ends at pWindows.sunset.start and Isha pill ends at 01:00 AM (tahajjudStartMins)
+      // so Isha never overlaps with the 01:00 AM - 04:48 AM Tahajjud window
       const effectiveEnd = w.id === "asr" ? pWindows.sunset.start : w.end;
       const isActive =
         w.id === "isha"
-          ? nowMins >= w.start || nowMins < sched.fajr
+          ? nowMins >= w.start || nowMins < tahajjudStartMins
           : nowMins >= w.start && nowMins < effectiveEnd;
-      const isPassed = w.id !== "isha" && nowMins >= effectiveEnd && nowMins >= sched.fajr;
+      const isPassed =
+        w.id === "isha"
+          ? nowMins >= tahajjudStartMins && nowMins < sched.fajr
+          : nowMins >= effectiveEnd && nowMins >= sched.fajr;
       return `
         <button type="button" class="waqt-pill-card ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""}" data-waqt-phase="${w.phase}">
           <div class="waqt-circle-logo">${w.icon}</div>
