@@ -198,6 +198,7 @@ const I18N_DICTIONARIES = deepFreeze({
     waqt_asr: "আসর",
     waqt_maghrib: "মাগরিব",
     waqt_isha: "ইশা",
+    waqt_tahajjud: "তাহাজ্জুদ (রাতের শেষ তৃতীয়াংশ)",
     tasbih_options: [
       { target: 33, label: "সুবহানাল্লাহ (আল্লাহ পবিত্র ও মহান)", text: "সুবহানাল্লাহ — ৩৩ বার" },
       { target: 33, label: "আলহামদুলিল্লাহ (সকল প্রশংসা আল্লাহর)", text: "আলহামদুলিল্লাহ — ৩৩ বার" },
@@ -349,6 +350,7 @@ const I18N_DICTIONARIES = deepFreeze({
     waqt_asr: "العصر",
     waqt_maghrib: "المغرب",
     waqt_isha: "العشاء",
+    waqt_tahajjud: "التهجد (الثلث الأخير من الليل)",
     tasbih_options: [
       { target: 33, label: "سبحان الله", text: "سبحان الله — ٣٣ مرة" },
       { target: 33, label: "الحمد لله", text: "الحمد لله — ٣٣ مرة" },
@@ -500,6 +502,7 @@ const I18N_DICTIONARIES = deepFreeze({
     waqt_asr: "Asr",
     waqt_maghrib: "Maghrib",
     waqt_isha: "Isha",
+    waqt_tahajjud: "Tahajjud (Last Third of Night)",
     tasbih_options: [
       { target: 33, label: "SubhanAllah (Glory be to Allah)", text: "SubhanAllah — 33x" },
       { target: 33, label: "Alhamdulillah (Praise be to Allah)", text: "Alhamdulillah — 33x" },
@@ -2351,11 +2354,12 @@ function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
 
   switch (habit.id) {
     case "s24_01_waking_dua":
-      return { start: Math.max(150, s.lastThirdStart - 30), end: s.sunrise + 150 };
+      return { start: s.lastThirdStart, end: s.sunrise + 150 };
     case "s24_02_miswak_wudu":
       return { start: 0, end: 1439 }; // Open across all 5 daily prayers
     case "s24_03_tahajjud":
-      return { start: Math.max(60, s.lastThirdStart - 45), end: s.fajr - 2 };
+      // Authentic Tahajjud (Qiyam al-Layl) in the Last Third of the Night until Fajr
+      return { start: s.lastThirdStart, end: s.fajr - 1 };
     case "s24_04_fajr_sunnah_fard":
       return { start: s.fajr, end: s.sunrise - 2 };
     case "s24_05_post_fajr_barakah":
@@ -2383,25 +2387,26 @@ function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
     case "s24_16_family_silat_rahim":
       return { start: s.maghrib, end: 23 * 60 + 45 };
     case "s24_17_isha_witr":
-      return { start: s.isha, end: 23 * 60 + 59 };
+      // Isha & Witr window spans from Isha until Fajr (including before & during Last Third of Night)
+      return { start: s.isha, end: s.fajr - 1, crossesMidnight: true };
     case "s24_18_surah_mulk_baqarah":
-      return { start: s.isha, end: 23 * 60 + 59 };
+      return { start: s.isha, end: s.lastThirdStart - 1, crossesMidnight: true };
     case "s24_19_sleep_wudu_dusting":
     case "s24_20_kursi_3quls":
     case "s24_21_tasbih_fatimah":
     case "s24_22_forgiving_before_sleep":
-      return { start: Math.max(s.isha, 20 * 60), end: 23 * 60 + 59 };
+      return { start: Math.max(s.isha, 20 * 60), end: s.lastThirdStart - 1, crossesMidnight: true };
     case "s24_31_mon_thu_fasting":
       return { start: s.fajr - 30, end: s.maghrib + 90, fastingDaysOnly: true };
     case "s24_32_jumuah_kahf_salawat":
       return { start: s.fajr, end: s.maghrib, fridayOnly: true };
     default: {
       // Custom habits or general diet/character habits mapped to seasonal Waqt phases
-      if (habit.phase === "tahajjud_fajr") return { start: Math.max(60, s.lastThirdStart), end: s.sunrise + 60 };
+      if (habit.phase === "tahajjud_fajr") return { start: s.lastThirdStart, end: s.sunrise + 60 };
       if (habit.phase === "duha_work") return { start: s.duhaStart, end: s.dhuhr };
       if (habit.phase === "dhuhr_asr") return { start: s.dhuhr, end: s.sunset };
-      if (habit.phase === "maghrib_isha") return { start: s.maghrib, end: 23 * 60 + 59 };
-      if (habit.phase === "sleep_sunnah") return { start: s.isha, end: 23 * 60 + 59 };
+      if (habit.phase === "maghrib_isha") return { start: s.maghrib, end: s.lastThirdStart - 1, crossesMidnight: true };
+      if (habit.phase === "sleep_sunnah") return { start: s.isha, end: s.lastThirdStart - 1, crossesMidnight: true };
       return { start: 0, end: 1439 };
     }
   }
@@ -2497,6 +2502,35 @@ function evaluateHabitTimeWindow(habit, now = new Date()) {
             : "🌙 শুধুমাত্র সোম, বৃহস্পতি ও ১৩-১৫ তারিখে উন্মুক্ত"
       };
     }
+  }
+
+  // Support cross-midnight windows (e.g., Isha & Witr: 07:30 PM – 03:45 AM / 04:50 AM)
+  if (rule.crossesMidnight || rule.end < rule.start) {
+    const isOpenCrossMidnight = nowMins >= rule.start || nowMins <= rule.end;
+    if (isOpenCrossMidnight) {
+      return {
+        status: "open",
+        canTick: true,
+        windowLabel: winLabel,
+        badgeText:
+          appState.locale === "ar"
+            ? `🟢 متاح الآن (${winLabel})`
+            : appState.locale === "en"
+            ? `🟢 Active Window (${winLabel})`
+            : `🟢 চলমান ওয়াক্ত (${winLabel})`
+      };
+    }
+    return {
+      status: "upcoming",
+      canTick: false,
+      windowLabel: winLabel,
+      badgeText:
+        appState.locale === "ar"
+          ? `⏳ يبدأ قريباً (${winLabel})`
+          : appState.locale === "en"
+          ? `⏳ Upcoming (${winLabel})`
+          : `⏳ সময় শুরু হয়নি (${winLabel})`
+    };
   }
 
   if (nowMins < rule.start) {
@@ -2986,12 +3020,18 @@ function renderFiveWaqtStrip(now = new Date()) {
       activeWaqtTitle = t("waqt_maghrib");
       winStart = sched.maghrib;
       winEnd = sched.isha;
+    } else if (nowMins >= sched.lastThirdStart && nowMins < sched.fajr) {
+      // 9. Tahajjud / Qiyam al-Layl (Last Third of the Night): lastThirdStart -> Fajr start
+      // Resolves the Isha vs. Tahajjud timeline conflict so Tahajjud has its own dedicated live countdown!
+      activeWaqtTitle = t("waqt_tahajjud");
+      winStart = sched.lastThirdStart;
+      winEnd = sched.fajr;
     } else {
-      // 9. Isha & Tahajjud Night Window (crosses midnight until Fajr)
+      // 10. Isha Prime Night Window (crosses midnight from Isha start until Tahajjud / Last Third of Night start)
       activeWaqtTitle = t("waqt_isha");
       winStart = sched.isha;
-      winEnd = sched.fajr + 1440;
-      if (nowMins < sched.fajr) {
+      winEnd = sched.lastThirdStart + 1440;
+      if (nowMins < sched.lastThirdStart) {
         currentPos = nowMins + 1440;
       }
     }
@@ -3507,7 +3547,10 @@ function renderHeaderDatesAndPhase() {
   let phaseLabel = t("phase_banner_night");
   let activeWaqtWindow = "";
 
-  if (nowMins >= sched.lastThirdStart && nowMins < sched.sunrise + 20) {
+  if (nowMins >= sched.lastThirdStart && nowMins < sched.fajr) {
+    phaseLabel = t("phase_banner_night");
+    activeWaqtWindow = `${formatMinutesToLocalizedTime(sched.lastThirdStart)} – ${formatMinutesToLocalizedTime(sched.fajr - 1)}`;
+  } else if (nowMins >= sched.fajr && nowMins < sched.sunrise + 20) {
     phaseLabel = t("phase_banner_fajr");
     activeWaqtWindow = `${formatMinutesToLocalizedTime(sched.fajr)} – ${formatMinutesToLocalizedTime(sched.sunrise)}`;
   } else if (nowMins >= sched.sunrise + 20 && nowMins < sched.dhuhr) {
@@ -3521,7 +3564,7 @@ function renderHeaderDatesAndPhase() {
     activeWaqtWindow = `${formatMinutesToLocalizedTime(sched.maghrib)} – ${formatMinutesToLocalizedTime(sched.isha)}`;
   } else {
     phaseLabel = t("phase_banner_sleep");
-    activeWaqtWindow = `${formatMinutesToLocalizedTime(sched.isha)} – ${formatMinutesToLocalizedTime(sched.fajr)}`;
+    activeWaqtWindow = `${formatMinutesToLocalizedTime(sched.isha)} – ${formatMinutesToLocalizedTime(sched.lastThirdStart - 1)}`;
   }
 
   // Null-safe update in case #next-phase-banner is replaced by the Live Waqt Countdown Bar
@@ -5342,4 +5385,5 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", syncHeaderScrollState, { passive: true });
   syncHeaderScrollState();
 });
+
 
