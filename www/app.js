@@ -2397,7 +2397,7 @@ function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
     case "s24_20_kursi_3quls":
     case "s24_21_tasbih_fatimah":
     case "s24_22_forgiving_before_sleep":
-      return { start: Math.max(s.isha, 20 * 60), end: s.fajr - 1, crossesMidnight: true };
+      return { start: Math.max(s.isha, 20 * 60), end: 23 * 60 + 59 };
     case "s24_31_mon_thu_fasting":
       return { start: s.fajr - 30, end: s.maghrib + 90, fastingDaysOnly: true };
     case "s24_32_jumuah_kahf_salawat":
