@@ -4647,10 +4647,33 @@ function showExitToast() {
   }, 2000);
 }
 
+// Computes the exact viewport anchor offset so opening a non-Routine section
+// (Adhkar, Muhasabah, Vault & Info) for the first time brings the user slightly
+// down directly into that section's content card instead of jumping to the very top.
+function computeSectionFocusScrollOffset(targetTabId) {
+  if (!targetTabId || targetTabId === "tab-routine") return 0;
+  const headerEl = document.querySelector(".app-header");
+  const tabNavEl = document.querySelector(".tab-nav");
+  const targetSectionEl = document.getElementById(targetTabId);
+  const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 58;
+
+  if (tabNavEl) {
+    const navRect = tabNavEl.getBoundingClientRect();
+    const absoluteNavTop = (window.scrollY || window.pageYOffset || 0) + navRect.top;
+    return Math.max(0, Math.round(absoluteNavTop - headerHeight - 6));
+  }
+  if (targetSectionEl) {
+    const secRect = targetSectionEl.getBoundingClientRect();
+    const absoluteSecTop = (window.scrollY || window.pageYOffset || 0) + secRect.top;
+    return Math.max(0, Math.round(absoluteSecTop - headerHeight - 12));
+  }
+  return 0;
+}
+
 function switchTabProgrammatically(targetTabId, recordInStack = true) {
   const currentActiveBtn = document.querySelector(".tab-btn.active");
   if (currentActiveBtn) {
-    tabScrollPositions[currentActiveBtn.dataset.tab] = window.scrollY || 0;
+    tabScrollPositions[currentActiveBtn.dataset.tab] = window.scrollY || window.pageYOffset || 0;
   }
 
   document.querySelectorAll(".tab-btn").forEach((b) => {
@@ -4665,12 +4688,26 @@ function switchTabProgrammatically(targetTabId, recordInStack = true) {
     pushAppHistoryState(targetTabId);
   }
 
-  const savedScroll = tabScrollPositions[targetTabId] || 0;
-  window.scrollTo({ top: savedScroll, behavior: "instant" });
+  requestAnimationFrame(() => {
+    const hasSavedPosition =
+      Object.prototype.hasOwnProperty.call(tabScrollPositions, targetTabId) &&
+      tabScrollPositions[targetTabId] > 0;
+
+    if (hasSavedPosition) {
+      window.scrollTo({ top: tabScrollPositions[targetTabId], behavior: "instant" });
+    } else if (targetTabId !== "tab-routine") {
+      const focusOffset = computeSectionFocusScrollOffset(targetTabId);
+      tabScrollPositions[targetTabId] = focusOffset;
+      window.scrollTo({ top: focusOffset, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+  });
 }
 
 // Global handler invoked by both Android Native Back Button & Browser popstate
-// Never forces a scroll-to-top jump; strictly returns user to the previous section/state!
+// Strictly preserves section scroll positions during navigation, and brings the user
+// to the top (0) ONLY at the exact moment of exiting the app!
 window.handleSunnahBackNavigation = function () {
   // 1. If Fact / History Modal is open -> Close modal first (stay at exact scroll position)
   const modal = document.getElementById("fact-modal");
@@ -4712,10 +4749,15 @@ window.handleSunnahBackNavigation = function () {
     return true;
   }
 
-  // 5. On the root section -> Require double back-press within 2s to exit (never scroll to top of APK)
+  // 5. On the root section -> Require double back-press within 2s to exit.
+  // Bring the user to the top (0) AUTOMATICALLY ONLY at the exact moment of app exit!
   const now = Date.now();
   if (now - lastBackTapTime < 2000) {
-    return false; // Allow native APK exit on second tap
+    tabScrollPositions["tab-routine"] = 0;
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return false; // Allow native APK exit on second tap after snapping to top
   }
   lastBackTapTime = now;
   showExitToast();
@@ -5305,3 +5347,4 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", syncHeaderScrollState, { passive: true });
   syncHeaderScrollState();
 });
+
