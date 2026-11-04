@@ -1480,258 +1480,127 @@ html[dir="rtl"] .info-btn {
 }
 
 /* ==========================================================================
-   FLOATING COLLAPSIBLE PROHIBITED TIME FOR SALAH ACCORDION WIDGET
+   STANDALONE STATIC PROHIBITED TIME FOR SALAH CARD (UI STYLE 2)
+   Double-layered crimson/salmon frame, dashed dividers, outlined time pills,
+   and warm amber warning + Hadith proof box (Sahih Muslim 831)
    ========================================================================== */
-.prohibited-card {
-  background: #ffffff;
-  border: 1px solid rgba(16, 185, 129, 0.22);
+.prohibited-static-card {
+  background: linear-gradient(180deg, #f88688 0%, #f17679 100%);
+  border: 2px solid #991b1b;
   border-radius: 20px;
-  margin-bottom: 12px;
-  overflow: hidden;
-  box-shadow: var(--shadow-float);
-  transition: transform 0.25s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  padding: 6px;
+  margin-bottom: 14px;
+  box-shadow: 0 10px 24px -6px rgba(185, 28, 28, 0.18), 0 4px 10px -3px rgba(153, 27, 27, 0.1);
 }
 
-.prohibited-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-float-hover);
+.prohibited-static-inner {
+  background: #fdf0f1;
+  border: 1.5px solid rgba(153, 27, 27, 0.45);
+  border-radius: 15px;
+  padding: 13px 14px 12px;
 }
 
-.prohibited-card.status-safe {
-  background: linear-gradient(145deg, #ffffff, #f4fbf7);
-  border-color: rgba(16, 185, 129, 0.28);
+.prohibited-static-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
-.prohibited-card.status-danger {
-  background: linear-gradient(145deg, #fff5f5, #ffffff);
-  border-color: var(--danger);
-  box-shadow: 0 10px 26px rgba(220, 38, 38, 0.15);
+.prohibited-warning-triangle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 3px rgba(185, 28, 28, 0.22));
 }
 
-.prohibited-header-btn {
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: inherit;
-  font-family: inherit;
-  padding: 13px 15px;
+.prohibited-static-header h4 {
+  font-size: 1.08rem;
+  font-weight: 900;
+  color: #111827;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.prohibited-dashed-divider {
+  border-top: 1.5px dashed rgba(153, 27, 27, 0.36);
+  margin: 8px 0;
+}
+
+.prohibited-static-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 3px 0;
+}
+
+.prohibited-static-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  cursor: pointer;
-  text-align: left;
 }
 
-html[dir="rtl"] .prohibited-header-btn {
-  text-align: right;
-}
-
-.prohibited-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-  min-width: 0;
-}
-
-.prohibited-icon-box {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--accent-gold-soft);
-  border: 1px solid rgba(180, 83, 9, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.15rem;
-  flex-shrink: 0;
-  box-shadow: 0 3px 8px rgba(180, 83, 9, 0.1);
-}
-
-.prohibited-card.status-danger .prohibited-icon-box {
-  background: #fee2e2;
-  border-color: var(--danger);
-}
-
-.prohibited-title-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.prohibited-title-text h4 {
-  font-size: 0.88rem;
+.prohibited-row-label {
+  font-size: 0.86rem;
   font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1.25;
-}
-
-.prohibited-sub {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  font-weight: 600;
-  margin-top: 2px;
+  color: #111827;
   line-height: 1.35;
+  flex: 1;
 }
 
-.prohibited-header-right {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex-shrink: 0;
-}
-
-.prohibited-badge {
-  font-size: 0.66rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 999px;
-  white-space: nowrap;
-  background: #d1fae5;
-  color: #065f46;
-  border: 1px solid rgba(16, 185, 129, 0.4);
-}
-
-.prohibited-card.status-danger .prohibited-badge {
-  background: #fee2e2;
-  color: #b91c1c;
-  border-color: var(--danger);
-}
-
-.prohibited-chevron {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--accent-emerald-soft);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  color: var(--accent-emerald-dark);
-  font-size: 0.65rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease;
-}
-
-.prohibited-card:not(.is-collapsed) .prohibited-chevron {
-  transform: rotate(180deg);
-  background: var(--accent-emerald);
-  color: #ffffff;
-}
-
-.prohibited-collapsible-body {
-  display: grid;
-  grid-template-rows: 1fr;
-  transition: grid-template-rows 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.28s ease;
-  opacity: 1;
-}
-
-.prohibited-card.is-collapsed .prohibited-collapsible-body {
-  grid-template-rows: 0fr;
-  opacity: 0;
-}
-
-.prohibited-body-inner {
-  overflow: hidden;
-  padding: 0 14px 12px;
-}
-
-.prohibited-card.is-collapsed .prohibited-body-inner {
-  padding-bottom: 0;
-}
-
-.prohibited-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(16, 185, 129, 0.16);
-  margin-bottom: 8px;
-}
-
-.prohibited-slot {
-  background: #f8fbf9;
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  border-radius: 14px;
-  padding: 9px 6px;
-  text-align: center;
-  box-shadow: var(--shadow-pill);
-}
-
-.prohibited-slot.active-prohibited-slot {
-  background: #fef2f2;
-  border-color: var(--danger);
-}
-
-.slot-top {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  margin-bottom: 3px;
-}
-
-.slot-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-emerald);
-}
-
-.prohibited-slot.active-prohibited-slot .slot-dot {
-  background: var(--danger);
-}
-
-.prohibited-slot small {
-  font-size: 0.64rem;
-  font-weight: 800;
-  color: var(--text-muted);
-}
-
-.prohibited-slot strong {
-  display: block;
-  font-size: 0.72rem;
-  color: var(--accent-emerald-dark);
+.prohibited-time-pill {
+  background: #fffafa;
+  color: #9b1c1c;
+  border: 1.5px solid #9b1c1c;
+  border-radius: 8px;
+  padding: 4px 11px;
+  font-size: 0.9rem;
   font-weight: 900;
-  margin: 2px 0;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 118px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(153, 27, 27, 0.08);
 }
 
-.prohibited-slot.active-prohibited-slot strong {
-  color: #b91c1c;
+.prohibited-amber-alert-box {
+  background: #fde69e;
+  border: 1px solid rgba(180, 83, 9, 0.32);
+  border-radius: 10px;
+  padding: 9px 11px;
+  margin-top: 4px;
 }
 
-.slot-desc {
+.prohibited-warning-main {
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: #111827;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.prohibited-hadith-proof {
   display: block;
-  font-size: 0.58rem;
-  color: var(--text-muted);
-  line-height: 1.2;
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px dashed rgba(146, 64, 14, 0.32);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #78350f;
+  line-height: 1.42;
 }
 
-.prohibited-footer-bar {
-  border-top: 1px dashed rgba(16, 185, 129, 0.22);
-  padding-top: 6px;
-}
-
-.prohibited-hadith-note {
-  display: block;
-  font-size: 0.66rem;
-  color: var(--text-muted);
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-@media (max-width: 390px) {
-  .prohibited-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 370px) {
+  .prohibited-row-label {
+    font-size: 0.79rem;
   }
-  .prohibited-slot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 7px 10px;
-    text-align: left;
-  }
-  .slot-desc {
-    display: none;
+  .prohibited-time-pill {
+    font-size: 0.82rem;
+    padding: 3px 8px;
+    min-width: 104px;
   }
 }
 
@@ -2311,7 +2180,7 @@ html[data-theme="dark"] .waqt-strip-card,
 html[data-theme="dark"] .card,
 html[data-theme="dark"] .habit-item,
 html[data-theme="dark"] .dua-card,
-html[data-theme="dark"] .prohibited-card,
+html[data-theme="dark"] .prohibited-static-card,
 html[data-theme="dark"] .modal-card {
   background: #0b221a;
   border-color: rgba(16, 185, 129, 0.24);
