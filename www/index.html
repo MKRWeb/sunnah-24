@@ -21,7 +21,7 @@
     </div>
   </div>
 
-  <!-- Compact Commercial Top App Bar with Theme Toggle Button -->
+  <!-- Compact Commercial Top App Bar with Universal Asr Madhab Toggle Button -->
   <header class="app-header">
     <div class="header-left">
       <img src="icon.svg" alt="Sunnah 24 Logo" class="header-brand-logo" />
@@ -47,16 +47,17 @@
           📲 <span>Install App</span>
         </a>
       </div>
-      <!-- Instant Opposite Background Theme Toggle Button (Light <-> Dark) -->
+      <!-- Universal Asr Madhab Toggle Button (Hanafi 2x <-> Standard / Shafi'i, Maliki, Hanbali 1x) -->
       <button
         type="button"
-        id="theme-toggle-btn"
-        class="theme-toggle-btn"
-        aria-label="Toggle Dark or Light Mode"
-        title="ডার্ক / লাইট মোড পরিবর্তন করুন"
+        id="madhab-toggle-btn"
+        class="madhab-toggle-btn"
+        data-madhab="hanafi"
+        aria-label="Toggle Asr Madhab (Hanafi vs Standard Shafi'i)"
+        title="আসরের ওয়াক্ত মাযহাব পরিবর্তন করুন (হানাফী ⇄ শাফিঈ/জমহুর)"
       >
-        <span id="theme-toggle-icon">🌙</span>
-        <span id="theme-toggle-label" data-i18n="theme_dark_btn">ডার্ক</span>
+        <span id="madhab-toggle-icon">🕌</span>
+        <span id="madhab-toggle-label" data-i18n="madhab_hanafi_btn">হানাফী</span>
       </button>
     </div>
   </header>
@@ -476,5 +477,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
-
