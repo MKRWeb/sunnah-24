@@ -2213,8 +2213,8 @@ html[dir="rtl"] .month-summary-card {
   font-size: 0.68rem;
 }
 
-/* Opposite Background Theme Toggle Button */
-.theme-toggle-btn {
+/* Universal Asr Madhab Toggle Button (Hanafi <-> Standard/Shafi'i) */
+.madhab-toggle-btn {
   background: #071f17;
   color: #f8fafc;
   border: 1.5px solid #10b981;
@@ -2228,15 +2228,22 @@ html[dir="rtl"] .month-summary-card {
   gap: 4px;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(5, 19, 14, 0.22);
-  transition: transform 0.18s ease, background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+  transition: transform 0.18s ease, background 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
   white-space: nowrap;
 }
 
-.theme-toggle-btn:hover {
+.madhab-toggle-btn[data-madhab="standard"] {
+  background: linear-gradient(135deg, #065f46, #047857);
+  color: #ffffff;
+  border-color: #eab308;
+  box-shadow: 0 4px 12px rgba(6, 95, 70, 0.28);
+}
+
+.madhab-toggle-btn:hover {
   transform: translateY(-1.5px);
 }
 
-.theme-toggle-btn:active {
+.madhab-toggle-btn:active {
   transform: scale(0.94);
 }
 
@@ -2864,4 +2871,5 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-ta
   background: linear-gradient(145deg, rgba(127, 29, 29, 0.36), rgba(69, 10, 10, 0.42)) !important;
   border-color: rgba(248, 113, 113, 0.45) !important;
 }
+
 
