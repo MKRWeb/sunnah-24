@@ -184,7 +184,7 @@ const I18N_DICTIONARIES = deepFreeze({
     alert_invalid: "অকার্যকর সুন্নাহ ২৪ ব্যাকআপ ফাইল।",
     day_detail_title: "📅 দিনের আমল বিবরণী:",
     day_detail_none: "এই তারিখে কোনো সুন্নাহ আমল চিহ্নিত করা হয়নি।",
-    prohibited_title: "নামাজ নিষিদ্ধ সময়",
+    prohibited_title: "নামাজ নিষিদ্ধ সময় (ট্যাপ করে দেখুন)",
     prohibited_sunrise: "১. সূর্যোদয়ের সময় (Sunrise):",
     prohibited_zawal: "২. ঠিক দ্বিপ্রহর/দুপুরের সময় (Midday Zenith/Zawal):",
     prohibited_sunset: "৩. সূর্যাস্তের সময় (Sunset):",
@@ -331,7 +331,7 @@ const I18N_DICTIONARIES = deepFreeze({
     alert_invalid: "ملف النسخة الاحتياطية غير صالح.",
     day_detail_title: "📅 تفاصيل إنجاز اليوم:",
     day_detail_none: "لم يتم تسجيل سنن مكتملة في هذا التاريخ.",
-    prohibited_title: "أوقات النهي عن الصلاة",
+    prohibited_title: "أوقات النهي عن الصلاة (اضغط للتفاصيل)",
     prohibited_sunrise: "١. وقت الشروق (Sunrise):",
     prohibited_zawal: "٢. وقت الزوال / الاستواء (Midday Zenith/Zawal):",
     prohibited_sunset: "٣. وقت الغروب (Sunset):",
@@ -478,7 +478,7 @@ const I18N_DICTIONARIES = deepFreeze({
     alert_invalid: "Invalid Sunnah 24 backup file.",
     day_detail_title: "📅 Completed Sunnahs on:",
     day_detail_none: "No habits were marked completed on this date.",
-    prohibited_title: "Prohibited Times for Salah",
+    prohibited_title: "Prohibited Times for Salah (Tap to Expand)",
     prohibited_sunrise: "1. Sunrise Time (Sunrise):",
     prohibited_zawal: "2. Midday Zenith Time (Midday Zenith/Zawal):",
     prohibited_sunset: "3. Sunset Time (Sunset):",
@@ -5787,6 +5787,21 @@ function formatProhibitedClockRange(startMins, endMins, locale = appState.locale
   return `${formatShortClock(startMins)} - ${formatShortClock(endMins)}`;
 }
 
+let userToggledProhibitedCard = false;
+
+function formatProhibitedClockRange(startMins, endMins, locale = appState.locale) {
+  const formatShortClock = (totalMinutes) => {
+    const clamped = ((Math.round(totalMinutes) % 1440) + 1440) % 1440;
+    const h24 = Math.floor(clamped / 60);
+    const m = clamped % 60;
+    const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+    const hStr = localizeDigits(String(h12).padStart(2, "0"), locale);
+    const mStr = localizeDigits(String(m).padStart(2, "0"), locale);
+    return `${hStr}:${mStr}`;
+  };
+  return `${formatShortClock(startMins)} - ${formatShortClock(endMins)}`;
+}
+
 function renderProhibitedSalahTimes() {
   const card = document.getElementById("prohibited-salah-card");
   if (!card) return;
@@ -5795,10 +5810,6 @@ function renderProhibitedSalahTimes() {
   const lang = appState.locale || "bn";
   const sched = computeSeasonalPrayerSchedule(now);
 
-  // Authentic 3 Prohibited Salah Windows (Sahih Muslim 831) triggered by seasonal solar schedule:
-  // 1. Sunrise Window: From Sunrise until Ishraq (+15 minutes)
-  // 2. Zawal (Midday Zenith) Window: From Zawal until Dhuhr start
-  // 3. Sunset Window: From 15 minutes before Sunset until Sunset
   const windows = sched.prohibitedWindows || {
     sunrise: { start: sched.sunrise, end: sched.sunrise + 15 },
     zawal: { start: sched.zawal, end: sched.dhuhr },
@@ -5815,6 +5826,18 @@ function renderProhibitedSalahTimes() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.getElementById("prohibited-toggle-btn");
+  const card = document.getElementById("prohibited-salah-card");
+
+  if (toggleBtn && card) {
+    toggleBtn.addEventListener("click", () => {
+      userToggledProhibitedCard = true;
+      const isNowCollapsed = card.classList.toggle("is-collapsed");
+      toggleBtn.setAttribute("aria-expanded", isNowCollapsed ? "false" : "true");
+      if (navigator.vibrate) navigator.vibrate(12);
+    });
+  }
+
   renderProhibitedSalahTimes();
 });
 
