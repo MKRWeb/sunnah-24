@@ -76,7 +76,6 @@ const I18N_DICTIONARIES = deepFreeze({
     tab_adhkar: "আযকার ও তাসবীহ",
     tab_diary: "মুহাসাবা ডায়েরি",
     tab_vault: "ভল্ট ও তথ্য",
-    search_placeholder: "🔍 ৩২+ সুন্নাহ আমল, হাদিস, দোয়া বা উপকারিতা খুঁজুন...",
     phase_all: "সব ২৪ ঘণ্টা",
     phase_tahajjud: "তাহাজ্জুদ ও ফজর",
     phase_duha: "সকাল ও কর্মক্ষেত্র",
@@ -223,7 +222,6 @@ const I18N_DICTIONARIES = deepFreeze({
     tab_adhkar: "الأذكار والسبحة",
     tab_diary: "المحاسبة اليومية",
     tab_vault: "الخزنة والمعلومات",
-    search_placeholder: "🔍 ابحث في ٣٢ سنة نبوية، حديث، دعاء أو حكمة...",
     phase_all: "كل ٢٤ ساعة",
     phase_tahajjud: "التهجد والفجر",
     phase_duha: "الضحى والعمل",
@@ -370,7 +368,6 @@ const I18N_DICTIONARIES = deepFreeze({
     tab_adhkar: "Adhkar",
     tab_diary: "Muhasabah",
     tab_vault: "Vault & Info",
-    search_placeholder: "🔍 Search 32+ Prophetic habits, Hadiths, Duas, or benefits...",
     phase_all: "All 24H",
     phase_tahajjud: "Pre-Dawn & Fajr",
     phase_duha: "Morning & Work",
@@ -1314,7 +1311,6 @@ let appState = {
 };
 
 let activePhase = "all";
-let searchQuery = "";
 let selectedMood = "Khushu";
 let tasbihCount = 0;
 let tasbihTarget = 33;
@@ -4316,19 +4312,7 @@ function renderHabits() {
   }
 
   const filtered = allHabits.filter((h) => {
-    const matchesPhase = activePhase === "all" || h.phase === activePhase;
-    const q = searchQuery.toLowerCase();
-    const localizedTitle = getHabitTitle(h).toLowerCase();
-    const localizedWisdom = getHabitWisdom(h).toLowerCase();
-    const localizedEvidence = getHabitEvidence(h).toLowerCase();
-
-    const matchesSearch =
-      !q ||
-      localizedTitle.includes(q) ||
-      localizedWisdom.includes(q) ||
-      localizedEvidence.includes(q) ||
-      (h.title && h.title.toLowerCase().includes(q));
-    return matchesPhase && matchesSearch;
+    return activePhase === "all" || h.phase === activePhase;
   });
 
   const filterCountEl = document.getElementById("filter-count-label");
@@ -5014,11 +4998,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  document.getElementById("habit-search-input").addEventListener("input", (e) => {
-    searchQuery = e.target.value.trim();
-    renderHabits();
-  });
-
   document.getElementById("reset-today-btn").addEventListener("click", async () => {
     const todayKey = getTodayKey();
     const currentList = appState.completionsByDate[todayKey] || [];
@@ -5391,15 +5370,6 @@ window.handleSunnahBackNavigation = function () {
   const modal = document.getElementById("fact-modal");
   if (modal && !modal.classList.contains("hidden")) {
     modal.classList.add("hidden");
-    return true;
-  }
-
-  // 2. If Search box has text -> Clear search and stay at current scroll position
-  const searchInput = document.getElementById("habit-search-input");
-  if (searchQuery && searchInput) {
-    searchQuery = "";
-    searchInput.value = "";
-    renderHabits();
     return true;
   }
 
@@ -5969,5 +5939,3 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", syncHeaderScrollState, { passive: true });
   syncHeaderScrollState();
 });
-
-
