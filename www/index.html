@@ -162,9 +162,15 @@
 
   <!-- TAB 1: 24-HOUR PROPHETIC ROUTINE -->
   <main id="tab-routine" class="tab-content active">
-    <!-- COMPACT STATIC PROHIBITED TIME FOR SALAH NOTE CARD (নামাজ নিষিদ্ধ সময়) -->
-    <section id="prohibited-salah-card" class="prohibited-static-card" aria-label="Prohibited Times for Salah">
-      <div class="prohibited-static-inner">
+    <!-- COLLAPSIBLE ONE-LINE WRAPPED PROHIBITED TIME FOR SALAH NOTE CARD (ট্যাপ করে খুলুন/বন্ধ করুন) -->
+    <section id="prohibited-salah-card" class="prohibited-static-card is-collapsed" aria-label="Prohibited Times for Salah">
+      <button
+        type="button"
+        id="prohibited-toggle-btn"
+        class="prohibited-header-btn"
+        aria-expanded="false"
+        aria-controls="prohibited-collapsible-body"
+      >
         <div class="prohibited-static-header">
           <span class="prohibited-warning-triangle" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
@@ -173,34 +179,39 @@
               <circle cx="12" cy="17" r="1.2" fill="#ffffff"/>
             </svg>
           </span>
-          <h4 data-i18n="prohibited_title">নামাজ নিষিদ্ধ সময়</h4>
+          <h4 data-i18n="prohibited_title">নামাজ নিষিদ্ধ সময় (ট্যাপ করে দেখুন)</h4>
         </div>
+        <span id="prohibited-chevron" class="prohibited-chevron" aria-hidden="true">▼</span>
+      </button>
 
-        <div class="prohibited-dashed-divider"></div>
+      <div id="prohibited-collapsible-body" class="prohibited-collapsible-body">
+        <div class="prohibited-static-inner">
+          <div class="prohibited-dashed-divider" style="margin-top:0;"></div>
 
-        <div class="prohibited-static-list">
-          <div class="prohibited-static-row">
-            <span class="prohibited-row-label" data-i18n="prohibited_sunrise">১. সূর্যোদয়ের সময় (Sunrise):</span>
-            <strong id="time-slot-sunrise" class="prohibited-time-pill">--:-- - --:--</strong>
+          <div class="prohibited-static-list">
+            <div class="prohibited-static-row">
+              <span class="prohibited-row-label" data-i18n="prohibited_sunrise">১. সূর্যোদয়ের সময় (Sunrise):</span>
+              <strong id="time-slot-sunrise" class="prohibited-time-pill">--:-- - --:--</strong>
+            </div>
+
+            <div class="prohibited-static-row">
+              <span class="prohibited-row-label" data-i18n="prohibited_zawal">২. ঠিক দ্বিপ্রহর/দুপুরের সময় (Midday Zenith/Zawal):</span>
+              <strong id="time-slot-zawal" class="prohibited-time-pill">--:-- - --:--</strong>
+            </div>
+
+            <div class="prohibited-static-row">
+              <span class="prohibited-row-label" data-i18n="prohibited_sunset">৩. সূর্যাস্তের সময় (Sunset):</span>
+              <strong id="time-slot-sunset" class="prohibited-time-pill">--:-- - --:--</strong>
+            </div>
           </div>
 
-          <div class="prohibited-static-row">
-            <span class="prohibited-row-label" data-i18n="prohibited_zawal">২. ঠিক দ্বিপ্রহর/দুপুরের সময় (Midday Zenith/Zawal):</span>
-            <strong id="time-slot-zawal" class="prohibited-time-pill">--:-- - --:--</strong>
+          <div class="prohibited-dashed-divider"></div>
+
+          <div class="prohibited-amber-alert-box">
+            <small class="prohibited-hadith-proof" data-i18n="prohibited_hadith_ref">
+              📖 দলিল: সহীহ মুসলিম ৮৩১ — উকবাহ ইবনু আমির (রা.) বর্ণিত সূর্যোদয়, ঠিক দ্বিপ্রহর (যাওয়াল) ও সূর্যাস্তের সময় সালাত আদায় নিষিদ্ধ।
+            </small>
           </div>
-
-          <div class="prohibited-static-row">
-            <span class="prohibited-row-label" data-i18n="prohibited_sunset">৩. সূর্যাস্তের সময় (Sunset):</span>
-            <strong id="time-slot-sunset" class="prohibited-time-pill">--:-- - --:--</strong>
-          </div>
-        </div>
-
-        <div class="prohibited-dashed-divider"></div>
-
-        <div class="prohibited-amber-alert-box">
-          <small class="prohibited-hadith-proof" data-i18n="prohibited_hadith_ref">
-            📖 দলিল: সহীহ মুসলিম ৮৩১ — উকবাহ ইবনু আমির (রা.) বর্ণিত সূর্যোদয়, ঠিক দ্বিপ্রহর (যাওয়াল) ও সূর্যাস্তের সময় সালাত আদায় নিষিদ্ধ।
-          </small>
         </div>
       </div>
     </section>
