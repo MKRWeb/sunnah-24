@@ -1480,31 +1480,31 @@ html[dir="rtl"] .info-btn {
 }
 
 /* ==========================================================================
-   STANDALONE STATIC PROHIBITED TIME FOR SALAH CARD (UI STYLE 2)
-   Double-layered crimson/salmon frame, dashed dividers, outlined time pills,
-   and warm amber warning + Hadith proof box (Sahih Muslim 831)
+   COMPACT STATIC PROHIBITED TIME FOR SALAH NOTE CARD (MINIATURE UI STYLE 2)
+   Sleek, compact double-layered crimson/rose note box with tight spacing,
+   compact time pills, and concise Sahih Muslim 831 Hadith proof footer
    ========================================================================== */
 .prohibited-static-card {
   background: linear-gradient(180deg, #f88688 0%, #f17679 100%);
-  border: 2px solid #991b1b;
-  border-radius: 20px;
-  padding: 6px;
-  margin-bottom: 14px;
-  box-shadow: 0 10px 24px -6px rgba(185, 28, 28, 0.18), 0 4px 10px -3px rgba(153, 27, 27, 0.1);
+  border: 1.5px solid #991b1b;
+  border-radius: 14px;
+  padding: 4px;
+  margin-bottom: 10px;
+  box-shadow: 0 6px 14px -4px rgba(185, 28, 28, 0.14), 0 2px 6px -2px rgba(153, 27, 27, 0.08);
 }
 
 .prohibited-static-inner {
   background: #fdf0f1;
-  border: 1.5px solid rgba(153, 27, 27, 0.45);
-  border-radius: 15px;
-  padding: 13px 14px 12px;
+  border: 1px solid rgba(153, 27, 27, 0.4);
+  border-radius: 10px;
+  padding: 8px 10px 7px;
 }
 
 .prohibited-static-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 6px;
+  margin-bottom: 4px;
 }
 
 .prohibited-warning-triangle {
@@ -1512,95 +1512,87 @@ html[dir="rtl"] .info-btn {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 3px rgba(185, 28, 28, 0.22));
+  filter: drop-shadow(0 1px 2px rgba(185, 28, 28, 0.18));
 }
 
 .prohibited-static-header h4 {
-  font-size: 1.08rem;
+  font-size: 0.84rem;
   font-weight: 900;
   color: #111827;
   letter-spacing: -0.01em;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .prohibited-dashed-divider {
-  border-top: 1.5px dashed rgba(153, 27, 27, 0.36);
-  margin: 8px 0;
+  border-top: 1px dashed rgba(153, 27, 27, 0.32);
+  margin: 5px 0;
 }
 
 .prohibited-static-list {
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  padding: 3px 0;
+  gap: 4px;
+  padding: 1px 0;
 }
 
 .prohibited-static-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .prohibited-row-label {
-  font-size: 0.86rem;
+  font-size: 0.72rem;
   font-weight: 800;
   color: #111827;
-  line-height: 1.35;
+  line-height: 1.25;
   flex: 1;
 }
 
 .prohibited-time-pill {
   background: #fffafa;
   color: #9b1c1c;
-  border: 1.5px solid #9b1c1c;
-  border-radius: 8px;
-  padding: 4px 11px;
-  font-size: 0.9rem;
+  border: 1.2px solid #9b1c1c;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.73rem;
   font-weight: 900;
   letter-spacing: 0.01em;
   white-space: nowrap;
   flex-shrink: 0;
-  min-width: 118px;
+  min-width: 96px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(153, 27, 27, 0.08);
+  box-shadow: 0 1px 2px rgba(153, 27, 27, 0.06);
 }
 
 .prohibited-amber-alert-box {
   background: #fde69e;
-  border: 1px solid rgba(180, 83, 9, 0.32);
-  border-radius: 10px;
-  padding: 9px 11px;
-  margin-top: 4px;
-}
-
-.prohibited-warning-main {
-  font-size: 0.82rem;
-  font-weight: 900;
-  color: #111827;
-  line-height: 1.45;
-  margin: 0;
+  border: 1px solid rgba(180, 83, 9, 0.28);
+  border-radius: 7px;
+  padding: 5px 8px;
+  margin-top: 2px;
 }
 
 .prohibited-hadith-proof {
   display: block;
-  margin-top: 5px;
-  padding-top: 5px;
-  border-top: 1px dashed rgba(146, 64, 14, 0.32);
-  font-size: 0.72rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-size: 0.65rem;
   font-weight: 800;
   color: #78350f;
-  line-height: 1.42;
+  line-height: 1.35;
 }
 
 @media (max-width: 370px) {
   .prohibited-row-label {
-    font-size: 0.79rem;
+    font-size: 0.68rem;
   }
   .prohibited-time-pill {
-    font-size: 0.82rem;
-    padding: 3px 8px;
-    min-width: 104px;
+    font-size: 0.69rem;
+    padding: 1.5px 6px;
+    min-width: 88px;
   }
 }
 
