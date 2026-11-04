@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v71-v4.2-perfect";
+const CACHE_NAME = "sunnah-24-enterprise-v72-v4.2-perfect";
 const ASSETS = [
   "./",
   "./index.html",
@@ -38,3 +38,4 @@ self.addEventListener("fetch", (e) => {
     caches.match(e.request).then((cached) => cached || fetch(e.request))
   );
 });
+
