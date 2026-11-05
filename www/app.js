@@ -2537,6 +2537,45 @@ function evaluateSunnahFastingDayStatus(now = new Date()) {
   };
 }
 
+// ============================================================================
+// CROSS-MIDNIGHT ISLAMIC NIGHT LEDGER ENGINE (ISHA, WITR & SURAH MULK/BAQARAH)
+// Keeps a single unified Isha-to-Fajr completion state across 12:00 AM midnight
+// so habits #17 and #18 ticked before midnight remain ticked after 12:00 AM,
+// and late-night completions (00:00 -> Fajr - 1) attribute to that Islamic night.
+// ============================================================================
+function getPreviousSolarDateKey(now = new Date()) {
+  const prev = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+  return getLocalDateKey(prev);
+}
+
+function resolveHabitLedgerDateKey(habit, now = new Date()) {
+  const todayKey = getLocalDateKey(now);
+  if (!habit) return todayKey;
+  const rule = getDynamicSeasonalHabitWindow(habit, now);
+  if (rule && rule.crossesMidnight) {
+    const nowMins = now.getHours() * 60 + now.getMinutes();
+    if (nowMins <= rule.end) {
+      return getPreviousSolarDateKey(now);
+    }
+  }
+  return todayKey;
+}
+
+function isHabitCompletedInActiveCycle(habit, now = new Date()) {
+  if (!habit) return false;
+  const targetKey = resolveHabitLedgerDateKey(habit, now);
+  const targetList = (appState.completionsByDate && appState.completionsByDate[targetKey]) || [];
+  if (targetList.includes(habit.id)) return true;
+
+  // Backward-compatible fallback if already stored under current solar date key during post-midnight window
+  const todayKey = getLocalDateKey(now);
+  if (targetKey !== todayKey) {
+    const todayList = (appState.completionsByDate && appState.completionsByDate[todayKey]) || [];
+    if (todayList.includes(habit.id)) return true;
+  }
+  return false;
+}
+
 // Evaluates whether a habit is currently "open", "upcoming", or "expired" based on seasonal Waqt
 function evaluateHabitTimeWindow(habit, now = new Date()) {
   const rule = getDynamicSeasonalHabitWindow(habit, now);
@@ -4264,16 +4303,16 @@ function calculateStreak() {
 function renderHabits() {
   const container = document.getElementById("habit-list-container");
   if (!container) return;
-  const todayKey = getTodayKey();
-  const completedToday = appState.completionsByDate[todayKey] || [];
   const allHabits = getAllHabits();
   const now = new Date();
 
   let openCount = 0;
   let expiredMissedCount = 0;
+  let activeCycleDoneCount = 0;
 
   allHabits.forEach((h) => {
-    const isDone = completedToday.includes(h.id);
+    const isDone = isHabitCompletedInActiveCycle(h, now);
+    if (isDone) activeCycleDoneCount++;
     const win = evaluateHabitTimeWindow(h, now);
     if (win.status === "open") openCount++;
     if (win.status === "expired" && !isDone) expiredMissedCount++;
@@ -4326,7 +4365,7 @@ function renderHabits() {
   container.innerHTML = "";
 
   filtered.forEach((habit) => {
-    const isDone = completedToday.includes(habit.id);
+    const isDone = isHabitCompletedInActiveCycle(habit, now);
     const winState = evaluateHabitTimeWindow(habit, now);
 
     let itemStateClass = "";
@@ -4389,7 +4428,7 @@ function renderHabits() {
   });
 
   const total = allHabits.length;
-  const doneCount = completedToday.length;
+  const doneCount = activeCycleDoneCount;
   const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
 
   const dailyScoreEl = document.getElementById("daily-score-text");
@@ -4825,14 +4864,15 @@ async function toggleHabit(habitId) {
   const habit = getAllHabits().find((h) => h.id === habitId);
   if (!habit) return;
 
-  const todayKey = getTodayKey();
-  if (!appState.completionsByDate[todayKey]) {
-    appState.completionsByDate[todayKey] = [];
+  const now = new Date();
+  const targetKey = resolveHabitLedgerDateKey(habit, now);
+  const todayKey = getLocalDateKey(now);
+  if (!appState.completionsByDate[targetKey]) {
+    appState.completionsByDate[targetKey] = [];
   }
-  const list = appState.completionsByDate[todayKey];
-  const idx = list.indexOf(habitId);
-  const isDone = idx > -1;
-  const winState = evaluateHabitTimeWindow(habit, new Date());
+  const list = appState.completionsByDate[targetKey];
+  const isDone = isHabitCompletedInActiveCycle(habit, now);
+  const winState = evaluateHabitTimeWindow(habit, now);
 
   // 1. Block ticking if daily time window has expired
   if (!isDone && winState.status === "expired") {
@@ -4871,9 +4911,16 @@ async function toggleHabit(habitId) {
   }
 
   if (isDone) {
-    list.splice(idx, 1);
+    const idxTarget = list.indexOf(habitId);
+    if (idxTarget > -1) list.splice(idxTarget, 1);
+    if (targetKey !== todayKey && Array.isArray(appState.completionsByDate[todayKey])) {
+      const idxToday = appState.completionsByDate[todayKey].indexOf(habitId);
+      if (idxToday > -1) appState.completionsByDate[todayKey].splice(idxToday, 1);
+    }
   } else {
-    list.push(habitId);
+    if (!list.includes(habitId)) {
+      list.push(habitId);
+    }
     if (navigator.vibrate) navigator.vibrate(18);
   }
   await saveAndSealState();
@@ -4999,16 +5046,32 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   document.getElementById("reset-today-btn").addEventListener("click", async () => {
-    const todayKey = getTodayKey();
-    const currentList = appState.completionsByDate[todayKey] || [];
-    const allHabits = getAllHabits();
     const now = new Date();
+    const todayKey = getLocalDateKey(now);
+    const prevKey = getPreviousSolarDateKey(now);
+    const allHabits = getAllHabits();
+
     // Keep deeds whose time window has already expired (sealed) and only reset currently open windows
+    const currentList = appState.completionsByDate[todayKey] || [];
     appState.completionsByDate[todayKey] = currentList.filter((hId) => {
       const h = allHabits.find((item) => item.id === hId);
       if (!h) return false;
       return !evaluateHabitTimeWindow(h, now).canTick;
     });
+
+    // If post-midnight (00:00 -> Fajr - 1), also allow resetting open cross-midnight habits from the active Islamic night
+    if (Array.isArray(appState.completionsByDate[prevKey])) {
+      appState.completionsByDate[prevKey] = appState.completionsByDate[prevKey].filter((hId) => {
+        const h = allHabits.find((item) => item.id === hId);
+        if (!h) return true;
+        const targetKey = resolveHabitLedgerDateKey(h, now);
+        if (targetKey === prevKey && evaluateHabitTimeWindow(h, now).canTick) {
+          return false;
+        }
+        return true;
+      });
+    }
+
     await saveAndSealState();
     renderHabits();
   });
@@ -5939,3 +6002,4 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", syncHeaderScrollState, { passive: true });
   syncHeaderScrollState();
 });
+
