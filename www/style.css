@@ -2778,3 +2778,111 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-ta
   background: linear-gradient(145deg, rgba(127, 29, 29, 0.36), rgba(69, 10, 10, 0.42)) !important;
   border-color: rgba(248, 113, 113, 0.45) !important;
 }
+
+/* ==========================================================================
+   INTERACTIVE BANGLADESH DIVISION -> DISTRICT (64 ZILAS) -> UPAZILA SELECTOR CSS
+   ========================================================================== */
+.bd-loc-selector-bar {
+  margin-bottom: 10px;
+  padding: 9px 11px;
+  background: linear-gradient(145deg, #f4fbf7, #ffffff);
+  border: 1px solid rgba(16, 185, 129, 0.26);
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(15, 45, 34, 0.04);
+}
+.bd-loc-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.bd-loc-badge-btn {
+  background: transparent;
+  border: none;
+  color: var(--accent-emerald-dark, #065f46);
+  font-family: inherit;
+  font-size: 0.77rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 2px 4px;
+  text-align: left;
+}
+.bd-loc-coords-pill {
+  font-size: 0.67rem;
+  font-weight: 800;
+  color: var(--accent-gold, #b45309);
+  background: var(--accent-gold-soft, #fef3c7);
+  border: 1px solid rgba(180, 83, 9, 0.25);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.bd-loc-Cascading-panel {
+  margin-top: 9px;
+  padding-top: 9px;
+  border-top: 1px dashed rgba(16, 185, 129, 0.25);
+  display: none;
+  flex-direction: column;
+  gap: 7px;
+}
+.bd-loc-Cascading-panel.is-open {
+  display: flex;
+}
+.bd-loc-selects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+@media (max-width: 420px) {
+  .bd-loc-selects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.bd-loc-select {
+  width: 100%;
+  background: #ffffff;
+  color: var(--text-primary, #1e352b);
+  border: 1.2px solid rgba(16, 185, 129, 0.35);
+  border-radius: 10px;
+  padding: 6px 8px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  font-family: inherit;
+  outline: none;
+}
+.bd-loc-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.bd-loc-auto-btn {
+  background: var(--bg-card-elevated, #f8fbf9);
+  color: var(--text-muted, #5b7268);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+}
+.bd-loc-apply-hint {
+  font-size: 0.67rem;
+  color: var(--accent-emerald-dark, #065f46);
+  font-weight: 700;
+}
+html[data-theme="dark"] .bd-loc-selector-bar {
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.12), #0b221a);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+html[data-theme="dark"] .bd-loc-select {
+  background: #05130e;
+  color: #f8fafc;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
