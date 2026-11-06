@@ -1740,8 +1740,8 @@ const REGIONAL_PRAYER_PROFILES = deepFreeze({
     regionName_bn: "বাংলাদেশ ও দক্ষিণ এশিয়া (ইসলামিক ফাউন্ডেশন ঋতুভিত্তিক সময়সূচী)",
     regionName_ar: "بنغلاديش وجنوب آسيا (التوقيت الموسمي - المؤسسة الإسلامية)",
     regionName_en: "Bangladesh & South Asia (Islamic Foundation Seasonal Waqt)",
-    lat: 24.0,
-    lon: 89.85,
+    lat: 23.8103,
+    lon: 90.4125,
     tzHours: 6.0,
     fajrAngle: 18.0,
     ishaAngle: 18.0,
@@ -1784,8 +1784,8 @@ const REGIONAL_PRAYER_PROFILES = deepFreeze({
 // - Middle East, Africa, Southeast Asia & Western Countries -> asrShadowFactor: 1 (Standard / Shafi'i, Maliki, Hanbali)
 const IANA_GEO_TIMEZONE_REGISTRY = deepFreeze({
   // --- SOUTH ASIA (Islamic Foundation / Karachi Hanafi Standard: 18° Fajr/Isha, asrShadowFactor = 2) ---
-  "asia/dhaka": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 24.0, lon: 89.85, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
-  "asia/dacca": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 24.0, lon: 89.85, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/dhaka": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 23.8103, lon: 90.4125, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+  "asia/dacca": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 23.8103, lon: 90.4125, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
   "asia/kolkata": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 22.5726, lon: 88.3639, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
   "asia/calcutta": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 22.5726, lon: 88.3639, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
   "asia/karachi": { regionCode: "BD", subRegion: "SOUTH_ASIA", lat: 24.8607, lon: 67.0011, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2 },
@@ -2008,7 +2008,7 @@ const BD_GEO_HIERARCHY = deepFreeze([
     name_en: "Dhaka Division",
     name_ar: "إقليم دكا",
     districts: [
-      { id: "dhaka", name_bn: "ঢাকা", name_en: "Dhaka", lat: 23.8103, lon: 90.4125, upazilas: ["সাভার (Savar)", "ধামরাই (Dhamrai)", "কেরানীগঞ্জ (Keraniganj)", "নবাবগঞ্জ (Nawabganj)", "দোহার (Dohar)", "ধানমন্ডি (Dhanmondi)", "মিরপুর (Mirpur)", "উত্তরা (Uttara)", "গুলশান (Gulshan)", "মতিঝিল (Motijheel)", "মোহাম্মদপুর (Mohammadpur)", "তেজগাঁও (Tejgaon)", "লালবাগ (Lalbagh)", "কোতোয়ালী (Kotwali)", "রমনা (Ramna)", "খিলগাঁও (Khilgaon)", "বাড্ডা (Badda)", "পল্লবী (Pallabi)", "যাত্রাবাড়ী (Jatrabari)"] },
+      { id: "dhaka", name_bn: "ঢাকা", name_en: "Dhaka", lat: 23.8103, lon: 90.4125, upazilas: ["ঢাকা সদর (Dhaka)", "সাভার (Savar)", "ধামরাই (Dhamrai)", "কেরানীগঞ্জ (Keraniganj)", "নবাবগঞ্জ (Nawabganj)", "দোহার (Dohar)", "ধানমন্ডি (Dhanmondi)", "মিরপুর (Mirpur)", "উত্তরা (Uttara)", "গুলশান (Gulshan)", "মতিঝিল (Motijheel)", "মোহাম্মদপুর (Mohammadpur)", "তেজগাঁও (Tejgaon)", "লালবাগ (Lalbagh)", "কোতোয়ালী (Kotwali)", "রমনা (Ramna)", "খিলগাঁও (Khilgaon)", "বাড্ডা (Badda)", "পল্লবী (Pallabi)", "যাত্রাবাড়ী (Jatrabari)"] },
       { id: "gazipur", name_bn: "গাজীপুর", name_en: "Gazipur", lat: 23.9999, lon: 90.4203, upazilas: ["গাজীপুর সদর (Gazipur Sadar)", "কালিয়াকৈর (Kaliakair)", "কালীগঞ্জ (Kaliganj)", "কাপাসিয়া (Kapasia)", "শ্রীপুর (Sreepur)", "টঙ্গী (Tongi)"] },
       { id: "narayanganj", name_bn: "নারায়ণগঞ্জ", name_en: "Narayanganj", lat: 23.6238, lon: 90.5000, upazilas: ["নারায়ণগঞ্জ সদর (Narayanganj Sadar)", "বন্দর (Bandar)", "আড়াইহাজার (Araihazar)", "রূপগঞ্জ (Rupganj)", "সোনারগাঁও (Sonargaon)", "সিদ্ধিরগঞ্জ (Siddhirganj)", "ফতুল্লা (Fatullah)"] },
       { id: "tangail", name_bn: "টাঙ্গাইল", name_en: "Tangail", lat: 24.2513, lon: 89.9167, upazilas: ["টাঙ্গাইল সদর (Tangail Sadar)", "সখিপুর (Sakhipur)", "বাসাইল (Basail)", "মধুপুর (Madhupur)", "ঘাটাইল (Ghatail)", "কালিহাতী (Kalihati)", "নাগরপুর (Nagarpur)", "মির্জাপুর (Mirzapur)", "গোপালপুর (Gopalpur)", "দেলদুয়ার (Delduar)", "ভূঞাপুর (Bhuapur)", "ধনবাড়ী (Dhanbari)"] },
@@ -5651,6 +5651,15 @@ window.handleSunnahBackNavigation = function () {
     return true;
   }
 
+  // 2. If Header Location Popover is open -> Close popover first
+  const locPanel = document.getElementById("bd-loc-cascading-panel");
+  const locToggleBtn = document.getElementById("bd-loc-toggle-btn");
+  if (locPanel && locPanel.classList.contains("is-open")) {
+    locPanel.classList.remove("is-open");
+    if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
+    return true;
+  }
+
   // 3. If a Phase Filter Chip (other than "all") is active on Routine tab -> Reset to "All 24H" without scrolling to top
   const activeTab = document.querySelector(".tab-content.active")?.id;
   if (activeTab === "tab-routine" && activePhase !== "all") {
@@ -6223,11 +6232,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ============================================================================
 // INTERACTIVE BANGLADESH DIVISION → DISTRICT (ALL 64 ZILAS) → UPAZILA/THANA
-// SELECTOR UI & REAL-TIME WAQT RECALCULATION ENGINE
-// Dynamically mounts inside .waqt-strip-card (or binds existing DOM selects),
-// persists to BD_SELECTED_LOC_STORAGE_KEY, and immediately updates the 5-Waqt
-// prayer strip, live ongoing countdown, prohibited Salah windows, and habit/Adhkar locks.
+// HEADER SELECTOR UI (JUST BELOW MADHAB TOGGLE) & REAL-TIME WAQT ENGINE
+// - Default Location: Dhaka Division -> Dhaka District -> Dhaka ("📍 ঢাকা ▾")
+// - Selecting any Division immediately loads its Districts (Zilas)
+// - Selecting any District immediately loads its Upazilas/Thanas
+// - Updates 5-Waqt prayer strip, live ongoing countdown, prohibited Salah windows,
+//   and habit/Adhkar locks in real time.
 // ============================================================================
+function getDefaultDhakaSelection() {
+  const divObj = BD_GEO_HIERARCHY[0]; // Dhaka Division
+  const distObj = divObj.districts[0]; // Dhaka District
+  const upzName = (distObj.upazilas && distObj.upazilas[0]) || "ঢাকা সদর (Dhaka)";
+  return {
+    divisionId: divObj.id,
+    divisionName_bn: divObj.name_bn,
+    divisionName_en: divObj.name_en,
+    districtId: distObj.id,
+    districtName_bn: distObj.name_bn,
+    districtName_en: distObj.name_en,
+    upazilaName: upzName,
+    upazilaIndex: 0,
+    lat: distObj.lat,
+    lon: distObj.lon,
+    isDefaultDhaka: true
+  };
+}
+
+function getEffectiveBdLocationSelection() {
+  const saved = getSavedBdLocationSelection();
+  if (saved) return saved;
+  return getDefaultDhakaSelection();
+}
+
 function getLocalizedBdDivisionName(divObj, locale = appState.locale) {
   if (!divObj) return "";
   if (locale === "ar") return divObj.name_ar || divObj.name_en;
@@ -6238,7 +6274,7 @@ function getLocalizedBdDivisionName(divObj, locale = appState.locale) {
 function getLocalizedBdDistrictName(distObj, locale = appState.locale) {
   if (!distObj) return "";
   if (locale === "en" || locale === "ar") return distObj.name_en;
-  return `${distObj.name_bn} (${distObj.name_en})`;
+  return distObj.name_bn;
 }
 
 function getLocalizedUpazilaName(rawUpazila, locale = appState.locale) {
@@ -6247,7 +6283,7 @@ function getLocalizedUpazilaName(rawUpazila, locale = appState.locale) {
     const match = rawUpazila.match(/\(([^)]+)\)/);
     return match ? match[1].trim() : rawUpazila;
   }
-  return rawUpazila;
+  return rawUpazila.replace(/\s*\([^)]*\)/g, "").trim();
 }
 
 function injectBdLocationSelectorStyles() {
@@ -6255,99 +6291,157 @@ function injectBdLocationSelectorStyles() {
   const styleEl = document.createElement("style");
   styleEl.id = "s24-bd-loc-selector-styles";
   styleEl.textContent = `
-    .bd-loc-selector-bar {
-      margin-bottom: 10px;
-      padding: 9px 11px;
-      background: linear-gradient(145deg, #f4fbf7, #ffffff);
-      border: 1px solid rgba(16, 185, 129, 0.26);
-      border-radius: 15px;
-      box-shadow: 0 3px 10px rgba(15, 45, 34, 0.04);
+    .header-madhab-loc-stack {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
     }
-    .bd-loc-top-row {
+    .header-loc-pill-btn {
+      background: #f4fbf7;
+      color: var(--accent-emerald-dark, #065f46);
+      border: 1.5px solid rgba(16, 185, 129, 0.42);
+      padding: 3.5px 9px;
+      border-radius: 999px;
+      font-size: 0.66rem;
+      font-weight: 800;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(15, 45, 34, 0.08);
+      transition: transform 0.16s ease, background 0.2s ease, border-color 0.2s ease;
+      white-space: nowrap;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-loc-pill-btn:hover {
+      background: #e6f7ef;
+      border-color: var(--accent-emerald, #10b981);
+    }
+    .header-loc-pill-btn:active {
+      transform: scale(0.95);
+    }
+    .header-loc-popover {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: min(305px, calc(100vw - 24px));
+      background: #ffffff;
+      border: 1.5px solid rgba(16, 185, 129, 0.38);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 18px 40px rgba(15, 45, 34, 0.22), 0 4px 12px rgba(15, 45, 34, 0.08);
+      z-index: 220;
+      display: none;
+      flex-direction: column;
+      gap: 9px;
+      animation: locPopIn 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    html[dir="rtl"] .header-loc-popover {
+      right: auto;
+      left: 0;
+    }
+    @keyframes locPopIn {
+      from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .header-loc-popover.is-open {
+      display: flex;
+    }
+    .bd-loc-popover-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 6px;
-      flex-wrap: wrap;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed rgba(16, 185, 129, 0.25);
     }
-    .bd-loc-badge-btn {
-      background: transparent;
-      border: none;
+    .bd-loc-popover-title {
+      font-size: 0.74rem;
+      font-weight: 900;
       color: var(--accent-emerald-dark, #065f46);
-      font-family: inherit;
-      font-size: 0.77rem;
-      font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-      padding: 2px 4px;
-      text-align: left;
     }
     .bd-loc-coords-pill {
-      font-size: 0.67rem;
+      font-size: 0.63rem;
       font-weight: 800;
       color: var(--accent-gold, #b45309);
       background: var(--accent-gold-soft, #fef3c7);
       border: 1px solid rgba(180, 83, 9, 0.25);
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 999px;
       white-space: nowrap;
     }
-    .bd-loc-Cascading-panel {
-      margin-top: 9px;
-      padding-top: 9px;
-      border-top: 1px dashed rgba(16, 185, 129, 0.25);
-      display: none;
+    .bd-loc-selects-grid {
+      display: flex;
       flex-direction: column;
       gap: 7px;
     }
-    .bd-loc-Cascading-panel.is-open {
+    .bd-loc-field {
       display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-align: left;
     }
-    .bd-loc-selects-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
+    html[dir="rtl"] .bd-loc-field {
+      text-align: right;
     }
-    @media (max-width: 420px) {
-      .bd-loc-selects-grid {
-        grid-template-columns: 1fr;
-      }
+    .bd-loc-field label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: var(--text-muted, #5b7268);
+      padding-left: 2px;
     }
     .bd-loc-select {
       width: 100%;
-      background: #ffffff;
+      background: #f8fbf9;
       color: var(--text-primary, #1e352b);
       border: 1.2px solid rgba(16, 185, 129, 0.35);
       border-radius: 10px;
-      padding: 6px 8px;
-      font-size: 0.74rem;
+      padding: 7px 9px;
+      font-size: 0.76rem;
       font-weight: 700;
       font-family: inherit;
       outline: none;
+      cursor: pointer;
+    }
+    .bd-loc-select:focus {
+      border-color: var(--accent-emerald, #10b981);
+      background: #ffffff;
     }
     .bd-loc-actions-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
+      padding-top: 4px;
     }
     .bd-loc-auto-btn {
-      background: var(--bg-card-elevated, #f8fbf9);
+      background: #f3f8f5;
       color: var(--text-muted, #5b7268);
       border: 1px solid rgba(16, 185, 129, 0.25);
       border-radius: 999px;
-      padding: 4px 10px;
+      padding: 5px 11px;
       font-size: 0.68rem;
       font-weight: 800;
       cursor: pointer;
       font-family: inherit;
     }
-    .bd-loc-apply-hint {
-      font-size: 0.67rem;
-      color: var(--accent-emerald-dark, #065f46);
-      font-weight: 700;
+    .bd-loc-done-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      border: none;
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.25);
     }
   `;
   document.head.appendChild(styleEl);
@@ -6361,27 +6455,18 @@ function triggerFullWaqtAndLockRefresh(showToast = false) {
   syncBdLocationBannerText();
 
   if (showToast && typeof showTimeLockToast === "function") {
-    const saved = getSavedBdLocationSelection();
+    const activeLoc = getEffectiveBdLocationSelection();
     const sched = computeSeasonalPrayerSchedule(new Date());
     const fajrStr = formatShortWaqtClock(sched.fajr, appState.locale);
     const maghribStr = formatShortWaqtClock(sched.maghrib, appState.locale);
-    if (saved) {
-      const msg =
-        appState.locale === "ar"
-          ? `📍 تم تحديث المواقيت لـ ${saved.districtName_en} (${saved.upazilaName}) • الفجر: ${fajrStr} | المغرب: ${maghribStr}`
-          : appState.locale === "en"
-          ? `📍 Waqt synced to ${saved.districtName_en} (${saved.upazilaName}) • Fajr: ${fajrStr} | Maghrib: ${maghribStr}`
-          : `📍 ${saved.districtName_bn} (${saved.upazilaName}) অনুযায়ী ওয়াক্ত আপডেট হয়েছে • ফজর: ${fajrStr} | মাগরিব: ${maghribStr}`;
-      showTimeLockToast(msg);
-    } else {
-      const autoMsg =
-        appState.locale === "ar"
-          ? "🌐 تم تفعيل التحديد التلقائي للموقع"
-          : appState.locale === "en"
-          ? "🌐 Automatic Regional Location Detection Active"
-          : "🌐 স্বয়ংক্রিয় আঞ্চলিক লোকেশন ডিটেকশন সক্রিয় করা হয়েছে";
-      showTimeLockToast(autoMsg);
-    }
+    const upzClean = getLocalizedUpazilaName(activeLoc.upazilaName, appState.locale);
+    const msg =
+      appState.locale === "ar"
+        ? `📍 تم تحديث المواقيت لـ ${activeLoc.districtName_en} (${upzClean}) • الفجر: ${fajrStr} | المغرب: ${maghribStr}`
+        : appState.locale === "en"
+        ? `📍 Location set to ${activeLoc.districtName_en} (${upzClean}) • Fajr: ${fajrStr} | Maghrib: ${maghribStr}`
+        : `📍 অবস্থান: ${activeLoc.districtName_bn} (${upzClean}) • ফজর: ${fajrStr} | মাগরিব: ${maghribStr}`;
+    showTimeLockToast(msg);
   }
 }
 
@@ -6389,88 +6474,84 @@ function syncBdLocationBannerText() {
   const summaryLabelEl = document.getElementById("bd-loc-active-label");
   const coordsPillEl = document.getElementById("bd-loc-coords-pill");
   const resetAutoBtn = document.getElementById("bd-loc-reset-auto-btn");
-  const applyHintEl = document.getElementById("bd-loc-apply-hint");
-  if (!summaryLabelEl || !coordsPillEl) return;
+  const doneBtn = document.getElementById("bd-loc-done-btn");
+  const popTitleEl = document.getElementById("bd-loc-popover-title");
+  const lblDiv = document.getElementById("bd-lbl-division");
+  const lblDist = document.getElementById("bd-lbl-district");
+  const lblUpz = document.getElementById("bd-lbl-upazila");
+  if (!summaryLabelEl) return;
 
   const lang = appState.locale || "bn";
-  const saved = getSavedBdLocationSelection();
-  const profile = resolveActiveRegionalProfile(new Date());
+  const activeLoc = getEffectiveBdLocationSelection();
+  const divObj = BD_GEO_HIERARCHY.find((d) => d.id === activeLoc.divisionId) || BD_GEO_HIERARCHY[0];
+  const distObj = divObj.districts.find((z) => z.id === activeLoc.districtId) || divObj.districts[0];
 
-  if (saved) {
-    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === saved.divisionId);
-    const distObj = divObj ? divObj.districts.find((z) => z.id === saved.districtId) : null;
-    const distLabel = distObj ? getLocalizedBdDistrictName(distObj, lang) : saved.districtName_bn;
-    const upzLabel = getLocalizedUpazilaName(saved.upazilaName, lang);
+  const isDefaultDhaka =
+    activeLoc.divisionId === "dhaka" &&
+    activeLoc.districtId === "dhaka" &&
+    (!activeLoc.upazilaIndex || activeLoc.upazilaIndex === 0);
 
+  if (isDefaultDhaka) {
     summaryLabelEl.textContent =
       lang === "ar"
-        ? `📍 الموقع (بنغلاديش): ${distLabel} • ${upzLabel} ▾`
+        ? "📍 دكا ▾"
         : lang === "en"
-        ? `📍 BD Location: ${distLabel} • ${upzLabel} ▾`
-        : `📍 জেলা ও উপজেলা: ${distObj ? distObj.name_bn : saved.districtName_bn} • ${upzLabel} (পরিবর্তন ▾)`;
-
-    coordsPillEl.textContent = `${localizeDigits(saved.lat.toFixed(2), lang)}°N, ${localizeDigits(saved.lon.toFixed(2), lang)}°E`;
+        ? "📍 Dhaka ▾"
+        : "📍 ঢাকা ▾";
   } else {
-    summaryLabelEl.textContent =
-      lang === "ar"
-        ? "📍 اختر القسم والمنطقة (٦٤ منطقة في بنغلاديش) ▾"
-        : lang === "en"
-        ? "📍 Select Bangladesh Division, Zila (64) & Upazila ▾"
-        : "📍 বাংলাদেশের বিভাগ, জেলা (৬৪) ও উপজেলা নির্বাচন করুন ▾";
-
-    coordsPillEl.textContent = `${localizeDigits(profile.lat.toFixed(2), lang)}°N, ${localizeDigits(profile.lon.toFixed(2), lang)}°E`;
+    const distShort = getLocalizedBdDistrictName(distObj, lang);
+    const upzShort = getLocalizedUpazilaName(activeLoc.upazilaName, lang);
+    // Keep header pill super clean and concise
+    if (!upzShort || upzShort === distShort || upzShort.includes("সদর") || upzShort.toLowerCase().includes("sadar")) {
+      summaryLabelEl.textContent = `📍 ${distShort} ▾`;
+    } else {
+      summaryLabelEl.textContent = `📍 ${upzShort}, ${distShort} ▾`;
+    }
   }
 
+  if (coordsPillEl) {
+    coordsPillEl.textContent = `${localizeDigits(activeLoc.lat.toFixed(2), lang)}°N, ${localizeDigits(activeLoc.lon.toFixed(2), lang)}°E`;
+  }
+  if (popTitleEl) {
+    popTitleEl.textContent =
+      lang === "ar"
+        ? "📍 اختر الموقع (دكا افتراضياً)"
+        : lang === "en"
+        ? "📍 Select Location (Dhaka Default)"
+        : "📍 অবস্থান নির্বাচন (ঢাকা ডিফল্ট)";
+  }
+  if (lblDiv) {
+    lblDiv.textContent =
+      lang === "ar" ? "القسم (Division)" : lang === "en" ? "Division" : "বিভাগ (Division)";
+  }
+  if (lblDist) {
+    lblDist.textContent =
+      lang === "ar" ? "المنطقة / المحافظة (District)" : lang === "en" ? "District (Zila)" : "জেলা (District)";
+  }
+  if (lblUpz) {
+    lblUpz.textContent =
+      lang === "ar" ? "المنطقة الفرعية (Upazila)" : lang === "en" ? "Upazila / Thana" : "উপজেলা / থানা (Upazila)";
+  }
   if (resetAutoBtn) {
     resetAutoBtn.textContent =
       lang === "ar"
-        ? "🔄 تلقائي (Auto)"
+        ? "🔄 دكا (افتراضي)"
         : lang === "en"
-        ? "🔄 Reset Auto-Detect"
-        : "🔄 অটো লোকেশন রিসেট";
+        ? "🔄 Dhaka (Default)"
+        : "🔄 ঢাকা (ডিফল্ট)";
   }
-  if (applyHintEl) {
-    applyHintEl.textContent =
-      lang === "ar"
-        ? "✓ يتم تحديث المواقيت والأذكار فوراً"
-        : lang === "en"
-        ? "✓ Updates 5-Waqt, Countdown & Locks live"
-        : "✓ ৫ ওয়াক্ত, কাউন্টডাউন ও নিষিদ্ধ সময় তাৎক্ষণিক আপডেট হয়";
+  if (doneBtn) {
+    doneBtn.textContent =
+      lang === "ar" ? "✓ تم" : lang === "en" ? "✓ Done" : "✓ সম্পন্ন";
   }
 }
 
 function initBdLocationSelectorEngine() {
   injectBdLocationSelectorStyles();
 
-  const waqtCard = document.querySelector(".waqt-strip-card");
-  if (!waqtCard) return;
-
-  // Create the selector bar at the top of .waqt-strip-card if not already in DOM
-  let selectorBar = document.getElementById("bd-loc-selector-bar");
-  if (!selectorBar) {
-    selectorBar = document.createElement("div");
-    selectorBar.id = "bd-loc-selector-bar";
-    selectorBar.className = "bd-loc-selector-bar";
-    selectorBar.innerHTML = `
-      <div class="bd-loc-top-row">
-        <button type="button" id="bd-loc-toggle-btn" class="bd-loc-badge-btn" aria-expanded="false">
-          <span id="bd-loc-active-label">📍 বাংলাদেশের বিভাগ, জেলা (৬৪) ও উপজেলা নির্বাচন করুন ▾</span>
-        </button>
-        <span id="bd-loc-coords-pill" class="bd-loc-coords-pill">২৪.০০°N, ৮৯.৮৫°E</span>
-      </div>
-      <div id="bd-loc-cascading-panel" class="bd-loc-Cascading-panel">
-        <div class="bd-loc-selects-grid">
-          <select id="bd-division-select" class="bd-loc-select" aria-label="Select Bangladesh Division"></select>
-          <select id="bd-district-select" class="bd-loc-select" aria-label="Select Bangladesh District (64 Zilas)"></select>
-          <select id="bd-upazila-select" class="bd-loc-select" aria-label="Select Bangladesh Upazila or Thana"></select>
-        </div>
-        <div class="bd-loc-actions-row">
-          <span id="bd-loc-apply-hint" class="bd-loc-apply-hint">✓ ৫ ওয়াক্ত, কাউন্টডাউন ও নিষিদ্ধ সময় তাৎক্ষণিক আপডেট হয়</span>
-          <button type="button" id="bd-loc-reset-auto-btn" class="bd-loc-auto-btn">🔄 অটো লোকেশন রিসেট</button>
-        </div>
-      </div>
-    `;
-    waqtCard.insertBefore(selectorBar, waqtCard.firstChild);
+  // Ensure default Dhaka selection is initialized if no saved location exists yet
+  if (!getSavedBdLocationSelection()) {
+    saveBdLocationSelection(getDefaultDhakaSelection());
   }
 
   const toggleBtn = document.getElementById("bd-loc-toggle-btn");
@@ -6479,6 +6560,7 @@ function initBdLocationSelectorEngine() {
   const distSelect = document.getElementById("bd-district-select");
   const upzSelect = document.getElementById("bd-upazila-select");
   const resetBtn = document.getElementById("bd-loc-reset-auto-btn");
+  const doneBtn = document.getElementById("bd-loc-done-btn");
 
   if (!divSelect || !distSelect || !upzSelect) return;
 
@@ -6517,7 +6599,9 @@ function initBdLocationSelectorEngine() {
       opt.value = upz;
       opt.setAttribute("data-upz-index", String(idx));
       opt.textContent = getLocalizedUpazilaName(upz, lang);
-      if (upz === selectedUpazila) opt.selected = true;
+      if (selectedUpazila ? upz === selectedUpazila : idx === 0) {
+        opt.selected = true;
+      }
       upzSelect.appendChild(opt);
     });
   };
@@ -6555,10 +6639,10 @@ function initBdLocationSelectorEngine() {
   };
 
   const syncDropdownsFromStorage = () => {
-    const saved = getSavedBdLocationSelection();
-    const defaultDivId = saved ? saved.divisionId : "dhaka";
-    const defaultDistId = saved ? saved.districtId : "dhaka";
-    const defaultUpz = saved ? saved.upazilaName : "";
+    const activeLoc = getEffectiveBdLocationSelection();
+    const defaultDivId = activeLoc.divisionId || "dhaka";
+    const defaultDistId = activeLoc.districtId || "dhaka";
+    const defaultUpz = activeLoc.upazilaName || "";
 
     populateDivisions(defaultDivId);
     populateDistricts(defaultDivId, defaultDistId);
@@ -6567,15 +6651,41 @@ function initBdLocationSelectorEngine() {
   };
 
   syncDropdownsFromStorage();
+  triggerFullWaqtAndLockRefresh(false);
+
+  const closePopover = () => {
+    if (panelEl && panelEl.classList.contains("is-open")) {
+      panelEl.classList.remove("is-open");
+      if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
+    }
+  };
 
   if (toggleBtn && panelEl) {
-    toggleBtn.addEventListener("click", () => {
+    toggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
       const isOpen = panelEl.classList.toggle("is-open");
       toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
       if (navigator.vibrate) navigator.vibrate(10);
     });
   }
 
+  if (doneBtn) {
+    doneBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closePopover();
+    });
+  }
+
+  // Close popover when tapping outside
+  document.addEventListener("click", (e) => {
+    if (!panelEl || !panelEl.classList.contains("is-open")) return;
+    const stackEl = document.getElementById("bd-loc-selector-bar");
+    if (stackEl && !stackEl.contains(e.target)) {
+      closePopover();
+    }
+  });
+
+  // 1. Selecting a Division immediately updates the Districts under that Division and its Upazilas
   divSelect.addEventListener("change", () => {
     const newDivId = divSelect.value;
     const divObj = BD_GEO_HIERARCHY.find((d) => d.id === newDivId) || BD_GEO_HIERARCHY[0];
@@ -6585,6 +6695,7 @@ function initBdLocationSelectorEngine() {
     persistCurrentDropdownSelection(true);
   });
 
+  // 2. Selecting a District immediately updates the Upazilas under that District
   distSelect.addEventListener("change", () => {
     const curDivId = divSelect.value;
     const newDistId = distSelect.value;
@@ -6592,15 +6703,19 @@ function initBdLocationSelectorEngine() {
     persistCurrentDropdownSelection(true);
   });
 
+  // 3. Selecting an Upazila immediately updates the micro-coordinates & prayer schedule
   upzSelect.addEventListener("change", () => {
     persistCurrentDropdownSelection(true);
   });
 
+  // Reset button restores Dhaka Division -> Dhaka District -> Dhaka default
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
-      saveBdLocationSelection(null);
+      const dhakaDef = getDefaultDhakaSelection();
+      saveBdLocationSelection(dhakaDef);
       syncDropdownsFromStorage();
       triggerFullWaqtAndLockRefresh(true);
+      closePopover();
     });
   }
 
