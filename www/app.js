@@ -1328,13 +1328,127 @@ function t(key, replacements = {}) {
   return str;
 }
 
-function getHabitTitle(habit) {
+// ============================================================================
+// UNCRACKABLE FRIDAY (JUMU'AH) DETECTION & DYNAMIC WAQT RESOLVER ENGINE
+// Automatically detects Friday (Yawm al-Jumu'ah, getDay() === 5) and resolves
+// all Dhuhr Waqt labels, ongoing live prayer titles, prime time (Awwal Waqt)
+// cards, 5-Waqt strip pills, Zawal next-waqt prompts, and Habit #11 into Jumu'ah
+// (জুমু'আ / الجمعة / Jumu'ah) with 100% real-time accuracy.
+// ============================================================================
+function isFridayJumuahDay(dateObj = new Date()) {
+  const safeDate =
+    dateObj instanceof Date && !isNaN(dateObj.getTime()) ? dateObj : new Date();
+  return safeDate.getDay() === 5;
+}
+
+function resolveMiddayWaqtMeta(dateObj = new Date(), locale = appState.locale) {
+  const isJumuah = isFridayJumuahDay(dateObj);
+  const lang = locale || "bn";
+
+  if (isJumuah) {
+    return {
+      isJumuah: true,
+      pillName:
+        lang === "bn" ? "জুমু'আ" : lang === "ar" ? "الجمعة" : "Jumu'ah",
+      pillIcon: "🕌",
+      liveMainTitle:
+        lang === "bn"
+          ? "জুমু'আ (মধ্যাহ্ন হতে আসরের পূর্ব পর্যন্ত)"
+          : lang === "ar"
+          ? "الجمعة (من الزوال حتى العصر)"
+          : "Jumu'ah (After Zawal until Asr)",
+      primeWindowLabel:
+        lang === "bn"
+          ? "জুমু'আর উত্তম সময় (আউয়াল ওয়াক্ত)"
+          : lang === "ar"
+          ? "الوقت المختار للجمعة (أول الوقت)"
+          : "Jumu'ah Prime Time (Awwal Waqt)",
+      primeActiveSubtext: (endClock) =>
+        lang === "bn"
+          ? `খুতবা শ্রবণ, ফরজ ২ রাকাত ও সুন্নাত: পূর্বে ৪ এবং পরে ৪ (অথবা ২+২) রাকাত (জুমু'আ/যোহর আসরের পূর্ব ${endClock} পর্যন্ত জায়েয)`
+          : lang === "ar"
+          ? `الإنصات للخطبة وصلاة الجمعة والسنن الرواتب: ٤ قبلها و٤ (أو ٢) بعدها (يمتد الوقت حتى ${endClock})`
+          : `Listen to Khutbah, 2 Rak'ah Jumu'ah Fard & Sunnah: 4 before & 4 (or 2) after (Valid until ${endClock})`,
+      primeEndedSubtext: (endClock) =>
+        lang === "bn"
+          ? `আউয়াল ওয়াক্ত সমাপ্ত (জুমু'আ / যোহরের ওয়াক্ত আসরের পূর্ব ${endClock} পর্যন্ত জায়েয)`
+          : lang === "ar"
+          ? `انتهى أول الوقت (وقت الجمعة / الظهر ممتد حتى ${endClock})`
+          : `Awwal Waqt ended (Jumu'ah / Dhuhr window valid until ${endClock})`,
+      zawalWaitWarning:
+        lang === "bn"
+          ? "সূর্য ঠিক মাথার ওপরে (যাওয়াল) — জুমু'আর ওয়াক্ত শুরু হওয়া পর্যন্ত সালাত নিষিদ্ধ (সহীহ মুসলিম ৮৩১)"
+          : lang === "ar"
+          ? "الشمس في كبد السماء (الزوال) — تحرم الصلاة حتى يدخل وقت الجمعة (مسلم ٨٣١)"
+          : "Sun at meridian zenith (Zawal) — Salah is forbidden until Jumu'ah Waqt begins",
+      zawalNextWaqtLabel: (startClock) =>
+        lang === "bn"
+          ? `পরবর্তী ওয়াক্ত: জুমু'আ (${startClock})`
+          : lang === "ar"
+          ? `الصلاة القادمة: الجمعة (${startClock})`
+          : `Next Waqt: Jumu'ah (${startClock})`
+    };
+  }
+
+  return {
+    isJumuah: false,
+    pillName: t("waqt_dhuhr"),
+    pillIcon: "☀️",
+    liveMainTitle:
+      lang === "bn"
+        ? "যোহর (মধ্যাহ্ন হতে আসরের পূর্ব পর্যন্ত)"
+        : lang === "ar"
+        ? "الظهر (من الزوال حتى العصر)"
+        : "Dhuhr (After Zawal until Asr)",
+    primeWindowLabel:
+      lang === "bn"
+        ? "যোহরের উত্তম সময় (আউয়াল ওয়াক্ত)"
+        : lang === "ar"
+        ? "الوقت المختار للظهر (أول الوقت)"
+        : "Dhuhr Prime Time (Awwal Waqt)",
+    primeActiveSubtext: (endClock) =>
+      lang === "bn"
+        ? `প্রথম অংশ ও সুন্নাত: ফরজের পূর্বে ৪ রাকাত ও পরে ২ রাকাত (যোহর আসরের পূর্ব ${endClock} পর্যন্ত জায়েয)`
+        : lang === "ar"
+        ? `السنن الرواتب: ٤ قبلها و٢ بعدها (الظهر ممتد حتى ${endClock})`
+        : `Rawatib Sunnah: 4 before & 2 after Fard (Valid until ${endClock})`,
+    primeEndedSubtext: (endClock) =>
+      lang === "bn"
+        ? `আউয়াল ওয়াক্ত সমাপ্ত (যোহর আসরের পূর্ব ${endClock} পর্যন্ত জায়েয)`
+        : lang === "ar"
+        ? `انتهى أول الوقت (الظهر ممتد حتى ${endClock})`
+        : `Awwal Waqt ended (Dhuhr valid until ${endClock})`,
+    zawalWaitWarning:
+      lang === "bn"
+        ? "সূর্য ঠিক মাথার ওপরে (যাওয়াল) — যোহর শুরু হওয়া পর্যন্ত সালাত নিষিদ্ধ (সহীহ মুসলিম ৮৩১)"
+        : lang === "ar"
+        ? "الشمس في كبد السماء (الزوال) — تحرم الصلاة حتى تزول الشمس (مسلم ٨٣١)"
+        : "Sun at meridian zenith (Zawal) — Salah is forbidden until Dhuhr begins",
+    zawalNextWaqtLabel: (startClock) =>
+      lang === "bn"
+        ? `পরবর্তী ওয়াক্ত: যোহর (${startClock})`
+        : lang === "ar"
+        ? `الصلاة القادمة: الظهر (${startClock})`
+        : `Next Waqt: Dhuhr (${startClock})`
+  };
+}
+
+function getHabitTitle(habit, dateObj = new Date()) {
+  if (habit && habit.id === "s24_11_dhuhr_rawatib" && isFridayJumuahDay(dateObj)) {
+    if (appState.locale === "bn") {
+      return "১১. জুমু'আর ফরজ সালাত ও সুন্নাতে মুয়াক্কাদাহ (পূর্বে ৪, পরে ৪ বা ২)";
+    }
+    if (appState.locale === "ar") {
+      return "١١. صلاة الجمعة والسنن الرواتب (٤ قبلها و٤ أو ٢ بعدها)";
+    }
+    return "11. Jumu'ah Fard Prayer & Rawatib Sunnahs (4 Before, 4 or 2 After)";
+  }
   if (appState.locale === "bn") return habit.title_bn || habit.title;
   if (appState.locale === "ar") return habit.title_ar || habit.title;
   return habit.title;
 }
 
-function getHabitTime(habit) {
+function getHabitTime(habit, dateObj = new Date()) {
   if (habit.isCustom) return t("custom_time_label");
   const rawLabel =
     appState.locale === "bn"
@@ -1346,8 +1460,16 @@ function getHabitTime(habit) {
   // Extract the descriptive subtitle after '•' and pair it with the exact live seasonal Waqt start time!
   if (typeof computeSeasonalPrayerSchedule === "function" && rawLabel && rawLabel.includes("•")) {
     const parts = rawLabel.split("•");
-    const descPart = parts.slice(1).join("•").trim();
-    const nowObj = new Date();
+    let descPart = parts.slice(1).join("•").trim();
+    const nowObj = dateObj instanceof Date && !isNaN(dateObj.getTime()) ? dateObj : new Date();
+    if (habit.id === "s24_11_dhuhr_rawatib" && isFridayJumuahDay(nowObj)) {
+      descPart =
+        appState.locale === "bn"
+          ? "জুমু'আর সালাত"
+          : appState.locale === "ar"
+          ? "صلاة الجمعة"
+          : "Jumu'ah Prayer";
+    }
     const rule = getDynamicSeasonalHabitWindow(habit, nowObj);
     const isClosedDayGate =
       (rule && rule.fridayOnly && nowObj.getDay() !== 5) ||
@@ -3237,6 +3359,7 @@ function renderFiveWaqtStrip(now = new Date()) {
   const sched = computeSeasonalPrayerSchedule(now);
   const nowMins = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
   const lang = appState.locale || "bn";
+  const middayMeta = resolveMiddayWaqtMeta(now, lang);
 
   // Authentic Waqt End Boundaries:
   // - Fajr: Fajr start -> Sunrise
@@ -3256,8 +3379,8 @@ function renderFiveWaqtStrip(now = new Date()) {
     },
     {
       id: "dhuhr",
-      name: t("waqt_dhuhr"),
-      icon: "☀️",
+      name: middayMeta.pillName,
+      icon: middayMeta.pillIcon,
       start: sched.dhuhr,
       end: sched.asr,
       phase: "dhuhr_asr"
@@ -3454,7 +3577,7 @@ function renderFiveWaqtStrip(now = new Date()) {
         </div>
       `;
     } else if (nowMins >= pWindows.zawal.start && nowMins < pWindows.zawal.end) {
-      // 4. Prohibited Window 2: Zawal / Solar Zenith — Card-in-Card Warning UI
+      // 4. Prohibited Window 2: Zawal / Solar Zenith — Card-in-Card Warning UI (Jumu'ah-Aware on Fridays)
       activeWaqtTitle =
         lang === "bn"
           ? "⛔ নিষিদ্ধ সময়: দ্বিপ্রহর / যাওয়াল"
@@ -3470,33 +3593,16 @@ function renderFiveWaqtStrip(now = new Date()) {
       nightDualRowsHtml = `
         <div id="live-tahajjud-subrow" style="${prohibitedInnerCardStyle}">
           <div style="font-weight:800;color:var(--danger, #b91c1c);line-height:1.4;">
-            ⚠️ ${
-              lang === "bn"
-                ? "সূর্য ঠিক মাথার ওপরে (যাওয়াল) — যোহর শুরু হওয়া পর্যন্ত সালাত নিষিদ্ধ (সহীহ মুসলিম ৮৩১)"
-                : lang === "ar"
-                ? "الشمس في كبد السماء (الزوال) — تحرم الصلاة حتى تزول الشمس (مسلم ٨٣١)"
-                : "Sun at meridian zenith (Zawal) — Salah is forbidden until Dhuhr begins"
-            }
+            ⚠️ ${middayMeta.zawalWaitWarning}
           </div>
           <div style="font-weight:700;font-size:0.76rem;color:var(--text-primary);">
-            ${
-              lang === "bn"
-                ? `পরবর্তী ওয়াক্ত: যোহর (${dhuhrStartClock})`
-                : lang === "ar"
-                ? `الصلاة القادمة: الظهر (${dhuhrStartClock})`
-                : `Next Waqt: Dhuhr (${dhuhrStartClock})`
-            }
+            ${middayMeta.zawalNextWaqtLabel(dhuhrStartClock)}
           </div>
         </div>
       `;
     } else if (nowMins >= pWindows.zawal.end && nowMins < sched.asr) {
-      // 5. Dhuhr Fard Waqt + Prime Time (Awwal Waqt) Card-in-Card
-      activeWaqtTitle =
-        lang === "bn"
-          ? "যোহর (মধ্যাহ্ন হতে আসরের পূর্ব পর্যন্ত)"
-          : lang === "ar"
-          ? "الظهر (من الزوال حتى العصر)"
-          : "Dhuhr (After Zawal until Asr)";
+      // 5. Midday Fard Waqt: Automatically switches to Jumu'ah (জুমু'আ) on Fridays and Dhuhr (যোহর) on other days
+      activeWaqtTitle = middayMeta.liveMainTitle;
       winStart = pWindows.zawal.end;
       winEnd = sched.asr;
 
@@ -3512,13 +3618,7 @@ function renderFiveWaqtStrip(now = new Date()) {
         <div id="live-tahajjud-subrow" style="${innerCardStyle}">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
             <span style="font-weight:800;color:var(--accent-emerald-dark);">
-              🕌 ${
-                lang === "bn"
-                  ? `যোহরের উত্তম সময় (আউয়াল ওয়াক্ত): ${dhuhrStartClock} - ${dhuhrPrimeClock}`
-                  : lang === "ar"
-                  ? `الوقت المختار للظهر (أول الوقت): ${dhuhrStartClock} - ${dhuhrPrimeClock}`
-                  : `Dhuhr Prime Time (Awwal Waqt): ${dhuhrStartClock} - ${dhuhrPrimeClock}`
-              }
+              🕌 ${middayMeta.primeWindowLabel}: ${dhuhrStartClock} - ${dhuhrPrimeClock}
             </span>
             ${
               isPrimeActive
@@ -3531,16 +3631,8 @@ function renderFiveWaqtStrip(now = new Date()) {
           };">
             ${
               isPrimeActive
-                ? lang === "bn"
-                  ? `প্রথম অংশ ও সুন্নাত: ফরজের পূর্বে ৪ রাকাত ও পরে ২ রাকাত (যোহর আসরের পূর্ব ${dhuhrEndClock} পর্যন্ত জায়েয)`
-                  : lang === "ar"
-                  ? `السنن الرواتب: ٤ قبلها و٢ بعدها (الظهر ممتد حتى ${dhuhrEndClock})`
-                  : `Rawatib Sunnah: 4 before & 2 after Fard (Valid until ${dhuhrEndClock})`
-                : lang === "bn"
-                ? `আউয়াল ওয়াক্ত সমাপ্ত (যোহর আসরের পূর্ব ${dhuhrEndClock} পর্যন্ত জায়েয)`
-                : lang === "ar"
-                ? `انتهى أول الوقت (الظهر ممتد حتى ${dhuhrEndClock})`
-                : `Awwal Waqt ended (Dhuhr valid until ${dhuhrEndClock})`
+                ? middayMeta.primeActiveSubtext(dhuhrEndClock)
+                : middayMeta.primeEndedSubtext(dhuhrEndClock)
             }
           </div>
         </div>
@@ -6738,4 +6830,5 @@ function initBdLocationSelectorEngine() {
 document.addEventListener("DOMContentLoaded", () => {
   initBdLocationSelectorEngine();
 });
+
 
