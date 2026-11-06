@@ -2780,109 +2780,212 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-ta
 }
 
 /* ==========================================================================
-   INTERACTIVE BANGLADESH DIVISION -> DISTRICT (64 ZILAS) -> UPAZILA SELECTOR CSS
+   HEADER MADHAB + LOCATION PILL STACK & ANCHORED POPOVER CSS
+   (Directly below Madhab Toggle in .app-header, Default: ঢাকা ▾)
    ========================================================================== */
-.bd-loc-selector-bar {
-  margin-bottom: 10px;
-  padding: 9px 11px;
-  background: linear-gradient(145deg, #f4fbf7, #ffffff);
-  border: 1px solid rgba(16, 185, 129, 0.26);
-  border-radius: 15px;
-  box-shadow: 0 3px 10px rgba(15, 45, 34, 0.04);
+.header-madhab-loc-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
 }
-.bd-loc-top-row {
+
+.header-loc-pill-btn {
+  background: #f4fbf7;
+  color: var(--accent-emerald-dark, #065f46);
+  border: 1.5px solid rgba(16, 185, 129, 0.42);
+  padding: 3.5px 9px;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 800;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(15, 45, 34, 0.08);
+  transition: transform 0.16s ease, background 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-loc-pill-btn:hover {
+  background: #e6f7ef;
+  border-color: var(--accent-emerald, #10b981);
+}
+
+.header-loc-pill-btn:active {
+  transform: scale(0.95);
+}
+
+.header-loc-popover,
+.bd-loc-Cascading-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: min(305px, calc(100vw - 24px));
+  background: #ffffff;
+  border: 1.5px solid rgba(16, 185, 129, 0.38);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: 0 18px 40px rgba(15, 45, 34, 0.22), 0 4px 12px rgba(15, 45, 34, 0.08);
+  z-index: 220;
+  display: none;
+  flex-direction: column;
+  gap: 9px;
+  animation: locPopIn 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html[dir="rtl"] .header-loc-popover,
+html[dir="rtl"] .bd-loc-Cascading-panel {
+  right: auto;
+  left: 0;
+}
+
+@keyframes locPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.header-loc-popover.is-open,
+.bd-loc-Cascading-panel.is-open {
+  display: flex;
+}
+
+.bd-loc-popover-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 6px;
-  flex-wrap: wrap;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed rgba(16, 185, 129, 0.25);
 }
-.bd-loc-badge-btn {
-  background: transparent;
-  border: none;
+
+.bd-loc-popover-title {
+  font-size: 0.74rem;
+  font-weight: 900;
   color: var(--accent-emerald-dark, #065f46);
-  font-family: inherit;
-  font-size: 0.77rem;
-  font-weight: 800;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  padding: 2px 4px;
-  text-align: left;
 }
+
 .bd-loc-coords-pill {
-  font-size: 0.67rem;
+  font-size: 0.63rem;
   font-weight: 800;
   color: var(--accent-gold, #b45309);
   background: var(--accent-gold-soft, #fef3c7);
   border: 1px solid rgba(180, 83, 9, 0.25);
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: 999px;
   white-space: nowrap;
 }
-.bd-loc-Cascading-panel {
-  margin-top: 9px;
-  padding-top: 9px;
-  border-top: 1px dashed rgba(16, 185, 129, 0.25);
-  display: none;
+
+.bd-loc-selects-grid {
+  display: flex;
   flex-direction: column;
   gap: 7px;
 }
-.bd-loc-Cascading-panel.is-open {
+
+.bd-loc-field {
   display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
 }
-.bd-loc-selects-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
+
+html[dir="rtl"] .bd-loc-field {
+  text-align: right;
 }
-@media (max-width: 420px) {
-  .bd-loc-selects-grid {
-    grid-template-columns: 1fr;
-  }
+
+.bd-loc-field label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-muted, #5b7268);
+  padding-left: 2px;
 }
+
 .bd-loc-select {
   width: 100%;
-  background: #ffffff;
+  background: #f8fbf9;
   color: var(--text-primary, #1e352b);
   border: 1.2px solid rgba(16, 185, 129, 0.35);
   border-radius: 10px;
-  padding: 6px 8px;
-  font-size: 0.74rem;
+  padding: 7px 9px;
+  font-size: 0.76rem;
   font-weight: 700;
   font-family: inherit;
   outline: none;
+  cursor: pointer;
 }
+
+.bd-loc-select:focus {
+  border-color: var(--accent-emerald, #10b981);
+  background: #ffffff;
+}
+
 .bd-loc-actions-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
+  padding-top: 4px;
 }
+
 .bd-loc-auto-btn {
-  background: var(--bg-card-elevated, #f8fbf9);
+  background: #f3f8f5;
   color: var(--text-muted, #5b7268);
   border: 1px solid rgba(16, 185, 129, 0.25);
   border-radius: 999px;
-  padding: 4px 10px;
+  padding: 5px 11px;
   font-size: 0.68rem;
   font-weight: 800;
   cursor: pointer;
   font-family: inherit;
 }
-.bd-loc-apply-hint {
-  font-size: 0.67rem;
-  color: var(--accent-emerald-dark, #065f46);
-  font-weight: 700;
+
+.bd-loc-done-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.25);
 }
-html[data-theme="dark"] .bd-loc-selector-bar {
-  background: linear-gradient(145deg, rgba(16, 185, 129, 0.12), #0b221a);
-  border-color: rgba(16, 185, 129, 0.3);
+
+html[data-theme="dark"] .header-loc-pill-btn {
+  background: #071913;
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.45);
 }
+
+html[data-theme="dark"] .header-loc-popover,
+html[data-theme="dark"] .bd-loc-Cascading-panel {
+  background: #0b221a;
+  border-color: rgba(16, 185, 129, 0.38);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.65);
+}
+
 html[data-theme="dark"] .bd-loc-select {
   background: #05130e;
   color: #f8fafc;
   border-color: rgba(16, 185, 129, 0.35);
+}
+
+html[data-theme="dark"] .bd-loc-auto-btn {
+  background: #071913;
+  color: #94a3b8;
+  border-color: rgba(16, 185, 129, 0.25);
 }
 
