@@ -1994,9 +1994,191 @@ function initXStyleAutoGeographicDetector() {
   });
 }
 
+
+// ============================================================================
+// INTERACTIVE BANGLADESH 8 DIVISIONS → ALL 64 DISTRICTS (ZILAS) → UPAZILA/THANA
+// SELECTOR ENGINE (ISLAMIC FOUNDATION BANGLADESH COORDINATES & DYNAMIC UI)
+// ============================================================================
+const BD_SELECTED_LOC_STORAGE_KEY = "SUNNAH_24_BD_SELECTED_LOCATION_V1";
+
+const BD_GEO_HIERARCHY = deepFreeze([
+  {
+    id: "dhaka",
+    name_bn: "ঢাকা বিভাগ",
+    name_en: "Dhaka Division",
+    name_ar: "إقليم دكا",
+    districts: [
+      { id: "dhaka", name_bn: "ঢাকা", name_en: "Dhaka", lat: 23.8103, lon: 90.4125, upazilas: ["সাভার (Savar)", "ধামরাই (Dhamrai)", "কেরানীগঞ্জ (Keraniganj)", "নবাবগঞ্জ (Nawabganj)", "দোহার (Dohar)", "ধানমন্ডি (Dhanmondi)", "মিরপুর (Mirpur)", "উত্তরা (Uttara)", "গুলশান (Gulshan)", "মতিঝিল (Motijheel)", "মোহাম্মদপুর (Mohammadpur)", "তেজগাঁও (Tejgaon)", "লালবাগ (Lalbagh)", "কোতোয়ালী (Kotwali)", "রমনা (Ramna)", "খিলগাঁও (Khilgaon)", "বাড্ডা (Badda)", "পল্লবী (Pallabi)", "যাত্রাবাড়ী (Jatrabari)"] },
+      { id: "gazipur", name_bn: "গাজীপুর", name_en: "Gazipur", lat: 23.9999, lon: 90.4203, upazilas: ["গাজীপুর সদর (Gazipur Sadar)", "কালিয়াকৈর (Kaliakair)", "কালীগঞ্জ (Kaliganj)", "কাপাসিয়া (Kapasia)", "শ্রীপুর (Sreepur)", "টঙ্গী (Tongi)"] },
+      { id: "narayanganj", name_bn: "নারায়ণগঞ্জ", name_en: "Narayanganj", lat: 23.6238, lon: 90.5000, upazilas: ["নারায়ণগঞ্জ সদর (Narayanganj Sadar)", "বন্দর (Bandar)", "আড়াইহাজার (Araihazar)", "রূপগঞ্জ (Rupganj)", "সোনারগাঁও (Sonargaon)", "সিদ্ধিরগঞ্জ (Siddhirganj)", "ফতুল্লা (Fatullah)"] },
+      { id: "tangail", name_bn: "টাঙ্গাইল", name_en: "Tangail", lat: 24.2513, lon: 89.9167, upazilas: ["টাঙ্গাইল সদর (Tangail Sadar)", "সখিপুর (Sakhipur)", "বাসাইল (Basail)", "মধুপুর (Madhupur)", "ঘাটাইল (Ghatail)", "কালিহাতী (Kalihati)", "নাগরপুর (Nagarpur)", "মির্জাপুর (Mirzapur)", "গোপালপুর (Gopalpur)", "দেলদুয়ার (Delduar)", "ভূঞাপুর (Bhuapur)", "ধনবাড়ী (Dhanbari)"] },
+      { id: "manikganj", name_bn: "মানিকগঞ্জ", name_en: "Manikganj", lat: 23.8644, lon: 90.0047, upazilas: ["মানিকগঞ্জ সদর (Manikganj Sadar)", "সিংগাইর (Singair)", "শিবালয় (Shibalaya)", "সাটুরিয়া (Saturia)", "হরিরামপুর (Harirampur)", "ঘিওর (Ghior)", "দৌলতপুর (Daulatpur)"] },
+      { id: "munshiganj", name_bn: "মুন্সীগঞ্জ", name_en: "Munshiganj", lat: 23.5422, lon: 90.5305, upazilas: ["মুন্সীগঞ্জ সদর (Munshiganj Sadar)", "শ্রীনগর (Sreenagar)", "সিরাজদিখান (Sirajdikhan)", "লৌহজং (Lohajang)", "গজারিয়া (Gazaria)", "টঙ্গীবাড়ী (Tongibari)"] },
+      { id: "narsingdi", name_bn: "নরসিংদী", name_en: "Narsingdi", lat: 23.9229, lon: 90.7177, upazilas: ["নরসিংদী সদর (Narsingdi Sadar)", "বেলাবো (Belabo)", "মনোহরদী (Monohardi)", "পলাশ (Palash)", "রায়পুরা (Raipura)", "শিবপুর (Shibpur)"] },
+      { id: "kishoreganj", name_bn: "কিশোরগঞ্জ", name_en: "Kishoreganj", lat: 24.4449, lon: 90.7766, upazilas: ["কিশোরগঞ্জ সদর (Kishoreganj Sadar)", "অষ্টগ্রাম (Austagram)", "বাজিতপুর (Bajitpur)", "ভৈরব (Bhairab)", "হোসেনপুর (Hossainpur)", "ইটনা (Itna)", "করিমগঞ্জ (Karimganj)", "কতিয়াদী (Katiadi)", "কুলিয়ারচর (Kuliarchar)", "মিঠামইন (Mithamain)", "নিকলী (Nikli)", "পাকুন্দিয়া (Pakundia)", "তাড়াইল (Tarail)"] },
+      { id: "faridpur", name_bn: "ফরিদপুর", name_en: "Faridpur", lat: 23.6070, lon: 89.8429, upazilas: ["ফরিদপুর সদর (Faridpur Sadar)", "আলফাডাঙ্গা (Alfadanga)", "বোয়ালমারী (Boalmari)", "সদরপুর (Sadarpur)", "নগরকান্দা (Nagarkanda)", "ভাঙ্গা (Bhanga)", "চরভদ্রাসন (Charbhadrasan)", "মধুখালী (Madhukhali)", "সালথা (Saltha)"] },
+      { id: "gopalganj", name_bn: "গোপালগঞ্জ", name_en: "Gopalganj", lat: 23.0051, lon: 89.8266, upazilas: ["গোপালগঞ্জ সদর (Gopalganj Sadar)", "কাশিয়ানী (Kashiani)", "কোটালীপাড়া (Kotalipara)", "মুকসুদপুর (Muksudpur)", "টুঙ্গিপাড়া (Tungipara)"] },
+      { id: "madaripur", name_bn: "মাদারীপুর", name_en: "Madaripur", lat: 23.1641, lon: 90.1897, upazilas: ["মাদারীপুর সদর (Madaripur Sadar)", "শিবচর (Shibchar)", "কালকিনি (Kalkini)", "রাজৈর (Rajoir)", "ডাসার (Dasar)"] },
+      { id: "rajbari", name_bn: "রাজবাড়ী", name_en: "Rajbari", lat: 23.7574, lon: 89.6445, upazilas: ["রাজবাড়ী সদর (Rajbari Sadar)", "গোয়ালন্দ (Goalanda)", "পাংশা (Pangsha)", "বালিয়াকান্দি (Baliakandi)", "কালুখালী (Kalukhali)"] },
+      { id: "shariatpur", name_bn: "শরীয়তপুর", name_en: "Shariatpur", lat: 23.2423, lon: 90.4348, upazilas: ["শরীয়তপুর সদর (Shariatpur Sadar)", "নড়িয়া (Naria)", "জাজিরা (Zajira)", "গোসাইরহাট (Gosairhat)", "ভেদরগঞ্জ (Bhedarganj)", "ডামুড্যা (Damudya)"] }
+    ]
+  },
+  {
+    id: "chattogram",
+    name_bn: "চট্টগ্রাম বিভাগ",
+    name_en: "Chattogram Division",
+    name_ar: "إقليم شيتاغونغ",
+    districts: [
+      { id: "chattogram", name_bn: "চট্টগ্রাম", name_en: "Chattogram", lat: 22.3569, lon: 91.7832, upazilas: ["কোতোয়ালী (Kotwali)", "পাঁচলাইশ (Panchlaish)", "চান্দগাঁও (Chandgaon)", "বন্দর (Bandar)", "পতেঙ্গা (Patenga)", "হালিশহর (Halishahar)", "ডবলমুরিং (Double Mooring)", "পাহাড়তলী (Pahartali)", "আনোয়ারা (Anwara)", "বাঁশখালী (Banshkhali)", "বোয়ালখালী (Boalkhali)", "চন্দনাইশ (Chandanaish)", "ফটিকছড়ি (Fatikchhari)", "হাটহাজারী (Hathazari)", "লোহাগাড়া (Lohagara)", "মীরসরাই (Mirsharai)", "পটিয়া (Patiya)", "রাঙ্গুনিয়া (Rangunia)", "রাউজান (Raozan)", "সন্দ্বীপ (Sandwip)", "সাতকানিয়া (Satkania)", "সীতাকুণ্ড (Sitakunda)", "কর্ণফুলী (Karnaphuli)"] },
+      { id: "coxsbazar", name_bn: "কক্সবাজার", name_en: "Cox's Bazar", lat: 21.4272, lon: 92.0058, upazilas: ["কক্সবাজার সদর (Cox's Bazar Sadar)", "চকরিয়া (Chakaria)", "কুতুবদিয়া (Kutubdia)", "উখিয়া (Ukhia)", "মহেশখালী (Maheshkhali)", "পেকুয়া (Pekua)", "রামু (Ramu)", "টেকনাফ (Teknaf)", "ঈদগাঁও (Eidgaon)"] },
+      { id: "cumilla", name_bn: "কুমিল্লা", name_en: "Cumilla", lat: 23.4607, lon: 91.1809, upazilas: ["কুমিল্লা আদর্শ সদর (Cumilla Adarsha Sadar)", "কুমিল্লা সদর দক্ষিণ (Cumilla Sadar Dakshin)", "বরুড়া (Barura)", "ব্রাহ্মণপাড়া (Brahmanpara)", "বুড়িচং (Burichang)", "চান্দিনা (Chandina)", "চৌদ্দগ্রাম (Chauddagram)", "দাউদকান্দি (Daudkandi)", "দেবিদ্বার (Debidwar)", "হোমনা (Homna)", "লাকসাম (Laksam)", "মুরাদনগর (Muradnagar)", "নাঙ্গলকোট (Nangalkot)", "মেঘনা (Meghna)", "তিতাস (Titas)", "মনোহরগঞ্জ (Monohorgonj)", "লালমাই (Lalmai)"] },
+      { id: "brahmanbaria", name_bn: "ব্রাহ্মণবাড়িয়া", name_en: "Brahmanbaria", lat: 23.9571, lon: 91.1119, upazilas: ["ব্রাহ্মণবাড়িয়া সদর (Brahmanbaria Sadar)", "আশুগঞ্জ (Ashuganj)", "নাসিরনগর (Nasirnagar)", "নবীনগর (Nabinagar)", "সরাইল (Sarail)", "কসবা (Kasba)", "আখাউড়া (Akhaura)", "বাঞ্ছারামপুর (Bancharampur)", "বিজয়নগর (Bijoynagar)"] },
+      { id: "chandpur", name_bn: "চাঁদপুর", name_en: "Chandpur", lat: 23.2332, lon: 90.6712, upazilas: ["চাঁদপুর সদর (Chandpur Sadar)", "ফরিদগঞ্জ (Faridganj)", "হাইমচর (Haimchar)", "হাজীগঞ্জ (Hajiganj)", "কচুয়া (Kachua)", "মতলব উত্তর (Matlab Uttar)", "মতলব দক্ষিণ (Matlab Dakshin)", "শাহরাস্তি (Shahrasti)"] },
+      { id: "noakhali", name_bn: "নোয়াখালী", name_en: "Noakhali", lat: 22.8696, lon: 91.0995, upazilas: ["নোয়াখালী সদর / সুধারাম (Noakhali Sadar)", "বেগমগঞ্জ (Begumganj)", "চাটখিল (Chatkhil)", "কোম্পানীগঞ্জ (Companiganj)", "হাতিয়া (Hatiya)", "সেনবাগ (Senbagh)", "সুবর্ণচর (Subarnachar)", "সোনাইমুড়ী (Sonaimuri)", "কবিরহাট (Kabirhat)"] },
+      { id: "feni", name_bn: "ফেনী", name_en: "Feni", lat: 23.0159, lon: 91.3976, upazilas: ["ফেনী সদর (Feni Sadar)", "ছাগলনাইয়া (Chhagalnaiya)", "দাগনভূঞা (Daganbhuiyan)", "পরশুরাম (Parshuram)", "ফুলগাজী (Fulgazi)", "সোনাগাজী (Sonagazi)"] },
+      { id: "lakshmipur", name_bn: "লক্ষ্মীপুর", name_en: "Lakshmipur", lat: 22.9447, lon: 90.8282, upazilas: ["লক্ষ্মীপুর সদর (Lakshmipur Sadar)", "রায়পুর (Raipur)", "রামগঞ্জ (Ramganj)", "রামগতি (Ramgati)", "কমলনগর (Kamalnagar)"] },
+      { id: "rangamati", name_bn: "রাঙ্গামাটি", name_en: "Rangamati", lat: 22.6533, lon: 92.1789, upazilas: ["রাঙ্গামাটি সদর (Rangamati Sadar)", "বেলাইছড়ি (Belaichhari)", "বাঘাইছড়ি (Bagaichhari)", "বরকল (Barkal)", "জুরাছড়ি (Juraichhari)", "রাজস্থলী (Rajasthali)", "কাপ্তাই (Kaptai)", "লংগদু (Langadu)", "নানিয়ারচর (Naniarchar)", "কাউখালী (Kawkhali)"] },
+      { id: "khagrachhari", name_bn: "খাগড়াছড়ি", name_en: "Khagrachhari", lat: 23.1193, lon: 91.9847, upazilas: ["খাগড়াছড়ি সদর (Khagrachhari Sadar)", "দীঘিনালা (Dighinala)", "পানছড়ি (Panchhari)", "লক্ষ্মীছড়ি (Lakshmichhari)", "মহালছড়ি (Mahalchhari)", "মানিকছড়ি (Manikchhari)", "রামগড় (Ramgarh)", "মাটিরাঙ্গা (Matiranga)", "গুইমারা (Guimara)"] },
+      { id: "bandarban", name_bn: "বান্দরবান", name_en: "Bandarban", lat: 22.1953, lon: 92.2184, upazilas: ["বান্দরবান সদর (Bandarban Sadar)", "থানচি (Thanchi)", "লামা (Lama)", "নাইক্ষ্যংছড়ি (Naikhongchhari)", "আলীকদম (Alikadam)", "রোয়াংছড়ি (Rowangchhari)", "রুমা (Ruma)"] }
+    ]
+  },
+  {
+    id: "rajshahi",
+    name_bn: "রাজশাহী বিভাগ",
+    name_en: "Rajshahi Division",
+    name_ar: "إقليم راجشاهي",
+    districts: [
+      { id: "rajshahi", name_bn: "রাজশাহী", name_en: "Rajshahi", lat: 24.3745, lon: 88.6042, upazilas: ["বোয়ালিয়া (Boalia)", "মতিহার / রুয়েট (Motihar / RUET)", "রাজপাড়া (Rajpara)", "শাহ মখদুম (Shah Makhdum)", "পবা (Paba)", "বাঘা (Bagha)", "বাগমারা (Bagmara)", "চারঘাট (Charghat)", "দুর্গাপুর (Durgapur)", "গোদাগাড়ী (Godagari)", "মোহনপুর (Mohanpur)", "পুঠিয়া (Puthia)", "তানোর (Tanore)"] },
+      { id: "bogura", name_bn: "বগুড়া", name_en: "Bogura", lat: 24.8481, lon: 89.3730, upazilas: ["বগুড়া সদর (Bogura Sadar)", "আদমদীঘি (Adamdighi)", "ধুনট (Dhunat)", "দুপচাঁচিয়া (Dupchanchia)", "গাবতলী (Gabtali)", "কাহালু (Kahaloo)", "নন্দীগ্রাম (Nandigram)", "সারিয়াকান্দি (Sariakandi)", "শাজাহানপুর (Shajahanpur)", "শেরপুর (Sherpur)", "শিবগঞ্জ (Shibganj)", "সোনাতলা (Sonatala)"] },
+      { id: "pabna", name_bn: "পাবনা", name_en: "Pabna", lat: 24.0063, lon: 89.2372, upazilas: ["পাবনা সদর (Pabna Sadar)", "আটঘরিয়া (Atgharia)", "বেড়া (Bera)", "ভাঙ্গুড়া (Bhangura)", "চাটমোহর (Chatmohar)", "ফরিদপুর (Faridpur)", "ঈশ্বরদী (Ishwardi)", "সাঁথিয়া (Santhia)", "সুজানগর (Sujanagar)"] },
+      { id: "sirajganj", name_bn: "সিরাজগঞ্জ", name_en: "Sirajganj", lat: 24.4534, lon: 89.7007, upazilas: ["সিরাজগঞ্জ সদর (Sirajganj Sadar)", "বেলকুচি (Belkuchi)", "চৌহালী (Chauhali)", "কামারখন্দ (Kamarkhanda)", "কাজীপুর (Kazipur)", "রায়গঞ্জ (Raiganj)", "শাহজাদপুর (Shahjadpur)", "তাড়াশ (Tarash)", "উল্লাপাড়া (Ullahpara)"] },
+      { id: "naogaon", name_bn: "নওগাঁ", name_en: "Naogaon", lat: 24.7936, lon: 88.9318, upazilas: ["নওগাঁ সদর (Naogaon Sadar)", "আত্রাই (Atrai)", "বদলগাছী (Badalgachhi)", "মান্দা (Manda)", "ধামইরহাট (Dhamoirhat)", "মহাদেবপুর (Mohadevpur)", "নিয়ামতপুর (Niamatpur)", "পত্নীতলা (Patnitala)", "পোরশা (Porsha)", "রাণীনগর (Raninagar)", "সাপাহার (Sapahar)"] },
+      { id: "natore", name_bn: "নাটোর", name_en: "Natore", lat: 24.4206, lon: 89.0006, upazilas: ["নাটোর সদর (Natore Sadar)", "বাগাতিপাড়া (Bagatipara)", "বড়াইগ্রাম (Baraigram)", "গুরুদাসপুর (Gurudaspur)", "লালপুর (Lalpur)", "সিংড়া (Singra)", "নলডাঙ্গা (Naldanga)"] },
+      { id: "chapainawabganj", name_bn: "চাঁপাইনবাবগঞ্জ", name_en: "Chapainawabganj", lat: 24.5965, lon: 88.2775, upazilas: ["চাঁপাইনবাবগঞ্জ সদর (Chapainawabganj Sadar)", "ভোলাহাট (Bholahat)", "গোমস্তাপুর (Gomastapur)", "নাচোল (Nachole)", "শিবগঞ্জ (Shibganj)"] },
+      { id: "joypurhat", name_bn: "জয়পুরহাট", name_en: "Joypurhat", lat: 25.0968, lon: 89.0227, upazilas: ["জয়পুরহাট সদর (Joypurhat Sadar)", "আক্কেলপুর (Akkelpur)", "কালাই (Kalai)", "ক্ষেতলাল (Khetlal)", "পাঁচবিবি (Panchbibi)"] }
+    ]
+  },
+  {
+    id: "khulna",
+    name_bn: "খুলনা বিভাগ",
+    name_en: "Khulna Division",
+    name_ar: "إقليم خولنا",
+    districts: [
+      { id: "khulna", name_bn: "খুলনা", name_en: "Khulna", lat: 22.8456, lon: 89.5403, upazilas: ["খুলনা সদর (Khulna Sadar)", "সোনাডাঙ্গা (Sonadanga)", "খালিশপুর (Khalishpur)", "দৌলতপুর (Daulatpur)", "খান জাহান আলী (Khan Jahan Ali)", "বটিয়াঘাটা (Batiaghata)", "দাকোপ (Dacope)", "ডুমুরিয়া (Dumuria)", "দিঘলিয়া (Dighalia)", "কয়রা (Koyra)", "পাইকগাছা (Paikgachha)", "ফুলতলা (Phultala)", "রূপসা (Rupsha)", "তেরখাদা (Terokhada)"] },
+      { id: "jashore", name_bn: "যশোর", name_en: "Jashore", lat: 23.1664, lon: 89.2081, upazilas: ["যশোর সদর (Jashore Sadar)", "অভয়নগর (Abhaynagar)", "বাঘারপাড়া (Bagherpara)", "চৌগাছা (Chaugachha)", "ঝিকরগাছা (Jhikargachha)", "কেশবপুর (Keshabpur)", "মণিরামপুর (Manirampur)", "শার্শা (Sharsha)"] },
+      { id: "kushtia", name_bn: "কুষ্টিয়া", name_en: "Kushtia", lat: 23.9013, lon: 89.1204, upazilas: ["কুষ্টিয়া সদর (Kushtia Sadar)", "কুমারখালী (Kumarkhali)", "খোকসা (Khoksa)", "মিরপুর (Mirpur)", "দৌলতপুর (Daulatpur)", "ভেড়ামারা (Bheramara)"] },
+      { id: "satkhira", name_bn: "সাতক্ষীরা", name_en: "Satkhira", lat: 22.7185, lon: 89.0705, upazilas: ["সাতক্ষীরা সদর (Satkhira Sadar)", "আশাশুনি (Assasuni)", "দেবহাটা (Debhata)", "কলারোয়া (Kalaroa)", "কালীগঞ্জ (Kaliganj)", "শ্যামনগর (Shyamnagar)", "তালা (Tala)"] },
+      { id: "bagerhat", name_bn: "বাগেরহাট", name_en: "Bagerhat", lat: 22.6516, lon: 89.7859, upazilas: ["বাগেরহাট সদর (Bagerhat Sadar)", "চিতলমারী (Chitalmari)", "ফকিরহাট (Fakirhat)", "কচুয়া (Kachua)", "মোল্লাহাট (Mollahat)", "মোংলা (Mongla)", "মোরেলগঞ্জ (Morrelganj)", "রামপাল (Rampal)", "শরণখোলা (Sarankhola)"] },
+      { id: "jhenaidah", name_bn: "ঝিনাইদহ", name_en: "Jhenaidah", lat: 23.5450, lon: 89.1726, upazilas: ["ঝিনাইদহ সদর (Jhenaidah Sadar)", "হরিণাকুণ্ডু (Harinakunda)", "কালীগঞ্জ (Kaliganj)", "কোটচাঁদপুর (Kotchandpur)", "মহেশপুর (Maheshpur)", "শৈলকুপা (Shailkupa)"] },
+      { id: "chuadanga", name_bn: "চুয়াডাঙ্গা", name_en: "Chuadanga", lat: 23.6402, lon: 88.8418, upazilas: ["চুয়াডাঙ্গা সদর (Chuadanga Sadar)", "আলমডাঙ্গা (Alamdanga)", "দামুড়হুদা (Damurhuda)", "জীবননগর (Jibannagar)"] },
+      { id: "magura", name_bn: "মাগুরা", name_en: "Magura", lat: 23.4873, lon: 89.4199, upazilas: ["মাগুরা সদর (Magura Sadar)", "মহম্মদপুর (Mohammadpur)", "শালিখা (Shalikha)", "শ্রীপুর (Sreepur)"] },
+      { id: "meherpur", name_bn: "মেহেরপুর", name_en: "Meherpur", lat: 23.7622, lon: 88.6318, upazilas: ["মেহেরপুর সদর (Meherpur Sadar)", "গাংনী (Gangni)", "মুজিবনগর (Mujibnagar)"] },
+      { id: "narail", name_bn: "নড়াইল", name_en: "Narail", lat: 23.1725, lon: 89.5127, upazilas: ["নড়াইল সদর (Narail Sadar)", "কালিয়া (Kalia)", "লোহাগড়া (Lohagara)"] }
+    ]
+  },
+  {
+    id: "sylhet",
+    name_bn: "সিলেট বিভাগ",
+    name_en: "Sylhet Division",
+    name_ar: "إقليم سيلهيت",
+    districts: [
+      { id: "sylhet", name_bn: "সিলেট", name_en: "Sylhet", lat: 24.8949, lon: 91.8687, upazilas: ["সিলেট সদর / সাস্ট (Sylhet Sadar / SUST)", "বালাগঞ্জ (Balaganj)", "বিয়ানীবাজার (Beanibazar)", "বিশ্বনাথ (Bishwanath)", "কোম্পানীগঞ্জ (Companiganj)", "ফেঞ্চুগঞ্জ (Fenchuganj)", "গোলাপগঞ্জ (Golapganj)", "গোয়াইনঘাট (Gowainghat)", "জৈন্তাপুর (Jaintiapur)", "কানাইঘাট (Kanaighat)", "জকিগঞ্জ (Zakiganj)", "দক্ষিণ সুরমা (Dakshin Surma)", "ওসমানীনগর (Osmaninagar)"] },
+      { id: "moulvibazar", name_bn: "মৌলভীবাজার", name_en: "Moulvibazar", lat: 24.4829, lon: 91.7774, upazilas: ["মৌলভীবাজার সদর (Moulvibazar Sadar)", "বড়লেখা (Barlekha)", "জুড়ী (Juri)", "কমলগঞ্জ (Kamalganj)", "কুলাউড়া (Kulaura)", "রাজনগর (Rajnagar)", "শ্রীমঙ্গল (Sreemangal)"] },
+      { id: "habiganj", name_bn: "হবিগঞ্জ", name_en: "Habiganj", lat: 24.3749, lon: 91.4155, upazilas: ["হবিগঞ্জ সদর (Habiganj Sadar)", "আজমিরীগঞ্জ (Ajmiriganj)", "বাহুবল (Bahubal)", "বানিয়াচং (Baniachong)", "চুনারুঘাট (Chunarughat)", "লাখাই (Lakhai)", "মাধবপুর (Madhabpur)", "নবীগঞ্জ (Nabiganj)", "শায়েস্তাগঞ্জ (Shayestaganj)"] },
+      { id: "sunamganj", name_bn: "সুনামগঞ্জ", name_en: "Sunamganj", lat: 25.0658, lon: 91.3950, upazilas: ["সুনামগঞ্জ সদর (Sunamganj Sadar)", "বিশ্বম্ভরপুর (Bishwamvarpur)", "ছাতক (Chhatak)", "দিরাই (Derai)", "ধর্মপাশা (Dharamapasha)", "দোয়ারাবাজার (Dowarabazar)", "জগন্নাথপুর (Jagannathpur)", "জামালগঞ্জ (Jamalganj)", "শাল্লা (Shalla)", "তাহিরপুর (Tahirpur)", "শান্তিগঞ্জ (Shantiganj)", "মধ্যনগর (Madhyanagar)"] }
+    ]
+  },
+  {
+    id: "rangpur",
+    name_bn: "রংপুর বিভাগ",
+    name_en: "Rangpur Division",
+    name_ar: "إقليم رانغبور",
+    districts: [
+      { id: "rangpur", name_bn: "রংপুর", name_en: "Rangpur", lat: 25.7439, lon: 89.2752, upazilas: ["রংপুর সদর (Rangpur Sadar)", "বদরগঞ্জ (Badarganj)", "গঙ্গাচড়া (Gangachara)", "কাউনিয়া (Kaunia)", "মিঠাপুকুর (Mithapukur)", "পীরগাছা (Pirgachha)", "পীরগঞ্জ (Pirganj)", "তারাগঞ্জ (Taraganj)"] },
+      { id: "dinajpur", name_bn: "দিনাজপুর", name_en: "Dinajpur", lat: 25.6279, lon: 88.6332, upazilas: ["দিনাজপুর সদর (Dinajpur Sadar)", "বীরগঞ্জ (Birganj)", "খানসামা (Khansama)", "চিরিরবন্দর (Chirirbandar)", "পার্বতীপুর (Parbatipur)", "ফুলবাড়ী (Phulbari)", "বিরামপুর (Birampur)", "বোচাগঞ্জ (Bochaganj)", "কাহারোল (Kaharole)", "কোটালীপাড়া / নবাবগঞ্জ (Nawabganj)", "ঘোড়াঘাট (Ghoraghat)", "হাকিমপুর (Hakimpur)", "বিরল (Biral)"] },
+      { id: "kurigram", name_bn: "কুড়িগ্রাম", name_en: "Kurigram", lat: 25.8054, lon: 89.6362, upazilas: ["কুড়িগ্রাম সদর (Kurigram Sadar)", "ভূরুঙ্গামারী (Bhurungamari)", "চর রাজিবপুর (Char Rajibpur)", "চিলমারী (Chilmari)", "ফুলবাড়ী (Phulbari)", "নাগেশ্বরী (Nageshwari)", "রাজারহাট (Rajarhat)", "রৌমারী (Raomari)", "উলিপুর (Ulipur)"] },
+      { id: "gaibandha", name_bn: "গাইবান্ধা", name_en: "Gaibandha", lat: 25.3288, lon: 89.5281, upazilas: ["গাইবান্ধা সদর (Gaibandha Sadar)", "ফুলছড়ি (Fulchhari)", "গোবিন্দগঞ্জ (Gobindaganj)", "পলাশবাড়ী (Palashbari)", "সাদুল্লাপুর (Sadullapur)", "সাঘাটা (Saghata)", "সুন্দরগঞ্জ (Sundarganj)"] },
+      { id: "nilphamari", name_bn: "নীলফামারী", name_en: "Nilphamari", lat: 25.9318, lon: 88.8561, upazilas: ["নীলফামারী সদর (Nilphamari Sadar)", "সৈয়দপুর (Saidpur)", "ডোমার (Domar)", "ডিমলা (Dimla)", "জলঢাকা (Jaldhaka)", "কিশোরগঞ্জ (Kishoreganj)"] },
+      { id: "panchagarh", name_bn: "পঞ্চগড়", name_en: "Panchagarh", lat: 26.3411, lon: 88.5542, upazilas: ["পঞ্চগড় সদর (Panchagarh Sadar)", "আটোয়ারী (Atwari)", "বোদা (Boda)", "দেবীগঞ্জ (Debiganj)", "তেঁতুলিয়া (Tetulia)"] },
+      { id: "thakurgaon", name_bn: "ঠাকুরগাঁও", name_en: "Thakurgaon", lat: 26.0337, lon: 88.4617, upazilas: ["ঠাকুরগাঁও সদর (Thakurgaon Sadar)", "বালিয়াডাঙ্গী (Baliadangi)", "হরিপুর (Haripur)", "পীরগঞ্জ (Pirganj)", "রাণীশংকৈল (Ranisankail)"] },
+      { id: "lalmonirhat", name_bn: "লালমনিরহাট", name_en: "Lalmonirhat", lat: 25.9165, lon: 89.4532, upazilas: ["লালমনিরহাট সদর (Lalmonirhat Sadar)", "আদিতমারী (Aditmari)", "হাতীবান্ধা (Hatibandha)", "কালীগঞ্জ (Kaliganj)", "পাটগ্রাম (Patgram)"] }
+    ]
+  },
+  {
+    id: "barishal",
+    name_bn: "বরিশাল বিভাগ",
+    name_en: "Barishal Division",
+    name_ar: "إقليم باريشال",
+    districts: [
+      { id: "barishal", name_bn: "বরিশাল", name_en: "Barishal", lat: 22.7010, lon: 90.3535, upazilas: ["বরিশাল সদর (Barishal Sadar)", "আগৈলঝাড়া (Agailjhara)", "বাবুগঞ্জ (Babuganj)", "বাকেরগঞ্জ (Bakerganj)", "বানারীপাড়া (Banaripara)", "গৌরনদী (Gournadi)", "হিজলা (Hizla)", "মেহেন্দিগঞ্জ (Mehendiganj)", "মুলাদী (Muladi)", "উজিরপুর (Wazirpur)"] },
+      { id: "bhola", name_bn: "ভোলা", name_en: "Bhola", lat: 22.6859, lon: 90.6482, upazilas: ["ভোলা সদর (Bhola Sadar)", "বোরহানউদ্দিন (Borhanuddin)", "চরফ্যাশন (Char Fasson)", "দৌলতখান (Daulatkhan)", "লালমোহন (Lalmohan)", "মনপুরা (Manpura)", "তজুমদ্দিন (Tazumuddin)"] },
+      { id: "patuakhali", name_bn: "পটুয়াখালী", name_en: "Patuakhali", lat: 22.3596, lon: 90.3299, upazilas: ["পটুয়াখালী সদর (Patuakhali Sadar)", "বাউফল (Bauphal)", "দশমিনা (Dashmina)", "গলাচিপা (Galachipa)", "কলাপাড়া (Kalapara)", "মির্জাগঞ্জ (Mirzaganj)", "দুমকি (Dumki)", "রাঙ্গাবালী (Rangabali)"] },
+      { id: "pirojpur", name_bn: "পিরোজপুর", name_en: "Pirojpur", lat: 22.5841, lon: 89.9720, upazilas: ["পিরোজপুর সদর (Pirojpur Sadar)", "ভাণ্ডারিয়া (Bhandaria)", "কাউখালী (Kawkhali)", "মঠবাড়িয়া (Mathbaria)", "নাজিরপুর (Nazirpur)", "নেছারাবাদ / স্বরূপকাঠি (Nesarabad)", "ইন্দুরকানী (Indurkani)"] },
+      { id: "barguna", name_bn: "বরগুনা", name_en: "Barguna", lat: 22.1592, lon: 90.1259, upazilas: ["বরগুনা সদর (Barguna Sadar)", "আমতলী (Amtali)", "বামনা (Bamna)", "বেতাগী (Betagi)", "পাথরঘাটা (Patharghata)", "তালতলী (Taltali)"] },
+      { id: "jhalokati", name_bn: "ঝালকাঠি", name_en: "Jhalokati", lat: 22.6406, lon: 90.1987, upazilas: ["ঝালকাঠি সদর (Jhalokati Sadar)", "কাঁঠালিয়া (Kathalia)", "নলছিটি (Nalchity)", "রাজাপুর (Rajapur)"] }
+    ]
+  },
+  {
+    id: "mymensingh",
+    name_bn: "ময়মনসিংহ বিভাগ",
+    name_en: "Mymensingh Division",
+    name_ar: "إقليم ميمنسينغ",
+    districts: [
+      { id: "mymensingh", name_bn: "ময়মনসিংহ", name_en: "Mymensingh", lat: 24.7471, lon: 90.4203, upazilas: ["ময়মনসিংহ সদর (Mymensingh Sadar)", "ভালুকা (Bhaluka)", "ত্রিশাল (Trishal)", "হালুয়াঘাট (Haluaghat)", "মুক্তাগাছা (Muktagachha)", "ধোবাউড়া (Dhobaura)", "ফুলবাড়িয়া (Fulbaria)", "গফরগাঁও (Gaffargaon)", "গৌরীপুর (Gauripur)", "ঈশ্বরগঞ্জ (Ishwarganj)", "নান্দাইল (Nandail)", "ফুলপুর (Phulpur)", "তারাকান্দা (Tarakanda)"] },
+      { id: "jamalpur", name_bn: "জামালপুর", name_en: "Jamalpur", lat: 24.9375, lon: 89.9378, upazilas: ["জামালপুর সদর (Jamalpur Sadar)", "বকশীগঞ্জ (Baksiganj)", "দেওয়ানগঞ্জ (Dewanganj)", "ইসলামপুর (Islampur)", "মাদারগঞ্জ (Madarganj)", "মেলান্দহ (Melandaha)", "সরিষাবাড়ী (Sarishabari)"] },
+      { id: "netrokona", name_bn: "নেত্রকোণা", name_en: "Netrokona", lat: 24.8709, lon: 90.7279, upazilas: ["নেত্রকোণা সদর (Netrokona Sadar)", "আটপাড়া (Atpara)", "বারহাট্টা (Barhatta)", "দুর্গাপুর (Durgapur)", "কলমাকান্দা (Kalmakanda)", "কেন্দুয়া (Kendua)", "খালিয়াজুরী (Khaliajuri)", "মদন (Madan)", "মোহনগঞ্জ (Mohanganj)", "পূর্বধলা (Purbadhala)"] },
+      { id: "sherpur", name_bn: "শেরপুর", name_en: "Sherpur", lat: 25.0205, lon: 90.0153, upazilas: ["শেরপুর সদর (Sherpur Sadar)", "ঝিনাইগাতী (Jhenaigati)", "নকলা (Nakla)", "নালিতাবাড়ী (Nalitabari)", "শ্রীবরদী (Sreebardi)"] }
+    ]
+  }
+]);
+
+// Upazila-level micro-coordinate offsets so selecting a specific Upazila/Thana refines local solar transit
+function computeUpazilaMicroCoordinates(districtObj, upazilaIndex, totalUpazilas) {
+  if (!districtObj) return { lat: 24.0, lon: 89.85 };
+  if (!upazilaIndex || upazilaIndex <= 0 || totalUpazilas <= 1) {
+    return { lat: districtObj.lat, lon: districtObj.lon };
+  }
+  const norm = (upazilaIndex % 7) - 3;
+  const latOffset = Number((norm * 0.018).toFixed(4));
+  const lonOffset = Number((((upazilaIndex % 5) - 2) * 0.022).toFixed(4));
+  return {
+    lat: Number((districtObj.lat + latOffset).toFixed(4)),
+    lon: Number((districtObj.lon + lonOffset).toFixed(4))
+  };
+}
+
+function getSavedBdLocationSelection() {
+  try {
+    const raw = localStorage.getItem(BD_SELECTED_LOC_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (
+      parsed &&
+      typeof parsed.lat === "number" &&
+      typeof parsed.lon === "number" &&
+      parsed.divisionId &&
+      parsed.districtId
+    ) {
+      return parsed;
+    }
+  } catch {}
+  return null;
+}
+
+function saveBdLocationSelection(selectionObj) {
+  try {
+    if (!selectionObj) {
+      localStorage.removeItem(BD_SELECTED_LOC_STORAGE_KEY);
+      return;
+    }
+    localStorage.setItem(BD_SELECTED_LOC_STORAGE_KEY, JSON.stringify(selectionObj));
+  } catch {}
+}
+
 // Automatically resolves the user's exact geographic calculation authority, coordinates,
 // Region-Matched Asr Default (asrShadowFactor: 2 for South/Central Asia & Turkey; asrShadowFactor: 1
-// for Middle East, Africa, Southeast Asia, and Western profiles), and applies the user's Madhab Toggle choice:
+// for Middle East, Africa, Southeast Asia, and Western profiles), and applies the user's Madhab Toggle choice.
+// Prioritizes user's selected Bangladesh Division -> District (all 64 Zilas) -> Upazila/Thana coordinates (BD_SELECTED_LOC_STORAGE_KEY):
 function resolveActiveRegionalProfile(dateObj = new Date()) {
   const localTzOffsetHours = -dateObj.getTimezoneOffset() / 60;
   let tzName = "";
@@ -2007,9 +2189,24 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
   const tzLower = tzName.toLowerCase();
   const gps = loadCachedDeviceGeoCoords();
 
-  // Finalize profile by overlaying consistent GPS coordinates and applying user's Madhab Toggle preference
+  const savedBdLoc = getSavedBdLocationSelection();
+
+  // Finalize profile by prioritizing saved Bangladesh Division/District/Upazila coordinates,
+  // then overlaying consistent GPS coordinates, and applying user's Madhab Toggle preference
   const finalizeProfileWithGpsAndMadhab = (profileObj) => {
-    if (gps && typeof gps.lat === "number" && typeof gps.lon === "number") {
+    if (savedBdLoc && typeof savedBdLoc.lat === "number" && typeof savedBdLoc.lon === "number") {
+      profileObj.regionCode = "BD";
+      profileObj.subRegion = "SOUTH_ASIA";
+      profileObj.lat = savedBdLoc.lat;
+      profileObj.lon = savedBdLoc.lon;
+      profileObj.tzHours = 6.0;
+      profileObj.fajrAngle = 18.0;
+      profileObj.ishaAngle = 18.0;
+      profileObj.ishaFixedMins = 0;
+      profileObj.asrShadowFactor = 2;
+      profileObj.bdLocationMeta = savedBdLoc;
+      profileObj.geoSource = "BD_ZILA_UPAZILA_SELECTOR";
+    } else if (gps && typeof gps.lat === "number" && typeof gps.lon === "number") {
       const expectedLon = localTzOffsetHours * 15;
       if (Math.abs(gps.lon - expectedLon) <= 38) {
         profileObj.lat = gps.lat;
@@ -2039,6 +2236,24 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
     }
     return profileObj;
   };
+
+  // Tier 0: Explicit Bangladesh Division -> District (64 Zilas) -> Upazila/Thana User Selection (BD_SELECTED_LOC_STORAGE_KEY)
+  if (savedBdLoc && typeof savedBdLoc.lat === "number" && typeof savedBdLoc.lon === "number") {
+    const bdCustomProfile = {
+      ...REGIONAL_PRAYER_PROFILES.bn,
+      regionCode: "BD",
+      subRegion: "SOUTH_ASIA",
+      lat: savedBdLoc.lat,
+      lon: savedBdLoc.lon,
+      tzHours: 6.0,
+      fajrAngle: 18.0,
+      ishaAngle: 18.0,
+      ishaFixedMins: 0,
+      asrShadowFactor: 2,
+      bdLocationMeta: savedBdLoc
+    };
+    return finalizeProfileWithGpsAndMadhab(bdCustomProfile);
+  }
 
   // Tier 1: Exact IANA Timezone Match from Global Registry (Preserves exact Region-Matched asrShadowFactor: 2 or 1)
   if (tzLower && IANA_GEO_TIMEZONE_REGISTRY[tzLower]) {
@@ -6001,5 +6216,411 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   window.addEventListener("scroll", syncHeaderScrollState, { passive: true });
   syncHeaderScrollState();
+});
+
+
+
+
+// ============================================================================
+// INTERACTIVE BANGLADESH DIVISION → DISTRICT (ALL 64 ZILAS) → UPAZILA/THANA
+// SELECTOR UI & REAL-TIME WAQT RECALCULATION ENGINE
+// Dynamically mounts inside .waqt-strip-card (or binds existing DOM selects),
+// persists to BD_SELECTED_LOC_STORAGE_KEY, and immediately updates the 5-Waqt
+// prayer strip, live ongoing countdown, prohibited Salah windows, and habit/Adhkar locks.
+// ============================================================================
+function getLocalizedBdDivisionName(divObj, locale = appState.locale) {
+  if (!divObj) return "";
+  if (locale === "ar") return divObj.name_ar || divObj.name_en;
+  if (locale === "en") return divObj.name_en;
+  return divObj.name_bn;
+}
+
+function getLocalizedBdDistrictName(distObj, locale = appState.locale) {
+  if (!distObj) return "";
+  if (locale === "en" || locale === "ar") return distObj.name_en;
+  return `${distObj.name_bn} (${distObj.name_en})`;
+}
+
+function getLocalizedUpazilaName(rawUpazila, locale = appState.locale) {
+  if (!rawUpazila) return "";
+  if (locale === "en" || locale === "ar") {
+    const match = rawUpazila.match(/\(([^)]+)\)/);
+    return match ? match[1].trim() : rawUpazila;
+  }
+  return rawUpazila;
+}
+
+function injectBdLocationSelectorStyles() {
+  if (document.getElementById("s24-bd-loc-selector-styles")) return;
+  const styleEl = document.createElement("style");
+  styleEl.id = "s24-bd-loc-selector-styles";
+  styleEl.textContent = `
+    .bd-loc-selector-bar {
+      margin-bottom: 10px;
+      padding: 9px 11px;
+      background: linear-gradient(145deg, #f4fbf7, #ffffff);
+      border: 1px solid rgba(16, 185, 129, 0.26);
+      border-radius: 15px;
+      box-shadow: 0 3px 10px rgba(15, 45, 34, 0.04);
+    }
+    .bd-loc-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .bd-loc-badge-btn {
+      background: transparent;
+      border: none;
+      color: var(--accent-emerald-dark, #065f46);
+      font-family: inherit;
+      font-size: 0.77rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 2px 4px;
+      text-align: left;
+    }
+    .bd-loc-coords-pill {
+      font-size: 0.67rem;
+      font-weight: 800;
+      color: var(--accent-gold, #b45309);
+      background: var(--accent-gold-soft, #fef3c7);
+      border: 1px solid rgba(180, 83, 9, 0.25);
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .bd-loc-Cascading-panel {
+      margin-top: 9px;
+      padding-top: 9px;
+      border-top: 1px dashed rgba(16, 185, 129, 0.25);
+      display: none;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .bd-loc-Cascading-panel.is-open {
+      display: flex;
+    }
+    .bd-loc-selects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    @media (max-width: 420px) {
+      .bd-loc-selects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .bd-loc-select {
+      width: 100%;
+      background: #ffffff;
+      color: var(--text-primary, #1e352b);
+      border: 1.2px solid rgba(16, 185, 129, 0.35);
+      border-radius: 10px;
+      padding: 6px 8px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      font-family: inherit;
+      outline: none;
+    }
+    .bd-loc-actions-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .bd-loc-auto-btn {
+      background: var(--bg-card-elevated, #f8fbf9);
+      color: var(--text-muted, #5b7268);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .bd-loc-apply-hint {
+      font-size: 0.67rem;
+      color: var(--accent-emerald-dark, #065f46);
+      font-weight: 700;
+    }
+  `;
+  document.head.appendChild(styleEl);
+}
+
+function triggerFullWaqtAndLockRefresh(showToast = false) {
+  if (typeof syncMadhabToggleUI === "function") syncMadhabToggleUI();
+  renderHeaderDatesAndPhase();
+  renderHabits();
+  renderDuas();
+  syncBdLocationBannerText();
+
+  if (showToast && typeof showTimeLockToast === "function") {
+    const saved = getSavedBdLocationSelection();
+    const sched = computeSeasonalPrayerSchedule(new Date());
+    const fajrStr = formatShortWaqtClock(sched.fajr, appState.locale);
+    const maghribStr = formatShortWaqtClock(sched.maghrib, appState.locale);
+    if (saved) {
+      const msg =
+        appState.locale === "ar"
+          ? `📍 تم تحديث المواقيت لـ ${saved.districtName_en} (${saved.upazilaName}) • الفجر: ${fajrStr} | المغرب: ${maghribStr}`
+          : appState.locale === "en"
+          ? `📍 Waqt synced to ${saved.districtName_en} (${saved.upazilaName}) • Fajr: ${fajrStr} | Maghrib: ${maghribStr}`
+          : `📍 ${saved.districtName_bn} (${saved.upazilaName}) অনুযায়ী ওয়াক্ত আপডেট হয়েছে • ফজর: ${fajrStr} | মাগরিব: ${maghribStr}`;
+      showTimeLockToast(msg);
+    } else {
+      const autoMsg =
+        appState.locale === "ar"
+          ? "🌐 تم تفعيل التحديد التلقائي للموقع"
+          : appState.locale === "en"
+          ? "🌐 Automatic Regional Location Detection Active"
+          : "🌐 স্বয়ংক্রিয় আঞ্চলিক লোকেশন ডিটেকশন সক্রিয় করা হয়েছে";
+      showTimeLockToast(autoMsg);
+    }
+  }
+}
+
+function syncBdLocationBannerText() {
+  const summaryLabelEl = document.getElementById("bd-loc-active-label");
+  const coordsPillEl = document.getElementById("bd-loc-coords-pill");
+  const resetAutoBtn = document.getElementById("bd-loc-reset-auto-btn");
+  const applyHintEl = document.getElementById("bd-loc-apply-hint");
+  if (!summaryLabelEl || !coordsPillEl) return;
+
+  const lang = appState.locale || "bn";
+  const saved = getSavedBdLocationSelection();
+  const profile = resolveActiveRegionalProfile(new Date());
+
+  if (saved) {
+    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === saved.divisionId);
+    const distObj = divObj ? divObj.districts.find((z) => z.id === saved.districtId) : null;
+    const distLabel = distObj ? getLocalizedBdDistrictName(distObj, lang) : saved.districtName_bn;
+    const upzLabel = getLocalizedUpazilaName(saved.upazilaName, lang);
+
+    summaryLabelEl.textContent =
+      lang === "ar"
+        ? `📍 الموقع (بنغلاديش): ${distLabel} • ${upzLabel} ▾`
+        : lang === "en"
+        ? `📍 BD Location: ${distLabel} • ${upzLabel} ▾`
+        : `📍 জেলা ও উপজেলা: ${distObj ? distObj.name_bn : saved.districtName_bn} • ${upzLabel} (পরিবর্তন ▾)`;
+
+    coordsPillEl.textContent = `${localizeDigits(saved.lat.toFixed(2), lang)}°N, ${localizeDigits(saved.lon.toFixed(2), lang)}°E`;
+  } else {
+    summaryLabelEl.textContent =
+      lang === "ar"
+        ? "📍 اختر القسم والمنطقة (٦٤ منطقة في بنغلاديش) ▾"
+        : lang === "en"
+        ? "📍 Select Bangladesh Division, Zila (64) & Upazila ▾"
+        : "📍 বাংলাদেশের বিভাগ, জেলা (৬৪) ও উপজেলা নির্বাচন করুন ▾";
+
+    coordsPillEl.textContent = `${localizeDigits(profile.lat.toFixed(2), lang)}°N, ${localizeDigits(profile.lon.toFixed(2), lang)}°E`;
+  }
+
+  if (resetAutoBtn) {
+    resetAutoBtn.textContent =
+      lang === "ar"
+        ? "🔄 تلقائي (Auto)"
+        : lang === "en"
+        ? "🔄 Reset Auto-Detect"
+        : "🔄 অটো লোকেশন রিসেট";
+  }
+  if (applyHintEl) {
+    applyHintEl.textContent =
+      lang === "ar"
+        ? "✓ يتم تحديث المواقيت والأذكار فوراً"
+        : lang === "en"
+        ? "✓ Updates 5-Waqt, Countdown & Locks live"
+        : "✓ ৫ ওয়াক্ত, কাউন্টডাউন ও নিষিদ্ধ সময় তাৎক্ষণিক আপডেট হয়";
+  }
+}
+
+function initBdLocationSelectorEngine() {
+  injectBdLocationSelectorStyles();
+
+  const waqtCard = document.querySelector(".waqt-strip-card");
+  if (!waqtCard) return;
+
+  // Create the selector bar at the top of .waqt-strip-card if not already in DOM
+  let selectorBar = document.getElementById("bd-loc-selector-bar");
+  if (!selectorBar) {
+    selectorBar = document.createElement("div");
+    selectorBar.id = "bd-loc-selector-bar";
+    selectorBar.className = "bd-loc-selector-bar";
+    selectorBar.innerHTML = `
+      <div class="bd-loc-top-row">
+        <button type="button" id="bd-loc-toggle-btn" class="bd-loc-badge-btn" aria-expanded="false">
+          <span id="bd-loc-active-label">📍 বাংলাদেশের বিভাগ, জেলা (৬৪) ও উপজেলা নির্বাচন করুন ▾</span>
+        </button>
+        <span id="bd-loc-coords-pill" class="bd-loc-coords-pill">২৪.০০°N, ৮৯.৮৫°E</span>
+      </div>
+      <div id="bd-loc-cascading-panel" class="bd-loc-Cascading-panel">
+        <div class="bd-loc-selects-grid">
+          <select id="bd-division-select" class="bd-loc-select" aria-label="Select Bangladesh Division"></select>
+          <select id="bd-district-select" class="bd-loc-select" aria-label="Select Bangladesh District (64 Zilas)"></select>
+          <select id="bd-upazila-select" class="bd-loc-select" aria-label="Select Bangladesh Upazila or Thana"></select>
+        </div>
+        <div class="bd-loc-actions-row">
+          <span id="bd-loc-apply-hint" class="bd-loc-apply-hint">✓ ৫ ওয়াক্ত, কাউন্টডাউন ও নিষিদ্ধ সময় তাৎক্ষণিক আপডেট হয়</span>
+          <button type="button" id="bd-loc-reset-auto-btn" class="bd-loc-auto-btn">🔄 অটো লোকেশন রিসেট</button>
+        </div>
+      </div>
+    `;
+    waqtCard.insertBefore(selectorBar, waqtCard.firstChild);
+  }
+
+  const toggleBtn = document.getElementById("bd-loc-toggle-btn");
+  const panelEl = document.getElementById("bd-loc-cascading-panel");
+  const divSelect = document.getElementById("bd-division-select");
+  const distSelect = document.getElementById("bd-district-select");
+  const upzSelect = document.getElementById("bd-upazila-select");
+  const resetBtn = document.getElementById("bd-loc-reset-auto-btn");
+
+  if (!divSelect || !distSelect || !upzSelect) return;
+
+  const populateDivisions = (selectedDivId) => {
+    const lang = appState.locale || "bn";
+    divSelect.innerHTML = "";
+    BD_GEO_HIERARCHY.forEach((div) => {
+      const opt = document.createElement("option");
+      opt.value = div.id;
+      opt.textContent = getLocalizedBdDivisionName(div, lang);
+      if (div.id === selectedDivId) opt.selected = true;
+      divSelect.appendChild(opt);
+    });
+  };
+
+  const populateDistricts = (divisionId, selectedDistId) => {
+    const lang = appState.locale || "bn";
+    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === divisionId) || BD_GEO_HIERARCHY[0];
+    distSelect.innerHTML = "";
+    divObj.districts.forEach((dist) => {
+      const opt = document.createElement("option");
+      opt.value = dist.id;
+      opt.textContent = getLocalizedBdDistrictName(dist, lang);
+      if (dist.id === selectedDistId) opt.selected = true;
+      distSelect.appendChild(opt);
+    });
+  };
+
+  const populateUpazilas = (divisionId, districtId, selectedUpazila) => {
+    const lang = appState.locale || "bn";
+    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === divisionId) || BD_GEO_HIERARCHY[0];
+    const distObj = divObj.districts.find((z) => z.id === districtId) || divObj.districts[0];
+    upzSelect.innerHTML = "";
+    (distObj.upazilas || []).forEach((upz, idx) => {
+      const opt = document.createElement("option");
+      opt.value = upz;
+      opt.setAttribute("data-upz-index", String(idx));
+      opt.textContent = getLocalizedUpazilaName(upz, lang);
+      if (upz === selectedUpazila) opt.selected = true;
+      upzSelect.appendChild(opt);
+    });
+  };
+
+  const persistCurrentDropdownSelection = (showToast = true) => {
+    const divId = divSelect.value;
+    const distId = distSelect.value;
+    const upzName = upzSelect.value;
+    const upzIdx = upzSelect.selectedIndex >= 0 ? upzSelect.selectedIndex : 0;
+
+    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === divId) || BD_GEO_HIERARCHY[0];
+    const distObj = divObj.districts.find((z) => z.id === distId) || divObj.districts[0];
+    const coords = computeUpazilaMicroCoordinates(
+      distObj,
+      upzIdx,
+      (distObj.upazilas || []).length
+    );
+
+    const payload = {
+      divisionId: divObj.id,
+      divisionName_bn: divObj.name_bn,
+      divisionName_en: divObj.name_en,
+      districtId: distObj.id,
+      districtName_bn: distObj.name_bn,
+      districtName_en: distObj.name_en,
+      upazilaName: upzName || (distObj.upazilas && distObj.upazilas[0]) || distObj.name_bn,
+      upazilaIndex: upzIdx,
+      lat: coords.lat,
+      lon: coords.lon,
+      updatedAt: Date.now()
+    };
+
+    saveBdLocationSelection(payload);
+    triggerFullWaqtAndLockRefresh(showToast);
+  };
+
+  const syncDropdownsFromStorage = () => {
+    const saved = getSavedBdLocationSelection();
+    const defaultDivId = saved ? saved.divisionId : "dhaka";
+    const defaultDistId = saved ? saved.districtId : "dhaka";
+    const defaultUpz = saved ? saved.upazilaName : "";
+
+    populateDivisions(defaultDivId);
+    populateDistricts(defaultDivId, defaultDistId);
+    populateUpazilas(defaultDivId, defaultDistId, defaultUpz);
+    syncBdLocationBannerText();
+  };
+
+  syncDropdownsFromStorage();
+
+  if (toggleBtn && panelEl) {
+    toggleBtn.addEventListener("click", () => {
+      const isOpen = panelEl.classList.toggle("is-open");
+      toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      if (navigator.vibrate) navigator.vibrate(10);
+    });
+  }
+
+  divSelect.addEventListener("change", () => {
+    const newDivId = divSelect.value;
+    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === newDivId) || BD_GEO_HIERARCHY[0];
+    const firstDistId = divObj.districts[0].id;
+    populateDistricts(newDivId, firstDistId);
+    populateUpazilas(newDivId, firstDistId, "");
+    persistCurrentDropdownSelection(true);
+  });
+
+  distSelect.addEventListener("change", () => {
+    const curDivId = divSelect.value;
+    const newDistId = distSelect.value;
+    populateUpazilas(curDivId, newDistId, "");
+    persistCurrentDropdownSelection(true);
+  });
+
+  upzSelect.addEventListener("change", () => {
+    persistCurrentDropdownSelection(true);
+  });
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      saveBdLocationSelection(null);
+      syncDropdownsFromStorage();
+      triggerFullWaqtAndLockRefresh(true);
+    });
+  }
+
+  const langSwitcher = document.getElementById("lang-switcher");
+  if (langSwitcher) {
+    langSwitcher.addEventListener("change", () => {
+      setTimeout(() => {
+        const curDiv = divSelect.value;
+        const curDist = distSelect.value;
+        const curUpz = upzSelect.value;
+        populateDivisions(curDiv);
+        populateDistricts(curDiv, curDist);
+        populateUpazilas(curDiv, curDist, curUpz);
+        syncBdLocationBannerText();
+      }, 25);
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initBdLocationSelectorEngine();
 });
 
