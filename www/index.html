@@ -157,6 +157,10 @@
 
     <div class="hero-meta">
       <span id="fasting-banner">🌙 সুন্নাহ রোজা যাচাই...</span>
+      <button type="button" id="hero-cloud-pill" class="hero-cloud-pill" onclick="document.querySelector('[data-tab=\'tab-vault\']').click(); document.getElementById('sync-card').scrollIntoView({behavior:'smooth'});" title="ক্লাউড ব্যাকআপ স্ট্যাটাস (ট্যাপ করুন)">
+        <span id="hero-sync-dot" class="status-dot offline"></span>
+        <span id="hero-sync-text">☁️ ক্লাউড ব্যাকআপ</span>
+      </button>
     </div>
   </section>
 
@@ -386,6 +390,27 @@
 
   <!-- TAB 4: TAMPER-PROOF VAULT, 7-DAY MATRIX, CATEGORY GRAPH & MULTI-MONTH ARCHIVE -->
   <main id="tab-vault" class="tab-content">
+    <!-- LIFELONG CLOUD SYNC & STREAK PROTECTION CARD (Material 3 High-Contrast) -->
+    <div id="sync-card" class="card sync-card" role="region" aria-label="Lifelong Cloud Backup Status">
+      <div class="sync-info">
+        <span id="sync-status-dot" class="status-dot offline" aria-hidden="true"></span>
+        <div class="sync-text-group">
+          <div id="sync-title" class="sync-title" data-i18n="cloud_sync_title">লোকাল স্টোরেজ সক্রিয় (ক্লাউড সংযুক্ত নয়)</div>
+          <div id="sync-subtitle" class="sync-subtitle" data-i18n="cloud_sync_sub">ক্যাশ ক্লিয়ার বা আনইনস্টল করলেও স্ট্রিক ও আমল আজীবন সুরক্ষিত রাখতে Google দিয়ে যুক্ত হোন</div>
+        </div>
+      </div>
+      <div class="sync-actions">
+        <button id="btn-google-login" type="button" class="btn-sync-primary">
+          ☁️ Connect Google
+        </button>
+        <button id="btn-sync-now" type="button" class="btn-sync-tonal" style="display: none;">
+          🔄 Sync Now
+        </button>
+        <button id="btn-google-logout" type="button" class="btn-sync-outline" style="display: none;">
+          Sign Out
+        </button>
+      </div>
+    </div>
     <div class="card">
       <h3 data-i18n="vault_matrix_title">📊 ৭-দিনের সুন্নাহ ধারাবাহিকতা ম্যাট্রিক্স</h3>
       <p class="muted" data-i18n="vault_matrix_sub">গত ৭ দিনে আপনার দৈনিক সুন্নাহ পালনের অগ্রগতি (দিনে ট্যাপ করে বিস্তারিত দেখুন)।</p>
@@ -505,7 +530,9 @@
   </div>
 
   <script src="app.js"></script>
+  <script type="module" src="./cloud-sync.js"></script>
 </body>
 </html>
+
 
 
