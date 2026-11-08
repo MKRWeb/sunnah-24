@@ -48,7 +48,7 @@
         </a>
       </div>
 
-      <!-- Madhab Toggle + Direct Header Location Selector Stack (Just below Madhab Toggle) -->
+            <!-- Madhab Toggle + Direct Header Location Selector Stack (Just below Madhab Toggle) -->
       <div class="header-madhab-loc-stack" id="bd-loc-selector-bar">
         <!-- Universal Asr Madhab Toggle Button (Hanafi 2x <-> Standard / Shafi'i, Maliki, Hanbali 1x) -->
         <button
@@ -63,18 +63,21 @@
           <span id="madhab-toggle-label" data-i18n="madhab_hanafi_btn">হানাফী</span>
         </button>
 
-        <!-- Ultra-Simple Header Location Trigger Pill (Default: ঢাকা ▾) -->
+        <!-- Header Location Trigger Pill (Default: ঢাকা ▾) -->
         <button
           type="button"
           id="bd-loc-toggle-btn"
           class="header-loc-pill-btn"
+          aria-haspopup="dialog"
           aria-expanded="false"
-          aria-controls="bd-loc-cascading-panel"
-          title="বিভাগ, জেলা ও উপজেলা পরিবর্তন করুন"
+          title="অবস্থান অনুসন্ধান করুন (Search Location)"
         >
           <span id="bd-loc-active-label">📍 ঢাকা ▾</span>
         </button>
+      </div>
 
+
+      
         <!-- Clean Anchored Popover Panel: Division -> District -> Upazila -->
         <div id="bd-loc-cascading-panel" class="bd-loc-Cascading-panel header-loc-popover" role="dialog" aria-label="Bangladesh Location Selector">
           <div class="bd-loc-popover-head">
@@ -501,6 +504,39 @@
         <p id="modal-wisdom"></p>
       </div>
       <button id="close-modal-btn" class="btn-primary" data-i18n="modal_close_btn">আলহামদুলিল্লাহ, বুঝেছি</button>
+    </div>
+  </div>
+
+
+    <!-- LOCATION SEARCH MODAL ("অবস্থান অনুসন্ধান করুন" -> Country -> City / 64 Districts -> Upazila) -->
+  <div id="s24-loc-modal-overlay" class="s24-loc-overlay hidden" role="dialog" aria-modal="true" aria-label="Location Selector">
+    <!-- STAGE 1: "অবস্থান অনুসন্ধান করুন" Trigger Card -->
+    <div id="s24-loc-prompt-card" class="s24-loc-prompt-card">
+      <button type="button" id="s24-loc-open-search-btn" class="s24-loc-search-trigger">
+        অবস্থান অনুসন্ধান করুন
+      </button>
+    </div>
+
+    <!-- STAGE 2: Drill-Down Searchable List (Country -> City / 64 Districts -> Upazila) -->
+    <div id="s24-loc-picker-card" class="s24-loc-picker-card hidden">
+      <button type="button" id="s24-loc-close-btn" class="s24-loc-floating-close" aria-label="Close">✕</button>
+
+      <div class="s24-loc-picker-header">
+        <button type="button" id="s24-loc-back-btn" class="s24-loc-back-btn hidden" aria-label="Back">‹</button>
+        <h4 id="s24-loc-picker-title">দেশ শনাক্ত করুন</h4>
+      </div>
+
+      <div class="s24-loc-search-wrap">
+        <input
+          type="text"
+          id="s24-loc-search-input"
+          class="s24-loc-search-input"
+          placeholder="অনুসন্ধান"
+          autocomplete="off"
+        />
+      </div>
+
+      <div id="s24-loc-list-container" class="s24-loc-list-scroll"></div>
     </div>
   </div>
 
