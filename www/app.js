@@ -5763,17 +5763,7 @@ window.handleSunnahBackNavigation = function () {
     locOverlay.classList.add("hidden");
     if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
     return true;
-  }
-
-  
-  // 2. If Header Location Popover is open -> Close popover first
-  const locPanel = document.getElementById("bd-loc-cascading-panel");
-  const locToggleBtn = document.getElementById("bd-loc-toggle-btn");
-  if (locPanel && locPanel.classList.contains("is-open")) {
-    locPanel.classList.remove("is-open");
-    if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
-    return true;
-  }
+  } 
 
   // 3. If a Phase Filter Chip (other than "all") is active on Routine tab -> Reset to "All 24H" without scrolling to top
   const activeTab = document.querySelector(".tab-content.active")?.id;
@@ -6159,20 +6149,6 @@ function formatProhibitedClockRange(startMins, endMins, locale = appState.locale
   return `${formatShortClock(startMins)} - ${formatShortClock(endMins)}`;
 }
 
-let userToggledProhibitedCard = false;
-
-function formatProhibitedClockRange(startMins, endMins, locale = appState.locale) {
-  const formatShortClock = (totalMinutes) => {
-    const clamped = ((Math.round(totalMinutes) % 1440) + 1440) % 1440;
-    const h24 = Math.floor(clamped / 60);
-    const m = clamped % 60;
-    const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
-    const hStr = localizeDigits(String(h12).padStart(2, "0"), locale);
-    const mStr = localizeDigits(String(m).padStart(2, "0"), locale);
-    return `${hStr}:${mStr}`;
-  };
-  return `${formatShortClock(startMins)} - ${formatShortClock(endMins)}`;
-}
 
 function renderProhibitedSalahTimes() {
   const card = document.getElementById("prohibited-salah-card");
@@ -6596,6 +6572,16 @@ function syncBdLocationBannerText() {
   const lblUpz = document.getElementById("bd-lbl-upazila");
   if (!summaryLabelEl) return;
 
+   if (typeof getSavedGlobalOrBdLocation === "function") {
+    const savedGlobal = getSavedGlobalOrBdLocation();
+    if (savedGlobal && savedGlobal.countryCode && savedGlobal.countryCode !== "BD") {
+      if (typeof updateHeaderLocationPillUI === "function") {
+        updateHeaderLocationPillUI();
+      }
+      return;
+    }
+  }
+
   const lang = appState.locale || "bn";
   const activeLoc = getEffectiveBdLocationSelection();
   const divObj = BD_GEO_HIERARCHY.find((d) => d.id === activeLoc.divisionId) || BD_GEO_HIERARCHY[0];
@@ -6775,7 +6761,8 @@ function initBdLocationSelectorEngine() {
     }
   };
 
-  if (toggleBtn && panelEl) {
+  
+  if (toggleBtn && panelEl && !document.getElementById("s24-loc-modal-overlay")) {
     toggleBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       const isOpen = panelEl.classList.toggle("is-open");
