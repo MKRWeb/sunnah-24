@@ -5756,14 +5756,22 @@ window.handleSunnahBackNavigation = function () {
     return true;
   }
 
-   // 2. If Searchable Location Modal is open -> Close modal first
+  // 2A. If Searchable Location Modal is open -> Close modal first
   const locOverlay = document.getElementById("s24-loc-modal-overlay");
   const locToggleBtn = document.getElementById("bd-loc-toggle-btn");
   if (locOverlay && !locOverlay.classList.contains("hidden")) {
     locOverlay.classList.add("hidden");
     if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
     return true;
-  } 
+  }
+
+  // 2B. If Header Location Popover is open -> Close popover first
+  const locPanel = document.getElementById("bd-loc-cascading-panel");
+  if (locPanel && locPanel.classList.contains("is-open")) {
+    locPanel.classList.remove("is-open");
+    if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
+    return true;
+  }
 
   // 3. If a Phase Filter Chip (other than "all") is active on Routine tab -> Reset to "All 24H" without scrolling to top
   const activeTab = document.querySelector(".tab-content.active")?.id;
@@ -6136,6 +6144,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // along with the warning box and Sahih Muslim 831 Hadith proof—without redundant
 // active-window alerts (since Live Ongoing Prayers already handles live states).
 // ============================================================================
+let userToggledProhibitedCard = false;
+
 function formatProhibitedClockRange(startMins, endMins, locale = appState.locale) {
   const formatShortClock = (totalMinutes) => {
     const clamped = ((Math.round(totalMinutes) % 1440) + 1440) % 1440;
@@ -6148,7 +6158,6 @@ function formatProhibitedClockRange(startMins, endMins, locale = appState.locale
   };
   return `${formatShortClock(startMins)} - ${formatShortClock(endMins)}`;
 }
-
 
 function renderProhibitedSalahTimes() {
   const card = document.getElementById("prohibited-salah-card");
@@ -6572,7 +6581,7 @@ function syncBdLocationBannerText() {
   const lblUpz = document.getElementById("bd-lbl-upazila");
   if (!summaryLabelEl) return;
 
-   if (typeof getSavedGlobalOrBdLocation === "function") {
+  if (typeof getSavedGlobalOrBdLocation === "function") {
     const savedGlobal = getSavedGlobalOrBdLocation();
     if (savedGlobal && savedGlobal.countryCode && savedGlobal.countryCode !== "BD") {
       if (typeof updateHeaderLocationPillUI === "function") {
@@ -6761,7 +6770,6 @@ function initBdLocationSelectorEngine() {
     }
   };
 
-  
   if (toggleBtn && panelEl && !document.getElementById("s24-loc-modal-overlay")) {
     toggleBtn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -7893,8 +7901,26 @@ function initMuslimBanglaSearchLocationModal() {
     }
   }
 
-  // 1. Clicking Header Pill opens the "অবস্থান অনুসন্ধান করুন" prompt card
+  // 1. Clicking Header Pill opens the "অবস্থান অনুসন্ধান করুন" prompt card with localized labels
   triggerBtn.addEventListener("click", () => {
+    const mainTxtEl = document.getElementById("s24-loc-trigger-main-text");
+    const subTxtEl = document.getElementById("s24-loc-trigger-sub-text");
+    if (mainTxtEl) {
+      mainTxtEl.textContent =
+        appState.locale === "ar"
+          ? "ابحث عن الموقع"
+          : appState.locale === "en"
+          ? "Search Location"
+          : "অবস্থান অনুসন্ধান করুন";
+    }
+    if (subTxtEl) {
+      subTxtEl.textContent =
+        appState.locale === "ar"
+          ? "اضغط هنا لتغيير الدولة أو المدينة أو المنطقة"
+          : appState.locale === "en"
+          ? "Tap here to select your Country, City, District or Upazila"
+          : "দেশ, জেলা বা উপজেলা পরিবর্তন করতে এখানে ট্যাপ করুন";
+    }
     if (promptCard) promptCard.classList.remove("hidden");
     pickerCard.classList.add("hidden");
     overlay.classList.remove("hidden");
