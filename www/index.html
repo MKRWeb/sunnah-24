@@ -27,10 +27,12 @@
       <img src="icon.svg" alt="Sunnah 24 Logo" class="header-brand-logo" />
       <div class="header-title-wrap">
         <h1 data-i18n="app_title">সুন্নাহ ২৪</h1>
+        <p id="current-date-display" style="display:none;"></p>
       </div>
     </div>
 
     <div class="header-right">
+      <span id="integrity-badge" class="badge-verified" style="display:none;">🛡️ S24 যাচাইকৃত</span>
       <div class="header-controls-stack">
         <select id="lang-switcher" class="lang-select" aria-label="Select Language">
           <option value="bn" selected>🌐 বাংলা</option>
@@ -155,7 +157,12 @@
       </div>
     </div>
 
+    <div class="progress-track" style="display:none;">
+      <div id="daily-progress-bar" class="progress-fill" style="width: 0%"></div>
+    </div>
+
     <div class="hero-meta">
+      <span id="next-phase-banner" style="display:none;">🌌 চলমান ওয়াক্ত...</span>
       <span id="fasting-banner">🌙 সুন্নাহ রোজা যাচাই...</span>
     </div>
   </section>
@@ -507,10 +514,17 @@
 
     <!-- LOCATION SEARCH MODAL ("অবস্থান অনুসন্ধান করুন" -> Country -> City / 64 Districts -> Upazila) -->
   <div id="s24-loc-modal-overlay" class="s24-loc-overlay hidden" role="dialog" aria-modal="true" aria-label="Location Selector">
-    <!-- STAGE 1: "অবস্থান অনুসন্ধান করুন" Trigger Card -->
+    <!-- STAGE 1: "অবস্থান অনুসন্ধান করুন" Interactive Emerald-Bordered Trigger Card -->
     <div id="s24-loc-prompt-card" class="s24-loc-prompt-card">
-      <button type="button" id="s24-loc-open-search-btn" class="s24-loc-search-trigger">
-        অবস্থান অনুসন্ধান করুন
+      <button type="button" id="s24-loc-open-search-btn" class="s24-loc-search-trigger" aria-label="অবস্থান অনুসন্ধান করুন">
+        <span class="s24-loc-trigger-left">
+          <span class="s24-loc-trigger-icon" aria-hidden="true">🔍</span>
+          <span class="s24-loc-trigger-text-wrap">
+            <strong id="s24-loc-trigger-main-text" class="s24-loc-trigger-title">অবস্থান অনুসন্ধান করুন</strong>
+            <small id="s24-loc-trigger-sub-text" class="s24-loc-trigger-hint">দেশ, জেলা বা উপজেলা পরিবর্তন করতে এখানে ট্যাপ করুন</small>
+          </span>
+        </span>
+        <span class="s24-loc-trigger-arrow" aria-hidden="true">➔</span>
       </button>
     </div>
 
