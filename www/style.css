@@ -3689,3 +3689,176 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
   color: #fde047;
 }
 
+
+/* ==========================================================================
+   STATIC POPUP-STYLE ONGOING PRAYER DASHBOARD CARD (MATERIAL 3 CARD-IN-CARD)
+   Matches the exact structured visual hierarchy of the 5-Waqt popup window
+   ========================================================================== */
+.waqt-card-embedded-box {
+  background: linear-gradient(180deg, #ffffff 0%, #f5fbf8 100%) !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.34) !important;
+  border-radius: 18px !important;
+  padding: 13px 14px !important;
+  margin-bottom: 12px !important;
+  box-shadow: 0 10px 24px -6px rgba(15, 45, 34, 0.09), 0 3px 10px -2px rgba(16, 185, 129, 0.06) !important;
+}
+
+.ongoing-static-head {
+  margin-bottom: 10px;
+  padding-bottom: 9px;
+}
+
+.waqt-popup-avatar.prohibited-avatar {
+  background: #fee2e2;
+  border-color: rgba(220, 38, 38, 0.45);
+}
+
+.waqt-popup-status-pill.status-prohibited {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid rgba(220, 38, 38, 0.42);
+}
+
+.ongoing-static-time-grid {
+  margin-bottom: 10px;
+}
+
+.ongoing-progress-strip {
+  background: #ffffff;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 13px;
+  padding: 9px 11px;
+  margin-bottom: 9px;
+  box-shadow: inset 0 1px 2px rgba(15, 45, 34, 0.03);
+}
+
+.ongoing-countdown-pill {
+  background: rgba(220, 38, 38, 0.09);
+  color: #dc2626 !important;
+  border: 1px solid rgba(220, 38, 38, 0.26);
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 0.78rem !important;
+  font-weight: 900;
+}
+
+.ongoing-static-meta-rows {
+  margin-top: 2px;
+}
+
+.ongoing-prime-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1.5px 8px;
+  border-radius: 999px;
+  font-size: 0.67rem;
+  font-weight: 900;
+  margin-left: 4px;
+}
+
+.ongoing-prime-badge.active {
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.28);
+}
+
+.ongoing-prime-badge.ended {
+  background: rgba(220, 38, 38, 0.09);
+  color: #b91c1c;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+.ongoing-prime-subnote {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-muted, #5b7268);
+  padding: 5px 10px;
+  background: rgba(16, 185, 129, 0.04);
+  border-left: 3px solid var(--accent-emerald, #10b981);
+  border-radius: 0 9px 9px 0;
+  line-height: 1.4;
+}
+
+html[dir="rtl"] .ongoing-prime-subnote {
+  border-left: none;
+  border-right: 3px solid var(--accent-emerald, #10b981);
+  border-radius: 9px 0 0 9px;
+}
+
+.ongoing-prime-subnote.note-alert {
+  color: #b91c1c;
+  background: rgba(220, 38, 38, 0.06);
+  border-left-color: #dc2626;
+}
+
+html[dir="rtl"] .ongoing-prime-subnote.note-alert {
+  border-right-color: #dc2626;
+}
+
+/* Tahajjud / Qiyam al-Layl Static Inner Card inside Ongoing Isha */
+.ongoing-tahajjud-subcard {
+  margin-top: 10px;
+  padding: 11px 12px;
+  background: linear-gradient(145deg, #f2fbf7, #ffffff);
+  border: 1.5px solid rgba(16, 185, 129, 0.32);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(15, 45, 34, 0.05);
+}
+
+.ongoing-tahajjud-subcard.golden-state {
+  background: linear-gradient(145deg, #fffbeb, #f4fbf7);
+  border-color: rgba(217, 119, 6, 0.42);
+}
+
+.ongoing-rakah-footer {
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px dashed rgba(16, 185, 129, 0.24);
+  font-size: 0.73rem;
+}
+
+/* Dark Theme Support for Static Ongoing Waqt Card */
+html[data-theme="dark"] .waqt-card-embedded-box {
+  background: linear-gradient(180deg, #0b221a 0%, #071913 100%) !important;
+  border-color: rgba(16, 185, 129, 0.42) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-theme="dark"] .ongoing-progress-strip {
+  background: #05130e;
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+html[data-theme="dark"] .ongoing-countdown-pill {
+  background: rgba(239, 68, 68, 0.16);
+  color: #fca5a5 !important;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+html[data-theme="dark"] .ongoing-prime-badge.active,
+html[data-theme="dark"] .ongoing-prime-badge.ended {
+  background: rgba(239, 68, 68, 0.18);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+html[data-theme="dark"] .ongoing-prime-subnote {
+  background: rgba(16, 185, 129, 0.08);
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .ongoing-prime-subnote.note-alert {
+  background: rgba(239, 68, 68, 0.14);
+  color: #fca5a5;
+}
+
+html[data-theme="dark"] .ongoing-tahajjud-subcard {
+  background: linear-gradient(145deg, #0b221a, #05130e);
+  border-color: rgba(16, 185, 129, 0.36);
+}
+
+html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
+  background: linear-gradient(145deg, rgba(234, 179, 8, 0.12), #071913);
+  border-color: rgba(234, 179, 8, 0.45);
+}
+
