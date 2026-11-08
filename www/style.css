@@ -3018,12 +3018,12 @@ html[data-theme="dark"] .bd-loc-auto-btn {
 
 .s24-loc-prompt-card {
   width: min(365px, 92vw);
-  background: #ffffff;
-  border: 2px solid var(--accent-emerald, #10b981);
-  border-radius: 20px;
-  padding: 12px;
-  box-shadow: 0 20px 46px rgba(6, 95, 70, 0.24), 0 0 0 4px rgba(16, 185, 129, 0.14);
-  overflow: hidden;
+  background: transparent;
+  border: none;
+  border-radius: 14px;
+  padding: 0;
+  box-shadow: none;
+  overflow: visible;
   text-align: left;
 }
 
@@ -3037,10 +3037,10 @@ html[dir="rtl"] .s24-loc-prompt-card {
 
 @keyframes s24TriggerBorderPulse {
   0%, 100% {
-    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.14), 0 0 0 0 rgba(16, 185, 129, 0.28);
+    box-shadow: 0 14px 34px rgba(6, 95, 70, 0.22);
   }
   50% {
-    box-shadow: 0 8px 22px rgba(16, 185, 129, 0.22), 0 0 0 4px rgba(16, 185, 129, 0.12);
+    box-shadow: 0 18px 40px rgba(16, 185, 129, 0.3);
   }
 }
 
@@ -3059,7 +3059,7 @@ html[dir="rtl"] .s24-loc-prompt-card {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.14);
+  box-shadow: 0 14px 34px rgba(6, 95, 70, 0.22);
   animation: s24TriggerBorderPulse 2.4s infinite ease-in-out;
   transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
@@ -3293,11 +3293,14 @@ html[dir="rtl"] .s24-loc-item-btn {
   background: rgba(16, 185, 129, 0.08);
 }
 
-html[data-theme="dark"] .s24-loc-prompt-card,
 html[data-theme="dark"] .s24-loc-picker-card,
 html[data-theme="dark"] .s24-loc-search-wrap {
   background: #0b221a;
   color: #f8fafc;
+}
+
+html[data-theme="dark"] .s24-loc-prompt-card {
+  background: transparent;
 }
 
 html[data-theme="dark"] .s24-loc-search-trigger {
@@ -3329,6 +3332,3 @@ html[data-theme="dark"] .s24-loc-floating-close {
   color: #ffffff;
   border-color: rgba(16, 185, 129, 0.4);
 }
-
-
-
