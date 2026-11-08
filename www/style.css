@@ -3332,3 +3332,360 @@ html[data-theme="dark"] .s24-loc-floating-close {
   color: #ffffff;
   border-color: rgba(16, 185, 129, 0.4);
 }
+
+
+/* ==========================================================================
+   5-WAQT INTERACTIVE SMART POPUP WINDOW (MATERIAL 3 CARD-IN-CARD CONTRAST)
+   Tapping any of the 5 Waqt pills opens a sleek floating card with a dynamic
+   pointer arrow showing the exact Start–End Time Range & Prime (Awwal) Window
+   ========================================================================== */
+.waqt-strip-card {
+  position: relative;
+}
+
+.waqt-pill-card {
+  position: relative;
+  outline: none;
+}
+
+.waqt-pill-card.waqt-popup-selected {
+  border: 2px solid var(--accent-gold, #b45309) !important;
+  background: linear-gradient(145deg, #fffbeb, #ffffff) !important;
+  box-shadow: 0 8px 20px rgba(180, 83, 9, 0.18) !important;
+  transform: translateY(-2.5px);
+}
+
+html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
+  background: linear-gradient(145deg, rgba(234, 179, 8, 0.2), #0b221a) !important;
+  border-color: #eab308 !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55) !important;
+}
+
+.waqt-range-popup-wrap {
+  position: relative;
+  margin-top: 12px;
+  padding-top: 2px;
+  animation: waqtPopupReveal 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.waqt-range-popup-wrap.hidden {
+  display: none !important;
+}
+
+@keyframes waqtPopupReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.waqt-popup-arrow {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border-top: 1.5px solid var(--accent-emerald, #10b981);
+  border-left: 1.5px solid var(--accent-emerald, #10b981);
+  transform: translateX(-50%) rotate(45deg);
+  z-index: 3;
+  transition: left 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.waqt-range-popup-card {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(180deg, #ffffff 0%, #f6fbf8 100%);
+  border: 1.5px solid var(--accent-emerald, #10b981);
+  border-radius: 18px;
+  padding: 13px 14px;
+  box-shadow: 0 14px 32px -6px rgba(15, 45, 34, 0.16), 0 4px 12px -2px rgba(16, 185, 129, 0.1);
+}
+
+.waqt-popup-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 9px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed rgba(16, 185, 129, 0.28);
+}
+
+.waqt-popup-title-group {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.waqt-popup-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--accent-emerald-soft, #e6f6ef);
+  border: 1.5px solid rgba(16, 185, 129, 0.4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  box-shadow: 0 3px 8px rgba(16, 185, 129, 0.14);
+}
+
+.waqt-popup-title-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.waqt-popup-title-text h4 {
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: var(--text-primary, #1e352b);
+  line-height: 1.25;
+}
+
+.waqt-popup-title-text small {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-muted, #5b7268);
+}
+
+.waqt-popup-head-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.waqt-popup-status-pill {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.waqt-popup-status-pill.status-active {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid rgba(16, 185, 129, 0.45);
+}
+
+.waqt-popup-status-pill.status-passed {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+.waqt-popup-status-pill.status-upcoming {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid rgba(217, 119, 6, 0.38);
+}
+
+.waqt-popup-close-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f1f6f3;
+  color: var(--text-primary, #1e352b);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  font-size: 0.75rem;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.waqt-popup-close-btn:active {
+  transform: scale(0.9);
+}
+
+/* Structured High-Contrast Start & End Time Field Grid */
+.waqt-popup-time-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1.5px solid rgba(16, 185, 129, 0.25);
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-bottom: 9px;
+  box-shadow: inset 0 1px 3px rgba(15, 45, 34, 0.03);
+}
+
+.waqt-popup-time-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.waqt-popup-time-box.end-box {
+  text-align: right;
+}
+
+html[dir="rtl"] .waqt-popup-time-box.end-box {
+  text-align: left;
+}
+
+.waqt-popup-time-lbl {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-muted, #5b7268);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.waqt-popup-time-val {
+  font-size: 0.96rem;
+  font-weight: 900;
+  color: var(--accent-emerald-dark, #065f46);
+  line-height: 1.25;
+}
+
+.waqt-popup-time-box.end-box .waqt-popup-time-val {
+  color: #b45309;
+}
+
+.waqt-popup-time-divider {
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: var(--accent-emerald, #10b981);
+  background: var(--accent-emerald-soft, #e6f6ef);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html[dir="rtl"] .waqt-popup-time-divider {
+  transform: scaleX(-1);
+}
+
+.waqt-popup-meta-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.waqt-popup-meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 7px 10px;
+  background: rgba(16, 185, 129, 0.06);
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  border-radius: 11px;
+  font-size: 0.75rem;
+}
+
+.waqt-popup-meta-item span {
+  font-weight: 700;
+  color: var(--text-muted, #5b7268);
+}
+
+.waqt-popup-meta-item strong {
+  font-weight: 800;
+  color: var(--text-primary, #1e352b);
+}
+
+.waqt-popup-sunnah-note {
+  margin-top: 7px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-emerald-dark, #065f46);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 2px 0;
+}
+
+.waqt-popup-filter-btn {
+  background: var(--accent-emerald-soft, #e6f6ef);
+  color: var(--accent-emerald-dark, #065f46);
+  border: 1px solid rgba(16, 185, 129, 0.38);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.67rem;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.waqt-popup-filter-btn:active {
+  transform: scale(0.95);
+}
+
+/* Dark Mode Overrides for 5-Waqt Popup */
+html[data-theme="dark"] .waqt-popup-arrow {
+  background: #0b221a;
+  border-color: rgba(16, 185, 129, 0.55);
+}
+
+html[data-theme="dark"] .waqt-range-popup-card {
+  background: linear-gradient(180deg, #0b221a 0%, #071913 100%);
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme="dark"] .waqt-popup-title-text h4,
+html[data-theme="dark"] .waqt-popup-meta-item strong {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .waqt-popup-close-btn {
+  background: #123528;
+  color: #f8fafc;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+html[data-theme="dark"] .waqt-popup-time-grid {
+  background: #05130e;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+html[data-theme="dark"] .waqt-popup-time-val {
+  color: #34d399;
+}
+
+html[data-theme="dark"] .waqt-popup-time-box.end-box .waqt-popup-time-val {
+  color: #fde047;
+}
+
+html[data-theme="dark"] .waqt-popup-meta-item {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.24);
+}
+
+html[data-theme="dark"] .waqt-popup-status-pill.status-active {
+  background: rgba(16, 185, 129, 0.22);
+  color: #6ee7b7;
+}
+
+html[data-theme="dark"] .waqt-popup-status-pill.status-passed {
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
+  background: rgba(234, 179, 8, 0.18);
+  color: #fde047;
+}
+
