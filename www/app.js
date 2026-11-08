@@ -4071,8 +4071,10 @@ function renderFiveWaqtStrip(now = new Date()) {
           ? nowMins >= w.start || nowMins < sched.fajr
           : nowMins >= w.start && nowMins < effectiveEnd;
       const isPassed = w.id !== "isha" && nowMins >= effectiveEnd && nowMins >= sched.fajr;
+      const isPopupSelected =
+        typeof activeSelectedWaqtPopupId === "string" && activeSelectedWaqtPopupId === w.id;
       return `
-        <button type="button" class="waqt-pill-card ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""}" data-waqt-phase="${w.phase}">
+        <button type="button" class="waqt-pill-card ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""} ${isPopupSelected ? "waqt-popup-selected" : ""}" data-waqt-id="${w.id}" data-waqt-phase="${w.phase}" aria-expanded="${isPopupSelected ? "true" : "false"}">
           <div class="waqt-circle-logo">${w.icon}</div>
           <span class="waqt-name">${w.name}</span>
           <strong class="waqt-time">${formatShortWaqtClock(w.start, lang)}</strong>
@@ -4080,6 +4082,10 @@ function renderFiveWaqtStrip(now = new Date()) {
       `;
     })
     .join("");
+
+  if (typeof syncOpenWaqtPopupIfVisible === "function") {
+    syncOpenWaqtPopupIfVisible(now);
+  }
 }
 
 function renderDuas() {
@@ -5773,6 +5779,15 @@ window.handleSunnahBackNavigation = function () {
     return true;
   }
 
+  // 2C. If 5-Waqt Prayer Time Range Popup is open -> Close popup first
+  if (typeof activeSelectedWaqtPopupId === "string" && activeSelectedWaqtPopupId) {
+    activeSelectedWaqtPopupId = null;
+    if (typeof renderWaqtTimeRangePopup === "function") {
+      renderWaqtTimeRangePopup(null);
+    }
+    return true;
+  }
+
   // 3. If a Phase Filter Chip (other than "all") is active on Routine tab -> Reset to "All 24H" without scrolling to top
   const activeTab = document.querySelector(".tab-content.active")?.id;
   if (activeTab === "tab-routine" && activePhase !== "all") {
@@ -6200,24 +6215,466 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // ============================================================================
-// MUSLIM BANGLA / MUSLIM'S DAY 5-WAQT STRIP INTERACTION
+// MUSLIM BANGLA / MUSLIM'S DAY 5-WAQT STRIP SMART TIME-RANGE POPUP ENGINE
+// Clicking any of the 5 prayer time cards (Fajr, Dhuhr/Jumu'ah, Asr, Maghrib, Isha)
+// pops up a high-contrast window showing the exact Start–End Time Range,
+// Prime (Awwal) Window, Live Countdown/Status, and Sunnah/Fard Rak'ah summary.
 // ============================================================================
+let activeSelectedWaqtPopupId = null;
+
+function ensureWaqtPopupContainer() {
+  let popupWrap = document.getElementById("waqt-range-popup-wrap");
+  if (popupWrap) return popupWrap;
+
+  const stripCard = document.querySelector(".waqt-strip-card");
+  if (!stripCard) return null;
+
+  popupWrap = document.createElement("div");
+  popupWrap.id = "waqt-range-popup-wrap";
+  popupWrap.className = "waqt-range-popup-wrap hidden";
+  popupWrap.setAttribute("role", "region");
+  popupWrap.setAttribute("aria-live", "polite");
+  stripCard.appendChild(popupWrap);
+  return popupWrap;
+}
+
+function getExactWaqtPopupDetails(waqtId, now = new Date()) {
+  const sched = computeSeasonalPrayerSchedule(now);
+  const lang = appState.locale || "bn";
+  const middayMeta = resolveMiddayWaqtMeta(now, lang);
+  const nowMins = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
+  const pWindows = sched.prohibitedWindows || {
+    sunrise: { start: sched.sunrise, end: sched.sunrise + 15 },
+    zawal: { start: sched.zawal, end: sched.dhuhr },
+    sunset: { start: sched.sunset - 15, end: sched.sunset }
+  };
+
+  const isHanafi = sched.profile && sched.profile.asrShadowFactor === 2;
+  let meta = null;
+
+  if (waqtId === "fajr") {
+    const startMins = sched.fajr;
+    const endMins = (pWindows.sunrise.start - 1 + 1440) % 1440;
+    const primeEndMins = Math.min(pWindows.sunrise.start - 5, sched.fajr + 38);
+    const isActive = nowMins >= sched.fajr && nowMins < pWindows.sunrise.start;
+    const isPassed = nowMins >= pWindows.sunrise.start;
+    const remOrStartsMins = isActive
+      ? pWindows.sunrise.start - nowMins
+      : nowMins < sched.fajr
+      ? sched.fajr - nowMins
+      : 1440 - nowMins + sched.fajr;
+
+    meta = {
+      id: "fajr",
+      phase: "tahajjud_fajr",
+      icon: "🌅",
+      title: lang === "bn" ? "ফজর সালাতের ওয়াক্ত" : lang === "ar" ? "وقت صلاة الفجر" : "Fajr Prayer Waqt",
+      subLabel:
+        lang === "bn"
+          ? "সুবহে সাদিক থেকে সূর্যোদয়ের পূর্ব পর্যন্ত"
+          : lang === "ar"
+          ? "من طلوع الفجر الصادق إلى قبيل الشروق"
+          : "From Subh Sadiq until just before Sunrise",
+      startMins,
+      endMins,
+      primeRangeStr: `${formatShortWaqtClock(startMins, lang)} – ${formatShortWaqtClock(primeEndMins, lang)}`,
+      rakahNote:
+        lang === "bn"
+          ? "🕌 ২ রাকাত সুন্নাতে মুয়াক্কাদাহ + ২ রাকাত ফরজ"
+          : lang === "ar"
+          ? "🕌 ركعتا سنة الفجر + ركعتان فرض"
+          : "🕌 2 Rak'ah Sunnah Mu'akkadah + 2 Rak'ah Fard",
+      isActive,
+      isPassed,
+      remOrStartsMins
+    };
+  } else if (waqtId === "dhuhr") {
+    const startMins = sched.dhuhr;
+    const endMins = (sched.asr - 1 + 1440) % 1440;
+    const primeEndMins = Math.min(sched.asr - 15, sched.dhuhr + 50);
+    const isActive = nowMins >= sched.dhuhr && nowMins < sched.asr;
+    const isPassed = nowMins >= sched.asr;
+    const remOrStartsMins = isActive
+      ? sched.asr - nowMins
+      : nowMins < sched.dhuhr
+      ? sched.dhuhr - nowMins
+      : 1440 - nowMins + sched.dhuhr;
+
+    meta = {
+      id: "dhuhr",
+      phase: "dhuhr_asr",
+      icon: middayMeta.pillIcon,
+      title: middayMeta.isJumuah
+        ? lang === "bn"
+          ? "জুমু'আর সালাতের ওয়াক্ত"
+          : lang === "ar"
+          ? "وقت صلاة الجمعة"
+          : "Jumu'ah Prayer Waqt"
+        : lang === "bn"
+        ? "যোহর সালাতের ওয়াক্ত"
+        : lang === "ar"
+        ? "وقت صلاة الظهر"
+        : "Dhuhr Prayer Waqt",
+      subLabel:
+        lang === "bn"
+          ? "যাওয়াল (দ্বিপ্রহর) শেষে আসরের পূর্ব পর্যন্ত"
+          : lang === "ar"
+          ? "بعد الزوال إلى قبيل دخول وقت العصر"
+          : "After midday zenith (Zawal) until before Asr",
+      startMins,
+      endMins,
+      primeRangeStr: `${formatShortWaqtClock(startMins, lang)} – ${formatShortWaqtClock(primeEndMins, lang)}`,
+      rakahNote: middayMeta.isJumuah
+        ? lang === "bn"
+          ? "🕌 পূর্বে ৪ সুন্নাত + খুতবা ও ২ ফরজ + পরে ৪ (বা ২) সুন্নাত"
+          : lang === "ar"
+          ? "🕌 ٤ سنة قبلية + الخطبة وركعتا الجمعة + ٤ (أو ٢) بعدية"
+          : "🕌 4 Sunnah Before + Khutbah & 2 Fard + 4 (or 2) Sunnah After"
+        : lang === "bn"
+        ? "🕌 পূর্বে ৪ রাকাত সুন্নাত + ৪ ফরজ + পরে ২ রাকাত সুন্নাত"
+        : lang === "ar"
+        ? "🕌 ٤ ركعات سنة قبلية + ٤ فرض + ركعتان سنة بعدية"
+        : "🕌 4 Rak'ah Sunnah Before + 4 Fard + 2 Rak'ah Sunnah After",
+      isActive,
+      isPassed,
+      remOrStartsMins
+    };
+  } else if (waqtId === "asr") {
+    const startMins = sched.asr;
+    const endMins = (pWindows.sunset.start - 1 + 1440) % 1440;
+    const primeEndMins = Math.max(sched.asr + 30, pWindows.sunset.start - 25);
+    const isActive = nowMins >= sched.asr && nowMins < pWindows.sunset.start;
+    const isPassed = nowMins >= pWindows.sunset.start;
+    const remOrStartsMins = isActive
+      ? pWindows.sunset.start - nowMins
+      : nowMins < sched.asr
+      ? sched.asr - nowMins
+      : 1440 - nowMins + sched.asr;
+
+    meta = {
+      id: "asr",
+      phase: "dhuhr_asr",
+      icon: "🌤️",
+      title: isHanafi
+        ? lang === "bn"
+          ? "আসর সালাতের ওয়াক্ত (হানাফী)"
+          : lang === "ar"
+          ? "وقت صلاة العصر (حنفي)"
+          : "Asr Prayer Waqt (Hanafi)"
+        : lang === "bn"
+        ? "আসর সালাতের ওয়াক্ত (শাফিঈ/জমহুর)"
+        : lang === "ar"
+        ? "وقت صلاة العصر (جمهور/شافعي)"
+        : "Asr Prayer Waqt (Standard/Shafi'i)",
+      subLabel:
+        lang === "bn"
+          ? `সূর্যাস্তের নিষিদ্ধ সময়ের (${formatShortWaqtClock(pWindows.sunset.start, lang)}) পূর্ব পর্যন্ত (মাকরূহ মুক্ত)`
+          : lang === "ar"
+          ? `يمتد الوقت المختار إلى قبيل وقت النهي (${formatShortWaqtClock(pWindows.sunset.start, lang)})`
+          : `Valid until before Sunset prohibited window (${formatShortWaqtClock(pWindows.sunset.start, lang)})`,
+      startMins,
+      endMins,
+      primeRangeStr: `${formatShortWaqtClock(startMins, lang)} – ${formatShortWaqtClock(primeEndMins, lang)}`,
+      rakahNote:
+        lang === "bn"
+          ? "🕌 ৪ রাকাত ফরজ (পূর্বে ৪ রাকাত সুন্নাতে গায়রে মুয়াক্কাদাহ)"
+          : lang === "ar"
+          ? "🕌 ٤ ركعات فرض (ويستحب ٤ ركعات قبلها)"
+          : "🕌 4 Rak'ah Fard (4 Rak'ah Sunnah before is Mustahabb)",
+      isActive,
+      isPassed,
+      remOrStartsMins
+    };
+  } else if (waqtId === "maghrib") {
+    const startMins = sched.maghrib;
+    const endMins = (sched.isha - 1 + 1440) % 1440;
+    const primeEndMins = Math.min(sched.isha - 5, sched.maghrib + 25);
+    const isActive = nowMins >= sched.maghrib && nowMins < sched.isha;
+    const isPassed = nowMins >= sched.isha;
+    const remOrStartsMins = isActive
+      ? sched.isha - nowMins
+      : nowMins < sched.maghrib
+      ? sched.maghrib - nowMins
+      : 1440 - nowMins + sched.maghrib;
+
+    meta = {
+      id: "maghrib",
+      phase: "maghrib_isha",
+      icon: "🌇",
+      title: lang === "bn" ? "মাগরিব সালাতের ওয়াক্ত" : lang === "ar" ? "وقت صلاة المغرب" : "Maghrib Prayer Waqt",
+      subLabel:
+        lang === "bn"
+          ? "সূর্যাস্তের পর থেকে ইশার ওয়াক্তের পূর্ব পর্যন্ত"
+          : lang === "ar"
+          ? "من بعد غروب الشمس إلى قبيل دخول العشاء"
+          : "From after Sunset until just before Isha",
+      startMins,
+      endMins,
+      primeRangeStr: `${formatShortWaqtClock(startMins, lang)} – ${formatShortWaqtClock(primeEndMins, lang)}`,
+      rakahNote:
+        lang === "bn"
+          ? "🕌 ৩ রাকাত ফরজ + ২ রাকাত সুন্নাতে মুয়াক্কাদাহ"
+          : lang === "ar"
+          ? "🕌 ٣ ركعات فرض + ركعتان سنة راتبة"
+          : "🕌 3 Rak'ah Fard + 2 Rak'ah Sunnah Mu'akkadah",
+      isActive,
+      isPassed,
+      remOrStartsMins
+    };
+  } else {
+    // Isha Waqt (Crosses Midnight until Fajr - 1)
+    const startMins = sched.isha;
+    const endMins = (sched.fajr - 1 + 1440) % 1440;
+    const primeEndMins = (sched.firstThirdEnd - 1 + 1440) % 1440;
+    const isActive = nowMins >= sched.isha || nowMins < sched.fajr;
+    const isPassed = false;
+    const currentPos = nowMins < sched.fajr ? nowMins + 1440 : nowMins;
+    const remOrStartsMins = isActive
+      ? sched.fajr + 1440 - currentPos
+      : sched.isha - nowMins;
+
+    meta = {
+      id: "isha",
+      phase: "maghrib_isha",
+      icon: "🌙",
+      title: lang === "bn" ? "ইশা ও বিতর সালাতের ওয়াক্ত" : lang === "ar" ? "وقت صلاة العشاء والوتر" : "Isha & Witr Prayer Waqt",
+      subLabel:
+        lang === "bn"
+          ? `রাতের ১ম প্রহর (${formatShortWaqtClock(primeEndMins, lang)}) উত্তম • সুবহে সাদিকের পূর্ব পর্যন্ত জায়েয`
+          : lang === "ar"
+          ? `الوقت المختار إلى الثلث الأول (${formatShortWaqtClock(primeEndMins, lang)}) ويمتد للفجر`
+          : `Prime until 1st Third (${formatShortWaqtClock(primeEndMins, lang)}) • Valid until Fajr`,
+      startMins,
+      endMins,
+      primeRangeStr: `${formatShortWaqtClock(startMins, lang)} – ${formatShortWaqtClock(primeEndMins, lang)}`,
+      rakahNote:
+        lang === "bn"
+          ? "🕌 ৪ রাকাত ফরজ + ২ রাকাত সুন্নাত + বিতর সালাত"
+          : lang === "ar"
+          ? "🕌 ٤ ركعات فرض + ركعتان سنة + صلاة الوتر"
+          : "🕌 4 Rak'ah Fard + 2 Rak'ah Sunnah + Witr Prayer",
+      isActive,
+      isPassed,
+      remOrStartsMins
+    };
+  }
+
+  return meta;
+}
+
+function positionWaqtPopupArrow(waqtId) {
+  const arrowEl = document.getElementById("waqt-popup-arrow");
+  const wrapEl = document.getElementById("waqt-range-popup-wrap");
+  const pillEl = document.querySelector(`.waqt-pill-card[data-waqt-id="${waqtId}"]`);
+  if (!arrowEl || !wrapEl || !pillEl) return;
+
+  const wrapRect = wrapEl.getBoundingClientRect();
+  const pillRect = pillEl.getBoundingClientRect();
+  if (wrapRect.width <= 0) return;
+
+  const centerOffset = pillRect.left + pillRect.width / 2 - wrapRect.left;
+  const clampedPx = Math.max(24, Math.min(wrapRect.width - 24, centerOffset));
+  arrowEl.style.left = `${Math.round(clampedPx)}px`;
+}
+
+function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
+  const popupWrap = ensureWaqtPopupContainer();
+  if (!popupWrap) return;
+
+  if (!waqtId) {
+    popupWrap.classList.add("hidden");
+    popupWrap.innerHTML = "";
+    document.querySelectorAll(".waqt-pill-card").forEach((btn) => {
+      btn.classList.remove("waqt-popup-selected");
+      btn.setAttribute("aria-expanded", "false");
+    });
+    return;
+  }
+
+  const info = getExactWaqtPopupDetails(waqtId, now);
+  if (!info) return;
+
+  const lang = appState.locale || "bn";
+  const startClockFull = formatMinutesToLocalizedTime(info.startMins, lang);
+  const endClockFull = formatMinutesToLocalizedTime(info.endMins, lang);
+  const startShort = formatShortWaqtClock(info.startMins, lang);
+  const endShort = formatShortWaqtClock(info.endMins, lang);
+
+  let statusClass = "status-upcoming";
+  let statusBadgeText = "";
+  let countdownLabel = "";
+  let countdownVal = formatRemainingDurationText(info.remOrStartsMins, lang);
+
+  if (info.isActive) {
+    statusClass = "status-active";
+    statusBadgeText =
+      lang === "bn" ? "🟢 চলমান ওয়াক্ত" : lang === "ar" ? "🟢 الوقت جارٍ" : "🟢 Active Now";
+    countdownLabel =
+      lang === "bn"
+        ? "ওয়াক্ত শেষ হতে বাকি:"
+        : lang === "ar"
+        ? "الوقت المتبقي لانتهاء الوقت:"
+        : "Time Remaining in Waqt:";
+  } else if (info.isPassed) {
+    statusClass = "status-passed";
+    statusBadgeText =
+      lang === "bn" ? "✓ আজ সমাপ্ত" : lang === "ar" ? "✓ انقضى اليوم" : "✓ Completed Today";
+    countdownLabel =
+      lang === "bn"
+        ? "আগামীকাল শুরু হতে বাকি:"
+        : lang === "ar"
+        ? "يبدأ غداً بعد:"
+        : "Starts Tomorrow In:";
+  } else {
+    statusClass = "status-upcoming";
+    statusBadgeText =
+      lang === "bn" ? "⏳ আসন্ন ওয়াক্ত" : lang === "ar" ? "⏳ صلاة قادمة" : "⏳ Upcoming Waqt";
+    countdownLabel =
+      lang === "bn"
+        ? "ওয়াক্ত শুরু হতে বাকি:"
+        : lang === "ar"
+        ? "يتبقى على دخول الوقت:"
+        : "Waqt Starts In:";
+  }
+
+  const startLbl = lang === "bn" ? "শুরু (Start)" : lang === "ar" ? "بداية الوقت" : "Starts At";
+  const endLbl = lang === "bn" ? "শেষ (End)" : lang === "ar" ? "نهاية الوقت" : "Ends At";
+  const primeLbl =
+    lang === "bn"
+      ? "✨ উত্তম সময় (আউয়াল ওয়াক্ত):"
+      : lang === "ar"
+      ? "✨ الوقت المختار (أول الوقت):"
+      : "✨ Prime Window (Awwal Waqt):";
+  const filterBtnTxt =
+    lang === "bn"
+      ? "এই ওয়াক্তের সুন্নাহ দেখুন ➔"
+      : lang === "ar"
+      ? "عرض سنن هذا الوقت ➔"
+      : "Filter Phase Sunnahs ➔";
+
+  popupWrap.innerHTML = `
+    <div id="waqt-popup-arrow" class="waqt-popup-arrow"></div>
+    <div class="waqt-range-popup-card">
+      <div class="waqt-popup-head">
+        <div class="waqt-popup-title-group">
+          <div class="waqt-popup-avatar">${info.icon}</div>
+          <div class="waqt-popup-title-text">
+            <h4>${info.title} (${startShort} – ${endShort})</h4>
+            <small>${info.subLabel}</small>
+          </div>
+        </div>
+        <div class="waqt-popup-head-right">
+          <span class="waqt-popup-status-pill ${statusClass}">${statusBadgeText}</span>
+          <button type="button" id="waqt-popup-close-btn" class="waqt-popup-close-btn" aria-label="Close Waqt Popup">✕</button>
+        </div>
+      </div>
+
+      <div class="waqt-popup-time-grid">
+        <div class="waqt-popup-time-box start-box">
+          <span class="waqt-popup-time-lbl">${startLbl}</span>
+          <strong class="waqt-popup-time-val">${startClockFull}</strong>
+        </div>
+        <div class="waqt-popup-time-divider" aria-hidden="true">➔</div>
+        <div class="waqt-popup-time-box end-box">
+          <span class="waqt-popup-time-lbl">${endLbl}</span>
+          <strong class="waqt-popup-time-val">${endClockFull}</strong>
+        </div>
+      </div>
+
+      <div class="waqt-popup-meta-rows">
+        <div class="waqt-popup-meta-item">
+          <span>${primeLbl}</span>
+          <strong>${info.primeRangeStr}</strong>
+        </div>
+        <div class="waqt-popup-meta-item">
+          <span>⏱️ ${countdownLabel}</span>
+          <strong style="color:${info.isActive ? "var(--danger, #dc2626)" : "var(--accent-emerald-dark)"};">${countdownVal}</strong>
+        </div>
+      </div>
+
+      <div class="waqt-popup-sunnah-note">
+        <span>${info.rakahNote}</span>
+        <button type="button" class="waqt-popup-filter-btn" data-popup-filter-phase="${info.phase}">${filterBtnTxt}</button>
+      </div>
+    </div>
+  `;
+
+  popupWrap.classList.remove("hidden");
+
+  document.querySelectorAll(".waqt-pill-card").forEach((btn) => {
+    const isTarget = btn.getAttribute("data-waqt-id") === waqtId;
+    btn.classList.toggle("waqt-popup-selected", isTarget);
+    btn.setAttribute("aria-expanded", isTarget ? "true" : "false");
+  });
+
+  requestAnimationFrame(() => positionWaqtPopupArrow(waqtId));
+}
+
+function syncOpenWaqtPopupIfVisible(now = new Date()) {
+  if (!activeSelectedWaqtPopupId) return;
+  renderWaqtTimeRangePopup(activeSelectedWaqtPopupId, now);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const waqtGrid = document.getElementById("five-waqt-grid");
   if (waqtGrid) {
     waqtGrid.addEventListener("click", (e) => {
-      const pill = e.target.closest("[data-waqt-phase]");
-      if (!pill) return;
-      const phase = pill.getAttribute("data-waqt-phase");
-      switchTabProgrammatically("tab-routine", true);
-      activePhase = phase;
-      document.querySelectorAll(".filter-bar .chip").forEach((c) => {
-        c.classList.toggle("active", c.dataset.phase === phase);
-      });
-      renderHabits();
-      if (navigator.vibrate) navigator.vibrate(12);
+      const pillBtn = e.target.closest(".waqt-pill-card[data-waqt-id]");
+      if (!pillBtn) return;
+      const clickedId = pillBtn.getAttribute("data-waqt-id");
+      if (navigator.vibrate) navigator.vibrate(14);
+
+      if (activeSelectedWaqtPopupId === clickedId) {
+        activeSelectedWaqtPopupId = null;
+        renderWaqtTimeRangePopup(null);
+      } else {
+        activeSelectedWaqtPopupId = clickedId;
+        renderWaqtTimeRangePopup(clickedId, new Date());
+        if (typeof pushAppHistoryState === "function") {
+          pushAppHistoryState("waqt-popup-" + clickedId);
+        }
+      }
     });
   }
+
+  document.addEventListener("click", (e) => {
+    const closeBtn = e.target.closest("#waqt-popup-close-btn");
+    if (closeBtn) {
+      activeSelectedWaqtPopupId = null;
+      renderWaqtTimeRangePopup(null);
+      return;
+    }
+
+    const filterBtn = e.target.closest("[data-popup-filter-phase]");
+    if (filterBtn) {
+      const targetPhase = filterBtn.getAttribute("data-popup-filter-phase");
+      if (targetPhase) {
+        activePhase = targetPhase;
+        document.querySelectorAll(".filter-bar .chip").forEach((c) => {
+          c.classList.toggle("active", c.dataset.phase === targetPhase);
+        });
+        switchTabProgrammatically("tab-routine", true);
+        renderHabits();
+        const habitContainer = document.getElementById("habit-list-container");
+        if (habitContainer) {
+          habitContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      }
+      return;
+    }
+
+    // Dismiss popup automatically when tapping outside the 5-Waqt card
+    if (activeSelectedWaqtPopupId && !e.target.closest(".waqt-strip-card")) {
+      activeSelectedWaqtPopupId = null;
+      renderWaqtTimeRangePopup(null);
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    if (activeSelectedWaqtPopupId) {
+      positionWaqtPopupArrow(activeSelectedWaqtPopupId);
+    }
+  });
 });
 
 
@@ -7966,4 +8423,5 @@ function initMuslimBanglaSearchLocationModal() {
 document.addEventListener("DOMContentLoaded", () => {
   initMuslimBanglaSearchLocationModal();
 });
+
 
