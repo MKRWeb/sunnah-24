@@ -1347,16 +1347,16 @@ function resolveMiddayWaqtMeta(dateObj = new Date(), locale = appState.locale) {
 
   if (isJumuah) {
     return {
-      isJumuah: true,
+            isJumuah: true,
       pillName:
         lang === "bn" ? "জুমু'আ" : lang === "ar" ? "الجمعة" : "Jumu'ah",
       pillIcon: "🕌",
       liveMainTitle:
         lang === "bn"
-          ? "জুমু'আ (মধ্যাহ্ন হতে আসরের পূর্ব পর্যন্ত)"
+          ? "জুমু'আ"
           : lang === "ar"
-          ? "الجمعة (من الزوال حتى العصر)"
-          : "Jumu'ah (After Zawal until Asr)",
+          ? "الجمعة"
+          : "Jumu'ah", 
       primeWindowLabel:
         lang === "bn"
           ? "জুমু'আর উত্তম সময় (আউয়াল ওয়াক্ত)"
@@ -1394,12 +1394,12 @@ function resolveMiddayWaqtMeta(dateObj = new Date(), locale = appState.locale) {
     isJumuah: false,
     pillName: t("waqt_dhuhr"),
     pillIcon: "☀️",
-    liveMainTitle:
+        liveMainTitle:
       lang === "bn"
-        ? "যোহর (মধ্যাহ্ন হতে আসরের পূর্ব পর্যন্ত)"
+        ? "যোহর"
         : lang === "ar"
-        ? "الظهر (من الزوال حتى العصر)"
-        : "Dhuhr (After Zawal until Asr)",
+        ? "الظهر"
+        : "Dhuhr",
     primeWindowLabel:
       lang === "bn"
         ? "যোহরের উত্তম সময় (আউয়াল ওয়াক্ত)"
@@ -3459,12 +3459,12 @@ function renderFiveWaqtStrip(now = new Date()) {
 
     if (nowMins >= sched.fajr && nowMins < pWindows.sunrise.start) {
       // 1. Fajr Fard Waqt + Prime Time (Al-Isfar) Card-in-Card
-      activeWaqtTitle =
+            activeWaqtTitle =
         lang === "bn"
-          ? "ফজর (সুবহে সাদিক হতে সূর্যোদয় পর্যন্ত)"
+          ? "ফজর"
           : lang === "ar"
-          ? "الفجر (من الصبح الصادق حتى الشروق)"
-          : "Fajr (Subh Sadiq until Sunrise)";
+          ? "الفجر"
+          : "Fajr"; 
       winStart = sched.fajr;
       winEnd = pWindows.sunrise.start;
 
@@ -3553,10 +3553,10 @@ function renderFiveWaqtStrip(now = new Date()) {
       // 3. Ishraq & Duha (Chasht) Permitted Window: after Sunrise prohibited end until Zawal start
       activeWaqtTitle =
         lang === "bn"
-          ? "চাশত / ইশরাক (যাওয়ালের পূর্ব পর্যন্ত)"
+          ? "চাশত / ইশরাক"
           : lang === "ar"
-          ? "وقت الإشراق والضحى (قبل الزوال)"
-          : "Ishraq & Duha (Until Zawal)";
+          ? "وقت الإشراق والضحى"
+          : "Ishraq & Duha";
       winStart = pWindows.sunrise.end;
       winEnd = pWindows.zawal.start;
 
@@ -3653,17 +3653,17 @@ function renderFiveWaqtStrip(now = new Date()) {
     } else if (nowMins >= sched.asr && nowMins < pWindows.sunset.start) {
       // 6. Asr Fard Waqt + Prime Time (Fadhilah Window before Sun Yellowing) Card-in-Card
       const isHanafiActive = sched.profile && sched.profile.asrShadowFactor === 2;
-      activeWaqtTitle = isHanafiActive
+            activeWaqtTitle = isHanafiActive
         ? lang === "bn"
-          ? "আসর — হানাফী (দ্বিগুণ ছায়া হতে সূর্যাস্তের পূর্ব পর্যন্ত)"
+          ? "আসর — হানাফী"
           : lang === "ar"
-          ? "العصر — حنفي (من مصير الظل مثليه حتى الغروب)"
-          : "Asr — Hanafi (2x Shadow until Sunset)"
+          ? "العصر — حنفي"
+          : "Asr — Hanafi"
         : lang === "bn"
-        ? "আসর — শাফিঈ/জমহুর (একগুণ ছায়া হতে সূর্যাস্তের পূর্ব পর্যন্ত)"
+        ? "আসর — শাফিঈ/জমহুর"
         : lang === "ar"
-        ? "العصر — جمهور/شافعي (من مصير الظل مثله حتى الغروب)"
-        : "Asr — Standard/Shafi'i (1x Shadow until Sunset)";
+        ? "العصر — جمهور/شافعي"
+        : "Asr — Standard/Shafi'i"; 
       winStart = sched.asr;
       winEnd = pWindows.sunset.start;
 
@@ -3750,12 +3750,12 @@ function renderFiveWaqtStrip(now = new Date()) {
       `;
     } else if (nowMins >= sched.maghrib && nowMins < sched.isha) {
       // 8. Maghrib Fard Waqt + Prime Time (Ta'jil) Card-in-Card
-      activeWaqtTitle =
+            activeWaqtTitle =
         lang === "bn"
-          ? "মাগরিব (সূর্যাস্ত হতে সন্ধ্যার লাল আভা পর্যন্ত)"
+          ? "মাগরিব"
           : lang === "ar"
-          ? "المغرب (من الغروب حتى مغيب الشفق)"
-          : "Maghrib (Sunset until Red Twilight Ends)";
+          ? "المغرب"
+          : "Maghrib"; 
       winStart = sched.maghrib;
       winEnd = sched.isha;
 
@@ -3828,12 +3828,12 @@ function renderFiveWaqtStrip(now = new Date()) {
       const tahajjudEarlyStartClock = formatShortWaqtClock(sched.firstThirdEnd, lang);
       const lastThirdClock = formatShortWaqtClock(sched.lastThirdStart, lang);
 
-      activeWaqtTitle =
+            activeWaqtTitle =
         lang === "bn"
-          ? "ইশা (সারারাত ফজরের পূর্ব পর্যন্ত)"
+          ? "ইশা"
           : lang === "ar"
-          ? "العشاء (ممتد طوال الليل حتى الفجر)"
-          : "Isha (Valid Whole Night Until Fajr)";
+          ? "العشاء"
+          : "Isha"; 
       customRangeText = `${ishaStartClock} - ${fajrEndClock}`;
       customStatusText =
         lang === "bn"
