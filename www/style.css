@@ -3862,3 +3862,125 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
   border-color: rgba(234, 179, 8, 0.45);
 }
 
+/* ==========================================================================
+   COMPACT SHRUNK TAHAJJUD SECONDARY STRIP & 3-PART ONGOING WAQT REFINEMENT
+   (Matches the exact 3-part UI of the 5-Waqt Popup Window)
+   ========================================================================== */
+.ongoing-static-time-grid {
+  margin-bottom: 9px !important;
+}
+
+.ongoing-static-meta-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 0;
+}
+
+.ongoing-tahajjud-mini-bar {
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px dashed rgba(16, 185, 129, 0.32);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.7rem;
+}
+
+.ongoing-tahajjud-mini-bar.golden-state {
+  background: rgba(234, 179, 8, 0.08);
+  border-color: rgba(217, 119, 6, 0.42);
+}
+
+.tahajjud-mini-left {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-width: 0;
+}
+
+.tahajjud-mini-icon {
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.tahajjud-mini-title {
+  color: var(--text-muted, #5b7268);
+  font-weight: 700;
+}
+
+.tahajjud-mini-time {
+  color: var(--text-primary, #1e352b);
+  font-weight: 800;
+}
+
+.tahajjud-mini-right {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.tahajjud-mini-badge {
+  font-size: 0.63rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.tahajjud-mini-badge.upcoming {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid rgba(217, 119, 6, 0.32);
+}
+
+.tahajjud-mini-badge.active {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid rgba(16, 185, 129, 0.38);
+}
+
+.tahajjud-mini-badge.golden {
+  background: #fef08a;
+  color: #854d0e;
+  border: 1px solid rgba(202, 138, 4, 0.42);
+}
+
+html[data-theme="dark"] .ongoing-tahajjud-mini-bar {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+html[data-theme="dark"] .ongoing-tahajjud-mini-bar.golden-state {
+  background: rgba(234, 179, 8, 0.12);
+  border-color: rgba(234, 179, 8, 0.38);
+}
+
+html[data-theme="dark"] .tahajjud-mini-title {
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] .tahajjud-mini-time {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .tahajjud-mini-badge.upcoming {
+  background: rgba(234, 179, 8, 0.18);
+  color: #fde047;
+}
+
+html[data-theme="dark"] .tahajjud-mini-badge.active {
+  background: rgba(16, 185, 129, 0.22);
+  color: #6ee7b7;
+}
+
+html[data-theme="dark"] .tahajjud-mini-badge.golden {
+  background: rgba(234, 179, 8, 0.24);
+  color: #fef08a;
+}
+
