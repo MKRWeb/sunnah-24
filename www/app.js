@@ -3432,9 +3432,12 @@ function renderFiveWaqtStrip(now = new Date()) {
   };
 
   // ==========================================================================
-  // STATIC POPUP-STYLE ONGOING WAQT DASHBOARD CARD (MATERIAL 3 CARD-IN-CARD)
-  // Renders the exact same rich, structured arrangement as the 5-Waqt popup
-  // directly inside #live-waqt-countdown-box with 100% real-time accuracy.
+  // CLEAN 3-PART ONGOING WAQT DASHBOARD CARD (MATCHING 5-WAQT POPUP UI)
+  // Renders only the 3 clean sections:
+  // 1) Start ➔ End Time Grid Box
+  // 2) Prime Window (✨ উত্তম সময় / আউয়াল ওয়াক্ত) Meta Pill
+  // 3) Countdown (⏱️ ওয়াক্ত শেষ হতে বাকি) Meta Pill
+  // Plus a compact, shrunk secondary Tahajjud strip during Isha & Rakah Footer.
   // ==========================================================================
   const boxEl = document.getElementById("live-waqt-countdown-box");
   if (boxEl) {
@@ -3446,10 +3449,13 @@ function renderFiveWaqtStrip(now = new Date()) {
     let currentPos = nowMins;
     let isProhibitedNow = false;
     let exactEndDisplay = false;
-    let primeLabel = "";
+    let primeLabel =
+      lang === "bn"
+        ? "✨ উত্তম সময় (আউয়াল ওয়াক্ত):"
+        : lang === "ar"
+        ? "✨ الوقت المختار (أول الوقت):"
+        : "✨ Prime Window (Awwal Waqt):";
     let primeValueHtml = "";
-    let primeSubNote = "";
-    let primeIsActive = true;
     let rakahSummary = "";
     let tahajjudSubCardHtml = "";
 
@@ -3457,7 +3463,7 @@ function renderFiveWaqtStrip(now = new Date()) {
     const endLbl = lang === "bn" ? "শেষ (End)" : lang === "ar" ? "نهاية الوقت" : "Ends At";
 
     if (nowMins >= sched.fajr && nowMins < pWindows.sunrise.start) {
-      // 1. Fajr Fard Waqt + Prime Time (Al-Isfar)
+      // 1. Fajr Fard Waqt
       activeIcon = "🌅";
       activeWaqtTitle =
         lang === "bn" ? "ফজর সালাতের ওয়াক্ত" : lang === "ar" ? "وقت صلاة الفجر" : "Fajr Prayer Waqt";
@@ -3471,37 +3477,10 @@ function renderFiveWaqtStrip(now = new Date()) {
       winEnd = pWindows.sunrise.start;
 
       const fajrStartClock = formatShortWaqtClock(sched.fajr, lang);
-      const fajrEndClock = formatShortWaqtClock((pWindows.sunrise.start - 1 + 1440) % 1440, lang);
       const fajrPrimeEnd = Math.min(pWindows.sunrise.start - 5, sched.fajr + 38);
       const fajrPrimeClock = formatShortWaqtClock(fajrPrimeEnd, lang);
-      primeIsActive = nowMins < fajrPrimeEnd;
-      const minsLeftPrime = Math.max(1, fajrPrimeEnd - nowMins);
-      const primeLeftStr = formatRemainingDurationText(minsLeftPrime, lang);
 
-      primeLabel =
-        lang === "bn"
-          ? "✨ উত্তম সময় (আল-ইসফার):"
-          : lang === "ar"
-          ? "✨ الوقت المختار (الإسفار):"
-          : "✨ Prime Time (Al-Isfar):";
-      primeValueHtml = `${fajrStartClock} – ${fajrPrimeClock} ${
-        primeIsActive
-          ? `<span class="ongoing-prime-badge active">⏳ ${primeLeftStr}</span>`
-          : `<span class="ongoing-prime-badge ended">${
-              lang === "bn" ? "সমাপ্ত" : lang === "ar" ? "انتهى" : "Ended"
-            }</span>`
-      }`;
-      primeSubNote = primeIsActive
-        ? lang === "bn"
-          ? `ফজরের ২ রাকাত সুন্নাত ফরজের পূর্বে আদায় করুন (ওয়াক্ত শেষ: ${fajrEndClock})`
-          : lang === "ar"
-          ? `ركعتا سنة الفجر قبل الفرض (ينتهي الفجر ${fajrEndClock})`
-          : `Pray 2 Rak'ah Fajr Sunnah before Fard (Ends ${fajrEndClock})`
-        : lang === "bn"
-        ? `উত্তম সময় সমাপ্ত — ফজর সূর্যোদয়ের পূর্ব (${fajrEndClock}) পর্যন্ত জায়েয`
-        : lang === "ar"
-        ? `انتهى الوقت المختار — الفجر ممتد حتى ${fajrEndClock}`
-        : `Prime time ended — Fajr valid until ${fajrEndClock}`;
+      primeValueHtml = `${fajrStartClock} – ${fajrPrimeClock}`;
       rakahSummary =
         lang === "bn"
           ? "🕌 ২ রাকাত সুন্নাতে মুয়াক্কাদাহ + ২ রাকাত ফরজ"
@@ -3541,12 +3520,6 @@ function renderFiveWaqtStrip(now = new Date()) {
           : lang === "ar"
           ? `الإشراق / الضحى (${ishraqStartClock})`
           : `Ishraq / Duha (${ishraqStartClock})`;
-      primeSubNote =
-        lang === "bn"
-          ? "⚠️ এখন সূর্যোদয়ের নিষিদ্ধ সময় চলছে — যিকির ও ইস্তিগফারে মাশগুল থাকুন (সহীহ মুসলিম ৮৩১)"
-          : lang === "ar"
-          ? "⚠️ وقت النهي عند طلوع الشمس جارٍ الآن — اشتغل بالذكر والاستغفار"
-          : "⚠️ Sunrise prohibited window active — engage in Dhikr & Istighfar";
       rakahSummary =
         lang === "bn"
           ? "📖 দলিল: সহীহ মুসলিম ৮৩১ (উকবাহ ইবনু আমির রা.)"
@@ -3574,22 +3547,8 @@ function renderFiveWaqtStrip(now = new Date()) {
       const ishraqStartClock = formatShortWaqtClock(pWindows.sunrise.end, lang);
       const ishraqPrimeEnd = Math.min(pWindows.zawal.start - 15, pWindows.sunrise.end + 45);
       const ishraqPrimeClock = formatShortWaqtClock(ishraqPrimeEnd, lang);
-      const zawalStartClock = formatShortWaqtClock(pWindows.zawal.start, lang);
-      primeIsActive = nowMins < ishraqPrimeEnd;
 
-      primeLabel =
-        lang === "bn"
-          ? "☀️ ইশরাকের উত্তম সময়:"
-          : lang === "ar"
-          ? "☀️ وقت الإشراق المختار:"
-          : "☀️ Ishraq Prime Window:";
       primeValueHtml = `${ishraqStartClock} – ${ishraqPrimeClock}`;
-      primeSubNote =
-        lang === "bn"
-          ? `৩৬০টি গ্রন্থির সদকা স্বরূপ ২ বা ৪ রাকাত সালাতুদ দুহা আদায় করুন (যাওয়াল শুরু: ${zawalStartClock})`
-          : lang === "ar"
-          ? `صلِّ ركعتين أو أربعاً من الضحى صدقة عن ٣٦٠ مفصلاً (الزوال: ${zawalStartClock})`
-          : `Pray 2 or 4 Rak'ah Salat al-Duha as charity for 360 joints (Zawal at ${zawalStartClock})`;
       rakahSummary =
         lang === "bn"
           ? "🕌 ২ রাকাত ইশরাক + ২ থেকে ৮ রাকাত চাশত (নফল)"
@@ -3624,7 +3583,6 @@ function renderFiveWaqtStrip(now = new Date()) {
           ? "⏭️ الصلاة القادمة:"
           : "⏭️ Next Permitted Waqt:";
       primeValueHtml = middayMeta.zawalNextWaqtLabel(dhuhrStartClock);
-      primeSubNote = `⚠️ ${middayMeta.zawalWaitWarning}`;
       rakahSummary =
         lang === "bn"
           ? "📖 দলিল: সহীহ মুসলিম ৮৩১ (সূর্য ঢলে পড়া পর্যন্ত অপেক্ষা করুন)"
@@ -3647,7 +3605,7 @@ function renderFiveWaqtStrip(now = new Date()) {
         : "Dhuhr Prayer Waqt";
       activeSubLabel =
         lang === "bn"
-          ? "যাওয়াল (দ্বিপ্রহর) শেষে আসরের ওয়াক্তের পূর্ব পর্যন্ত"
+          ? "যাওয়াল (দ্বিপ্রহর) শেষে আসরের পূর্ব পর্যন্ত"
           : lang === "ar"
           ? "بعد الزوال إلى قبيل دخول وقت العصر"
           : "After midday zenith (Zawal) until before Asr";
@@ -3655,24 +3613,10 @@ function renderFiveWaqtStrip(now = new Date()) {
       winEnd = sched.asr;
 
       const dhuhrStartClock = formatShortWaqtClock(pWindows.zawal.end, lang);
-      const dhuhrEndClock = formatShortWaqtClock((sched.asr - 1 + 1440) % 1440, lang);
       const dhuhrPrimeEnd = Math.min(sched.asr - 15, pWindows.zawal.end + 50);
       const dhuhrPrimeClock = formatShortWaqtClock(dhuhrPrimeEnd, lang);
-      primeIsActive = nowMins < dhuhrPrimeEnd;
-      const minsLeftPrime = Math.max(1, dhuhrPrimeEnd - nowMins);
-      const primeLeftStr = formatRemainingDurationText(minsLeftPrime, lang);
 
-      primeLabel = `✨ ${middayMeta.primeWindowLabel}:`;
-      primeValueHtml = `${dhuhrStartClock} – ${dhuhrPrimeClock} ${
-        primeIsActive
-          ? `<span class="ongoing-prime-badge active">⏳ ${primeLeftStr}</span>`
-          : `<span class="ongoing-prime-badge ended">${
-              lang === "bn" ? "সমাপ্ত" : lang === "ar" ? "انتهى" : "Ended"
-            }</span>`
-      }`;
-      primeSubNote = primeIsActive
-        ? middayMeta.primeActiveSubtext(dhuhrEndClock)
-        : middayMeta.primeEndedSubtext(dhuhrEndClock);
+      primeValueHtml = `${dhuhrStartClock} – ${dhuhrPrimeClock}`;
       rakahSummary = middayMeta.isJumuah
         ? lang === "bn"
           ? "🕌 পূর্বে ৪ সুন্নাত + খুতবা ও ২ ফরজ + পরে ৪ (বা ২) সুন্নাত"
@@ -3685,7 +3629,7 @@ function renderFiveWaqtStrip(now = new Date()) {
         ? "🕌 ٤ ركعات سنة قبلية + ٤ فرض + ركعتان سنة بعدية"
         : "🕌 4 Rak'ah Sunnah Before + 4 Fard + 2 Rak'ah Sunnah After";
     } else if (nowMins >= sched.asr && nowMins < pWindows.sunset.start) {
-      // 6. Asr Fard Waqt + Prime Time (Fadhilah Window)
+      // 6. Asr Fard Waqt
       const isHanafiActive = sched.profile && sched.profile.asrShadowFactor === 2;
       activeIcon = "🌤️";
       activeWaqtTitle = isHanafiActive
@@ -3709,37 +3653,10 @@ function renderFiveWaqtStrip(now = new Date()) {
       winEnd = pWindows.sunset.start;
 
       const asrStartClock = formatShortWaqtClock(sched.asr, lang);
-      const asrEndClock = formatShortWaqtClock((pWindows.sunset.start - 1 + 1440) % 1440, lang);
       const asrPrimeEnd = Math.max(sched.asr + 30, pWindows.sunset.start - 25);
       const asrPrimeClock = formatShortWaqtClock(asrPrimeEnd, lang);
-      primeIsActive = nowMins < asrPrimeEnd;
-      const minsLeftPrime = Math.max(1, asrPrimeEnd - nowMins);
-      const primeLeftStr = formatRemainingDurationText(minsLeftPrime, lang);
 
-      primeLabel =
-        lang === "bn"
-          ? "✨ উত্তম সময় (ফাদিলাহ):"
-          : lang === "ar"
-          ? "✨ الوقت المختار (قبل الاصفرار):"
-          : "✨ Prime Time (Fadhilah):";
-      primeValueHtml = `${asrStartClock} – ${asrPrimeClock} ${
-        primeIsActive
-          ? `<span class="ongoing-prime-badge active">⏳ ${primeLeftStr}</span>`
-          : `<span class="ongoing-prime-badge ended">${
-              lang === "bn" ? "সমাপ্ত" : lang === "ar" ? "انتهى" : "Ended"
-            }</span>`
-      }`;
-      primeSubNote = primeIsActive
-        ? lang === "bn"
-          ? "আসরের ফাদিলাহ সময় চলমান • সূর্যাস্তের পূর্বে সন্ধ্যার আযকার পাঠ করুন"
-          : lang === "ar"
-          ? "وقت الفضيلة جارٍ • اقرأ أذكار المساء قبل الغروب"
-          : "Asr Fadhilah active • Recite Evening Adhkar before sunset"
-        : lang === "bn"
-        ? `ফাদিলাহ সময় সমাপ্ত — সূর্যাস্তের আগে নামায মাকরূহ, দ্রুত আদায় করুন (শেষ: ${asrEndClock})`
-        : lang === "ar"
-        ? `انتهى وقت الاختيار — بادر بالصلاة قبل الغروب (${asrEndClock})`
-        : `Prime time ended — pray immediately before sunset (${asrEndClock})`;
+      primeValueHtml = `${asrStartClock} – ${asrPrimeClock}`;
       rakahSummary =
         lang === "bn"
           ? "🕌 ৪ রাকাত ফরজ (পূর্বে ৪ রাকাত সুন্নাতে গায়রে মুয়াক্কাদাহ)"
@@ -3779,12 +3696,6 @@ function renderFiveWaqtStrip(now = new Date()) {
           : lang === "ar"
           ? `المغرب (${maghribStartClock})`
           : `Maghrib (${maghribStartClock})`;
-      primeSubNote =
-        lang === "bn"
-          ? "⚠️ সূর্যাস্তের নিষিদ্ধ সময় চলছে — মাগরিব শুরু হওয়া পর্যন্ত যেকোনো সালাত নিষিদ্ধ (সহীহ মুসলিম ৮৩১)"
-          : lang === "ar"
-          ? "⚠️ وقت النهي عند غروب الشمس جارٍ الآن — تحرم الصلاة حتى تغرب (مسلم ٨٣١)"
-          : "⚠️ Sunset prohibited window active — Salah is forbidden until Maghrib (Sahih Muslim 831)";
       rakahSummary =
         lang === "bn"
           ? "📖 দলিল: সহীহ মুসলিম ৮৩১ (সন্ধ্যার যিকির ও ইস্তিগফার করুন)"
@@ -3792,7 +3703,7 @@ function renderFiveWaqtStrip(now = new Date()) {
           ? "📖 الدليل: صحيح مسلم ٨٣١"
           : "📖 Proof: Sahih Muslim 831";
     } else if (nowMins >= sched.maghrib && nowMins < sched.isha) {
-      // 8. Maghrib Fard Waqt + Prime Time (Ta'jil)
+      // 8. Maghrib Fard Waqt
       activeIcon = "🌇";
       activeWaqtTitle =
         lang === "bn"
@@ -3810,37 +3721,10 @@ function renderFiveWaqtStrip(now = new Date()) {
       winEnd = sched.isha;
 
       const maghribStartClock = formatShortWaqtClock(sched.maghrib, lang);
-      const maghribEndClock = formatShortWaqtClock((sched.isha - 1 + 1440) % 1440, lang);
       const maghribPrimeEnd = Math.min(sched.isha - 5, sched.maghrib + 25);
       const maghribPrimeClock = formatShortWaqtClock(maghribPrimeEnd, lang);
-      primeIsActive = nowMins < maghribPrimeEnd;
-      const minsLeftPrime = Math.max(1, maghribPrimeEnd - nowMins);
-      const primeLeftStr = formatRemainingDurationText(minsLeftPrime, lang);
 
-      primeLabel =
-        lang === "bn"
-          ? "✨ উত্তম সময় (তা'জিল):"
-          : lang === "ar"
-          ? "✨ الوقت المختار (التعجيل):"
-          : "✨ Prime Time (Ta'jil):";
-      primeValueHtml = `${maghribStartClock} – ${maghribPrimeClock} ${
-        primeIsActive
-          ? `<span class="ongoing-prime-badge active">⏳ ${primeLeftStr}</span>`
-          : `<span class="ongoing-prime-badge ended">${
-              lang === "bn" ? "সমাপ্ত" : lang === "ar" ? "انتهى" : "Ended"
-            }</span>`
-      }`;
-      primeSubNote = primeIsActive
-        ? lang === "bn"
-          ? `তাৎক্ষণিক আদায়ের সময় ও ২ রাকাত সুন্নাত (মাগরিব ইশার পূর্ব ${maghribEndClock} পর্যন্ত জায়েয)`
-          : lang === "ar"
-          ? `وقت التعجيل وركعتا السنة (المغرب ممتد حتى ${maghribEndClock})`
-          : `Prompt prayer & 2 Rak'ah Sunnah (Maghrib valid until ${maghribEndClock})`
-        : lang === "bn"
-        ? `তা'জিল সময় সমাপ্ত — মাগরিব ইশার পূর্ব (${maghribEndClock}) পর্যন্ত জায়েয`
-        : lang === "ar"
-        ? `انتهى وقت التعجيل — المغرب ممتد حتى ${maghribEndClock}`
-        : `Ta'jil window ended — Maghrib valid until ${maghribEndClock}`;
+      primeValueHtml = `${maghribStartClock} – ${maghribPrimeClock}`;
       rakahSummary =
         lang === "bn"
           ? "🕌 ৩ রাকাত ফরজ + ২ রাকাত সুন্নাতে মুয়াক্কাদাহ"
@@ -3848,7 +3732,7 @@ function renderFiveWaqtStrip(now = new Date()) {
           ? "🕌 ٣ ركعات فرض + ركعتان سنة راتبة"
           : "🕌 3 Rak'ah Fard + 2 Rak'ah Sunnah Mu'akkadah";
     } else {
-      // 9. Night Isha + Tahajjud Dual-Layer Architecture (Isha Whole Night + Tahajjud After 1st Third & Golden Last Third)
+      // 9. Night Isha + Shrunk Secondary Tahajjud Strip
       activeIcon = "🌙";
       winStart = sched.isha;
       winEnd = sched.fajr + 1440;
@@ -3864,12 +3748,7 @@ function renderFiveWaqtStrip(now = new Date()) {
       const ishaStartClock = formatShortWaqtClock(sched.isha, lang);
       const fajrEndClock = formatShortWaqtClock(fajrEndMinusOne, lang);
       const firstThirdClock = formatShortWaqtClock(firstThirdEndMinusOne, lang);
-      const tahajjudEarlyStartClock = formatShortWaqtClock(sched.firstThirdEnd, lang);
       const lastThirdClock = formatShortWaqtClock(sched.lastThirdStart, lang);
-
-      const tahajjudEarlyFull = formatMinutesToLocalizedTime(sched.firstThirdEnd, lang);
-      const lastThirdFull = formatMinutesToLocalizedTime(sched.lastThirdStart, lang);
-      const fajrEndFull = formatMinutesToLocalizedTime(fajrEndMinusOne, lang);
 
       activeWaqtTitle =
         lang === "bn"
@@ -3884,224 +3763,52 @@ function renderFiveWaqtStrip(now = new Date()) {
           ? `الوقت المختار إلى الثلث الأول (${firstThirdClock}) ويمتد للفجر`
           : `Prime until 1st Third (${firstThirdClock}) • Valid until Fajr`;
 
-      primeIsActive = currentPos < normFirstThirdEnd;
-      const minsLeftInFirstThird = Math.max(1, normFirstThirdEnd - currentPos);
-      const firstThirdLeftStr = formatRemainingDurationText(minsLeftInFirstThird, lang);
-
-      primeLabel =
-        lang === "bn"
-          ? "✨ ইশার উত্তম সময় (১ম প্রহর):"
-          : lang === "ar"
-          ? "✨ الوقت المختار للعشاء (الثلث الأول):"
-          : "✨ Isha Prime Time (1st Third):";
-      primeValueHtml = `${ishaStartClock} – ${firstThirdClock} ${
-        primeIsActive
-          ? `<span class="ongoing-prime-badge active">⏳ ${firstThirdLeftStr}</span>`
-          : `<span class="ongoing-prime-badge ended">${
-              lang === "bn"
-                ? "১ম প্রহর সমাপ্ত"
-                : lang === "ar"
-                ? "انتهى الثلث الأول"
-                : "1st Third Ended"
-            }</span>`
-      }`;
-      primeSubNote = primeIsActive
-        ? lang === "bn"
-          ? `ইশার ১ম প্রহর চলমান • ১ম প্রহর শেষে (${tahajjudEarlyStartClock}) তাহাজ্জুদের ওয়াক্ত শুরু হবে`
-          : lang === "ar"
-          ? `الثلث الأول جارٍ • يبدأ وقت التهجد بعده (${tahajjudEarlyStartClock})`
-          : `1st Third active • Tahajjud window opens right after (${tahajjudEarlyStartClock})`
-        : lang === "bn"
-        ? `১ম প্রহর সমাপ্ত (ইশা ও বিতর ফজরের পূর্ব ${fajrEndClock} পর্যন্ত জায়েয)`
-        : lang === "ar"
-        ? `انتهى الثلث الأول (العشاء والوتر ممتد حتى ${fajrEndClock})`
-        : `1st Third ended (Isha & Witr valid until Fajr at ${fajrEndClock})`;
-
+      primeValueHtml = `${ishaStartClock} – ${firstThirdClock}`;
       rakahSummary =
         lang === "bn"
-          ? "🕌 ৪ রাকাত ফরজ + ২ রাকাত সুন্নাত + বিতর ও কিয়ামুল লাইল"
+          ? "🕌 ৪ রাকাত ফরজ + ২ রাকাত সুন্নাত + বিতর সালাত"
           : lang === "ar"
-          ? "🕌 ٤ ركعات فرض + ركعتان سنة + الوتر وقيام الليل"
-          : "🕌 4 Rak'ah Fard + 2 Rak'ah Sunnah + Witr & Qiyam al-Layl";
+          ? "🕌 ٤ ركعات فرض + ركعتان سنة + صلاة الوتر"
+          : "🕌 4 Rak'ah Fard + 2 Rak'ah Sunnah + Witr Prayer";
 
-      // Structured Static Sub-Card for Tahajjud / Qiyam al-Layl matching the exact same popup layout!
+      // Compact, shrunk secondary strip for Tahajjud (less visual weight than main 5 prayers)
+      let tahajjudBadgeHtml = "";
+      let isGoldenThird = false;
       if (currentPos < normFirstThirdEnd) {
-        // Phase 9A: Tahajjud Upcoming (Opens right after 1st Third)
-        const tahajjudStartsInStr = formatRemainingDurationText(normFirstThirdEnd - currentPos, lang);
-        tahajjudSubCardHtml = `
-          <div id="live-tahajjud-subrow" class="ongoing-tahajjud-subcard upcoming-state">
-            <div class="waqt-popup-head" style="margin-bottom:8px;padding-bottom:7px;">
-              <div class="waqt-popup-title-group">
-                <div class="waqt-popup-avatar">🌌</div>
-                <div class="waqt-popup-title-text">
-                  <h4>${
-                    lang === "bn"
-                      ? "তাহাজ্জুদ / কিয়ামুল লাইল"
-                      : lang === "ar"
-                      ? "صلاة التهجد / قيام الليل"
-                      : "Tahajjud / Qiyam al-Layl"
-                  } (${tahajjudEarlyStartClock} – ${fajrEndClock})</h4>
-                  <small>${
-                    lang === "bn"
-                      ? `শ্রেষ্ঠ শেষ তৃতীয়াংশ শুরু: ${lastThirdClock}`
-                      : lang === "ar"
-                      ? `يبدأ الثلث الأخير الأفضل: ${lastThirdClock}`
-                      : `Golden Last 1/3 starts at: ${lastThirdClock}`
-                  }</small>
-                </div>
-              </div>
-              <div class="waqt-popup-head-right">
-                <span class="waqt-popup-status-pill status-upcoming">⏳ ${tahajjudStartsInStr}</span>
-              </div>
-            </div>
-            <div class="waqt-popup-time-grid" style="margin-bottom:0;padding:8px 11px;">
-              <div class="waqt-popup-time-box start-box">
-                <span class="waqt-popup-time-lbl">${
-                  lang === "bn" ? "শুরু (১ম প্রহর শেষে)" : lang === "ar" ? "يبدأ بعد الثلث الأول" : "Opens (Post 1st 1/3)"
-                }</span>
-                <strong class="waqt-popup-time-val">${tahajjudEarlyFull}</strong>
-              </div>
-              <div class="waqt-popup-time-divider" aria-hidden="true">➔</div>
-              <div class="waqt-popup-time-box end-box">
-                <span class="waqt-popup-time-lbl">${
-                  lang === "bn" ? "শ্রেষ্ঠ শেষ ১/৩ শুরু" : lang === "ar" ? "الثلث الأخير الأفضل" : "Golden Last 1/3"
-                }</span>
-                <strong class="waqt-popup-time-val">${lastThirdFull}</strong>
-              </div>
-            </div>
-          </div>
-        `;
+        const startsInStr = formatRemainingDurationText(normFirstThirdEnd - currentPos, lang);
+        tahajjudBadgeHtml = `<span class="tahajjud-mini-badge upcoming">⏳ ${startsInStr}</span>`;
       } else if (currentPos >= normFirstThirdEnd && currentPos < normLastThirdStart) {
-        // Phase 9B: Tahajjud Open Now (Middle Third active, Golden Last Third upcoming)
-        const tahajjudTotal = Math.max(1, winEnd - normFirstThirdEnd);
-        const tahajjudElapsed = Math.max(0, Math.min(tahajjudTotal, currentPos - normFirstThirdEnd));
-        const tahajjudPct = Math.max(5, Math.min(100, Math.round((tahajjudElapsed / tahajjudTotal) * 100)));
-        const tahajjudRemainingStr = formatRemainingDurationText(winEnd - currentPos, lang);
-
-        tahajjudSubCardHtml = `
-          <div id="live-tahajjud-subrow" class="ongoing-tahajjud-subcard active-state">
-            <div class="waqt-popup-head" style="margin-bottom:8px;padding-bottom:7px;">
-              <div class="waqt-popup-title-group">
-                <div class="waqt-popup-avatar">🌌</div>
-                <div class="waqt-popup-title-text">
-                  <h4>${
-                    lang === "bn"
-                      ? "তাহাজ্জুদ / কিয়ামুল লাইল"
-                      : lang === "ar"
-                      ? "صلاة التهجد / قيام الليل"
-                      : "Tahajjud / Qiyam al-Layl"
-                  } (${tahajjudEarlyStartClock} – ${fajrEndClock})</h4>
-                  <small>${
-                    lang === "bn"
-                      ? `চলমান • শ্রেষ্ঠ শেষ ১/৩ প্রহর শুরু: ${lastThirdClock}`
-                      : lang === "ar"
-                      ? `جارٍ الآن • يبدأ الثلث الأخير الأفضل: ${lastThirdClock}`
-                      : `Active • Golden Last 1/3 starts: ${lastThirdClock}`
-                  }</small>
-                </div>
-              </div>
-              <div class="waqt-popup-head-right">
-                <span class="waqt-popup-status-pill status-active">🟢 ${
-                  lang === "bn" ? "চলমান" : lang === "ar" ? "جارٍ الآن" : "Active"
-                }</span>
-              </div>
-            </div>
-            <div class="waqt-popup-time-grid" style="margin-bottom:8px;padding:8px 11px;">
-              <div class="waqt-popup-time-box start-box">
-                <span class="waqt-popup-time-lbl">${startLbl}</span>
-                <strong class="waqt-popup-time-val">${tahajjudEarlyFull}</strong>
-              </div>
-              <div class="waqt-popup-time-divider" aria-hidden="true">➔</div>
-              <div class="waqt-popup-time-box end-box">
-                <span class="waqt-popup-time-lbl">${endLbl}</span>
-                <strong class="waqt-popup-time-val">${fajrEndFull}</strong>
-              </div>
-            </div>
-            <div class="live-waqt-track" style="height:8px;margin-bottom:6px;">
-              <div class="live-waqt-fill" style="width:${tahajjudPct}%;background:linear-gradient(90deg,#0d9488,#10b981);"></div>
-            </div>
-            <div class="live-waqt-bottom-row" style="font-size:0.76rem;">
-              <span class="live-waqt-running">
-                <span class="live-waqt-dot"></span>
-                <span>${
-                  lang === "bn"
-                    ? `শ্রেষ্ঠ শেষ ১/৩: ${lastThirdClock} – ${fajrEndClock}`
-                    : lang === "ar"
-                    ? `الثلث الأخير: ${lastThirdClock} – ${fajrEndClock}`
-                    : `Golden Last 1/3: ${lastThirdClock} – ${fajrEndClock}`
-                }</span>
-              </span>
-              <strong style="color:var(--danger, #dc2626);font-weight:900;">⏳ ${tahajjudRemainingStr}</strong>
-            </div>
-          </div>
-        `;
+        const remStr = formatRemainingDurationText(winEnd - currentPos, lang);
+        tahajjudBadgeHtml = `<span class="tahajjud-mini-badge active">🟢 ${
+          lang === "bn" ? "চলমান" : lang === "ar" ? "جارٍ" : "Active"
+        } • ${remStr}</span>`;
       } else {
-        // Phase 9C: Golden Last Third of the Night (Al-Thuluth al-Akhir — Peak Tahajjud Window!)
-        const lastThirdTotal = Math.max(1, winEnd - normLastThirdStart);
-        const lastThirdElapsed = Math.max(0, Math.min(lastThirdTotal, currentPos - normLastThirdStart));
-        const lastThirdPct = Math.max(6, Math.min(100, Math.round((lastThirdElapsed / lastThirdTotal) * 100)));
-        const tahajjudRemainingStr = formatRemainingDurationText(winEnd - currentPos, lang);
-
-        tahajjudSubCardHtml = `
-          <div id="live-tahajjud-subrow" class="ongoing-tahajjud-subcard golden-state">
-            <div class="waqt-popup-head" style="margin-bottom:8px;padding-bottom:7px;">
-              <div class="waqt-popup-title-group">
-                <div class="waqt-popup-avatar">🌌</div>
-                <div class="waqt-popup-title-text">
-                  <h4>${
-                    lang === "bn"
-                      ? "তাহাজ্জুদ — রাতের শেষ তৃতীয়াংশ (শ্রেষ্ঠ সময়)"
-                      : lang === "ar"
-                      ? "التهجد — الثلث الأخير من الليل (أفضل الوقت)"
-                      : "Tahajjud — Golden Last Third of Night"
-                  }</h4>
-                  <small>${
-                    lang === "bn"
-                      ? `১ম প্রহর শেষে শুরু: ${tahajjudEarlyStartClock} • সাহরি ও ইস্তিগফারের প্রহর`
-                      : lang === "ar"
-                      ? `بدأ بعد الثلث الأول (${tahajjudEarlyStartClock}) • وقت السحر والاستغفار`
-                      : `Opened after 1st 1/3 (${tahajjudEarlyStartClock}) • Pre-Dawn Istighfar`
-                  }</small>
-                </div>
-              </div>
-              <div class="waqt-popup-head-right">
-                <span class="waqt-popup-status-pill status-active">🌟 ${
-                  lang === "bn" ? "শ্রেষ্ঠ প্রহর" : lang === "ar" ? "أفضل الوقت" : "Golden 1/3"
-                }</span>
-              </div>
-            </div>
-            <div class="waqt-popup-time-grid" style="margin-bottom:8px;padding:8px 11px;">
-              <div class="waqt-popup-time-box start-box">
-                <span class="waqt-popup-time-lbl">${
-                  lang === "bn" ? "শেষ ১/৩ শুরু (Start)" : lang === "ar" ? "بداية الثلث الأخير" : "Last 1/3 Starts"
-                }</span>
-                <strong class="waqt-popup-time-val">${lastThirdFull}</strong>
-              </div>
-              <div class="waqt-popup-time-divider" aria-hidden="true">➔</div>
-              <div class="waqt-popup-time-box end-box">
-                <span class="waqt-popup-time-lbl">${endLbl}</span>
-                <strong class="waqt-popup-time-val">${fajrEndFull}</strong>
-              </div>
-            </div>
-            <div class="live-waqt-track" style="height:8px;margin-bottom:6px;">
-              <div class="live-waqt-fill" style="width:${lastThirdPct}%;background:linear-gradient(90deg,#10b981,#eab308);"></div>
-            </div>
-            <div class="live-waqt-bottom-row" style="font-size:0.76rem;">
-              <span class="live-waqt-running">
-                <span class="live-waqt-dot"></span>
-                <span>${
-                  lang === "bn"
-                    ? `চলমান (${lastThirdClock} – ${fajrEndClock})`
-                    : lang === "ar"
-                    ? `جارٍ الآن (${lastThirdClock} – ${fajrEndClock})`
-                    : `Ongoing (${lastThirdClock} – ${fajrEndClock})`
-                }</span>
-              </span>
-              <strong style="color:var(--danger, #dc2626);font-weight:900;">⏳ ${tahajjudRemainingStr}</strong>
-            </div>
-          </div>
-        `;
+        isGoldenThird = true;
+        const remStr = formatRemainingDurationText(winEnd - currentPos, lang);
+        tahajjudBadgeHtml = `<span class="tahajjud-mini-badge golden">🌟 ${
+          lang === "bn" ? "শ্রেষ্ঠ প্রহর" : lang === "ar" ? "أفضل الوقت" : "Last 1/3"
+        } • ${remStr}</span>`;
       }
+
+      const tahajjudMiniTitle =
+        lang === "bn"
+          ? "তাহাজ্জুদ (শেষ ১/৩ শ্রেষ্ঠ সময়):"
+          : lang === "ar"
+          ? "التهجد (الثلث الأخير):"
+          : "Tahajjud (Best Last 1/3):";
+
+      tahajjudSubCardHtml = `
+        <div id="live-tahajjud-subrow" class="ongoing-tahajjud-mini-bar ${isGoldenThird ? "golden-state" : ""}">
+          <div class="tahajjud-mini-left">
+            <span class="tahajjud-mini-icon">🌌</span>
+            <span class="tahajjud-mini-title">${tahajjudMiniTitle}</span>
+            <strong class="tahajjud-mini-time">${lastThirdClock} – ${fajrEndClock}</strong>
+          </div>
+          <div class="tahajjud-mini-right">
+            ${tahajjudBadgeHtml}
+          </div>
+        </div>
+      `;
     }
 
     const totalDuration = Math.max(1, winEnd - winStart);
@@ -4132,17 +3839,17 @@ function renderFiveWaqtStrip(now = new Date()) {
       ? "🟢 Active Waqt"
       : "🟢 চলমান ওয়াক্ত";
 
-    const runningLabelText = isProhibitedNow
-      ? lang === "ar"
-        ? "صلاة النافلة ممنوعة الآن"
-        : lang === "en"
-        ? "Salah Prohibited Now"
-        : "এখন নামাজ আদায় নিষিদ্ধ"
+    const countdownRowLabel = isProhibitedNow
+      ? lang === "bn"
+        ? "⏱️ নিষিদ্ধ সময় শেষ হতে বাকি:"
+        : lang === "ar"
+        ? "⏱️ المتبقي لانتهاء وقت النهي:"
+        : "⏱️ Prohibited Time Ends In:"
+      : lang === "bn"
+      ? "⏱️ ওয়াক্ত শেষ হতে বাকি:"
       : lang === "ar"
-      ? "الوقت جارٍ الآن"
-      : lang === "en"
-      ? "Waqt Ongoing"
-      : "চলমান ওয়াক্ত";
+      ? "⏱️ الوقت المتبقي لانتهاء الوقت:"
+      : "⏱️ Time Remaining in Waqt:";
 
     boxEl.classList.toggle("waqt-prohibited-active", isProhibitedNow);
 
@@ -4157,6 +3864,8 @@ function renderFiveWaqtStrip(now = new Date()) {
         </div>
         <div class="waqt-popup-head-right">
           <span id="live-waqt-range" style="display:none;">${startShortStr} - ${endShortStr}</span>
+          <div id="live-waqt-fill" style="display:none;width:${pct}%;"></div>
+          <span id="live-waqt-status-label" style="display:none;">${statusBadgeText}</span>
           <span class="waqt-popup-status-pill ${isProhibitedNow ? "status-prohibited" : "status-active"}">
             ${statusBadgeText}
           </span>
@@ -4175,29 +3884,15 @@ function renderFiveWaqtStrip(now = new Date()) {
         </div>
       </div>
 
-      <div class="ongoing-progress-strip">
-        <div class="live-waqt-track" style="height:10px;margin-bottom:7px;">
-          <div id="live-waqt-fill" class="live-waqt-fill" style="width:${pct}%;"></div>
-        </div>
-        <div class="live-waqt-bottom-row">
-          <span class="live-waqt-running">
-            <span class="live-waqt-dot"></span>
-            <span id="live-waqt-status-label">${runningLabelText} (${localizeDigits(pct, lang)}%)</span>
-          </span>
-          <strong id="live-waqt-remaining" class="ongoing-countdown-pill">⏳ ${remainingTextStr}</strong>
-        </div>
-      </div>
-
       <div class="waqt-popup-meta-rows ongoing-static-meta-rows">
         <div class="waqt-popup-meta-item">
           <span>${primeLabel}</span>
           <strong>${primeValueHtml}</strong>
         </div>
-        ${
-          primeSubNote
-            ? `<div class="ongoing-prime-subnote ${!primeIsActive || isProhibitedNow ? "note-alert" : ""}">${primeSubNote}</div>`
-            : ""
-        }
+        <div class="waqt-popup-meta-item">
+          <span>${countdownRowLabel}</span>
+          <strong id="live-waqt-remaining" style="color:var(--danger, #dc2626);font-weight:900;">${remainingTextStr}</strong>
+        </div>
       </div>
 
       ${tahajjudSubCardHtml}
@@ -8571,5 +8266,6 @@ function initMuslimBanglaSearchLocationModal() {
 document.addEventListener("DOMContentLoaded", () => {
   initMuslimBanglaSearchLocationModal();
 });
+
 
 
