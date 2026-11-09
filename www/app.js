@@ -6367,7 +6367,7 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
       lang === "bn" ? "✓ আজ সমাপ্ত" : lang === "ar" ? "✓ انقضى اليوم" : "✓ Completed Today";
     countdownLabel =
       lang === "bn"
-        ? "শুরু হতে বাকি:"
+        ? "ওয়াক্তশুরু হতে বাকি:"
         : lang === "ar"
         ? "يبدأ غداً بعد:"
         : "Starts Tomorrow In:";
