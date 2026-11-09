@@ -3332,38 +3332,41 @@ function formatShortWaqtClock(totalMins, locale = appState.locale) {
   return `${hStr}:${mStr}`;
 }
 
-function formatRemainingDurationText(remainingMins, locale = appState.locale) {
+function formatRemainingDurationText(remainingMins, locale = appState.locale, includeSuffix = false) {
   const safeMins = Math.max(1, Math.ceil(remainingMins));
   const hrs = Math.floor(safeMins / 60);
   const mins = safeMins % 60;
 
   if (locale === "bn") {
+    const suffix = includeSuffix ? " বাকি" : "";
     if (hrs > 0 && mins > 0) {
-      return `${localizeDigits(hrs, "bn")} ঘণ্টা ${localizeDigits(mins, "bn")} মিনিট বাকি`;
+      return `${localizeDigits(hrs, "bn")} ঘণ্টা ${localizeDigits(mins, "bn")} মি.${suffix}`;
     }
     if (hrs > 0) {
-      return `${localizeDigits(hrs, "bn")} ঘণ্টা বাকি`;
+      return `${localizeDigits(hrs, "bn")} ঘণ্টা${suffix}`;
     }
-    return `${localizeDigits(mins, "bn")} মিনিট বাকি`;
+    return `${localizeDigits(mins, "bn")} মিনিট${suffix}`;
   }
 
   if (locale === "ar") {
+    const prefix = includeSuffix ? "متبقي " : "";
     if (hrs > 0 && mins > 0) {
-      return `متبقي ${localizeDigits(hrs, "ar")} س و ${localizeDigits(mins, "ar")} د`;
+      return `${prefix}${localizeDigits(hrs, "ar")} س و ${localizeDigits(mins, "ar")} د`;
     }
     if (hrs > 0) {
-      return `متبقي ${localizeDigits(hrs, "ar")} ساعة`;
+      return `${prefix}${localizeDigits(hrs, "ar")} ساعة`;
     }
-    return `متبقي ${localizeDigits(mins, "ar")} دقيقة`;
+    return `${prefix}${localizeDigits(mins, "ar")} دقيقة`;
   }
 
+  const suffixEn = includeSuffix ? " left" : "";
   if (hrs > 0 && mins > 0) {
-    return `${hrs} hr ${mins} min left`;
+    return `${hrs}h ${mins}m${suffixEn}`;
   }
   if (hrs > 0) {
-    return `${hrs} hr left`;
+    return `${hrs} hr${suffixEn}`;
   }
-  return `${mins} min left`;
+  return `${mins} min${suffixEn}`;
 }
 
 function renderFiveWaqtStrip(now = new Date()) {
@@ -3775,16 +3778,16 @@ function renderFiveWaqtStrip(now = new Date()) {
       let tahajjudBadgeHtml = "";
       let isGoldenThird = false;
       if (currentPos < normFirstThirdEnd) {
-        const startsInStr = formatRemainingDurationText(normFirstThirdEnd - currentPos, lang);
+        const startsInStr = formatRemainingDurationText(normFirstThirdEnd - currentPos, lang, true);
         tahajjudBadgeHtml = `<span class="tahajjud-mini-badge upcoming">⏳ ${startsInStr}</span>`;
       } else if (currentPos >= normFirstThirdEnd && currentPos < normLastThirdStart) {
-        const remStr = formatRemainingDurationText(winEnd - currentPos, lang);
+        const remStr = formatRemainingDurationText(winEnd - currentPos, lang, true);
         tahajjudBadgeHtml = `<span class="tahajjud-mini-badge active">🟢 ${
           lang === "bn" ? "চলমান" : lang === "ar" ? "جارٍ" : "Active"
         } • ${remStr}</span>`;
       } else {
         isGoldenThird = true;
-        const remStr = formatRemainingDurationText(winEnd - currentPos, lang);
+        const remStr = formatRemainingDurationText(winEnd - currentPos, lang, true);
         tahajjudBadgeHtml = `<span class="tahajjud-mini-badge golden">🌟 ${
           lang === "bn" ? "শ্রেষ্ঠ প্রহর" : lang === "ar" ? "أفضل الوقت" : "Last 1/3"
         } • ${remStr}</span>`;
@@ -3841,15 +3844,15 @@ function renderFiveWaqtStrip(now = new Date()) {
 
     const countdownRowLabel = isProhibitedNow
       ? lang === "bn"
-        ? "⏱️ নিষিদ্ধ সময় শেষ হতে বাকি:"
+        ? "⏱️ নিষিদ্ধ সময় বাকি:"
         : lang === "ar"
-        ? "⏱️ المتبقي لانتهاء وقت النهي:"
-        : "⏱️ Prohibited Time Ends In:"
+        ? "⏱️ انتهاء النهي بعد:"
+        : "⏱️ Forbidden Ends In:"
       : lang === "bn"
       ? "⏱️ ওয়াক্ত শেষ হতে বাকি:"
       : lang === "ar"
-      ? "⏱️ الوقت المتبقي لانتهاء الوقت:"
-      : "⏱️ Time Remaining in Waqt:";
+      ? "⏱️ المتبقي لانتهاء الوقت:"
+      : "⏱️ Waqt Ends In:";
 
     boxEl.classList.toggle("waqt-prohibited-active", isProhibitedNow);
 
@@ -3885,13 +3888,13 @@ function renderFiveWaqtStrip(now = new Date()) {
       </div>
 
       <div class="waqt-popup-meta-rows ongoing-static-meta-rows">
-        <div class="waqt-popup-meta-item">
-          <span>${primeLabel}</span>
-          <strong>${primeValueHtml}</strong>
+        <div class="waqt-popup-meta-item single-line-meta-row">
+          <span class="meta-row-label">${primeLabel}</span>
+          <strong class="meta-row-value">${primeValueHtml}</strong>
         </div>
-        <div class="waqt-popup-meta-item">
-          <span>${countdownRowLabel}</span>
-          <strong id="live-waqt-remaining" style="color:var(--danger, #dc2626);font-weight:900;">${remainingTextStr}</strong>
+        <div class="waqt-popup-meta-item single-line-meta-row countdown-single-line-row">
+          <span class="meta-row-label">${countdownRowLabel}</span>
+          <strong id="live-waqt-remaining" class="meta-row-value" style="color:var(--danger, #dc2626);font-weight:900;">${remainingTextStr}</strong>
         </div>
       </div>
 
@@ -6356,8 +6359,8 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
       lang === "bn"
         ? "ওয়াক্ত শেষ হতে বাকি:"
         : lang === "ar"
-        ? "الوقت المتبقي لانتهاء الوقت:"
-        : "Time Remaining in Waqt:";
+        ? "المتبقي لانتهاء الوقت:"
+        : "Waqt Ends In:";
   } else if (info.isPassed) {
     statusClass = "status-passed";
     statusBadgeText =
@@ -6425,13 +6428,13 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
       </div>
 
       <div class="waqt-popup-meta-rows">
-        <div class="waqt-popup-meta-item">
-          <span>${primeLbl}</span>
-          <strong>${info.primeRangeStr}</strong>
+        <div class="waqt-popup-meta-item single-line-meta-row">
+          <span class="meta-row-label">${primeLbl}</span>
+          <strong class="meta-row-value">${info.primeRangeStr}</strong>
         </div>
-        <div class="waqt-popup-meta-item">
-          <span>⏱️ ${countdownLabel}</span>
-          <strong style="color:${info.isActive ? "var(--danger, #dc2626)" : "var(--accent-emerald-dark)"};">${countdownVal}</strong>
+        <div class="waqt-popup-meta-item single-line-meta-row countdown-single-line-row">
+          <span class="meta-row-label">⏱️ ${countdownLabel}</span>
+          <strong class="meta-row-value" style="color:${info.isActive ? "var(--danger, #dc2626)" : "var(--accent-emerald-dark)"};">${countdownVal}</strong>
         </div>
       </div>
 
@@ -8266,6 +8269,5 @@ function initMuslimBanglaSearchLocationModal() {
 document.addEventListener("DOMContentLoaded", () => {
   initMuslimBanglaSearchLocationModal();
 });
-
 
 
