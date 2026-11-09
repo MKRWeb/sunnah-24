@@ -4009,8 +4009,8 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
   text-overflow: ellipsis;
   flex: 0 1 auto;
   min-width: 0;
-  font-size: clamp(0.68rem, 2.7vw, 0.76rem) !important;
-  line-height: 1.25 !important;
+  font-size: 0.84rem !important;
+  line-height: 1.35 !important;
 }
 
 .waqt-popup-meta-item > strong,
@@ -4018,8 +4018,8 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
 #live-waqt-remaining {
   white-space: nowrap !important;
   flex-shrink: 0 !important;
-  font-size: clamp(0.73rem, 2.9vw, 0.85rem) !important;
-  line-height: 1.25 !important;
+  font-size: 0.88rem !important;
+  line-height: 1.35 !important;
   margin-left: auto;
 }
 
@@ -4046,5 +4046,4 @@ html[dir="rtl"] #live-waqt-remaining {
     font-size: 0.71rem !important;
   }
 }
-
 
