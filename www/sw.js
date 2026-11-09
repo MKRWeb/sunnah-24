@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v86-v4.2-bd-loc";
+const CACHE_NAME = "sunnah-24-enterprise-v87-v4.2-bd-loc";
 const ASSETS = [
   "./",
   "./index.html",
