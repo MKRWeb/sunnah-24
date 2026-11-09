@@ -3985,10 +3985,12 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
 }
 
 /* ==========================================================================
-   STRICT SINGLE-LINE WAQT COUNTDOWN & PRIME TIME META ROW LOCK (STANDARD SIZE)
-   Guarantees "⏱️ ওয়াক্ত শেষ হতে বাকি:" and the remaining duration ALWAYS
-   stay on one single horizontal line with standard readable typography.
+   STRICT SINGLE-LINE WAQT COUNTDOWN & PRIME TIME META ROW LOCK (v4.3)
+   1. Keeps "✨ উত্তম সময় (আউয়াল ওয়াক্ত):" at its original compact size.
+   2. Increases ONLY "⏱️ ওয়াক্ত শেষ হতে বাকি:" to the larger standard size.
    ========================================================================== */
+
+/* --- 1. ORIGINAL STYLE FOR "✨ উত্তম সময় (আউয়াল ওয়াক্ত):" --- */
 .waqt-popup-meta-item,
 .waqt-popup-meta-item.single-line-meta-row {
   display: flex !important;
@@ -3997,12 +3999,11 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
   align-items: center !important;
   flex-wrap: nowrap !important;
   white-space: nowrap !important;
-  gap: 10px !important;
-  padding: 9px 13px !important;
+  gap: 8px !important;
+  padding: 7px 11px !important;
   overflow: hidden;
 }
 
-/* Left Label: "⏱️ ওয়াক্ত শেষ হতে বাকি:" */
 .waqt-popup-meta-item > span,
 .waqt-popup-meta-item .meta-row-label {
   white-space: nowrap !important;
@@ -4010,18 +4011,36 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
   text-overflow: ellipsis;
   flex: 0 1 auto;
   min-width: 0;
-  font-size: 0.95rem !important; /* Standard ~15.2px (was 0.84rem) */
+  font-size: 0.84rem !important; /* Original size for উত্তম সময় */
+  line-height: 1.35 !important;
+}
+
+.waqt-popup-meta-item > strong,
+.waqt-popup-meta-item .meta-row-value {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  font-size: 0.88rem !important; /* Original size for ০২:৫৭ – ০৪:৪০ */
+  line-height: 1.35 !important;
+  margin-left: auto;
+}
+
+/* --- 2. LARGER STANDARD SIZE ONLY FOR "⏱️ ওয়াক্ত শেষ হতে বাকি:" --- */
+.waqt-popup-meta-item.countdown-single-line-row {
+  gap: 10px !important;
+  padding: 9px 13px !important;
+}
+
+.waqt-popup-meta-item.countdown-single-line-row > span,
+.waqt-popup-meta-item.countdown-single-line-row .meta-row-label {
+  font-size: 0.95rem !important; /* Standard size for ওয়াক্ত শেষ হতে বাকি: */
   font-weight: 800 !important;
   line-height: 1.4 !important;
 }
 
-/* Right Value: "১ ঘণ্টা ১৫ মি." */
-.waqt-popup-meta-item > strong,
-.waqt-popup-meta-item .meta-row-value,
+.waqt-popup-meta-item.countdown-single-line-row > strong,
+.waqt-popup-meta-item.countdown-single-line-row .meta-row-value,
 #live-waqt-remaining {
-  white-space: nowrap !important;
-  flex-shrink: 0 !important;
-  font-size: 1.0rem !important; /* Standard 16px (was 0.88rem) */
+  font-size: 1.0rem !important; /* Standard size for ৪৭ মিনিট বাকি */
   font-weight: 900 !important;
   line-height: 1.4 !important;
   margin-left: auto;
@@ -4034,20 +4053,35 @@ html[dir="rtl"] #live-waqt-remaining {
   margin-right: auto;
 }
 
-/* Responsive safeguard for narrow phones (360px and below) */
+/* --- 3. SMALL SCREEN SAFEGUARD (360px and below) --- */
 @media (max-width: 360px) {
+  /* Original compact small-screen values for "✨ উত্তম সময় (আউয়াল ওয়াক্ত):" */
   .waqt-popup-meta-item,
   .waqt-popup-meta-item.single-line-meta-row {
-    padding: 8px 10px !important;
-    gap: 6px !important;
+    padding: 6px 9px !important;
+    gap: 5px !important;
   }
   .waqt-popup-meta-item > span,
   .waqt-popup-meta-item .meta-row-label {
-    font-size: 0.85rem !important; /* Readable ~13.6px (was 0.65rem) */
+    font-size: 0.65rem !important;
   }
   .waqt-popup-meta-item > strong,
-  .waqt-popup-meta-item .meta-row-value,
+  .waqt-popup-meta-item .meta-row-value {
+    font-size: 0.71rem !important;
+  }
+
+  /* Larger standard small-screen values ONLY for "⏱️ ওয়াক্ত শেষ হতে বাকি:" */
+  .waqt-popup-meta-item.countdown-single-line-row {
+    padding: 8px 10px !important;
+    gap: 6px !important;
+  }
+  .waqt-popup-meta-item.countdown-single-line-row > span,
+  .waqt-popup-meta-item.countdown-single-line-row .meta-row-label {
+    font-size: 0.85rem !important;
+  }
+  .waqt-popup-meta-item.countdown-single-line-row > strong,
+  .waqt-popup-meta-item.countdown-single-line-row .meta-row-value,
   #live-waqt-remaining {
-    font-size: 0.90rem !important; /* Readable ~14.4px (was 0.71rem) */
+    font-size: 0.90rem !important;
   }
 }
