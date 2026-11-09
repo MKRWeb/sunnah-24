@@ -8270,4 +8270,3 @@ document.addEventListener("DOMContentLoaded", () => {
   initMuslimBanglaSearchLocationModal();
 });
 
-
