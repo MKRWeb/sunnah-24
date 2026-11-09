@@ -3984,3 +3984,67 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
   color: #fef08a;
 }
 
+/* ==========================================================================
+   STRICT SINGLE-LINE WAQT COUNTDOWN & PRIME TIME META ROW LOCK (v4.3)
+   Guarantees "⏱️ ওয়াক্ত শেষ হতে বাকি:" and the remaining duration ALWAYS
+   stay on one single horizontal line across all screen widths & languages.
+   ========================================================================== */
+.waqt-popup-meta-item,
+.waqt-popup-meta-item.single-line-meta-row {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+  gap: 8px !important;
+  padding: 7px 11px !important;
+  overflow: hidden;
+}
+
+.waqt-popup-meta-item > span,
+.waqt-popup-meta-item .meta-row-label {
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: clamp(0.68rem, 2.7vw, 0.76rem) !important;
+  line-height: 1.25 !important;
+}
+
+.waqt-popup-meta-item > strong,
+.waqt-popup-meta-item .meta-row-value,
+#live-waqt-remaining {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  font-size: clamp(0.73rem, 2.9vw, 0.85rem) !important;
+  line-height: 1.25 !important;
+  margin-left: auto;
+}
+
+html[dir="rtl"] .waqt-popup-meta-item > strong,
+html[dir="rtl"] .waqt-popup-meta-item .meta-row-value,
+html[dir="rtl"] #live-waqt-remaining {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+@media (max-width: 360px) {
+  .waqt-popup-meta-item,
+  .waqt-popup-meta-item.single-line-meta-row {
+    padding: 6px 9px !important;
+    gap: 5px !important;
+  }
+  .waqt-popup-meta-item > span,
+  .waqt-popup-meta-item .meta-row-label {
+    font-size: 0.65rem !important;
+  }
+  .waqt-popup-meta-item > strong,
+  .waqt-popup-meta-item .meta-row-value,
+  #live-waqt-remaining {
+    font-size: 0.71rem !important;
+  }
+}
+
+
