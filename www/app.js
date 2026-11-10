@@ -7485,38 +7485,10 @@ function syncActiveMasterHeaderUI() {
     const phaseHabits = allHabits.filter((h) => h.phase === meta.phaseKey);
     const total = phaseHabits.length;
     const done = phaseHabits.filter((h) => isHabitCompletedInActiveCycle(h, now)).length;
-    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
 
     if (badgeEl) {
       badgeEl.textContent = `${localizeDigits(done, lang)}/${localizeDigits(total, lang)}`;
     }
-
-    const phaseHeadlineEl = document.getElementById("master-phase-headline");
-    if (phaseHeadlineEl) {
-      phaseHeadlineEl.textContent = t(meta.titleKey);
-    }
-
-    const phaseScorePillEl = document.getElementById("master-phase-score-pill");
-    if (phaseScorePillEl) {
-      phaseScorePillEl.textContent = `${localizeDigits(pct, lang)}%`;
-    }
-
-    const phaseTimeTagEl = document.getElementById("master-phase-time-tag");
-    if (phaseTimeTagEl) {
-      const openInPhase = phaseHabits.filter((h) => evaluateHabitTimeWindow(h, now).status === "open").length;
-      const openStr = localizeDigits(openInPhase, lang);
-      phaseTimeTagEl.textContent =
-        lang === "bn"
-          ? `⏱️ চলমান আমল: ${openStr}টি`
-          : lang === "ar"
-          ? `⏱️ متاح الآن: ${openStr}`
-          : `⏱️ Open Now: ${openStr}`;
-    }
-
-    // Highlight active chip inside .master-phase-switcher
-    document.querySelectorAll(".master-phase-switcher .chip").forEach((chip) => {
-      chip.classList.toggle("active", chip.getAttribute("data-phase") === meta.phaseKey);
-    });
   } else if (activeMasterSectionId === "sec-adhkar") {
     const todayKey = getTodayKey();
     const completedDuas = (appState.duaCompletionsByDate && appState.duaCompletionsByDate[todayKey]) || [];
@@ -7532,9 +7504,7 @@ function syncActiveMasterHeaderUI() {
       badgeEl.textContent = "🛡️ SHA-256";
     }
   }
-}
-
-function openMasterSectionScreen(sectionId, pushHistory = true) {
+}function openMasterSectionScreen(sectionId, pushHistory = true) {
   const meta = MASTER_SECTIONS_METADATA[sectionId];
   if (!meta) return;
 
@@ -7695,15 +7665,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 3. Bind Quick Phase Switcher Chips inside Master Habit Phase View (.master-phase-switcher)
-  document.querySelectorAll(".master-phase-switcher .chip").forEach((chip) => {
-    chip.addEventListener("click", () => {
-      const phaseKey = chip.getAttribute("data-phase");
-      if (phaseKey && MASTER_SECTIONS_METADATA[`sec-${phaseKey}`]) {
-        openMasterSectionScreen(`sec-${phaseKey}`, true);
-      }
-    });
-  });
+
 
   // 4. Sticky Top App Header Scroll Shadow Watcher (.is-scrolled)
   const appHeader = document.getElementById("main-app-header");
