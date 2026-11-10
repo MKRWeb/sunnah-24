@@ -4087,3 +4087,571 @@ html[dir="rtl"] #live-waqt-remaining {
 }
 
 
+
+
+
+/* ==========================================================================
+   GOOGLE MATERIAL 3 FULL-SCREEN MASTER SECTION & LAUNCHER HUB ARCHITECTURE (v5.0)
+   - Removes combined 24H Routine & Muhasabah Diary
+   - Separates Adhkar & Digital Tasbih into independent full-screen sections
+   - Elevates all 7 Prophetic Phases into standalone Master Sections
+   - Places Prohibited Salah Card directly below the 5 Daily Prayers section
+   - True Native App Feel: Clicking any section hides the Home Dashboard and
+     opens the clicked section as the 100% full-screen Master View!
+   ========================================================================== */
+
+/* 1. Screen Visibility & Smooth Native App Transitions */
+.home-dashboard-view {
+  display: block;
+  animation: m3ScreenFadeIn 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-dashboard-view.hidden {
+  display: none !important;
+}
+
+.master-section-view {
+  display: block;
+  min-height: calc(100vh - 70px);
+  padding-bottom: 32px;
+  animation: m3MasterSlideIn 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.master-section-view.hidden {
+  display: none !important;
+}
+
+.master-screen-panel {
+  display: block;
+  padding: 0 14px;
+  animation: m3ScreenFadeIn 0.22s ease;
+}
+
+.master-screen-panel.hidden {
+  display: none !important;
+}
+
+@keyframes m3ScreenFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes m3MasterSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 2. Prohibited Salah Card Positioned Directly Below 5 Daily Prayers on Home */
+.home-prohibited-card {
+  margin: 0 14px 14px !important;
+  border-radius: 18px !important;
+  border: 1.5px solid rgba(220, 38, 38, 0.34) !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fffafa 100%) !important;
+  box-shadow: 0 8px 22px -6px rgba(220, 38, 38, 0.1) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.home-prohibited-card:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 12px 26px -6px rgba(220, 38, 38, 0.15) !important;
+}
+
+html[data-theme="dark"] .home-prohibited-card {
+  background: linear-gradient(180deg, #161114 0%, #0b221a 100%) !important;
+  border-color: rgba(239, 68, 68, 0.45) !important;
+}
+
+/* 3. Home Master Section Launcher Hub & 2-Column Material 3 Card Grid */
+.sections-hub-wrapper {
+  margin: 4px 14px 20px;
+}
+
+.sections-hub-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.sections-hub-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hub-sparkle-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981, #eab308);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+  flex-shrink: 0;
+}
+
+#sections-hub-heading {
+  font-size: 1.02rem;
+  font-weight: 900;
+  color: var(--accent-emerald-dark, #065f46);
+  letter-spacing: -0.01em;
+}
+
+.sections-hub-subtitle {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-muted, #5b7268);
+  padding-left: 18px;
+}
+
+html[dir="rtl"] .sections-hub-subtitle {
+  padding-left: 0;
+  padding-right: 18px;
+}
+
+.master-sections-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 11px;
+}
+
+@media (max-width: 350px) {
+  .master-sections-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 4. Individual Section Launcher Card with High-Contrast Material 3 Styling */
+.section-launcher-card {
+  position: relative;
+  background: linear-gradient(165deg, #ffffff 0%, #f7fbf9 100%);
+  border: 1.5px solid rgba(16, 185, 129, 0.22);
+  border-radius: 22px;
+  padding: 14px 13px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+  font-family: inherit;
+  color: var(--text-primary, #1e352b);
+  cursor: pointer;
+  box-shadow: 0 10px 24px -8px rgba(15, 45, 34, 0.09), 0 3px 8px -2px rgba(15, 45, 34, 0.04);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+  overflow: hidden;
+}
+
+html[dir="rtl"] .section-launcher-card {
+  text-align: right;
+}
+
+.section-launcher-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px -8px rgba(15, 45, 34, 0.15), 0 6px 14px -3px rgba(16, 185, 129, 0.1);
+  border-color: var(--accent-emerald, #10b981);
+}
+
+.section-launcher-card:active {
+  transform: scale(0.97);
+}
+
+.section-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+}
+
+/* World-Class Vector Logo Squircle on Every Section */
+.section-world-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(16, 185, 129, 0.28);
+  background: linear-gradient(145deg, #ecfdf5, #d1fae5);
+  box-shadow: 0 6px 14px -3px rgba(16, 185, 129, 0.18), inset 0 2px 3px rgba(255, 255, 255, 0.9);
+  transition: transform 0.22s ease;
+}
+
+.section-launcher-card:hover .section-world-logo {
+  transform: scale(1.06) rotate(-2deg);
+}
+
+.section-world-logo.logo-indigo {
+  background: linear-gradient(145deg, #eef2ff, #e0e7ff);
+  border-color: rgba(79, 70, 229, 0.32);
+  box-shadow: 0 6px 14px -3px rgba(79, 70, 229, 0.18);
+}
+
+.section-world-logo.logo-amber {
+  background: linear-gradient(145deg, #fffbeb, #fef3c7);
+  border-color: rgba(217, 119, 6, 0.35);
+  box-shadow: 0 6px 14px -3px rgba(217, 119, 6, 0.18);
+}
+
+.section-world-logo.logo-emerald,
+.section-world-logo.logo-emerald-deep {
+  background: linear-gradient(145deg, #ecfdf5, #d1fae5);
+  border-color: rgba(16, 185, 129, 0.36);
+  box-shadow: 0 6px 14px -3px rgba(16, 185, 129, 0.18);
+}
+
+.section-world-logo.logo-purple {
+  background: linear-gradient(145deg, #faf5ff, #f3e8ff);
+  border-color: rgba(147, 51, 234, 0.32);
+  box-shadow: 0 6px 14px -3px rgba(147, 51, 234, 0.16);
+}
+
+.section-world-logo.logo-teal {
+  background: linear-gradient(145deg, #f0fdfa, #ccfbf1);
+  border-color: rgba(13, 148, 136, 0.34);
+  box-shadow: 0 6px 14px -3px rgba(13, 148, 136, 0.16);
+}
+
+.section-world-logo.logo-gold {
+  background: linear-gradient(145deg, #fefce8, #fef08a);
+  border-color: rgba(180, 83, 9, 0.36);
+  box-shadow: 0 6px 14px -3px rgba(180, 83, 9, 0.16);
+}
+
+.section-world-logo.logo-rose {
+  background: linear-gradient(145deg, #fff1f2, #ffe4e6);
+  border-color: rgba(225, 29, 72, 0.32);
+  box-shadow: 0 6px 14px -3px rgba(225, 29, 72, 0.16);
+}
+
+.section-world-logo.logo-cyan {
+  background: linear-gradient(145deg, #f0f9ff, #e0f2fe);
+  border-color: rgba(2, 132, 199, 0.34);
+  box-shadow: 0 6px 14px -3px rgba(2, 132, 199, 0.16);
+}
+
+.section-world-logo.logo-slate {
+  background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
+  border-color: rgba(15, 118, 110, 0.32);
+  box-shadow: 0 6px 14px -3px rgba(15, 45, 34, 0.12);
+}
+
+.section-live-pill {
+  font-size: 0.63rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--accent-emerald-soft, #e6f6ef);
+  color: var(--accent-emerald-dark, #065f46);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  white-space: nowrap;
+}
+
+.section-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+}
+
+.section-card-title {
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: var(--text-primary, #1e352b);
+  line-height: 1.28;
+}
+
+.section-card-desc {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted, #5b7268);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.section-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding-top: 4px;
+}
+
+.section-mini-track {
+  flex: 1;
+  height: 6px;
+  background: #e6efeb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.section-mini-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.section-enter-arrow {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f0f9f4;
+  border: 1px solid rgba(16, 185, 129, 0.32);
+  color: var(--accent-emerald-dark, #065f46);
+  font-size: 0.7rem;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+html[dir="rtl"] .section-enter-arrow {
+  transform: scaleX(-1);
+}
+
+.section-launcher-card:hover .section-enter-arrow {
+  background: var(--accent-emerald, #10b981);
+  color: #ffffff;
+}
+
+/* 5. Master Section Full-Screen Top Navigation Bar (#master-section-topbar) */
+.master-section-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 4px 14px 12px;
+  padding: 11px 14px;
+  background: linear-gradient(145deg, #ffffff 0%, #f4fbf7 100%);
+  border: 1.5px solid rgba(16, 185, 129, 0.34);
+  border-radius: 20px;
+  box-shadow: 0 10px 24px -6px rgba(15, 45, 34, 0.1);
+}
+
+.master-back-home-btn {
+  background: var(--accent-emerald-soft, #e6f6ef);
+  color: var(--accent-emerald-dark, #065f46);
+  border: 1.5px solid rgba(16, 185, 129, 0.42);
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: 0.76rem;
+  font-weight: 900;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.14);
+  transition: transform 0.16s ease, background 0.18s ease;
+}
+
+.master-back-home-btn:hover {
+  background: #d1fae5;
+}
+
+.master-back-home-btn:active {
+  transform: scale(0.94);
+}
+
+html[dir="rtl"] .back-arrow-icon {
+  transform: scaleX(-1);
+  display: inline-block;
+}
+
+.master-topbar-center {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  flex: 1;
+}
+
+.master-topbar-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #ecfdf5, #d1fae5);
+  border: 1.5px solid rgba(16, 185, 129, 0.38);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  box-shadow: 0 3px 8px rgba(16, 185, 129, 0.14);
+}
+
+.master-topbar-titles {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.master-topbar-titles h2 {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--text-primary, #1e352b);
+  line-height: 1.22;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.master-topbar-titles small {
+  font-size: 0.67rem;
+  font-weight: 700;
+  color: var(--text-muted, #5b7268);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.master-topbar-badge {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 5px 11px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+/* 6. Dedicated Master Phase Hero Banner inside Individual Habit Section */
+.master-phase-banner-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 16px;
+  margin-bottom: 12px;
+  background:
+    radial-gradient(circle at 90% 15%, rgba(254, 243, 199, 0.6) 0%, transparent 50%),
+    linear-gradient(160deg, #ffffff 0%, #f4fbf7 100%);
+  border: 1.5px solid rgba(16, 185, 129, 0.28);
+  border-radius: 20px;
+  box-shadow: var(--shadow-float);
+}
+
+.master-phase-banner-left {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.master-phase-tag {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  font-size: 0.64rem;
+  font-weight: 800;
+  color: var(--accent-emerald-dark, #065f46);
+  background: var(--accent-emerald-soft, #e6f6ef);
+  border: 1px solid rgba(16, 185, 129, 0.32);
+  padding: 2px 9px;
+  border-radius: 999px;
+}
+
+.master-phase-banner-left h3 {
+  font-size: 1.08rem;
+  font-weight: 900;
+  color: var(--text-primary, #1e352b);
+  line-height: 1.25;
+}
+
+.master-phase-banner-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.master-phase-score-pill {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--accent-emerald-dark, #065f46);
+  background: #ffffff;
+  border: 1.5px solid rgba(16, 185, 129, 0.38);
+  padding: 4px 13px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.12);
+}
+
+.master-phase-switcher {
+  margin-bottom: 12px;
+}
+
+/* 7. Dark Mode Support for Master Section Views & Section Launcher Grid */
+html[data-theme="dark"] .section-launcher-card {
+  background: linear-gradient(165deg, #0b221a 0%, #071913 100%);
+  border-color: rgba(16, 185, 129, 0.26);
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .section-launcher-card:hover {
+  border-color: #10b981;
+}
+
+html[data-theme="dark"] .section-card-title,
+html[data-theme="dark"] #sections-hub-heading,
+html[data-theme="dark"] .master-topbar-titles h2,
+html[data-theme="dark"] .master-phase-banner-left h3 {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .section-card-desc,
+html[data-theme="dark"] .sections-hub-subtitle,
+html[data-theme="dark"] .master-topbar-titles small {
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] .section-mini-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .section-enter-arrow {
+  background: #123528;
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+html[data-theme="dark"] .master-section-topbar,
+html[data-theme="dark"] .master-phase-banner-card {
+  background: linear-gradient(160deg, #0b221a 0%, #071913 100%);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+html[data-theme="dark"] .master-back-home-btn {
+  background: #123528;
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.45);
+}
+
+html[data-theme="dark"] .master-phase-score-pill {
+  background: #071913;
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.45);
+}
+
