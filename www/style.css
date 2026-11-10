@@ -4655,3 +4655,65 @@ html[data-theme="dark"] .master-phase-score-pill {
   border-color: rgba(16, 185, 129, 0.45);
 }
 
+
+
+/* ==========================================================================
+   SECTION LAUNCHER CARDS: CENTERED LOGO WITH GREEN CIRCLE & NO DESC (v5.1)
+   ========================================================================== */
+.section-launcher-card {
+  align-items: center !important;
+  text-align: center !important;
+  padding: 16px 12px 14px !important;
+}
+
+html[dir="rtl"] .section-launcher-card {
+  text-align: center !important;
+}
+
+.section-card-top {
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+.section-world-logo {
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important; /* Green color circle around the logo */
+  border: 2px solid #10b981 !important; /* Green circle */
+  background: linear-gradient(145deg, #ecfdf5, #d1fae5) !important;
+  box-shadow: 0 6px 16px -3px rgba(16, 185, 129, 0.28), inset 0 2px 4px rgba(255, 255, 255, 0.9) !important;
+  margin: 2px auto 4px auto !important;
+}
+
+.section-live-pill {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.6rem !important;
+  padding: 2px 7px !important;
+}
+
+html[dir="rtl"] .section-live-pill {
+  right: auto;
+  left: 10px;
+}
+
+.section-card-body {
+  align-items: center !important;
+  text-align: center !important;
+  margin-top: 2px;
+}
+
+.section-card-title {
+  font-size: 0.94rem !important;
+  font-weight: 900 !important;
+  color: var(--text-primary, #1e352b);
+}
+
+.section-card-footer {
+  margin-top: 4px;
+}
+
