@@ -554,8 +554,20 @@
          ====================================================================== -->
     <main id="master-panel-habit-phase" class="master-screen-panel hidden" data-section-type="habit-phase">
       <!-- Dedicated Master Hero Banner for the Active Phase -->
-    <!-- Quick Phase Switcher Pills inside Master View (Optional 1-tap jump between the 7 Habit Sections) -->
-    <!-- Extensible Sub-Sections Slot for Future Phase Sub-Categories -->
+      <div class="master-phase-banner-card" id="master-phase-banner-card">
+        <div class="master-phase-banner-left">
+          <span class="master-phase-tag" id="master-phase-time-tag">⏱️ রিয়েল-টাইম ওয়াক্ত</span>
+          <h3 id="master-phase-headline">তাহাজ্জুদ ও ফজর</h3>
+          <p id="filter-count-label" class="muted-small">এই বিভাগের সুন্নাহসমূহ প্রদর্শিত হচ্ছে</p>
+        </div>
+        <div class="master-phase-banner-right">
+          <div class="master-phase-score-pill" id="master-phase-score-pill">০%</div>
+          <button type="button" id="reset-today-btn" class="link-btn" data-i18n="reset_today">আজকের রিসেট</button>
+        </div>
+      </div>
+
+
+      <!-- Extensible Sub-Sections Slot for Future Phase Sub-Categories -->
       <div id="phase-subsections-slot" class="subsection-slot" data-extensible-slot="phase-subsections"></div>
 
 
