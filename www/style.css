@@ -4783,3 +4783,95 @@ html[dir="rtl"] .section-launcher-card {
   display: block;
 }
 
+
+/* ==========================================================================
+   V5.4 BORDERLESS 3D REAL-IMAGE-STYLE SECTION ARTWORK LOGOS & PROPORTIONAL SIZING
+   - Removes the green circle border & background around section logos
+   - Scales the 3D multi-gradient artwork to a commanding 78x78px centerpiece
+     on Home section cards and 48x48px in the Master Section top header
+   ========================================================================== */
+.section-launcher-card {
+  align-items: center !important;
+  text-align: center !important;
+  padding: 22px 14px 14px !important;
+  gap: 8px !important;
+}
+
+html[dir="rtl"] .section-launcher-card {
+  text-align: center !important;
+}
+
+.section-card-top {
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin-bottom: 2px !important;
+}
+
+.section-world-logo,
+.section-world-logo.logo-indigo,
+.section-world-logo.logo-amber,
+.section-world-logo.logo-emerald,
+.section-world-logo.logo-emerald-deep,
+.section-world-logo.logo-purple,
+.section-world-logo.logo-teal,
+.section-world-logo.logo-gold,
+.section-world-logo.logo-rose,
+.section-world-logo.logo-cyan,
+.section-world-logo.logo-slate {
+  width: 78px !important;
+  height: 78px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  margin: 4px auto 2px auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.section-world-logo svg {
+  width: 76px !important;
+  height: 76px !important;
+  display: block;
+  overflow: visible;
+}
+
+.section-launcher-card:hover .section-world-logo {
+  transform: translateY(-4px) scale(1.07) !important;
+}
+
+.section-launcher-card:active .section-world-logo {
+  transform: scale(0.95) !important;
+}
+
+.section-card-title {
+  font-size: 0.96rem !important;
+  font-weight: 900 !important;
+  line-height: 1.3 !important;
+  margin-top: 2px !important;
+}
+
+.master-topbar-logo {
+  width: 48px !important;
+  height: 48px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0;
+}
+
+.master-topbar-logo svg {
+  width: 46px !important;
+  height: 46px !important;
+  display: block;
+  overflow: visible;
+}
+
