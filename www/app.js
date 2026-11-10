@@ -8681,7 +8681,6 @@ window.Sunnah24SectionEngine = {
         </div>
         <div class="section-card-footer">
           <div class="section-mini-track"><div class="section-mini-fill" style="width:100%"></div></div>
-          <span class="section-enter-arrow">➔</span>
         </div>
       `;
       gridSlot.appendChild(cardBtn);
