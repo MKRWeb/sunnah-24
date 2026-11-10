@@ -5747,11 +5747,35 @@ document.addEventListener("DOMContentLoaded", () => {
   initWebsiteOnlyApkInstaller();
 });
 
-    // ============================================================================
-// SNAPTUBE-STYLE IN-APP APK UPDATE ENGINE (PLAY-PROTECT SAFE • v4.2)
+// ============================================================================
+// PLAY-STORE COMPLIANT VERSION BADGE & SIDELOAD-ONLY UPDATE ENGINE (v4.2)
+// Google Play Device & Network Abuse Policy Guarantee:
+// - Release Play Store AAB (`isSelfUpdateSupported() === false`) NEVER queries
+//   GitHub Releases or downloads external APKs; updates are handled 100% by Google Play.
+// - Sideloaded Debug APK (`isSelfUpdateSupported() === true`) retains full
+//   in-app update checking and installation.
 // ============================================================================
 let latestRemoteApkUrl = "";
 let latestRemoteVersionTag = "";
+
+function isSideloadSelfUpdateEnabled() {
+  try {
+    if (
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.isSelfUpdateSupported === "function"
+    ) {
+      return Boolean(window.AndroidDownloader.isSelfUpdateSupported());
+    }
+    // Backward compatibility only if native bridge explicitly exposes downloadAndAutoInstallVersionApk
+    if (
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.downloadAndAutoInstallVersionApk === "function"
+    ) {
+      return true;
+    }
+  } catch {}
+  return false;
+}
 
 function getInstalledAppVersionTag() {
   try {
@@ -5774,6 +5798,9 @@ function renderInstalledVersionBadge() {
 }
 
 function initInAppUpdateChecker(manualTrigger = false) {
+  // Strictly disabled inside Play Store Release AAB builds to satisfy Google Play Device & Network Abuse Policy
+  if (!isSideloadSelfUpdateEnabled()) return;
+
   const isInsideNativeApk =
     Boolean(window.AndroidDownloader) ||
     Boolean(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) ||
@@ -5820,6 +5847,8 @@ function initInAppUpdateChecker(manualTrigger = false) {
 }
 
 function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
+  if (!isSideloadSelfUpdateEnabled()) return;
+
   const existing = document.getElementById("s24-update-banner");
   if (existing) existing.remove();
 
@@ -5878,7 +5907,6 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
     const statusEl = document.getElementById("s24-update-status");
     const progWrap = document.getElementById("s24-update-progress-wrap");
 
-    // 1. If already downloaded -> Immediately trigger native package installer
     if (banner.getAttribute("data-cached") === "true") {
       if (
         window.AndroidDownloader &&
@@ -5896,7 +5924,6 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
       }
     }
 
-    // 2. Download in-app via DownloadManager & auto-launch installer at 100%
     if (
       window.AndroidDownloader &&
       typeof window.AndroidDownloader.downloadAndAutoInstallVersionApk === "function"
@@ -5917,7 +5944,6 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
       return;
     }
 
-    // 3. Fallback for older APK bridges
     if (
       window.AndroidDownloader &&
       typeof window.AndroidDownloader.downloadAndInstallApk === "function"
@@ -5985,7 +6011,9 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
 
 document.addEventListener("DOMContentLoaded", () => {
   renderInstalledVersionBadge();
-  setTimeout(() => initInAppUpdateChecker(false), 2500);
+  if (isSideloadSelfUpdateEnabled()) {
+    setTimeout(() => initInAppUpdateChecker(false), 2500);
+  }
 
   const splash = document.getElementById("s24-startup-splash");
   if (splash) {
@@ -8269,7 +8297,5 @@ function initMuslimBanglaSearchLocationModal() {
 document.addEventListener("DOMContentLoaded", () => {
   initMuslimBanglaSearchLocationModal();
 });
-
-
 
 
