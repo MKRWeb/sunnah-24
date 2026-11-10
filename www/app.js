@@ -6075,10 +6075,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const splash = document.getElementById("s24-startup-splash");
   if (splash) {
-    setTimeout(() => {
-      splash.classList.add("splash-hidden");
-      setTimeout(() => splash.remove(), 450);
-    }, 550);
+    let isSessionRefresh = false;
+    try {
+      isSessionRefresh = Boolean(sessionStorage.getItem("S24_ACTIVE_VIEW_STATE_V5"));
+    } catch {}
+    if (isSessionRefresh) {
+      // Zero-flash instant removal on refresh so the user experiences no reload animation
+      splash.style.display = "none";
+      splash.remove();
+    } else {
+      setTimeout(() => {
+        splash.classList.add("splash-hidden");
+        setTimeout(() => splash.remove(), 450);
+      }, 550);
+    }
   }
 });
 
@@ -7381,6 +7391,93 @@ const MASTER_SECTIONS_METADATA = deepFreeze({
 let activeMasterSectionId = null; // null means Home Dashboard (#home-dashboard-view) is active
 let masterNavigationHistoryStack = [];
 let savedHomeDashboardScrollY = 0;
+let savedSectionScrollYMap = {};
+
+const ACTIVE_VIEW_SESSION_KEY = "S24_ACTIVE_VIEW_STATE_V5";
+
+// Inject anti-overscroll / pull-to-refresh prevention rules immediately for APK WebView & Mobile Browsers
+(function injectAntiRefreshStyles() {
+  try {
+    const styleEl = document.createElement("style");
+    styleEl.id = "s24-anti-refresh-style";
+    styleEl.textContent = `
+      html, body {
+        overscroll-behavior-y: none !important;
+        overscroll-behavior: none !important;
+      }
+    `;
+    (document.head || document.documentElement).appendChild(styleEl);
+
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    // If a Master Section was active before a hard refresh, hide #home-dashboard-view immediately
+    // before first paint so the user never sees a flash of the Home page!
+    const rawSaved =
+      sessionStorage.getItem(ACTIVE_VIEW_SESSION_KEY) ||
+      localStorage.getItem(ACTIVE_VIEW_SESSION_KEY);
+    if (rawSaved) {
+      const parsed = JSON.parse(rawSaved);
+      if (parsed && parsed.sectionId && MASTER_SECTIONS_METADATA[parsed.sectionId]) {
+        const splashEl = document.getElementById("s24-startup-splash");
+        if (splashEl) splashEl.style.display = "none";
+      }
+    }
+  } catch {}
+})();
+
+function persistActiveViewState() {
+  try {
+    const currentScrollY = Math.max(0, Math.round(window.scrollY || window.pageYOffset || 0));
+    if (activeMasterSectionId) {
+      savedSectionScrollYMap[activeMasterSectionId] = currentScrollY;
+    } else {
+      savedHomeDashboardScrollY = currentScrollY;
+    }
+    const payload = JSON.stringify({
+      sectionId: activeMasterSectionId || "home",
+      sectionScrollY: activeMasterSectionId ? (savedSectionScrollYMap[activeMasterSectionId] || 0) : 0,
+      homeScrollY: savedHomeDashboardScrollY || 0,
+      savedSectionScrollYMap,
+      ts: Date.now()
+    });
+    sessionStorage.setItem(ACTIVE_VIEW_SESSION_KEY, payload);
+    localStorage.setItem(ACTIVE_VIEW_SESSION_KEY, payload);
+  } catch {}
+}
+
+function loadPersistedViewState() {
+  try {
+    const raw =
+      sessionStorage.getItem(ACTIVE_VIEW_SESSION_KEY) ||
+      localStorage.getItem(ACTIVE_VIEW_SESSION_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === "object") {
+      if (parsed.savedSectionScrollYMap && typeof parsed.savedSectionScrollYMap === "object") {
+        savedSectionScrollYMap = { ...parsed.savedSectionScrollYMap };
+      }
+      if (typeof parsed.homeScrollY === "number") {
+        savedHomeDashboardScrollY = parsed.homeScrollY;
+      }
+      return parsed;
+    }
+  } catch {}
+  return null;
+}
+
+// Performs an instant, zero-flicker in-place refresh of all data in the current view without reloading the page
+function performSilentInPlaceRefresh() {
+  const currentScroll = window.scrollY || window.pageYOffset || 0;
+  renderHeaderDatesAndPhase();
+  renderHabits();
+  renderDuas();
+  renderTasbihOptions();
+  syncMasterSectionsHubProgress();
+  syncActiveMasterHeaderUI();
+  window.scrollTo({ top: currentScroll, behavior: "instant" });
+}
 
 function syncMasterSectionsHubProgress() {
   const allHabits = getAllHabits();
@@ -7527,7 +7624,9 @@ function syncActiveMasterHeaderUI() {
       badgeEl.textContent = "🛡️ SHA-256";
     }
   }
-}function openMasterSectionScreen(sectionId, pushHistory = true) {
+}
+
+function openMasterSectionScreen(sectionId, pushHistory = true, restoreSavedScroll = false) {
   const meta = MASTER_SECTIONS_METADATA[sectionId];
   if (!meta) return;
 
@@ -7541,7 +7640,7 @@ function syncActiveMasterHeaderUI() {
   if (!homeView || !masterView) return;
 
   // Save Home scroll position if leaving Home Dashboard
-  if (!activeMasterSectionId) {
+  if (!activeMasterSectionId && !restoreSavedScroll) {
     savedHomeDashboardScrollY = window.scrollY || window.pageYOffset || 0;
   }
 
@@ -7584,8 +7683,18 @@ function syncActiveMasterHeaderUI() {
     }
   }
 
-  if (navigator.vibrate) navigator.vibrate(12);
-  window.scrollTo({ top: 0, behavior: "instant" });
+  const targetScrollY = restoreSavedScroll
+    ? (savedSectionScrollYMap[sectionId] || 0)
+    : 0;
+
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: targetScrollY, behavior: "instant" });
+    persistActiveViewState();
+  });
+
+  if (!restoreSavedScroll && navigator.vibrate) {
+    navigator.vibrate(12);
+  }
 }
 
 function returnToHomeDashboardView(restoreScroll = true) {
@@ -7610,6 +7719,7 @@ function returnToHomeDashboardView(restoreScroll = true) {
       top: restoreScroll ? savedHomeDashboardScrollY : 0,
       behavior: "instant"
     });
+    persistActiveViewState();
   });
 }
 
@@ -7674,7 +7784,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!card) return;
       const targetSecId = card.getAttribute("data-open-section");
       if (targetSecId) {
-        openMasterSectionScreen(targetSecId, true);
+        openMasterSectionScreen(targetSecId, true, false);
       }
     });
   }
@@ -7691,22 +7801,105 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-
-
-  // 4. Sticky Top App Header Scroll Shadow Watcher (.is-scrolled)
-  const appHeader = document.getElementById("main-app-header");
-  if (appHeader) {
-    window.addEventListener(
-      "scroll",
-      () => {
-        const scY = window.scrollY || window.pageYOffset || 0;
-        appHeader.classList.toggle("is-scrolled", scY > 8);
-      },
-      { passive: true }
-    );
+  // 3. Restore Active Master Section & Exact Scroll Position on Refresh (Never kicks user back to Home!)
+  const persistedView = loadPersistedViewState();
+  if (
+    persistedView &&
+    persistedView.sectionId &&
+    persistedView.sectionId !== "home" &&
+    MASTER_SECTIONS_METADATA[persistedView.sectionId]
+  ) {
+    if (typeof persistedView.sectionScrollY === "number") {
+      savedSectionScrollYMap[persistedView.sectionId] = persistedView.sectionScrollY;
+    }
+    openMasterSectionScreen(persistedView.sectionId, true, true);
+  } else if (persistedView && persistedView.sectionId === "home" && persistedView.homeScrollY > 0) {
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: persistedView.homeScrollY, behavior: "instant" });
+    });
   }
 
-  // 5. Re-sync Master Section Hub & Active Header whenever language changes
+  // 4. Sticky Top App Header Scroll Shadow Watcher + Continuous Scroll Position Persistence
+  const appHeader = document.getElementById("main-app-header");
+  let scrollPersistTimer = null;
+  window.addEventListener(
+    "scroll",
+    () => {
+      const scY = window.scrollY || window.pageYOffset || 0;
+      if (appHeader) {
+        appHeader.classList.toggle("is-scrolled", scY > 8);
+      }
+      if (scrollPersistTimer) clearTimeout(scrollPersistTimer);
+      scrollPersistTimer = setTimeout(() => {
+        persistActiveViewState();
+      }, 120);
+    },
+    { passive: true }
+  );
+
+  // Also persist view & scroll state right before any page unload / refresh
+  window.addEventListener("beforeunload", () => {
+    persistActiveViewState();
+  });
+
+  // 5. Intercept Mobile / APK Pull-to-Refresh & Desktop F5 / Ctrl+R so refreshing NEVER reloads or leaves the active section
+  let touchStartY = 0;
+  let touchStartX = 0;
+  document.addEventListener(
+    "touchstart",
+    (e) => {
+      if (e.touches && e.touches.length === 1) {
+        touchStartY = e.touches[0].clientY;
+        touchStartX = e.touches[0].clientX;
+      }
+    },
+    { passive: true }
+  );
+
+  document.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!e.touches || e.touches.length !== 1) return;
+      // Allow normal scrolling inside scrollable modal containers
+      if (
+        e.target.closest(".modal-section") ||
+        e.target.closest(".compact-history-grid") ||
+        e.target.closest(".s24-loc-list-scroll") ||
+        e.target.closest(".longterm-history-list")
+      ) {
+        return;
+      }
+      const currentY = e.touches[0].clientY;
+      const currentX = e.touches[0].clientX;
+      const deltaY = currentY - touchStartY;
+      const deltaX = Math.abs(currentX - touchStartX);
+      const atTop = (window.scrollY || window.pageYOffset || 0) <= 0;
+
+      // If user pulls down while already at the very top of the page, block native browser/WebView pull-to-refresh reload!
+      if (atTop && deltaY > 6 && deltaY > deltaX) {
+        if (e.cancelable) {
+          e.preventDefault();
+        }
+        if (deltaY > 65 && ! document.body.hasAttribute("data-syncing-pull")) {
+          document.body.setAttribute("data-syncing-pull", "true");
+          performSilentInPlaceRefresh();
+          setTimeout(() => document.body.removeAttribute("data-syncing-pull"), 800);
+        }
+      }
+    },
+    { passive: false }
+  );
+
+  window.addEventListener("keydown", (e) => {
+    const isF5 = e.key === "F5" || e.keyCode === 116;
+    const isCtrlOrCmdR = (e.ctrlKey || e.metaKey) && (e.key === "r" || e.key === "R");
+    if (isF5 || isCtrlOrCmdR) {
+      e.preventDefault();
+      performSilentInPlaceRefresh();
+    }
+  });
+
+  // 6. Re-sync Master Section Hub & Active Header whenever language changes
   const langSwitcher = document.getElementById("lang-switcher");
   if (langSwitcher) {
     langSwitcher.addEventListener("change", () => {
