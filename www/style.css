@@ -4911,3 +4911,161 @@ html[dir="rtl"] .section-launcher-card {
   overflow: visible !important;
 }
 
+/* ==========================================================================
+   V5.6 3-SECTIONS-IN-A-ROW HOME LAUNCHER GRID ALIGNMENT
+   - Re-aligns #master-sections-grid on the Home Dashboard to 3 cards per row
+     (grid-template-columns: repeat(3, minmax(0, 1fr)))
+   - Preserves all previous updates, borderless 3D SVG artwork, live badges,
+     and full-screen Master Section functionality
+   - Optimizes card padding, 3D logo size, title typography, and footer arrow
+     so 3 cards fit side-by-side cleanly on all mobile viewports
+   ========================================================================== */
+.sections-hub-wrapper {
+  margin: 4px 10px 20px !important;
+}
+
+.master-sections-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  align-items: stretch !important;
+}
+
+.section-launcher-card {
+  position: relative !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  padding: 24px 6px 10px !important;
+  border-radius: 18px !important;
+  gap: 6px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  text-align: center !important;
+}
+
+.section-card-top {
+  width: 100% !important;
+  margin-bottom: 0 !important;
+  gap: 4px !important;
+}
+
+.section-live-pill {
+  position: absolute !important;
+  top: 6px !important;
+  right: 6px !important;
+  font-size: 0.54rem !important;
+  font-weight: 800 !important;
+  padding: 1.5px 5.5px !important;
+  line-height: 1.2 !important;
+  max-width: calc(100% - 12px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  z-index: 2 !important;
+}
+
+html[dir="rtl"] .section-live-pill {
+  right: auto !important;
+  left: 6px !important;
+}
+
+.section-world-logo,
+.section-world-logo.logo-indigo,
+.section-world-logo.logo-amber,
+.section-world-logo.logo-emerald,
+.section-world-logo.logo-emerald-deep,
+.section-world-logo.logo-purple,
+.section-world-logo.logo-teal,
+.section-world-logo.logo-gold,
+.section-world-logo.logo-rose,
+.section-world-logo.logo-cyan,
+.section-world-logo.logo-slate {
+  width: 54px !important;
+  height: 54px !important;
+  margin: 2px auto 0 auto !important;
+}
+
+.section-world-logo svg {
+  width: 52px !important;
+  height: 52px !important;
+}
+
+.section-card-body {
+  width: 100% !important;
+  min-height: 2.35em !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 2px !important;
+}
+
+.section-card-title {
+  font-size: 0.76rem !important;
+  font-weight: 900 !important;
+  line-height: 1.24 !important;
+  margin-top: 0 !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.section-card-footer {
+  width: 100% !important;
+  gap: 5px !important;
+  padding: 2px 2px 0 !important;
+  margin-top: 2px !important;
+}
+
+.section-mini-track {
+  height: 5px !important;
+}
+
+.section-enter-arrow {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 0.6rem !important;
+}
+
+@media (max-width: 360px) {
+  .sections-hub-wrapper {
+    margin: 4px 8px 18px !important;
+  }
+  .master-sections-grid {
+    gap: 6px !important;
+  }
+  .section-launcher-card {
+    padding: 22px 4px 8px !important;
+    border-radius: 15px !important;
+  }
+  .section-world-logo,
+  .section-world-logo.logo-indigo,
+  .section-world-logo.logo-amber,
+  .section-world-logo.logo-emerald,
+  .section-world-logo.logo-emerald-deep,
+  .section-world-logo.logo-purple,
+  .section-world-logo.logo-teal,
+  .section-world-logo.logo-gold,
+  .section-world-logo.logo-rose,
+  .section-world-logo.logo-cyan,
+  .section-world-logo.logo-slate {
+    width: 46px !important;
+    height: 46px !important;
+  }
+  .section-world-logo svg {
+    width: 44px !important;
+    height: 44px !important;
+  }
+  .section-card-title {
+    font-size: 0.7rem !important;
+  }
+  .section-live-pill {
+    font-size: 0.49rem !important;
+    padding: 1px 4.5px !important;
+  }
+}
+
