@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v92-v4.2-bd-loc";
+const CACHE_NAME = "sunnah-24-enterprise-v93-v4.2-bd-loc";
 const ASSETS = [
   "./",
   "./index.html",
@@ -8,6 +8,7 @@ const ASSETS = [
   "./manifest.json",
   "./privacy.html"
 ];
+
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
@@ -24,6 +25,7 @@ self.addEventListener("install", (e) => {
   self.skipWaiting();
 });
 
+
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
@@ -33,10 +35,10 @@ self.addEventListener("activate", (e) => {
   self.clients.claim();
 });
 
+
 self.addEventListener("fetch", (e) => {
   e.respondWith(
     caches.match(e.request).then((cached) => cached || fetch(e.request))
   );
 });
-
 
