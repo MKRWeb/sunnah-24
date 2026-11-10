@@ -1,4 +1,4 @@
-name: Sunnah 24 — Enterprise CI/CD, GitHub Pages & Signed APK Pipeline
+name: Sunnah 24 — Enterprise CI/CD, GitHub Pages, Signed APK & Play Store AAB Pipeline
 
 on:
   push:
@@ -45,7 +45,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
   build-and-release-apk:
-    name: Build, Verify & Release Sunnah 24 Signed APK
+    name: Build, Verify & Release Sunnah 24 Signed APK & Play Store Ready AAB
     runs-on: ubuntu-24.04
     env:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -89,7 +89,44 @@ jobs:
           node --check www/sw.js
           echo "✅ All Sunnah 24 assets and JS syntax verified!"
 
-      - name: 4. Build Capacitor Android Bridge, Splash Screen & SnapTube-Style Auto-Installer
+      - name: 4. Prepare Persistent Release Keystore
+        run: |
+          mkdir -p signing
+          KEYSTORE_FILE="$PWD/signing/sunnah24-release.keystore"
+          KS_PASS="sunnah24pass"
+          K_ALIAS="sunnah24"
+          K_PASS="sunnah24pass"
+
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_FILE"
+            KS_PASS="$KEYSTORE_PASSWORD"
+            K_ALIAS="$KEY_ALIAS"
+            K_PASS="$KEY_PASSWORD"
+          elif [ -f "sunnah24-release.keystore" ]; then
+            cp -f "sunnah24-release.keystore" "$KEYSTORE_FILE"
+            echo "✅ Using root sunnah24-release.keystore"
+          elif [ -f "$KEYSTORE_FILE" ]; then
+            echo "✅ Found existing persistent keystore in repository: $KEYSTORE_FILE"
+          else
+            echo "🔐 Generating permanent keystore..."
+            keytool -genkey -v -keystore "$KEYSTORE_FILE" \
+              -alias "$K_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 \
+              -storepass "$KS_PASS" -keypass "$K_PASS" \
+              -dname "CN=MKRWeb, OU=Sunnah24, O=MKRWeb, L=Rajshahi, S=Rajshahi, C=BD"
+
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add -f "signing/sunnah24-release.keystore"
+            git commit -m "chore(signing): persist permanent Android release keystore [skip ci]" || true
+            git push origin HEAD:${GITHUB_REF_NAME} || true
+          fi
+
+          echo "KEYSTORE_FILE=${KEYSTORE_FILE}" >> $GITHUB_ENV
+          echo "KS_PASS=${KS_PASS}" >> $GITHUB_ENV
+          echo "K_ALIAS=${K_ALIAS}" >> $GITHUB_ENV
+          echo "K_PASS=${K_PASS}" >> $GITHUB_ENV
+
+      - name: 5. Build Capacitor Android Bridge, Play Store API 35 Config & Strict Source-Set Isolation
         env:
           NODE_OPTIONS: "--tls-min-v1.2 --dns-result-order=ipv4first"
         run: |
@@ -103,7 +140,15 @@ jobs:
           fi
           npx cap sync android
 
-          # 4A. Compute VERSION_CODE & update build.gradle so new APKs cleanly overwrite existing app
+          # 5A. Enforce Google Play Console Target API 35 (Android 15) in variables.gradle
+          VARS_GRADLE="android/variables.gradle"
+          if [ -f "$VARS_GRADLE" ]; then
+            sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 35/g' "$VARS_GRADLE"
+            sed -i 's/targetSdkVersion = [0-9]*/targetSdkVersion = 35/g' "$VARS_GRADLE"
+            echo "✅ Enforced compileSdkVersion=35 and targetSdkVersion=35 in variables.gradle"
+          fi
+
+          # 5B. Compute VERSION_CODE, inject Native Release Signing, R8 Mapping & Play Store Compliance into app/build.gradle
           VERSION_CODE=$((2100 + RUN_NUMBER))
           echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_ENV
 
@@ -111,10 +156,57 @@ jobs:
           if [ -f "$APP_GRADLE" ]; then
             sed -i "s/versionCode [0-9]*/versionCode ${VERSION_CODE}/g" "$APP_GRADLE"
             sed -i "s/versionName \"[^\"]*\"/versionName \"${VERSION_NAME}\"/g" "$APP_GRADLE"
-            echo "✅ Updated build.gradle to versionCode=${VERSION_CODE}, versionName=${VERSION_NAME}"
+
+            cat << 'GRADLE_EOF' >> "$APP_GRADLE"
+
+          // --- GOOGLE PLAY STORE PRODUCTION AAB CONFIGURATION ---
+          android {
+              compileSdk 35
+              defaultConfig {
+                  targetSdk 35
+              }
+              signingConfigs {
+                  release {
+                      storeFile file(System.getenv("KEYSTORE_FILE") ?: "${rootProject.projectDir}/../signing/sunnah24-release.keystore")
+                      storePassword System.getenv("KS_PASS") ?: "sunnah24pass"
+                      keyAlias System.getenv("K_ALIAS") ?: "sunnah24"
+                      keyPassword System.getenv("K_PASS") ?: "sunnah24pass"
+                      enableV1Signing true
+                      enableV2Signing true
+                      enableV3Signing true
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                      minifyEnabled true
+                      shrinkResources true
+                      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                      ndk {
+                          debugSymbolLevel 'FULL'
+                      }
+                  }
+              }
+          }
+          GRADLE_EOF
+            sed -i 's/^          //' "$APP_GRADLE"
+            echo "✅ Configured Play Store API 35, R8 Minification & Native Release Signing in $APP_GRADLE"
           fi
 
-          # 4B. Convert www/icon.svg into All Android APK Mipmap Launcher Icons & Splash Previews
+          # 5C. Append Keep Rules for WebView JavascriptInterface & Capacitor Plugins to proguard-rules.pro
+          PROGUARD_FILE="android/app/proguard-rules.pro"
+          cat << 'PROGUARD_EOF' >> "$PROGUARD_FILE"
+          -keepattributes JavascriptInterface
+          -keepattributes *Annotation*
+          -keepclassmembers class * {
+              @android.webkit.JavascriptInterface <methods>;
+          }
+          -keep class com.mkrweb.sunnah24.** { *; }
+          -keep class com.getcapacitor.** { *; }
+          PROGUARD_EOF
+          sed -i 's/^          //' "$PROGUARD_FILE"
+
+          # 5D. Convert www/icon.svg into All Android Launcher Icons & Adaptive Mipmaps
           sudo apt-get update && sudo apt-get install -y librsvg2-bin imagemagick
           RES_DIR="android/app/src/main/res"
 
@@ -134,7 +226,6 @@ jobs:
             rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$folder/ic_launcher_foreground.png"
           done
 
-          # Generate Centered Splash Screen PNG from www/icon.svg for all Capacitor splash drawables
           rsvg-convert -w 512 -h 512 www/icon.svg -o /tmp/s24_logo_512.png
           convert -size 1080x1920 xc:"#F1F6F3" /tmp/s24_logo_512.png -gravity center -composite /tmp/s24_splash_screen.png
           for existing_splash in $(find "$RES_DIR" -name "splash.png"); do
@@ -145,18 +236,22 @@ jobs:
           rm -f "$RES_DIR/drawable/ic_launcher_foreground.xml"
           rm -f "$RES_DIR/drawable-v24/ic_launcher_foreground.xml"
           rm -rf "$RES_DIR/mipmap-anydpi-v26"
-          echo "✅ Custom Sunnah 24 APK Launcher Icons & Splash Screens generated!"
+          echo "✅ Custom Sunnah 24 Launcher Icons & Splash Screens generated!"
 
-          # 4C. Enable Android Auto-Backup & Clean Base Manifest (Play Store AAB stays 100% free of REQUEST_INSTALL_PACKAGES)
+          # 5E. Strip Legacy Storage & Sideload Permissions from Merged Manifest for Play Store Compliance
           MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
           if [ -f "$MANIFEST_FILE" ]; then
+            if ! grep -q "xmlns:tools" "$MANIFEST_FILE"; then
+              sed -i 's|<manifest xmlns:android="http://schemas.android.com/apk/res/android"|<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"|' "$MANIFEST_FILE"
+            fi
             sed -i 's/android:allowBackup="false"/android:allowBackup="true"/g' "$MANIFEST_FILE" || true
             sed -i '/REQUEST_INSTALL_PACKAGES/d' "$MANIFEST_FILE" || true
+            sed -i '/READ_EXTERNAL_STORAGE/d' "$MANIFEST_FILE" || true
+            sed -i '/WRITE_EXTERNAL_STORAGE/d' "$MANIFEST_FILE" || true
+            sed -i '/<\/manifest>/i \    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.AD_ID" tools:node="remove" />' "$MANIFEST_FILE"
           fi
 
-          # 4C-2. Inject REQUEST_INSTALL_PACKAGES ONLY into src/debug/AndroidManifest.xml for the Sideloaded Self-Updating APK!
-          # Because bundleRelease (Play Store .aab) strictly ignores src/debug, Google Play Console 100% approves the AAB,
-          # while assembleDebug (GitHub Self-Updating .apk) gets full SnapTube-style auto-install permission!
+          # 5F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/debug/AndroidManifest.xml for Sideload APK
           DEBUG_MANIFEST_DIR="android/app/src/debug"
           mkdir -p "$DEBUG_MANIFEST_DIR"
           cat << 'EOF' > "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
@@ -165,8 +260,9 @@ jobs:
               <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
           </manifest>
           EOF
+          sed -i 's/^          //' "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
 
-          # 4D. Inject FileProvider XML for both App-Private External Files & Public Downloads
+          # 5G. Inject FileProvider XML for Scoped Storage
           XML_DIR="android/app/src/main/res/xml"
           mkdir -p "$XML_DIR"
           cat << 'EOF' > "$XML_DIR/file_paths.xml"
@@ -177,9 +273,9 @@ jobs:
               <external-cache-path name="external_cache_path" path="." />
               <cache-path name="cache_path" path="." />
               <files-path name="files_path" path="." />
-              <external-path name="external_downloads" path="Download/" />
           </paths>
           EOF
+          sed -i 's/^          //' "$XML_DIR/file_paths.xml"
 
           if [ -f "$MANIFEST_FILE" ]; then
             if ! grep -q "fileprovider" "$MANIFEST_FILE"; then
@@ -196,10 +292,166 @@ jobs:
             fi
           fi
 
-          # 4E. Inject Dual-Flavor SnapTube-Style PackageInstaller + Permission Bridge into MainActivity.java
-          MAIN_ACT=$(find android/app/src/main/java -name "MainActivity.java" | head -n 1)
-          if [ -n "$MAIN_ACT" ]; then
-            cat << 'JAVA_EOF' > "$MAIN_ACT"
+          # 5H. STRICT SOURCE-SET ISOLATION FOR GOOGLE PLAY POLICY COMPLIANCE:
+          # Remove MainActivity.java from src/main so the Play Store Release AAB (src/release)
+          # has ZERO self-updating/APK-installer bytecode (application/vnd.android.package-archive
+          # or ACTION_MANAGE_UNKNOWN_APP_SOURCES), while Sideload Debug APK (src/debug) retains it!
+          rm -f android/app/src/main/java/com/mkrweb/sunnah24/MainActivity.java
+
+          RELEASE_JAVA_DIR="android/app/src/release/java/com/mkrweb/sunnah24"
+          mkdir -p "$RELEASE_JAVA_DIR"
+          cat << 'REL_JAVA_EOF' > "$RELEASE_JAVA_DIR/MainActivity.java"
+          package com.mkrweb.sunnah24;
+
+          import android.content.ContentValues;
+          import android.content.pm.PackageInfo;
+          import android.graphics.Color;
+          import android.net.Uri;
+          import android.os.Build;
+          import android.os.Bundle;
+          import android.os.Environment;
+          import android.provider.MediaStore;
+          import android.webkit.JavascriptInterface;
+          import android.webkit.WebSettings;
+          import android.webkit.WebView;
+          import androidx.activity.OnBackPressedCallback;
+          import com.getcapacitor.BridgeActivity;
+          import java.io.BufferedReader;
+          import java.io.File;
+          import java.io.FileInputStream;
+          import java.io.FileOutputStream;
+          import java.io.InputStreamReader;
+          import java.io.OutputStream;
+          import java.nio.charset.StandardCharsets;
+
+          public class MainActivity extends BridgeActivity {
+              @Override
+              public void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+
+                  if (this.bridge != null && this.bridge.getWebView() != null) {
+                      WebView webView = this.bridge.getWebView();
+                      webView.setBackgroundColor(Color.parseColor("#F1F6F3"));
+                      WebSettings ws = webView.getSettings();
+                      ws.setDomStorageEnabled(true);
+                      ws.setDatabaseEnabled(true);
+                      webView.addJavascriptInterface(new PlayStoreSafeVaultBridge(), "AndroidDownloader");
+                  }
+
+                  getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+                      @Override
+                      public void handleOnBackPressed() {
+                          if (bridge != null && bridge.getWebView() != null) {
+                              bridge.getWebView().evaluateJavascript(
+                                  "(window.handleSunnahBackNavigation ? window.handleSunnahBackNavigation() : false)",
+                                  result -> {
+                                      if ("false".equals(result)) {
+                                          finish();
+                                      }
+                                  }
+                              );
+                          } else {
+                              finish();
+                          }
+                      }
+                  });
+              }
+
+              public class PlayStoreSafeVaultBridge {
+                  @JavascriptInterface
+                  public boolean isSelfUpdateSupported() {
+                      return false;
+                  }
+
+                  @JavascriptInterface
+                  public boolean canRequestPackageInstalls() {
+                      return false;
+                  }
+
+                  @JavascriptInterface
+                  public String getInstalledVersionName() {
+                      try {
+                          PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                          return pInfo.versionName;
+                      } catch (Exception e) {
+                          return "4.2.0";
+                      }
+                  }
+
+                  @JavascriptInterface
+                  public boolean autoSaveInternalVault(String jsonPayload) {
+                      try {
+                          File vaultFile = new File(getFilesDir(), "sunnah24_enterprise_vault.json");
+                          try (FileOutputStream fos = new FileOutputStream(vaultFile, false)) {
+                              fos.write(jsonPayload.getBytes(StandardCharsets.UTF_8));
+                              fos.flush();
+                          }
+                          return true;
+                      } catch (Exception e) {
+                          return false;
+                      }
+                  }
+
+                  @JavascriptInterface
+                  public String autoLoadInternalVault() {
+                      try {
+                          File vaultFile = new File(getFilesDir(), "sunnah24_enterprise_vault.json");
+                          if (!vaultFile.exists()) return "";
+                          StringBuilder sb = new StringBuilder();
+                          try (BufferedReader reader = new BufferedReader(
+                              new InputStreamReader(new FileInputStream(vaultFile), StandardCharsets.UTF_8))) {
+                              String line;
+                              while ((line = reader.readLine()) != null) {
+                                  sb.append(line);
+                              }
+                          }
+                          return sb.toString();
+                      } catch (Exception e) {
+                          return "";
+                      }
+                  }
+
+                  @JavascriptInterface
+                  public String saveJsonToDownloads(String fileName, String jsonContent) {
+                      try {
+                          String safeFileName = fileName.replaceAll("[^a-zA-Z0-9._-]", "_");
+                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                              ContentValues values = new ContentValues();
+                              values.put(MediaStore.Downloads.DISPLAY_NAME, safeFileName);
+                              values.put(MediaStore.Downloads.MIME_TYPE, "application/json");
+                              values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+                              Uri uri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+                              if (uri != null) {
+                                  try (OutputStream os = getContentResolver().openOutputStream(uri)) {
+                                      if (os != null) {
+                                          os.write(jsonContent.getBytes(StandardCharsets.UTF_8));
+                                          os.flush();
+                                      }
+                                  }
+                                  return "Downloads/" + safeFileName;
+                              }
+                          }
+                          File appDownloadDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                          if (appDownloadDir == null) appDownloadDir = getFilesDir();
+                          if (!appDownloadDir.exists()) appDownloadDir.mkdirs();
+                          File outFile = new File(appDownloadDir, safeFileName);
+                          try (FileOutputStream fos = new FileOutputStream(outFile)) {
+                              fos.write(jsonContent.getBytes(StandardCharsets.UTF_8));
+                              fos.flush();
+                          }
+                          return outFile.getAbsolutePath();
+                      } catch (Exception e) {
+                          return "ERROR:" + e.getMessage();
+                      }
+                  }
+              }
+          }
+          REL_JAVA_EOF
+          sed -i 's/^          //' "$RELEASE_JAVA_DIR/MainActivity.java"
+
+          DEBUG_JAVA_DIR="android/app/src/debug/java/com/mkrweb/sunnah24"
+          mkdir -p "$DEBUG_JAVA_DIR"
+          cat << 'DBG_JAVA_EOF' > "$DEBUG_JAVA_DIR/MainActivity.java"
           package com.mkrweb.sunnah24;
 
           import android.app.DownloadManager;
@@ -301,8 +553,6 @@ jobs:
                   });
               }
 
-              // SnapTube-Style Resume Hook: As soon as user toggles 'Allow from this source' in Settings
-              // and returns to Sunnah 24, automatically launch the pending APK installer!
               @Override
               public void onResume() {
                   super.onResume();
@@ -349,7 +599,6 @@ jobs:
                   return true;
               }
 
-              // Uses app-private external files directory so Android 10–15 Scoped Storage never blocks FileProvider
               private File getVersionedApkFile(String versionTag) {
                   String safeTag = (versionTag == null || versionTag.isEmpty())
                       ? "latest"
@@ -378,8 +627,6 @@ jobs:
                   runOnUiThread(() -> {
                       File resolvedFile = (apkFile != null && apkFile.exists()) ? apkFile : targetApkFile;
 
-                      // Step 1: On Android 8.0+ (API 26+), if user hasn't granted 'Install Unknown Apps' yet,
-                      // open the exact permission toggle for Sunnah 24 and auto-resume installation on return!
                       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasInstallPermissionInManifest()) {
                           if (!getPackageManager().canRequestPackageInstalls()) {
                               pendingInstallFile = resolvedFile;
@@ -401,7 +648,6 @@ jobs:
                           }
                       }
 
-                      // Step 2: Launch native Package Installer via FileProvider (or DownloadManager URI fallback)
                       triggerDirectFileProviderInstaller(resolvedFile, completedDownloadId);
                   });
               }
@@ -453,6 +699,11 @@ jobs:
               }
 
               public class WebAppDownloader {
+                  @JavascriptInterface
+                  public boolean isSelfUpdateSupported() {
+                      return true;
+                  }
+
                   @JavascriptInterface
                   public boolean canRequestPackageInstalls() {
                       return canInstallUnknownPackages();
@@ -540,7 +791,6 @@ jobs:
                           request.setDescription("Downloading official update package...");
                           request.setMimeType("application/vnd.android.package-archive");
                           request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                          // Store in app-private external Downloads directory so Android 10-15 Scoped Storage never blocks FileProvider!
                           request.setDestinationInExternalFilesDir(MainActivity.this, Environment.DIRECTORY_DOWNLOADS, fileName);
 
                           DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
@@ -669,49 +919,18 @@ jobs:
                   }
               }
           }
-          JAVA_EOF
-            sed -i 's/^          //' "$MAIN_ACT"
-            echo "✅ Injected Dual-Flavor SnapTube-Style Auto-Installer into $MAIN_ACT"
-          fi
+          DBG_JAVA_EOF
+          sed -i 's/^          //' "$DEBUG_JAVA_DIR/MainActivity.java"
+          echo "✅ Isolated Play Store Safe Release MainActivity & Sideload Debug MainActivity!"
 
-      - name: 5. Compile Sideload APK (with REQUEST_INSTALL_PACKAGES) & Play Store Bundle (100% Play-Compliant)
+      - name: 6. Compile Sideload APK (assembleDebug) & Play Store Signed AAB (bundleRelease)
         working-directory: ./android
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug bundleRelease
 
-      - name: 6. Sign Release APK with Original Persistent Keystore (V1 + V2 + V3 Schemes)
+      - name: 7. Sign Sideload APK & Verify Signed Play Store AAB
         run: |
-          mkdir -p signing
-          KEYSTORE_FILE="signing/sunnah24-release.keystore"
-          KS_PASS="sunnah24pass"
-          K_ALIAS="sunnah24"
-          K_PASS="sunnah24pass"
-
-          if [ -n "$KEYSTORE_BASE64" ]; then
-            echo "$KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_FILE"
-            KS_PASS="$KEYSTORE_PASSWORD"
-            K_ALIAS="$KEY_ALIAS"
-            K_PASS="$KEY_PASSWORD"
-          elif [ -f "sunnah24-release.keystore" ]; then
-            cp -f "sunnah24-release.keystore" "$KEYSTORE_FILE"
-            echo "✅ Using root sunnah24-release.keystore"
-          elif [ -f "$KEYSTORE_FILE" ]; then
-            echo "✅ Found existing persistent keystore in repository: $KEYSTORE_FILE"
-          else
-            echo "🔐 Generating permanent keystore..."
-            keytool -genkey -v -keystore "$KEYSTORE_FILE" \
-              -alias "$K_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 \
-              -storepass "$KS_PASS" -keypass "$K_PASS" \
-              -dname "CN=MKRWeb, OU=Sunnah24, O=MKRWeb, L=Rajshahi, S=Rajshahi, C=BD"
-
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add -f "$KEYSTORE_FILE"
-            git commit -m "chore(signing): persist permanent Android release keystore [skip ci]" || true
-            git push origin HEAD:${GITHUB_REF_NAME} || true
-          fi
-
           UNSIGNED_APK="android/app/build/outputs/apk/debug/app-debug.apk"
           SIGNED_APK="Sunnah-24-v4.2-Enterprise-Signed.apk"
 
@@ -733,33 +952,34 @@ jobs:
 
           AAB_PATH=$(find android/app/build/outputs/bundle/release -name "*.aab" | head -n 1)
           if [ -n "$AAB_PATH" ]; then
-            jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
-              -keystore "$KEYSTORE_FILE" -storepass "$KS_PASS" -keypass "$K_PASS" \
-              "$AAB_PATH" "$K_ALIAS"
+            jarsigner -verify -verbose -certs "$AAB_PATH"
             cp "$AAB_PATH" ./Sunnah-24-v4.2-PlayStore-Signed.aab
+            echo "✅ Play Store Signed AAB verified: Sunnah-24-v4.2-PlayStore-Signed.aab"
+          else
+            echo "❌ ERROR: Play Store AAB was not generated!"
+            exit 1
           fi
-          echo "✅ Signed APK ready: $SIGNED_APK (versionCode=${VERSION_CODE}, versionName=${VERSION_NAME})"
 
-      - name: 7. Upload Signed APK as Build Artifact
+      - name: 8. Upload Signed APK & Play Store AAB as Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Sunnah-24-Enterprise-APK
+          name: Sunnah-24-Enterprise-Release-Bundle
           path: |
             Sunnah-24-v4.2-Enterprise-Signed.apk
             Sunnah-24-v4.2-PlayStore-Signed.aab
 
-      - name: 8. Publish Automatic GitHub Release with APK
+      - name: 9. Publish Automatic GitHub Release with APK & Play Store AAB
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION_NAME }}
-          name: "☪️ Sunnah 24 v${{ env.VERSION_NAME }} — Play-Protect Safe SnapTube-Style Auto-Installer"
+          name: "☪️ Sunnah 24 v${{ env.VERSION_NAME }} — Play Store Ready AAB & Signed Enterprise APK"
           body: |
-            ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Enterprise Signed Android APK Release (v${{ env.VERSION_NAME }})
-            - **SnapTube-Style Auto-Installer (Play Protect Safe):** Downloads the update via Android's system DownloadManager and automatically launches the native package installer at 100% completion using trusted OS Download URIs.
-            - **180-Day Triple-Redundant Auto-Vault:** Preserves all user habit records across LocalStorage, IndexedDB, and Native Android Vault during updates.
+            ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Play Store Ready `.aab` & Signed Android `.apk` (v${{ env.VERSION_NAME }})
+            - **Google Play Store Ready `.aab` (`Sunnah-24-v4.2-PlayStore-Signed.aab`):** Compiled with `targetSdk 35` / `compileSdk 35`, R8 code shrinking + deobfuscation mapping, zero self-updater bytecode, and zero legacy storage permissions.
+            - **Sideload Auto-Updating `.apk` (`Sunnah-24-v4.2-Enterprise-Signed.apk`):** Full in-app update support via Android's system DownloadManager for direct website users.
+            - **Triple-Redundant Auto-Vault:** Preserves all user habit records across LocalStorage, IndexedDB, and Native Android Vault.
           files: |
             Sunnah-24-v4.2-Enterprise-Signed.apk
             Sunnah-24-v4.2-PlayStore-Signed.aab
-
 
