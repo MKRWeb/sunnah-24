@@ -5069,3 +5069,22 @@ html[dir="rtl"] .section-live-pill {
   }
 }
 
+/* ==========================================================================
+   V5.7 REMOVE ARROW SIGN FROM ALL 10 HOME PAGE SECTION CARDS
+   - Hides .section-enter-arrow completely and lets the progress track span 100%
+   - Preserves the 3-sections-in-a-row alignment and all previous updates
+   ========================================================================== */
+.section-enter-arrow {
+  display: none !important;
+}
+
+.section-card-footer {
+  justify-content: center !important;
+  gap: 0 !important;
+}
+
+.section-mini-track {
+  width: 100% !important;
+  flex: 1 1 100% !important;
+}
+
