@@ -263,17 +263,18 @@
         <button type="button" class="section-launcher-card theme-indigo" data-open-section="sec-tahajjud_fajr" data-phase-key="tahajjud_fajr">
           <div class="section-card-top">
             <div class="section-world-logo logo-indigo" aria-hidden="true">
-              <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
-                <circle cx="24" cy="24" r="20" fill="url(#gradTahajjud)" opacity="0.18"/>
-                <path d="M29.5 14.5A11.5 11.5 0 1 0 35.5 29a9.5 9.5 0 0 1-6-14.5z" fill="#4f46e5" stroke="#312e81" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M16 14l1.2 2.6L20 17.8l-2.8 1.2L16 21.6l-1.2-2.6L12 17.8l2.8-1.2L16 14z" fill="#eab308"/>
-                <path d="M12 34h24M16 37.5h16" stroke="#4f46e5" stroke-width="2" stroke-linecap="round"/>
-                <defs>
-                  <linearGradient id="gradTahajjud" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#6366f1"/>
-                    <stop offset="1" stop-color="#1e1b4b"/>
-                  </linearGradient>
-                </defs>
+              <svg viewBox="0 0 64 64" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Night Sky Arch & Prayer Mat / Mosque Dome & Crescent (Tahajjud & Fajr) -->
+                <rect x="10" y="10" width="44" height="44" rx="12" fill="#1e1b4b" stroke="#1e352b" stroke-width="2"/>
+                <path d="M16 54V36c0-8.8 7.2-16 16-16s16 7.2 16 16v18" fill="#312e81" stroke="#fbbf24" stroke-width="1.8"/>
+                <!-- Golden Crescent & Stars -->
+                <path d="M35.5 16.5a6.5 6.5 0 1 0 5.5 9.8 5.2 5.2 0 0 1-5.5-9.8z" fill="#fbbf24" stroke="#1e352b" stroke-width="1.2"/>
+                <circle cx="23" cy="19" r="1.6" fill="#fde047"/>
+                <circle cx="43" cy="16" r="1.3" fill="#fde047"/>
+                <!-- Mosque Silhouette & Dawn Glow -->
+                <path d="M22 44c0-5.5 4.5-10 10-10s10 4.5 10 10v10H22V44z" fill="#10b981" stroke="#1e352b" stroke-width="1.6"/>
+                <path d="M32 30v4" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+                <rect x="28" y="45" width="8" height="9" rx="4" fill="#fef3c7" stroke="#1e352b" stroke-width="1.4"/>
               </svg>
             </div>
             <span class="section-live-pill" id="badge-count-tahajjud_fajr">৬টি সুন্নাহ</span>
@@ -292,9 +293,15 @@
         <button type="button" class="section-launcher-card theme-amber" data-open-section="sec-duha_work" data-phase-key="duha_work">
           <div class="section-card-top">
             <div class="section-world-logo logo-amber" aria-hidden="true">
-              <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
-                <circle cx="24" cy="24" r="9" fill="#f59e0b" stroke="#b45309" stroke-width="1.6"/>
-                <path d="M24 8v4M24 36v4M8 24h4M36 24h4M12.7 12.7l2.8 2.8M32.5 32.5l2.8 2.8M35.3 12.7l-2.8 2.8M15.5 32.5l-2.8 2.8" stroke="#d97706" stroke-width="2.2" stroke-linecap="round"/>
+              <svg viewBox="0 0 64 64" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Radiant Forenoon Sun (Duha) + Professional Briefcase / Halal Work -->
+                <circle cx="32" cy="21" r="9" fill="#fbbf24" stroke="#1e352b" stroke-width="1.8"/>
+                <path d="M32 8v3M32 31v3M19 21h3M42 21h3M22.8 11.8l2.1 2.1M39.1 28.1l2.1 2.1M41.2 11.8l-2.1 2.1M24.9 28.1l-2.1 2.1" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round"/>
+                <!-- Modern Work Briefcase -->
+                <path d="M25 34v-3a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v3" stroke="#1e352b" stroke-width="2" stroke-linecap="round"/>
+                <rect x="14" y="34" width="36" height="21" rx="5" fill="#10b981" stroke="#1e352b" stroke-width="2"/>
+                <path d="M14 42h36" stroke="#1e352b" stroke-width="1.8"/>
+                <rect x="28" y="39" width="8" height="6" rx="2" fill="#fbbf24" stroke="#1e352b" stroke-width="1.6"/>
               </svg>
             </div>
             <span class="section-live-pill" id="badge-count-duha_work">৪টি সুন্নাহ</span>
@@ -313,10 +320,17 @@
         <button type="button" class="section-launcher-card theme-emerald" data-open-section="sec-dhuhr_asr" data-phase-key="dhuhr_asr">
           <div class="section-card-top">
             <div class="section-world-logo logo-emerald" aria-hidden="true">
-              <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
-                <path d="M12 36V22l12-10 12 10v14H12z" fill="#10b981" fill-opacity="0.18" stroke="#059669" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M20 36v-8a4 4 0 0 1 8 0v8" stroke="#047857" stroke-width="2"/>
-                <circle cx="34" cy="14" r="4.5" fill="#eab308"/>
+              <svg viewBox="0 0 64 64" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Mosque + Prayer Time Clock & Midday Sun (Dhuhr, Qaylulah & Asr) -->
+                <circle cx="35" cy="35" r="18" fill="#bae6fd" stroke="#1e352b" stroke-width="2"/>
+                <circle cx="35" cy="35" r="14" fill="#e0f2fe"/>
+                <path d="M35 25v10l7 4" stroke="#0284c7" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Mini Mosque Emblem at Top-Left (Like Muslim Bangla Prayer Time Icon) -->
+                <path d="M12 28V19l9-7 9 7v9H12z" fill="#ecfdf5" stroke="#1e352b" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M15 19a6 6 0 0 1 12 0" fill="#10b981" stroke="#1e352b" stroke-width="1.6"/>
+                <rect x="19" y="22" width="4" height="6" rx="2" fill="#fbbf24" stroke="#1e352b" stroke-width="1.2"/>
+                <!-- Golden Sun Badge -->
+                <circle cx="49" cy="17" r="6" fill="#fbbf24" stroke="#1e352b" stroke-width="1.6"/>
               </svg>
             </div>
             <span class="section-live-pill" id="badge-count-dhuhr_asr">৪টি সুন্নাহ</span>
@@ -335,11 +349,16 @@
         <button type="button" class="section-launcher-card theme-purple" data-open-section="sec-maghrib_isha" data-phase-key="maghrib_isha">
           <div class="section-card-top">
             <div class="section-world-logo logo-purple" aria-hidden="true">
-              <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
-                <path d="M10 34h28" stroke="#7c3aed" stroke-width="2.2" stroke-linecap="round"/>
-                <path d="M16 34a8 8 0 0 1 16 0" fill="#a855f7" fill-opacity="0.25" stroke="#6d28d9" stroke-width="2"/>
-                <path d="M24 12v6M13 19l3 3M35 19l-3 3" stroke="#9333ea" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="34" cy="14" r="3" fill="#eab308"/>
+              <svg viewBox="0 0 64 64" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Sunset & Night Mosque with Open Quran on Rehal (Maghrib, Isha & Surah Mulk) -->
+                <circle cx="32" cy="24" r="11" fill="#fb923c" stroke="#1e352b" stroke-width="1.8"/>
+                <path d="M10 30h44" stroke="#1e352b" stroke-width="2" stroke-linecap="round"/>
+                <!-- Open Quran on Wooden Stand (Rehal) -->
+                <path d="M16 34l16 4 16-4v14l-16 4-16-4V34z" fill="#fef3c7" stroke="#1e352b" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M32 38v14" stroke="#1e352b" stroke-width="1.8"/>
+                <path d="M20 55l12-6 12 6M24 49l8 4 8-4" stroke="#b45309" stroke-width="2.2" stroke-linecap="round"/>
+                <!-- Night Crescent -->
+                <path d="M47 11a4.5 4.5 0 1 0 4 6.5 3.6 3.6 0 0 1-4-6.5z" fill="#fbbf24" stroke="#1e352b" stroke-width="1.2"/>
               </svg>
             </div>
             <span class="section-live-pill" id="badge-count-maghrib_isha">৪টি সুন্নাহ</span>
@@ -358,10 +377,17 @@
         <button type="button" class="section-launcher-card theme-teal" data-open-section="sec-sleep_sunnah" data-phase-key="sleep_sunnah">
           <div class="section-card-top">
             <div class="section-world-logo logo-teal" aria-hidden="true">
-              <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
-                <path d="M10 32v-8a3 3 0 0 1 3-3h22a3 3 0 0 1 3 3v8" stroke="#0d9488" stroke-width="2.2" stroke-linecap="round"/>
-                <path d="M14 21v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4" fill="#14b8a6" fill-opacity="0.2" stroke="#0f766e" stroke-width="1.8"/>
-                <path d="M8 32h32M12 32v4M36 32v4" stroke="#0f766e" stroke-width="2.2" stroke-linecap="round"/>
+              <svg viewBox="0 0 64 64" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Cozy Prophetic Sleep Bed, Pillow, Blanket & Crescent Moon -->
+                <path d="M44 12a6.5 6.5 0 1 0 5.8 9.4 5.2 5.2 0 0 1-5.8-9.4z" fill="#fbbf24" stroke="#1e352b" stroke-width="1.5"/>
+                <path d="M18 16h5l-5 6h5M28 11h4l-4 5h4" stroke="#0d9488" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Bed Headboard & Frame -->
+                <path d="M10 26v26M54 32v20" stroke="#1e352b" stroke-width="2.6" stroke-linecap="round"/>
+                <!-- Pillow -->
+                <rect x="14" y="30" width="13" height="8" rx="4" fill="#fef3c7" stroke="#1e352b" stroke-width="1.8"/>
+                <!-- Mattress & Emerald Blanket -->
+                <rect x="10" y="37" width="44" height="10" rx="3" fill="#ffffff" stroke="#1e352b" stroke-width="1.8"/>
+                <path d="M27 37h24a3 3 0 0 1 3 3v7H27V37z" fill="#10b981" stroke="#1e352b" stroke-width="1.8"/>
               </svg>
             </div>
             <span class="section-live-pill" id="badge-count-sleep_sunnah">৪টি সুন্নাহ</span>
@@ -380,9 +406,15 @@
         <button type="button" class="section-launcher-card theme-gold" data-open-section="sec-diet_hygiene" data-phase-key="diet_hygiene">
           <div class="section-card-top">
             <div class="section-world-logo logo-gold" aria-hidden="true">
-              <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
-                <path d="M24 10c7 8 12 14 12 20a12 12 0 1 1-24 0c0-6 5-12 12-20z" fill="#eab308" fill-opacity="0.24" stroke="#b45309" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M24 18v14M19 26c2.5 2 7.5 2 10 0" stroke="#92400e" stroke-width="1.8" stroke-linecap="round"/>
+              <svg viewBox="0 0 64 64" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Tibb Nabawi Honey Jar, Golden Dipper, Olive Leaf & Pure Water Drop -->
+                <rect x="20" y="14" width="20" height="6" rx="2.5" fill="#d97706" stroke="#1e352b" stroke-width="1.8"/>
+                <path d="M17 24c0-2.2 1.8-4 4-4h18c2.2 0 4 1.8 4 4v24a5 5 0 0 1-5 5H22a5 5 0 0 1-5-5V24z" fill="#fbbf24" stroke="#1e352b" stroke-width="2"/>
+                <!-- Honey Label with Olive/Fitrah Leaf -->
+                <rect x="21" y="30" width="18" height="14" rx="3" fill="#fef3c7" stroke="#1e352b" stroke-width="1.5"/>
+                <path d="M30 33c3 2.5 4 5 4 7a4 4 0 0 1-8 0c0-2 1-4.5 4-7z" fill="#10b981" stroke="#1e352b" stroke-width="1.3"/>
+                <!-- Pure Water Drop Badge -->
+                <path d="M49 26c3.5 4.5 6 8 6 11a6 6 0 1 1-12 0c0-3 2.5-6.5 6-11z" fill="#38bdf8" stroke="#1e352b" stroke-width="1.6"/>
               </svg>
             </div>
             <span class="section-live-pill" id="badge-count-diet_hygiene">৪টি সুন্নাহ</span>
@@ -401,9 +433,17 @@
         <button type="button" class="section-launcher-card theme-rose" data-open-section="sec-character_social" data-phase-key="character_social">
           <div class="section-card-top">
             <div class="section-world-logo logo-rose" aria-hidden="true">
-              <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
-                <path d="M24 38s-13-7.8-13-17.5A7.5 7.5 0 0 1 24 15a7.5 7.5 0 0 1 13 5.5C37 30.2 24 38 24 38z" fill="#f43f5e" fill-opacity="0.2" stroke="#be123c" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M19 24l3.5 3.5L29.5 20" stroke="#be123c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <svg viewBox="0 0 64 64" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Akhlaq, Sadaqah Charity Box, Golden Coin & Heart (Muslim's Day Sadaqah Style) -->
+                <!-- Hand Giving -->
+                <path d="M18 14h15a4 4 0 0 1 4 4v2H22a4 4 0 0 1-4-4v-2z" fill="#fcd34d" stroke="#1e352b" stroke-width="1.8"/>
+                <!-- Golden Charity Coin -->
+                <circle cx="32" cy="27" r="6.5" fill="#fbbf24" stroke="#1e352b" stroke-width="1.8"/>
+                <path d="M32 23.5v7M29.5 27h5" stroke="#92400e" stroke-width="1.6" stroke-linecap="round"/>
+                <!-- Sadaqah Box with Heart -->
+                <rect x="14" y="36" width="36" height="18" rx="4" fill="#fde68a" stroke="#1e352b" stroke-width="2"/>
+                <path d="M12 36h40" stroke="#1e352b" stroke-width="2.4" stroke-linecap="round"/>
+                <path d="M32 49.5s-5.5-3.2-5.5-6.8a3.2 3.2 0 0 1 5.5-2.2 3.2 3.2 0 0 1 5.5 2.2c0 3.6-5.5 6.8-5.5 6.8z" fill="#f43f5e" stroke="#1e352b" stroke-width="1.4"/>
               </svg>
             </div>
             <span class="section-live-pill" id="badge-count-character_social">৬টি সুন্নাহ</span>
@@ -422,9 +462,16 @@
         <button type="button" class="section-launcher-card theme-emerald-deep" data-open-section="sec-adhkar">
           <div class="section-card-top">
             <div class="section-world-logo logo-emerald-deep" aria-hidden="true">
-              <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
-                <path d="M12 14h10a4 4 0 0 1 4 4v18a3 3 0 0 0-3-3H12V14zM36 14H26a4 4 0 0 0-4 4v18a3 3 0 0 1 3-3h11V14z" fill="#10b981" fill-opacity="0.22" stroke="#065f46" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M16 20h5M16 25h5M27 20h5M27 25h5" stroke="#047857" stroke-width="1.8" stroke-linecap="round"/>
+              <svg viewBox="0 0 64 64" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Raised Cupped Praying Hands (Du'a / Munajat — Muslim's Day Du'a Style) -->
+                <path d="M32 10v5M24 13l2 4M40 13l-2 4" stroke="#10b981" stroke-width="2.2" stroke-linecap="round"/>
+                <!-- Left Hand -->
+                <path d="M14 33V23a2.5 2.5 0 0 1 5 0v7V20a2.5 2.5 0 0 1 5 0v10V22a2.5 2.5 0 0 1 5 0v19c0 4.4-3.6 8-8 8h-1a6 6 0 0 1-6-6V33z" fill="#fbbf24" stroke="#1e352b" stroke-width="1.8" stroke-linejoin="round"/>
+                <!-- Right Hand -->
+                <path d="M50 33V23a2.5 2.5 0 0 0-5 0v7V20a2.5 2.5 0 0 0-5 0v10V22a2.5 2.5 0 0 0-5 0v19c0 4.4 3.6 8 8 8h1a6 6 0 0 0 6-6V33z" fill="#fbbf24" stroke="#1e352b" stroke-width="1.8" stroke-linejoin="round"/>
+                <!-- Wrist Cuffs -->
+                <rect x="15" y="48" width="13" height="6" rx="2" fill="#10b981" stroke="#1e352b" stroke-width="1.6"/>
+                <rect x="36" y="48" width="13" height="6" rx="2" fill="#10b981" stroke="#1e352b" stroke-width="1.6"/>
               </svg>
             </div>
             <span class="section-live-pill" id="badge-count-adhkar">১৫টি দোয়া</span>
@@ -443,14 +490,21 @@
         <button type="button" class="section-launcher-card theme-cyan" data-open-section="sec-tasbih">
           <div class="section-card-top">
             <div class="section-world-logo logo-cyan" aria-hidden="true">
-              <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
-                <circle cx="24" cy="22" r="11" stroke="#0284c7" stroke-width="2.2" stroke-dasharray="3 3"/>
-                <circle cx="24" cy="11" r="2.6" fill="#eab308"/>
-                <circle cx="33.5" cy="16.5" r="2.3" fill="#0ea5e9"/>
-                <circle cx="33.5" cy="27.5" r="2.3" fill="#0ea5e9"/>
-                <circle cx="14.5" cy="16.5" r="2.3" fill="#0ea5e9"/>
-                <circle cx="14.5" cy="27.5" r="2.3" fill="#0ea5e9"/>
-                <path d="M24 33v7M21 40h6" stroke="#0369a1" stroke-width="2.2" stroke-linecap="round"/>
+              <svg viewBox="0 0 64 64" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Hand Holding Emerald Tasbih Prayer Beads (Muslim's Day Tasbih Style) -->
+                <!-- Hand & Cuff -->
+                <path d="M26 22h16a4 4 0 0 1 4 4v5a4 4 0 0 1-4 4H28l-6-4v-5a4 4 0 0 1 4-4z" fill="#fcd34d" stroke="#1e352b" stroke-width="1.8" stroke-linejoin="round"/>
+                <rect x="44" y="21" width="8" height="15" rx="2.5" fill="#10b981" stroke="#1e352b" stroke-width="1.8"/>
+                <!-- Hanging Emerald Prayer Beads Loop -->
+                <circle cx="22" cy="27" r="3.2" fill="#10b981" stroke="#1e352b" stroke-width="1.5"/>
+                <circle cx="17" cy="32" r="3.2" fill="#10b981" stroke="#1e352b" stroke-width="1.5"/>
+                <circle cx="16" cy="39" r="3.2" fill="#10b981" stroke="#1e352b" stroke-width="1.5"/>
+                <circle cx="20" cy="45" r="3.2" fill="#10b981" stroke="#1e352b" stroke-width="1.5"/>
+                <circle cx="27" cy="47" r="3.2" fill="#10b981" stroke="#1e352b" stroke-width="1.5"/>
+                <circle cx="33" cy="43" r="3.2" fill="#10b981" stroke="#1e352b" stroke-width="1.5"/>
+                <circle cx="34" cy="36" r="3.2" fill="#10b981" stroke="#1e352b" stroke-width="1.5"/>
+                <!-- Tassel (Imamah) -->
+                <path d="M27 50v6M24 56h6" stroke="#047857" stroke-width="2.4" stroke-linecap="round"/>
               </svg>
             </div>
             <span class="section-live-pill" id="badge-count-tasbih">যিকির কাউন্টার</span>
@@ -469,9 +523,20 @@
         <button type="button" class="section-launcher-card theme-slate" data-open-section="sec-vault">
           <div class="section-card-top">
             <div class="section-world-logo logo-slate" aria-hidden="true">
-              <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
-                <path d="M24 10l13 5.5v10.5c0 8.5-5.5 15.8-13 18-7.5-2.2-13-9.5-13-18V15.5L24 10z" fill="#10b981" fill-opacity="0.2" stroke="#065f46" stroke-width="2" stroke-linejoin="round"/>
-                <circle cx="24" cy="24" r="4" fill="#eab308" stroke="#065f46" stroke-width="1.6"/>
+              <svg viewBox="0 0 64 64" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Amal Tracker Clipboard + Cryptographic Shield Badge (Vault & Info) -->
+                <rect x="14" y="14" width="30" height="40" rx="4" fill="#ffffff" stroke="#1e352b" stroke-width="2"/>
+                <rect x="22" y="10" width="14" height="7" rx="2.5" fill="#10b981" stroke="#1e352b" stroke-width="1.8"/>
+                <!-- Checklist Rows -->
+                <rect x="19" y="23" width="5" height="5" rx="1" fill="#10b981" stroke="#1e352b" stroke-width="1.3"/>
+                <path d="M27 25.5h11" stroke="#1e352b" stroke-width="2" stroke-linecap="round"/>
+                <rect x="19" y="32" width="5" height="5" rx="1" fill="#10b981" stroke="#1e352b" stroke-width="1.3"/>
+                <path d="M27 34.5h9" stroke="#1e352b" stroke-width="2" stroke-linecap="round"/>
+                <rect x="19" y="41" width="5" height="5" rx="1" fill="#fbbf24" stroke="#1e352b" stroke-width="1.3"/>
+                <path d="M27 43.5h7" stroke="#1e352b" stroke-width="2" stroke-linecap="round"/>
+                <!-- Golden Security Shield -->
+                <path d="M44 30l10 4v8c0 6.5-4.2 12-10 14-5.8-2-10-7.5-10-14v-8l10-4z" fill="#fbbf24" stroke="#1e352b" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M40.5 41.5l2.5 2.5 5-5" stroke="#1e352b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
             <span class="section-live-pill" id="badge-count-vault">SHA-256 ভল্ট</span>
@@ -500,13 +565,21 @@
   <div id="master-section-view" class="master-section-view hidden">
     <!-- Sticky Master App-Bar for Active Section with Back-to-Home Button & World-Class Emblem -->
     <div class="master-section-topbar" id="master-section-topbar">
-      <button type="button" id="back-to-home-btn" class="master-back-home-btn" aria-label="Back to Home">
-        <span class="back-arrow-icon" aria-hidden="true">←</span>
-        <span id="back-to-home-label" data-i18n="back_home_btn">হোম</span>
-      </button>
 
       <div class="master-topbar-center">
-        <div id="master-active-logo" class="master-topbar-logo">🕌</div>
+        <div id="master-active-logo" class="master-topbar-logo"><svg viewBox="0 0 64 64" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Night Sky Arch & Prayer Mat / Mosque Dome & Crescent (Tahajjud & Fajr) -->
+  <rect x="10" y="10" width="44" height="44" rx="12" fill="#1e1b4b" stroke="#1e352b" stroke-width="2"/>
+  <path d="M16 54V36c0-8.8 7.2-16 16-16s16 7.2 16 16v18" fill="#312e81" stroke="#fbbf24" stroke-width="1.8"/>
+  <!-- Golden Crescent & Stars -->
+  <path d="M35.5 16.5a6.5 6.5 0 1 0 5.5 9.8 5.2 5.2 0 0 1-5.5-9.8z" fill="#fbbf24" stroke="#1e352b" stroke-width="1.2"/>
+  <circle cx="23" cy="19" r="1.6" fill="#fde047"/>
+  <circle cx="43" cy="16" r="1.3" fill="#fde047"/>
+  <!-- Mosque Silhouette & Dawn Glow -->
+  <path d="M22 44c0-5.5 4.5-10 10-10s10 4.5 10 10v10H22V44z" fill="#10b981" stroke="#1e352b" stroke-width="1.6"/>
+  <path d="M32 30v4" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+  <rect x="28" y="45" width="8" height="9" rx="4" fill="#fef3c7" stroke="#1e352b" stroke-width="1.4"/>
+</svg></div>
         <div class="master-topbar-titles">
           <h2 id="master-active-title">তাহাজ্জুদ ও ফজর</h2>
           <small id="master-active-subtitle">নববী সুন্নাহ অনুশীলন</small>
@@ -534,17 +607,6 @@
           <div class="master-phase-score-pill" id="master-phase-score-pill">০%</div>
           <button type="button" id="reset-today-btn" class="link-btn" data-i18n="reset_today">আজকের রিসেট</button>
         </div>
-      </div>
-
-      <!-- Quick Phase Switcher Pills inside Master View (Optional 1-tap jump between the 7 Habit Sections) -->
-      <div class="filter-bar master-phase-switcher" role="tablist" aria-label="Switch Prophetic Phase Section">
-        <button type="button" class="chip" data-phase="tahajjud_fajr"><span class="chip-circle-avatar">🌌</span><span data-i18n="phase_tahajjud">তাহাজ্জুদ ও ফজর</span></button>
-        <button type="button" class="chip" data-phase="duha_work"><span class="chip-circle-avatar">☀️</span><span data-i18n="phase_duha">সকাল ও কর্মক্ষেত্র</span></button>
-        <button type="button" class="chip" data-phase="dhuhr_asr"><span class="chip-circle-avatar">🌤️</span><span data-i18n="phase_dhuhr">যোহর, কাইলুলা ও আসর</span></button>
-        <button type="button" class="chip" data-phase="maghrib_isha"><span class="chip-circle-avatar">🌆</span><span data-i18n="phase_maghrib">মাগরিব ও ইশা</span></button>
-        <button type="button" class="chip" data-phase="sleep_sunnah"><span class="chip-circle-avatar">🛌</span><span data-i18n="phase_sleep">সুন্নাহ সম্মত ঘুম</span></button>
-        <button type="button" class="chip" data-phase="diet_hygiene"><span class="chip-circle-avatar">🍯</span><span data-i18n="phase_diet">তিব্বে নববী ও ফিতরাত</span></button>
-        <button type="button" class="chip" data-phase="character_social"><span class="chip-circle-avatar">🤝</span><span data-i18n="phase_character">আখলাক ও সুন্নাহ দিবস</span></button>
       </div>
 
       <!-- Extensible Sub-Sections Slot for Future Phase Sub-Categories -->
