@@ -5274,7 +5274,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  document.getElementById("reset-today-btn").addEventListener("click", async () => {
+  document.getElementById("reset-today-btn")?.addEventListener("click", async () => {
     const now = new Date();
     const todayKey = getLocalDateKey(now);
     const prevKey = getPreviousSolarDateKey(now);
@@ -5314,7 +5314,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  document.getElementById("habit-list-container").addEventListener("click", (e) => {
+  document.getElementById("habit-list-container")?.addEventListener("click", (e) => {
     const checkEl = e.target.closest("[data-toggle]");
     if (checkEl) {
       toggleHabit(checkEl.dataset.toggle);
@@ -5327,7 +5327,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Click on any Month card to switch month archive, or click a day row (Category Bar rows are strictly non-clickable)
-  document.getElementById("tab-vault").addEventListener("click", (e) => {
+  document.getElementById("tab-vault")?.addEventListener("click", (e) => {
     const monthCard = e.target.closest("[data-select-month]");
     if (monthCard) {
       selectedArchiveMonthKey = monthCard.getAttribute("data-select-month");
@@ -5342,7 +5342,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  document.getElementById("close-modal-btn").addEventListener("click", () => {
+  document.getElementById("close-modal-btn")?.addEventListener("click", () => {
     document.getElementById("fact-modal").classList.add("hidden");
   });
 
@@ -5450,7 +5450,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderDiaryHistory();
   });
 
-  document.getElementById("add-custom-habit-btn").addEventListener("click", async () => {
+  document.getElementById("add-custom-habit-btn")?.addEventListener("click", async () => {
     const title = document.getElementById("custom-title").value.trim();
     const phase = document.getElementById("custom-phase").value;
     const fact = document.getElementById("custom-fact").value.trim();
@@ -5472,7 +5472,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderHabits();
   });
 
-  document.getElementById("export-backup-btn").addEventListener("click", async () => {
+  document.getElementById("export-backup-btn")?.addEventListener("click", async () => {
     await saveAndSealState();
     const timeStamp = new Date().toTimeString().slice(0, 8).replace(/:/g, "-");
     const fileName = `sunnah-24-backup-${getTodayKey()}-${timeStamp}.json`;
@@ -5524,7 +5524,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  document.getElementById("import-backup-input").addEventListener("change", async (e) => {
+  document.getElementById("import-backup-input")?.addEventListener("change", async (e) => {
     const file = e.target.files[0];
     if (!file) return;
     const text = await file.text();
@@ -5960,7 +5960,7 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
 
   document.body.appendChild(banner);
 
-  document.getElementById("trigger-native-update-btn").addEventListener("click", () => {
+  document.getElementById("trigger-native-update-btn")?.addEventListener("click", () => {
     const btn = document.getElementById("trigger-native-update-btn");
     const statusEl = document.getElementById("s24-update-status");
     const progWrap = document.getElementById("s24-update-progress-wrap");
@@ -7485,9 +7485,32 @@ function syncActiveMasterHeaderUI() {
     const phaseHabits = allHabits.filter((h) => h.phase === meta.phaseKey);
     const total = phaseHabits.length;
     const done = phaseHabits.filter((h) => isHabitCompletedInActiveCycle(h, now)).length;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
 
     if (badgeEl) {
       badgeEl.textContent = `${localizeDigits(done, lang)}/${localizeDigits(total, lang)}`;
+    }
+
+    const phaseHeadlineEl = document.getElementById("master-phase-headline");
+    if (phaseHeadlineEl) {
+      phaseHeadlineEl.textContent = t(meta.titleKey);
+    }
+
+    const phaseScorePillEl = document.getElementById("master-phase-score-pill");
+    if (phaseScorePillEl) {
+      phaseScorePillEl.textContent = `${localizeDigits(pct, lang)}%`;
+    }
+
+    const phaseTimeTagEl = document.getElementById("master-phase-time-tag");
+    if (phaseTimeTagEl) {
+      const openInPhase = phaseHabits.filter((h) => evaluateHabitTimeWindow(h, now).status === "open").length;
+      const openStr = localizeDigits(openInPhase, lang);
+      phaseTimeTagEl.textContent =
+        lang === "bn"
+          ? `⏱️ চলমান আমল: ${openStr}টি`
+          : lang === "ar"
+          ? `⏱️ متاح الآن: ${openStr}`
+          : `⏱️ Open Now: ${openStr}`;
     }
   } else if (activeMasterSectionId === "sec-adhkar") {
     const todayKey = getTodayKey();
@@ -7656,12 +7679,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 2. Bind Back-to-Home Button inside Master Section Topbar (#back-to-home-btn)
-  const backHomeBtn = document.getElementById("back-to-home-btn");
-  if (backHomeBtn) {
-    backHomeBtn.addEventListener("click", () => {
-      if (navigator.vibrate) navigator.vibrate(10);
-      returnToHomeDashboardView(true);
+  // 2. Allow tapping top-left Brand Logo/Title (.header-left) to return to Home Dashboard when inside a Master Section
+  const headerBrandLeft = document.querySelector(".header-left");
+  if (headerBrandLeft) {
+    headerBrandLeft.style.cursor = "pointer";
+    headerBrandLeft.addEventListener("click", () => {
+      if (activeMasterSectionId) {
+        if (navigator.vibrate) navigator.vibrate(10);
+        returnToHomeDashboardView(true);
+      }
     });
   }
 
