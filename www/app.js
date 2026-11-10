@@ -193,6 +193,21 @@ const I18N_DICTIONARIES = deepFreeze({
     waqt_asr: "আসর",
     waqt_maghrib: "মাগরিব",
     waqt_isha: "ইশা",
+    sections_hub_title: "নববী জীবনধারা ও ইবাদত বিভাগসমূহ",
+    sections_hub_subtitle: "যেকোনো বিভাগে ট্যাপ করে পূর্ণাঙ্গ স্ক্রিনে প্রবেশ করুন",
+    desc_tahajjud: "শেষ রাতের কিয়াম, মিসওয়াক, ফজর ও ইশরাক",
+    desc_duha: "চাশতের সালাত, তাওয়াক্কুল ও ইহসান ভিত্তিক কাজ",
+    desc_dhuhr: "যোহর সুন্নাত, নববী কাইলুলা, আসর ও সন্ধ্যার যিকির",
+    desc_maghrib: "মাগরিব, পরিবারের খেদমত, ইশা, বিতর ও সূরা মুলক",
+    desc_sleep: "অযু অবস্থায় শোয়া, তিন কুল, তাসবীহ ফাতিমী ও নির্মল অন্তর",
+    desc_diet: "পরিমিত আহার, ৩ নিঃশ্বাসে পানি পান, কালোজিরা-মধু ও ফিতরাত",
+    desc_character: "সালাম, হাসিমুখ, সদকা, পিতা-মাতার খেদমত, রোজা ও জুমু'আ",
+    sec_adhkar_title: "মাসনূন আযকার ও দোয়া",
+    sec_adhkar_desc: "সকাল-সন্ধ্যার ১৫টি সহীহ মাসনূন দোয়া, অর্থ ও ফযীলত",
+    sec_tasbih_title: "ডিজিটাল তাসবীহ",
+    sec_tasbih_desc: "হ্যাপটিক গোল্ডেন রিং ও আজীবন যিকির লেজার",
+    sec_vault_desc: "৭-দিনের ম্যাট্রিক্স, ১২-মাসের আর্কাইভ ও ব্যাকআপ ভল্ট",
+    back_home_btn: "হোম",
     tasbih_options: [
       { target: 33, label: "সুবহানাল্লাহ (আল্লাহ পবিত্র ও মহান)", text: "সুবহানাল্লাহ — ৩৩ বার" },
       { target: 33, label: "আলহামদুলিল্লাহ (সকল প্রশংসা আল্লাহর)", text: "আলহামদুলিল্লাহ — ৩৩ বার" },
@@ -339,6 +354,21 @@ const I18N_DICTIONARIES = deepFreeze({
     waqt_asr: "العصر",
     waqt_maghrib: "المغرب",
     waqt_isha: "العشاء",
+    sections_hub_title: "أقسام السنة النبوية والعبادات اليومية",
+    sections_hub_subtitle: "اضغط على أي قسم للدخول إلى الشاشة الكاملة",
+    desc_tahajjud: "قيام الليل، السواك، الفجر والإشراق",
+    desc_duha: "صلاة الضحى، التوكل وإتقان العمل بإحسان",
+    desc_dhuhr: "سنن الظهر، القيلولة النبوية، العصر وأذكار المساء",
+    desc_maghrib: "المغرب، خدمة الأهل، العشاء، الوتر وسورة الملك",
+    desc_sleep: "النوم على طهارة، المعوذات، تسبيح فاطمة وسلامة الصدر",
+    desc_diet: "ثلث الطعام، شرب الماء ثلاثاً، الطب النبوي والفطرة",
+    desc_character: "إفشاء السلام، التبسم، الصدقة، بر الوالدين، الصيام والجمعة",
+    sec_adhkar_title: "الأذكار والأدعية المأثورة",
+    sec_adhkar_desc: "١٥ دعاءً نبوياً صحيحاً للصباح والمساء مع المعاني والفضائل",
+    sec_tasbih_title: "السبحة الرقمية",
+    sec_tasbih_desc: "حلقة التسبيح الذهبية التفاعلية وسجل الأذكار الدائم",
+    sec_vault_desc: "مصفوفة ٧ أيام، أرشيف ١٢ شهراً والخزنة المشفرة",
+    back_home_btn: "الرئيسية",
     tasbih_options: [
       { target: 33, label: "سبحان الله", text: "سبحان الله — ٣٣ مرة" },
       { target: 33, label: "الحمد لله", text: "الحمد لله — ٣٣ مرة" },
@@ -485,6 +515,21 @@ const I18N_DICTIONARIES = deepFreeze({
     waqt_asr: "Asr",
     waqt_maghrib: "Maghrib",
     waqt_isha: "Isha",
+    sections_hub_title: "Prophetic Lifestyle & Worship Sections",
+    sections_hub_subtitle: "Tap any section card to launch its dedicated full-screen view",
+    desc_tahajjud: "Pre-dawn Qiyam, Miswak, Fajr & Ishraq",
+    desc_duha: "Salat al-Duha, Tawakkul & Ihsan-driven work",
+    desc_dhuhr: "Dhuhr Rawatib, Prophetic Qaylulah, Asr & Evening Adhkar",
+    desc_maghrib: "Maghrib, serving family, Isha, Witr & Surah Al-Mulk",
+    desc_sleep: "Sleeping in Wudu, 3 Quls, Tasbih Fatimah & clean heart",
+    desc_diet: "1/3 stomach rule, 3 sips hydration, Tibb Nabawi & Fitrah",
+    desc_character: "Salam, smiling, Sadaqah, honoring parents, fasting & Jumu'ah",
+    sec_adhkar_title: "Masnoon Adhkar & Duas",
+    sec_adhkar_desc: "15 authentic morning & evening Prophetic Duas with meanings & virtues",
+    sec_tasbih_title: "Digital Tasbih",
+    sec_tasbih_desc: "Haptic golden progress ring & lifetime verified Dhikr ledger",
+    sec_vault_desc: "7-day consistency matrix, 12-month archive & SHA-256 backup vault",
+    back_home_btn: "Home",
     tasbih_options: [
       { target: 33, label: "SubhanAllah (Glory be to Allah)", text: "SubhanAllah — 33x" },
       { target: 33, label: "Alhamdulillah (Praise be to Allah)", text: "Alhamdulillah — 33x" },
@@ -3239,6 +3284,12 @@ async function toggleDuaCompletion(duaId) {
   renderDuas();
   renderWeeklyChart();
   renderLongTermArchive();
+  if (typeof syncMasterSectionsHubProgress === "function") {
+    syncMasterSectionsHubProgress();
+  }
+  if (typeof syncActiveMasterHeaderUI === "function") {
+    syncActiveMasterHeaderUI();
+  }
 }
 
 
@@ -4000,6 +4051,12 @@ function renderDuas() {
   const duaLabelEl = document.getElementById("dua-progress-text");
   if (duaLabelEl) {
     duaLabelEl.textContent = `${localizeDigits(doneDuasCount, lang)}/${localizeDigits(totalDuas, lang)}`;
+  }
+  if (typeof syncMasterSectionsHubProgress === "function") {
+    syncMasterSectionsHubProgress();
+  }
+  if (typeof syncActiveMasterHeaderUI === "function") {
+    syncActiveMasterHeaderUI();
   }
 }
 
@@ -5362,7 +5419,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  document.getElementById("save-diary-btn").addEventListener("click", async () => {
+  const saveDiaryBtn = document.getElementById("save-diary-btn");
+  if (saveDiaryBtn) saveDiaryBtn.addEventListener("click", async () => {
     const gratitude = document.getElementById("diary-gratitude").value.trim();
     const shortcoming = document.getElementById("diary-shortcoming").value.trim();
     const niyyah = document.getElementById("diary-niyyah").value.trim();
@@ -6242,7 +6300,7 @@ function getExactWaqtPopupDetails(waqtId, now = new Date()) {
         : "Asr Prayer Waqt (Standard/Shafi'i)",
       subLabel:
         lang === "bn"
-          ? `সূর্যাস্তের নিষিদ্ধ সময়ের (${formatShortWaqtClock(pWindows.sunset.start, lang)}) পূর্ব পর্যন্ত (মাকরূহ মুক্ত)`
+          ? `সূর্যাস্তের নিষিদ্ধ সময়ের (${formatShortWaqtClock(pWindows.sunset.start, lang)}) পূর্ব পর্যন্ত`
           : lang === "ar"
           ? `يمتد الوقت المختار إلى قبيل وقت النهي (${formatShortWaqtClock(pWindows.sunset.start, lang)})`
           : `Valid until before Sunset prohibited window (${formatShortWaqtClock(pWindows.sunset.start, lang)})`,
@@ -6275,7 +6333,12 @@ function getExactWaqtPopupDetails(waqtId, now = new Date()) {
       id: "maghrib",
       phase: "maghrib_isha",
       icon: "🌇",
-      title: lang === "bn" ? "মাগরিব সালাতের ওয়াক্ত" : lang === "ar" ? "وقت صلاة المغرب" : "Maghrib Prayer Waqt",
+      title:
+        lang === "bn"
+          ? "মাগরিব সালাতের ওয়াক্ত"
+          : lang === "ar"
+          ? "وقت صلاة المغرب"
+          : "Maghrib Prayer Waqt",
       subLabel:
         lang === "bn"
           ? "সূর্যাস্তের পর থেকে ইশার ওয়াক্তের পূর্ব পর্যন্ত"
@@ -6295,32 +6358,37 @@ function getExactWaqtPopupDetails(waqtId, now = new Date()) {
       isPassed,
       remOrStartsMins
     };
-  } else {
-    // Isha Waqt (Crosses Midnight until Fajr - 1)
+  } else if (waqtId === "isha") {
     const startMins = sched.isha;
     const endMins = (sched.fajr - 1 + 1440) % 1440;
-    const primeEndMins = (sched.firstThirdEnd - 1 + 1440) % 1440;
+    const firstThirdEndMinusOne = (sched.firstThirdEnd - 1 + 1440) % 1440;
     const isActive = nowMins >= sched.isha || nowMins < sched.fajr;
-    const isPassed = false;
+    const isPassed = !isActive && nowMins >= sched.fajr && nowMins < sched.isha;
     const currentPos = nowMins < sched.fajr ? nowMins + 1440 : nowMins;
+    const winEnd = sched.fajr + 1440;
     const remOrStartsMins = isActive
-      ? sched.fajr + 1440 - currentPos
+      ? winEnd - currentPos
       : sched.isha - nowMins;
 
     meta = {
       id: "isha",
       phase: "maghrib_isha",
       icon: "🌙",
-      title: lang === "bn" ? "ইশা ও বিতর সালাতের ওয়াক্ত" : lang === "ar" ? "وقت صلاة العشاء والوتر" : "Isha & Witr Prayer Waqt",
+      title:
+        lang === "bn"
+          ? "ইশা ও বিতর সালাতের ওয়াক্ত"
+          : lang === "ar"
+          ? "وقت صلاة العشاء والوتر"
+          : "Isha & Witr Prayer Waqt",
       subLabel:
         lang === "bn"
-          ? `রাতের ১ম প্রহর (${formatShortWaqtClock(primeEndMins, lang)}) উত্তম • সুবহে সাদিকের পূর্ব পর্যন্ত জায়েয`
+          ? `রাতের ১ম প্রহর (${formatShortWaqtClock(firstThirdEndMinusOne, lang)}) উত্তম • সুবহে সাদিকের পূর্ব পর্যন্ত জায়েয`
           : lang === "ar"
-          ? `الوقت المختار إلى الثلث الأول (${formatShortWaqtClock(primeEndMins, lang)}) ويمتد للفجر`
-          : `Prime until 1st Third (${formatShortWaqtClock(primeEndMins, lang)}) • Valid until Fajr`,
+          ? `الوقت المختار إلى الثلث الأول (${formatShortWaqtClock(firstThirdEndMinusOne, lang)}) ويمتد للفجر`
+          : `Prime until 1st Third (${formatShortWaqtClock(firstThirdEndMinusOne, lang)}) • Valid until Fajr`,
       startMins,
       endMins,
-      primeRangeStr: `${formatShortWaqtClock(startMins, lang)} – ${formatShortWaqtClock(primeEndMins, lang)}`,
+      primeRangeStr: `${formatShortWaqtClock(startMins, lang)} – ${formatShortWaqtClock(firstThirdEndMinusOne, lang)}`,
       rakahNote:
         lang === "bn"
           ? "🕌 ৪ রাকাত ফরজ + ২ রাকাত সুন্নাত + বিতর সালাত"
@@ -6336,81 +6404,32 @@ function getExactWaqtPopupDetails(waqtId, now = new Date()) {
   return meta;
 }
 
-function positionWaqtPopupArrow(waqtId) {
-  const arrowEl = document.getElementById("waqt-popup-arrow");
-  const wrapEl = document.getElementById("waqt-range-popup-wrap");
-  const pillEl = document.querySelector(`.waqt-pill-card[data-waqt-id="${waqtId}"]`);
-  if (!arrowEl || !wrapEl || !pillEl) return;
-
-  const wrapRect = wrapEl.getBoundingClientRect();
-  const pillRect = pillEl.getBoundingClientRect();
-  if (wrapRect.width <= 0) return;
-
-  const centerOffset = pillRect.left + pillRect.width / 2 - wrapRect.left;
-  const clampedPx = Math.max(24, Math.min(wrapRect.width - 24, centerOffset));
-  arrowEl.style.left = `${Math.round(clampedPx)}px`;
-}
-
 function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
   const popupWrap = ensureWaqtPopupContainer();
   if (!popupWrap) return;
 
+  // Update active selected pill state on the 5-Waqt grid
+  document.querySelectorAll("#five-waqt-grid .waqt-pill-card").forEach((pill) => {
+    const isSelected = Boolean(waqtId && pill.getAttribute("data-waqt-id") === waqtId);
+    pill.classList.toggle("waqt-popup-selected", isSelected);
+    pill.setAttribute("aria-expanded", isSelected ? "true" : "false");
+  });
+
   if (!waqtId) {
     popupWrap.classList.add("hidden");
     popupWrap.innerHTML = "";
-    document.querySelectorAll(".waqt-pill-card").forEach((btn) => {
-      btn.classList.remove("waqt-popup-selected");
-      btn.setAttribute("aria-expanded", "false");
-    });
     return;
   }
 
-  const info = getExactWaqtPopupDetails(waqtId, now);
-  if (!info) return;
-
-  const lang = appState.locale || "bn";
-  const startClockFull = formatMinutesToLocalizedTime(info.startMins, lang);
-  const endClockFull = formatMinutesToLocalizedTime(info.endMins, lang);
-  const startShort = formatShortWaqtClock(info.startMins, lang);
-  const endShort = formatShortWaqtClock(info.endMins, lang);
-
-  let statusClass = "status-upcoming";
-  let statusBadgeText = "";
-  let countdownLabel = "";
-  let countdownVal = formatRemainingDurationText(info.remOrStartsMins, lang);
-
-  if (info.isActive) {
-    statusClass = "status-active";
-    statusBadgeText =
-      lang === "bn" ? "🟢 চলমান ওয়াক্ত" : lang === "ar" ? "🟢 الوقت جارٍ" : "🟢 Active Now";
-    countdownLabel =
-      lang === "bn"
-        ? "ওয়াক্ত শেষ হতে বাকি:"
-        : lang === "ar"
-        ? "المتبقي لانتهاء الوقت:"
-        : "Waqt Ends In:";
-  } else if (info.isPassed) {
-    statusClass = "status-passed";
-    statusBadgeText =
-      lang === "bn" ? "✓ আজ সমাপ্ত" : lang === "ar" ? "✓ انقضى اليوم" : "✓ Completed Today";
-    countdownLabel =
-      lang === "bn"
-        ? "ওয়াক্ত শুরু হতে বাকি:"
-        : lang === "ar"
-        ? "يبدأ غداً بعد:"
-        : "Starts Tomorrow In:";
-  } else {
-    statusClass = "status-upcoming";
-    statusBadgeText =
-      lang === "bn" ? "⏳ আসন্ন ওয়াক্ত" : lang === "ar" ? "⏳ صلاة قادمة" : "⏳ Upcoming Waqt";
-    countdownLabel =
-      lang === "bn"
-        ? "ওয়াক্ত শুরু হতে বাকি:"
-        : lang === "ar"
-        ? "يتبقى على دخول الوقت:"
-        : "Waqt Starts In:";
+  const details = getExactWaqtPopupDetails(waqtId, now);
+  if (!details) {
+    popupWrap.classList.add("hidden");
+    return;
   }
 
+  const lang = appState.locale || "bn";
+  const startFullStr = formatMinutesToLocalizedTime(details.startMins, lang);
+  const endFullStr = formatMinutesToLocalizedTime(details.endMins, lang);
   const startLbl = lang === "bn" ? "শুরু (Start)" : lang === "ar" ? "بداية الوقت" : "Starts At";
   const endLbl = lang === "bn" ? "শেষ (End)" : lang === "ar" ? "نهاية الوقت" : "Ends At";
   const primeLbl =
@@ -6419,85 +6438,141 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
       : lang === "ar"
       ? "✨ الوقت المختار (أول الوقت):"
       : "✨ Prime Window (Awwal Waqt):";
-  const filterBtnTxt =
-    lang === "bn"
-      ? "এই ওয়াক্তের সুন্নাহ দেখুন ➔"
-      : lang === "ar"
-      ? "عرض سنن هذا الوقت ➔"
-      : "Filter Phase Sunnahs ➔";
 
+  let statusPillClass = "status-upcoming";
+  let statusPillText = "";
+  let countdownLabel = "";
+  let countdownValue = formatRemainingDurationText(details.remOrStartsMins, lang);
+
+  if (details.isActive) {
+    statusPillClass = "status-active";
+    statusPillText =
+      lang === "bn" ? "🟢 চলমান ওয়াক্ত" : lang === "ar" ? "🟢 الوقت جارٍ" : "🟢 Active Waqt";
+    countdownLabel =
+      lang === "bn"
+        ? "⏱️ ওয়াক্ত শেষ হতে বাকি:"
+        : lang === "ar"
+        ? "⏱️ المتبقي لانتهاء الوقت:"
+        : "⏱️ Waqt Ends In:";
+  } else if (details.isPassed) {
+    statusPillClass = "status-passed";
+    statusPillText =
+      lang === "bn" ? "✓ আজ সমাপ্ত" : lang === "ar" ? "✓ انقضى اليوم" : "✓ Completed Today";
+    countdownLabel =
+      lang === "bn"
+        ? "🌅 আগামীকাল শুরু হতে বাকি:"
+        : lang === "ar"
+        ? "🌅 يبدأ غداً بعد:"
+        : "🌅 Starts Tomorrow In:";
+  } else {
+    statusPillClass = "status-upcoming";
+    statusPillText =
+      lang === "bn" ? "⏳ আসন্ন ওয়াক্ত" : lang === "ar" ? "⏳ وقت قادم" : "⏳ Upcoming Waqt";
+    countdownLabel =
+      lang === "bn"
+        ? "⏳ ওয়াক্ত শুরু হতে বাকি:"
+        : lang === "ar"
+        ? "⏳ يبدأ الوقت بعد:"
+        : "⏳ Waqt Starts In:";
+  }
+
+  const openSectionBtnLabel =
+    lang === "bn"
+      ? "এই বিভাগের সুন্নাহ দেখুন ➔"
+      : lang === "ar"
+      ? "عرض سنن هذه الفترة ➔"
+      : "Open Phase Sunnahs ➔";
+
+  // Position arrow under the clicked pill
+  const waferOrder = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
+  const idx = Math.max(0, waferOrder.indexOf(waqtId));
+  const arrowLeftPct = 10 + idx * 20;
+
+  popupWrap.classList.remove("hidden");
   popupWrap.innerHTML = `
-    <div id="waqt-popup-arrow" class="waqt-popup-arrow"></div>
+    <div class="waqt-popup-arrow" style="left:${arrowLeftPct}%;"></div>
     <div class="waqt-range-popup-card">
       <div class="waqt-popup-head">
         <div class="waqt-popup-title-group">
-          <div class="waqt-popup-avatar">${info.icon}</div>
+          <div class="waqt-popup-avatar">${details.icon}</div>
           <div class="waqt-popup-title-text">
-            <h4>${info.title} (${startShort} – ${endShort})</h4>
-            <small>${info.subLabel}</small>
+            <h4>${details.title}</h4>
+            <small>${details.subLabel}</small>
           </div>
         </div>
         <div class="waqt-popup-head-right">
-          <span class="waqt-popup-status-pill ${statusClass}">${statusBadgeText}</span>
-          <button type="button" id="waqt-popup-close-btn" class="waqt-popup-close-btn" aria-label="Close Waqt Popup">✕</button>
+          <span class="waqt-popup-status-pill ${statusPillClass}">${statusPillText}</span>
+          <button type="button" class="waqt-popup-close-btn" id="waqt-popup-close-btn" aria-label="Close">✕</button>
         </div>
       </div>
 
       <div class="waqt-popup-time-grid">
         <div class="waqt-popup-time-box start-box">
           <span class="waqt-popup-time-lbl">${startLbl}</span>
-          <strong class="waqt-popup-time-val">${startClockFull}</strong>
+          <strong class="waqt-popup-time-val">${startFullStr}</strong>
         </div>
         <div class="waqt-popup-time-divider" aria-hidden="true">➔</div>
         <div class="waqt-popup-time-box end-box">
           <span class="waqt-popup-time-lbl">${endLbl}</span>
-          <strong class="waqt-popup-time-val">${endClockFull}</strong>
+          <strong class="waqt-popup-time-val">${endFullStr}</strong>
         </div>
       </div>
 
       <div class="waqt-popup-meta-rows">
         <div class="waqt-popup-meta-item single-line-meta-row">
           <span class="meta-row-label">${primeLbl}</span>
-          <strong class="meta-row-value">${info.primeRangeStr}</strong>
+          <strong class="meta-row-value">${details.primeRangeStr}</strong>
         </div>
         <div class="waqt-popup-meta-item single-line-meta-row countdown-single-line-row">
-          <span class="meta-row-label">⏱️ ${countdownLabel}</span>
-          <strong class="meta-row-value" style="color:${info.isActive ? "var(--danger, #dc2626)" : "var(--accent-emerald-dark)"};">${countdownVal}</strong>
+          <span class="meta-row-label">${countdownLabel}</span>
+          <strong class="meta-row-value" style="color:var(--danger, #dc2626);font-weight:900;">${countdownValue}</strong>
         </div>
       </div>
 
       <div class="waqt-popup-sunnah-note">
-        <span>${info.rakahNote}</span>
-        <button type="button" class="waqt-popup-filter-btn" data-popup-filter-phase="${info.phase}">${filterBtnTxt}</button>
+        <span>${details.rakahNote}</span>
+        <button type="button" class="waqt-popup-filter-btn" data-open-waqt-phase="${details.phase}">
+          ${openSectionBtnLabel}
+        </button>
       </div>
     </div>
   `;
 
-  popupWrap.classList.remove("hidden");
+  const closeBtn = document.getElementById("waqt-popup-close-btn");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      activeSelectedWaqtPopupId = null;
+      renderWaqtTimeRangePopup(null);
+    });
+  }
 
-  document.querySelectorAll(".waqt-pill-card").forEach((btn) => {
-    const isTarget = btn.getAttribute("data-waqt-id") === waqtId;
-    btn.classList.toggle("waqt-popup-selected", isTarget);
-    btn.setAttribute("aria-expanded", isTarget ? "true" : "false");
-  });
-
-  requestAnimationFrame(() => positionWaqtPopupArrow(waqtId));
+  const openPhaseBtn = popupWrap.querySelector("[data-open-waqt-phase]");
+  if (openPhaseBtn) {
+    openPhaseBtn.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      const targetPhase = openPhaseBtn.getAttribute("data-open-waqt-phase");
+      if (targetPhase && typeof openMasterSectionScreen === "function") {
+        openMasterSectionScreen(`sec-${targetPhase}`, true);
+      }
+    });
+  }
 }
 
 function syncOpenWaqtPopupIfVisible(now = new Date()) {
-  if (!activeSelectedWaqtPopupId) return;
-  renderWaqtTimeRangePopup(activeSelectedWaqtPopupId, now);
+  if (activeSelectedWaqtPopupId) {
+    renderWaqtTimeRangePopup(activeSelectedWaqtPopupId, now);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   const waqtGrid = document.getElementById("five-waqt-grid");
   if (waqtGrid) {
     waqtGrid.addEventListener("click", (e) => {
-      const pillBtn = e.target.closest(".waqt-pill-card[data-waqt-id]");
-      if (!pillBtn) return;
-      const clickedId = pillBtn.getAttribute("data-waqt-id");
+      const pill = e.target.closest("[data-waqt-id]");
+      if (!pill) return;
+      const clickedId = pill.getAttribute("data-waqt-id");
       if (navigator.vibrate) navigator.vibrate(14);
-
       if (activeSelectedWaqtPopupId === clickedId) {
         activeSelectedWaqtPopupId = null;
         renderWaqtTimeRangePopup(null);
@@ -6510,1792 +6585,1154 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  document.addEventListener("click", (e) => {
-    const closeBtn = e.target.closest("#waqt-popup-close-btn");
-    if (closeBtn) {
-      activeSelectedWaqtPopupId = null;
-      renderWaqtTimeRangePopup(null);
-      return;
-    }
-
-    const filterBtn = e.target.closest("[data-popup-filter-phase]");
-    if (filterBtn) {
-      const targetPhase = filterBtn.getAttribute("data-popup-filter-phase");
-      if (targetPhase) {
-        activePhase = targetPhase;
-        document.querySelectorAll(".filter-bar .chip").forEach((c) => {
-          c.classList.toggle("active", c.dataset.phase === targetPhase);
-        });
-        switchTabProgrammatically("tab-routine", true);
-        renderHabits();
-        const habitContainer = document.getElementById("habit-list-container");
-        if (habitContainer) {
-          habitContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }
-      }
-      return;
-    }
-
-    // Dismiss popup automatically when tapping outside the 5-Waqt card
-    if (activeSelectedWaqtPopupId && !e.target.closest(".waqt-strip-card")) {
-      activeSelectedWaqtPopupId = null;
-      renderWaqtTimeRangePopup(null);
-    }
-  });
-
-  window.addEventListener("resize", () => {
-    if (activeSelectedWaqtPopupId) {
-      positionWaqtPopupArrow(activeSelectedWaqtPopupId);
-    }
-  });
 });
 
-
 // ============================================================================
-// UNIVERSAL ASR MADHAB TOGGLE ENGINE (HANAFI 2x SHADOW <-> STANDARD/SHAFI'I 1x SHADOW)
-// Replaces the header theme switch with a 1-click Asr Madhab Toggle that
-// defaults to the user's Region-Matched Madhab and lets users anywhere in the
-// world switch between Hanafi (Mithl-e-Thani) and Standard / Shafi'i, Maliki,
-// Hanbali (Mithl-e-Awwal) with 100% real-time non-contradiction across all
-// prayer strips, countdowns, Dhuhr/Asr boundaries, habits, and Evening Adhkar.
+// UNIVERSAL ASR MADHAB TOGGLE ENGINE (HANAFI 2X SHADOW ⇄ STANDARD SHAFI'I 1X)
 // ============================================================================
-function getActiveMadhabMode(dateObj = new Date()) {
-  const profile = resolveActiveRegionalProfile(dateObj);
-  return profile && profile.asrShadowFactor === 1 ? "standard" : "hanafi";
-}
-
 function syncMadhabToggleUI() {
-  // Always keep clean Commercial White ('light') theme locked
-  document.documentElement.setAttribute("data-theme", "light");
-  const metaTheme = document.querySelector('meta[name="theme-color"]');
-  if (metaTheme) metaTheme.setAttribute("content", "#ffffff");
-
-  const activeMode = getActiveMadhabMode(new Date());
-  const btnEl = document.getElementById("madhab-toggle-btn");
-  const iconEl = document.getElementById("madhab-toggle-icon");
+  const btn = document.getElementById("madhab-toggle-btn");
   const labelEl = document.getElementById("madhab-toggle-label");
+  if (!btn || !labelEl) return;
 
-  if (!btnEl || !iconEl || !labelEl) return;
+  const sched = computeSeasonalPrayerSchedule(new Date());
+  const isHanafi = sched.profile && sched.profile.asrShadowFactor === 2;
 
-  btnEl.setAttribute("data-madhab", activeMode);
-  if (activeMode === "hanafi") {
-    iconEl.textContent = "🕌";
-    labelEl.setAttribute("data-i18n", "madhab_hanafi_btn");
-    labelEl.textContent = t("madhab_hanafi_btn");
-    btnEl.title =
-      appState.locale === "ar"
-        ? "المذهب الحالي للعصر: حنفي (اضغط للتبديل إلى الجمهور/الشافعي)"
-        : appState.locale === "en"
-        ? "Active Asr Timing: Hanafi 2x Shadow (Tap to switch to Standard/Shafi'i 1x)"
-        : "চলমান আসর ওয়াক্ত: হানাফী ২ গুণ ছায়া (শাফিঈ/জমহুর ১ গুণ ছায়ায় পরিবর্তন করতে ট্যাপ করুন)";
-  } else {
-    iconEl.textContent = "🕋";
-    labelEl.setAttribute("data-i18n", "madhab_standard_btn");
-    labelEl.textContent = t("madhab_standard_btn");
-    btnEl.title =
-      appState.locale === "ar"
-        ? "المذهب الحالي للعصر: شافعي/جمهور (اضغط للتبديل إلى الحنفي)"
-        : appState.locale === "en"
-        ? "Active Asr Timing: Standard/Shafi'i 1x Shadow (Tap to switch to Hanafi 2x)"
-        : "চলমান আসর ওয়াক্ত: শাফিঈ/জমহুর ১ গুণ ছায়া (হানাফী ২ গুণ ছায়ায় পরিবর্তন করতে ট্যাপ করুন)";
-  }
+  btn.setAttribute("data-madhab", isHanafi ? "hanafi" : "standard");
+  labelEl.textContent = isHanafi ? t("madhab_hanafi_btn") : t("madhab_standard_btn");
 }
 
-function applyMadhabPreference(mode, showFeedback = true) {
-  const cleanMode = mode === "standard" ? "standard" : "hanafi";
+function toggleAsrMadhabPreference() {
+  const sched = computeSeasonalPrayerSchedule(new Date());
+  const currentlyHanafi = sched.profile && sched.profile.asrShadowFactor === 2;
+  const nextMadhab = currentlyHanafi ? "standard" : "hanafi";
+
   try {
-    localStorage.setItem(MADHAB_STORAGE_KEY, cleanMode);
+    localStorage.setItem(MADHAB_STORAGE_KEY, nextMadhab);
   } catch {}
 
+  if (navigator.vibrate) navigator.vibrate(18);
   syncMadhabToggleUI();
   renderHeaderDatesAndPhase();
   renderHabits();
   renderDuas();
 
-  if (showFeedback && typeof showTimeLockToast === "function") {
-    const sched = computeSeasonalPrayerSchedule(new Date());
-    const asrClock = formatMinutesToLocalizedTime(sched.asr, appState.locale);
-    const baseMsg =
-      cleanMode === "hanafi" ? t("madhab_hanafi_toast") : t("madhab_standard_toast");
-    showTimeLockToast(`${baseMsg} (${asrClock})`);
-  }
+  const toastMsg =
+    nextMadhab === "hanafi" ? t("madhab_hanafi_toast") : t("madhab_standard_toast");
+  showTimeLockToast(toastMsg);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  syncMadhabToggleUI();
-
   const madhabBtn = document.getElementById("madhab-toggle-btn");
   if (madhabBtn) {
-    madhabBtn.addEventListener("click", () => {
-      const currentMode = getActiveMadhabMode(new Date());
-      const nextMode = currentMode === "hanafi" ? "standard" : "hanafi";
-      applyMadhabPreference(nextMode, true);
-      if (navigator.vibrate) navigator.vibrate(14);
-    });
-  }
-
-  const langSwitcher = document.getElementById("lang-switcher");
-  if (langSwitcher) {
-    langSwitcher.addEventListener("change", () => {
-      setTimeout(() => syncMadhabToggleUI(), 20);
-    });
-  }
-});
-
-
-// ============================================================================
-// FULL-BLEED STICKY MARGIN-BAR HEADER SCROLL ELEVATION GUARD
-// Ensures scrolling content strictly passes underneath the solid top header bar
-// ============================================================================
-document.addEventListener("DOMContentLoaded", () => {
-  const headerEl = document.querySelector(".app-header");
-  if (!headerEl) return;
-  const syncHeaderScrollState = () => {
-    headerEl.classList.toggle("is-scrolled", (window.scrollY || window.pageYOffset || 0) > 4);
-  };
-  window.addEventListener("scroll", syncHeaderScrollState, { passive: true });
-  syncHeaderScrollState();
-});
-
-
-
-
-// ============================================================================
-// INTERACTIVE BANGLADESH DIVISION → DISTRICT (ALL 64 ZILAS) → UPAZILA/THANA
-// HEADER SELECTOR UI (JUST BELOW MADHAB TOGGLE) & REAL-TIME WAQT ENGINE
-// - Default Location: Dhaka Division -> Dhaka District -> Dhaka ("📍 ঢাকা ▾")
-// - Selecting any Division immediately loads its Districts (Zilas)
-// - Selecting any District immediately loads its Upazilas/Thanas
-// - Updates 5-Waqt prayer strip, live ongoing countdown, prohibited Salah windows,
-//   and habit/Adhkar locks in real time.
-// ============================================================================
-function getDefaultDhakaSelection() {
-  const divObj = BD_GEO_HIERARCHY[0]; // Dhaka Division
-  const distObj = divObj.districts[0]; // Dhaka District
-  const upzName = (distObj.upazilas && distObj.upazilas[0]) || "ঢাকা সদর (Dhaka)";
-  return {
-    divisionId: divObj.id,
-    divisionName_bn: divObj.name_bn,
-    divisionName_en: divObj.name_en,
-    districtId: distObj.id,
-    districtName_bn: distObj.name_bn,
-    districtName_en: distObj.name_en,
-    upazilaName: upzName,
-    upazilaIndex: 0,
-    lat: distObj.lat,
-    lon: distObj.lon,
-    isDefaultDhaka: true
-  };
-}
-
-function getEffectiveBdLocationSelection() {
-  const saved = getSavedBdLocationSelection();
-  if (saved) return saved;
-  return getDefaultDhakaSelection();
-}
-
-function getLocalizedBdDivisionName(divObj, locale = appState.locale) {
-  if (!divObj) return "";
-  if (locale === "ar") return divObj.name_ar || divObj.name_en;
-  if (locale === "en") return divObj.name_en;
-  return divObj.name_bn;
-}
-
-function getLocalizedBdDistrictName(distObj, locale = appState.locale) {
-  if (!distObj) return "";
-  if (locale === "en" || locale === "ar") return distObj.name_en;
-  return distObj.name_bn;
-}
-
-function getLocalizedUpazilaName(rawUpazila, locale = appState.locale) {
-  if (!rawUpazila) return "";
-  if (locale === "en" || locale === "ar") {
-    const match = rawUpazila.match(/\(([^)]+)\)/);
-    return match ? match[1].trim() : rawUpazila;
-  }
-  return rawUpazila.replace(/\s*\([^)]*\)/g, "").trim();
-}
-
-function injectBdLocationSelectorStyles() {
-  if (document.getElementById("s24-bd-loc-selector-styles")) return;
-  const styleEl = document.createElement("style");
-  styleEl.id = "s24-bd-loc-selector-styles";
-  styleEl.textContent = `
-    .header-madhab-loc-stack {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 4px;
-    }
-    .header-loc-pill-btn {
-      background: #f4fbf7;
-      color: var(--accent-emerald-dark, #065f46);
-      border: 1.5px solid rgba(16, 185, 129, 0.42);
-      padding: 3.5px 9px;
-      border-radius: 999px;
-      font-size: 0.66rem;
-      font-weight: 800;
-      font-family: inherit;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(15, 45, 34, 0.08);
-      transition: transform 0.16s ease, background 0.2s ease, border-color 0.2s ease;
-      white-space: nowrap;
-      max-width: 150px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .header-loc-pill-btn:hover {
-      background: #e6f7ef;
-      border-color: var(--accent-emerald, #10b981);
-    }
-    .header-loc-pill-btn:active {
-      transform: scale(0.95);
-    }
-    .header-loc-popover {
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      width: min(305px, calc(100vw - 24px));
-      background: #ffffff;
-      border: 1.5px solid rgba(16, 185, 129, 0.38);
-      border-radius: 18px;
-      padding: 12px;
-      box-shadow: 0 18px 40px rgba(15, 45, 34, 0.22), 0 4px 12px rgba(15, 45, 34, 0.08);
-      z-index: 220;
-      display: none;
-      flex-direction: column;
-      gap: 9px;
-      animation: locPopIn 0.18s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    html[dir="rtl"] .header-loc-popover {
-      right: auto;
-      left: 0;
-    }
-    @keyframes locPopIn {
-      from { opacity: 0; transform: translateY(-6px) scale(0.97); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .header-loc-popover.is-open {
-      display: flex;
-    }
-    .bd-loc-popover-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 6px;
-      padding-bottom: 6px;
-      border-bottom: 1px dashed rgba(16, 185, 129, 0.25);
-    }
-    .bd-loc-popover-title {
-      font-size: 0.74rem;
-      font-weight: 900;
-      color: var(--accent-emerald-dark, #065f46);
-    }
-    .bd-loc-coords-pill {
-      font-size: 0.63rem;
-      font-weight: 800;
-      color: var(--accent-gold, #b45309);
-      background: var(--accent-gold-soft, #fef3c7);
-      border: 1px solid rgba(180, 83, 9, 0.25);
-      padding: 2px 7px;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-    .bd-loc-selects-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-    .bd-loc-field {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      text-align: left;
-    }
-    html[dir="rtl"] .bd-loc-field {
-      text-align: right;
-    }
-    .bd-loc-field label {
-      font-size: 0.65rem;
-      font-weight: 800;
-      color: var(--text-muted, #5b7268);
-      padding-left: 2px;
-    }
-    .bd-loc-select {
-      width: 100%;
-      background: #f8fbf9;
-      color: var(--text-primary, #1e352b);
-      border: 1.2px solid rgba(16, 185, 129, 0.35);
-      border-radius: 10px;
-      padding: 7px 9px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      font-family: inherit;
-      outline: none;
-      cursor: pointer;
-    }
-    .bd-loc-select:focus {
-      border-color: var(--accent-emerald, #10b981);
-      background: #ffffff;
-    }
-    .bd-loc-actions-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      padding-top: 4px;
-    }
-    .bd-loc-auto-btn {
-      background: #f3f8f5;
-      color: var(--text-muted, #5b7268);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: 999px;
-      padding: 5px 11px;
-      font-size: 0.68rem;
-      font-weight: 800;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .bd-loc-done-btn {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: #ffffff;
-      border: none;
-      border-radius: 999px;
-      padding: 5px 14px;
-      font-size: 0.7rem;
-      font-weight: 800;
-      cursor: pointer;
-      font-family: inherit;
-      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.25);
-    }
-  `;
-  document.head.appendChild(styleEl);
-}
-
-function triggerFullWaqtAndLockRefresh(showToast = false) {
-  if (typeof syncMadhabToggleUI === "function") syncMadhabToggleUI();
-  renderHeaderDatesAndPhase();
-  renderHabits();
-  renderDuas();
-  syncBdLocationBannerText();
-
-  if (showToast && typeof showTimeLockToast === "function") {
-    const activeLoc = getEffectiveBdLocationSelection();
-    const sched = computeSeasonalPrayerSchedule(new Date());
-    const fajrStr = formatShortWaqtClock(sched.fajr, appState.locale);
-    const maghribStr = formatShortWaqtClock(sched.maghrib, appState.locale);
-    const upzClean = getLocalizedUpazilaName(activeLoc.upazilaName, appState.locale);
-    const msg =
-      appState.locale === "ar"
-        ? `📍 تم تحديث المواقيت لـ ${activeLoc.districtName_en} (${upzClean}) • الفجر: ${fajrStr} | المغرب: ${maghribStr}`
-        : appState.locale === "en"
-        ? `📍 Location set to ${activeLoc.districtName_en} (${upzClean}) • Fajr: ${fajrStr} | Maghrib: ${maghribStr}`
-        : `📍 অবস্থান: ${activeLoc.districtName_bn} (${upzClean}) • ফজর: ${fajrStr} | মাগরিব: ${maghribStr}`;
-    showTimeLockToast(msg);
-  }
-}
-
-function syncBdLocationBannerText() {
-  const summaryLabelEl = document.getElementById("bd-loc-active-label");
-  const coordsPillEl = document.getElementById("bd-loc-coords-pill");
-  const resetAutoBtn = document.getElementById("bd-loc-reset-auto-btn");
-  const doneBtn = document.getElementById("bd-loc-done-btn");
-  const popTitleEl = document.getElementById("bd-loc-popover-title");
-  const lblDiv = document.getElementById("bd-lbl-division");
-  const lblDist = document.getElementById("bd-lbl-district");
-  const lblUpz = document.getElementById("bd-lbl-upazila");
-  if (!summaryLabelEl) return;
-
-  if (typeof getSavedGlobalOrBdLocation === "function") {
-    const savedGlobal = getSavedGlobalOrBdLocation();
-    if (savedGlobal && savedGlobal.countryCode && savedGlobal.countryCode !== "BD") {
-      if (typeof updateHeaderLocationPillUI === "function") {
-        updateHeaderLocationPillUI();
-      }
-      return;
-    }
-  }
-
-  const lang = appState.locale || "bn";
-  const activeLoc = getEffectiveBdLocationSelection();
-  const divObj = BD_GEO_HIERARCHY.find((d) => d.id === activeLoc.divisionId) || BD_GEO_HIERARCHY[0];
-  const distObj = divObj.districts.find((z) => z.id === activeLoc.districtId) || divObj.districts[0];
-
-  const isDefaultDhaka =
-    activeLoc.divisionId === "dhaka" &&
-    activeLoc.districtId === "dhaka" &&
-    (!activeLoc.upazilaIndex || activeLoc.upazilaIndex === 0);
-
-  if (isDefaultDhaka) {
-    summaryLabelEl.textContent =
-      lang === "ar"
-        ? "📍 دكا ▾"
-        : lang === "en"
-        ? "📍 Dhaka ▾"
-        : "📍 ঢাকা ▾";
-  } else {
-    const distShort = getLocalizedBdDistrictName(distObj, lang);
-    const upzShort = getLocalizedUpazilaName(activeLoc.upazilaName, lang);
-    // Keep header pill super clean and concise
-    if (!upzShort || upzShort === distShort || upzShort.includes("সদর") || upzShort.toLowerCase().includes("sadar")) {
-      summaryLabelEl.textContent = `📍 ${distShort} ▾`;
-    } else {
-      summaryLabelEl.textContent = `📍 ${upzShort}, ${distShort} ▾`;
-    }
-  }
-
-  if (coordsPillEl) {
-    coordsPillEl.textContent = `${localizeDigits(activeLoc.lat.toFixed(2), lang)}°N, ${localizeDigits(activeLoc.lon.toFixed(2), lang)}°E`;
-  }
-  if (popTitleEl) {
-    popTitleEl.textContent =
-      lang === "ar"
-        ? "📍 اختر الموقع (دكا افتراضياً)"
-        : lang === "en"
-        ? "📍 Select Location (Dhaka Default)"
-        : "📍 অবস্থান নির্বাচন (ঢাকা ডিফল্ট)";
-  }
-  if (lblDiv) {
-    lblDiv.textContent =
-      lang === "ar" ? "القسم (Division)" : lang === "en" ? "Division" : "বিভাগ (Division)";
-  }
-  if (lblDist) {
-    lblDist.textContent =
-      lang === "ar" ? "المنطقة / المحافظة (District)" : lang === "en" ? "District (Zila)" : "জেলা (District)";
-  }
-  if (lblUpz) {
-    lblUpz.textContent =
-      lang === "ar" ? "المنطقة الفرعية (Upazila)" : lang === "en" ? "Upazila / Thana" : "উপজেলা / থানা (Upazila)";
-  }
-  if (resetAutoBtn) {
-    resetAutoBtn.textContent =
-      lang === "ar"
-        ? "🔄 دكا (افتراضي)"
-        : lang === "en"
-        ? "🔄 Dhaka (Default)"
-        : "🔄 ঢাকা (ডিফল্ট)";
-  }
-  if (doneBtn) {
-    doneBtn.textContent =
-      lang === "ar" ? "✓ تم" : lang === "en" ? "✓ Done" : "✓ সম্পন্ন";
-  }
-}
-
-function initBdLocationSelectorEngine() {
-  injectBdLocationSelectorStyles();
-
-  // Ensure default Dhaka selection is initialized if no saved location exists yet
-  if (!getSavedBdLocationSelection()) {
-    saveBdLocationSelection(getDefaultDhakaSelection());
-  }
-
-  const toggleBtn = document.getElementById("bd-loc-toggle-btn");
-  const panelEl = document.getElementById("bd-loc-cascading-panel");
-  const divSelect = document.getElementById("bd-division-select");
-  const distSelect = document.getElementById("bd-district-select");
-  const upzSelect = document.getElementById("bd-upazila-select");
-  const resetBtn = document.getElementById("bd-loc-reset-auto-btn");
-  const doneBtn = document.getElementById("bd-loc-done-btn");
-
-  if (!divSelect || !distSelect || !upzSelect) return;
-
-  const populateDivisions = (selectedDivId) => {
-    const lang = appState.locale || "bn";
-    divSelect.innerHTML = "";
-    BD_GEO_HIERARCHY.forEach((div) => {
-      const opt = document.createElement("option");
-      opt.value = div.id;
-      opt.textContent = getLocalizedBdDivisionName(div, lang);
-      if (div.id === selectedDivId) opt.selected = true;
-      divSelect.appendChild(opt);
-    });
-  };
-
-  const populateDistricts = (divisionId, selectedDistId) => {
-    const lang = appState.locale || "bn";
-    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === divisionId) || BD_GEO_HIERARCHY[0];
-    distSelect.innerHTML = "";
-    divObj.districts.forEach((dist) => {
-      const opt = document.createElement("option");
-      opt.value = dist.id;
-      opt.textContent = getLocalizedBdDistrictName(dist, lang);
-      if (dist.id === selectedDistId) opt.selected = true;
-      distSelect.appendChild(opt);
-    });
-  };
-
-  const populateUpazilas = (divisionId, districtId, selectedUpazila) => {
-    const lang = appState.locale || "bn";
-    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === divisionId) || BD_GEO_HIERARCHY[0];
-    const distObj = divObj.districts.find((z) => z.id === districtId) || divObj.districts[0];
-    upzSelect.innerHTML = "";
-    (distObj.upazilas || []).forEach((upz, idx) => {
-      const opt = document.createElement("option");
-      opt.value = upz;
-      opt.setAttribute("data-upz-index", String(idx));
-      opt.textContent = getLocalizedUpazilaName(upz, lang);
-      if (selectedUpazila ? upz === selectedUpazila : idx === 0) {
-        opt.selected = true;
-      }
-      upzSelect.appendChild(opt);
-    });
-  };
-
-  const persistCurrentDropdownSelection = (showToast = true) => {
-    const divId = divSelect.value;
-    const distId = distSelect.value;
-    const upzName = upzSelect.value;
-    const upzIdx = upzSelect.selectedIndex >= 0 ? upzSelect.selectedIndex : 0;
-
-    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === divId) || BD_GEO_HIERARCHY[0];
-    const distObj = divObj.districts.find((z) => z.id === distId) || divObj.districts[0];
-    const coords = computeUpazilaMicroCoordinates(
-      distObj,
-      upzIdx,
-      (distObj.upazilas || []).length
-    );
-
-    const payload = {
-      divisionId: divObj.id,
-      divisionName_bn: divObj.name_bn,
-      divisionName_en: divObj.name_en,
-      districtId: distObj.id,
-      districtName_bn: distObj.name_bn,
-      districtName_en: distObj.name_en,
-      upazilaName: upzName || (distObj.upazilas && distObj.upazilas[0]) || distObj.name_bn,
-      upazilaIndex: upzIdx,
-      lat: coords.lat,
-      lon: coords.lon,
-      updatedAt: Date.now()
-    };
-
-    saveBdLocationSelection(payload);
-    triggerFullWaqtAndLockRefresh(showToast);
-  };
-
-  const syncDropdownsFromStorage = () => {
-    const activeLoc = getEffectiveBdLocationSelection();
-    const defaultDivId = activeLoc.divisionId || "dhaka";
-    const defaultDistId = activeLoc.districtId || "dhaka";
-    const defaultUpz = activeLoc.upazilaName || "";
-
-    populateDivisions(defaultDivId);
-    populateDistricts(defaultDivId, defaultDistId);
-    populateUpazilas(defaultDivId, defaultDistId, defaultUpz);
-    syncBdLocationBannerText();
-  };
-
-  syncDropdownsFromStorage();
-  triggerFullWaqtAndLockRefresh(false);
-
-  const closePopover = () => {
-    if (panelEl && panelEl.classList.contains("is-open")) {
-      panelEl.classList.remove("is-open");
-      if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
-    }
-  };
-
-  if (toggleBtn && panelEl && !document.getElementById("s24-loc-modal-overlay")) {
-    toggleBtn.addEventListener("click", (e) => {
+    madhabBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      const isOpen = panelEl.classList.toggle("is-open");
-      toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-      if (navigator.vibrate) navigator.vibrate(10);
+      toggleAsrMadhabPreference();
     });
   }
-
-  if (doneBtn) {
-    doneBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      closePopover();
-    });
-  }
-
-  // Close popover when tapping outside
-  document.addEventListener("click", (e) => {
-    if (!panelEl || !panelEl.classList.contains("is-open")) return;
-    const stackEl = document.getElementById("bd-loc-selector-bar");
-    if (stackEl && !stackEl.contains(e.target)) {
-      closePopover();
-    }
-  });
-
-  // 1. Selecting a Division immediately updates the Districts under that Division and its Upazilas
-  divSelect.addEventListener("change", () => {
-    const newDivId = divSelect.value;
-    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === newDivId) || BD_GEO_HIERARCHY[0];
-    const firstDistId = divObj.districts[0].id;
-    populateDistricts(newDivId, firstDistId);
-    populateUpazilas(newDivId, firstDistId, "");
-    persistCurrentDropdownSelection(true);
-  });
-
-  // 2. Selecting a District immediately updates the Upazilas under that District
-  distSelect.addEventListener("change", () => {
-    const curDivId = divSelect.value;
-    const newDistId = distSelect.value;
-    populateUpazilas(curDivId, newDistId, "");
-    persistCurrentDropdownSelection(true);
-  });
-
-  // 3. Selecting an Upazila immediately updates the micro-coordinates & prayer schedule
-  upzSelect.addEventListener("change", () => {
-    persistCurrentDropdownSelection(true);
-  });
-
-  // Reset button restores Dhaka Division -> Dhaka District -> Dhaka default
-  if (resetBtn) {
-    resetBtn.addEventListener("click", () => {
-      const dhakaDef = getDefaultDhakaSelection();
-      saveBdLocationSelection(dhakaDef);
-      syncDropdownsFromStorage();
-      triggerFullWaqtAndLockRefresh(true);
-      closePopover();
-    });
-  }
-
-  const langSwitcher = document.getElementById("lang-switcher");
-  if (langSwitcher) {
-    langSwitcher.addEventListener("change", () => {
-      setTimeout(() => {
-        const curDiv = divSelect.value;
-        const curDist = distSelect.value;
-        const curUpz = upzSelect.value;
-        populateDivisions(curDiv);
-        populateDistricts(curDiv, curDist);
-        populateUpazilas(curDiv, curDist, curUpz);
-        syncBdLocationBannerText();
-      }, 25);
-    });
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  initBdLocationSelectorEngine();
+  syncMadhabToggleUI();
 });
 
 // ============================================================================
-// "অবস্থান অনুসন্ধান করুন" — WORLDWIDE 195+ COUNTRIES, CITIES & BANGLADESH
-// 64 DISTRICTS -> UPAZILA/THANA DRILL-DOWN ENGINE
+// HEADER CASCADING LOCATION POPOVER (8 DIVISIONS -> 64 DISTRICTS -> UPAZILA)
+// + GLOBAL SEARCHABLE LOCATION DRILL-DOWN MODAL ("অবস্থান অনুসন্ধান করুন")
 // ============================================================================
-const GLOBAL_SELECTED_LOC_STORAGE_KEY = "SUNNAH_24_GLOBAL_LOCATION_V3";
-
 const GLOBAL_COUNTRIES_DIRECTORY = deepFreeze([
-  { code: "BD", name: "Bangladesh", isBangladeshSpecial: true },
   {
-    code: "AF", name: "Afghanistan", regionCode: "BD", subRegion: "SOUTH_ASIA", tzHours: 4.5, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Kabul", lat: 34.5553, lon: 69.2075 },
-      { name: "Kandahar", lat: 31.6289, lon: 65.7372 },
-      { name: "Herat", lat: 34.3529, lon: 62.2040 },
-      { name: "Mazar-i-Sharif", lat: 36.7069, lon: 67.1147 },
-      { name: "Jalalabad", lat: 34.4198, lon: 70.4474 }
-    ]
-  },
-  {
-    code: "AL", name: "Albania", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Tirana", lat: 41.3275, lon: 19.8187 },
-      { name: "Durrës", lat: 41.3246, lon: 19.4565 },
-      { name: "Vlorë", lat: 40.4661, lon: 19.4914 }
-    ]
-  },
-  {
-    code: "DZ", name: "Algeria", regionCode: "ME", subRegion: "AFRICA", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Algiers", lat: 36.7538, lon: 3.0588 },
-      { name: "Oran", lat: 35.6971, lon: -0.6308 },
-      { name: "Constantine", lat: 36.3650, lon: 6.6147 },
-      { name: "Annaba", lat: 36.9000, lon: 7.7667 }
-    ]
-  },
-  {
-    code: "AD", name: "Andorra", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Andorra la Vella", lat: 42.5063, lon: 1.5218 }]
-  },
-  {
-    code: "AO", name: "Angola", regionCode: "ME", subRegion: "AFRICA", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Luanda", lat: -8.8390, lon: 13.2894 }]
-  },
-  {
-    code: "AR", name: "Argentina", regionCode: "WEST", subRegion: "NORTH_AMERICA", tzHours: -3.0, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Buenos Aires", lat: -34.6037, lon: -58.3816 },
-      { name: "Córdoba", lat: -31.4201, lon: -64.1888 },
-      { name: "Rosario", lat: -32.9442, lon: -60.6505 }
-    ]
-  },
-  {
-    code: "AM", name: "Armenia", regionCode: "ME", subRegion: "CENTRAL_ASIA", tzHours: 4.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Yerevan", lat: 40.1792, lon: 44.4991 }]
-  },
-  {
-    code: "AU", name: "Australia", regionCode: "WEST", subRegion: "OCEANIA", tzHours: 10.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Sydney", lat: -33.8688, lon: 151.2093, tzHours: 10.0 },
-      { name: "Melbourne", lat: -37.8136, lon: 144.9631, tzHours: 10.0 },
-      { name: "Brisbane", lat: -27.4705, lon: 153.0260, tzHours: 10.0 },
-      { name: "Perth", lat: -31.9505, lon: 115.8605, tzHours: 8.0 },
-      { name: "Adelaide", lat: -34.9285, lon: 138.6007, tzHours: 9.5 },
-      { name: "Canberra", lat: -35.2809, lon: 149.1300, tzHours: 10.0 }
-    ]
-  },
-  {
-    code: "AT", name: "Austria", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Vienna", lat: 48.2082, lon: 16.3738 },
-      { name: "Graz", lat: 47.0707, lon: 15.4395 },
-      { name: "Salzburg", lat: 47.8095, lon: 13.0550 }
-    ]
-  },
-  {
-    code: "AZ", name: "Azerbaijan", regionCode: "ME", subRegion: "CENTRAL_ASIA", tzHours: 4.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Baku", lat: 40.4093, lon: 49.8671 },
-      { name: "Ganja", lat: 40.6828, lon: 46.3606 }
-    ]
-  },
-  {
-    code: "BH", name: "Bahrain", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 0, ishaFixedMins: 90, asrShadowFactor: 1,
-    cities: [
-      { name: "Manama", lat: 26.2285, lon: 50.5860 },
-      { name: "Muharraq", lat: 26.2572, lon: 50.6119 },
-      { name: "Riffa", lat: 26.1300, lon: 50.5550 }
-    ]
-  },
-  {
-    code: "BY", name: "Belarus", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Minsk", lat: 53.9006, lon: 27.5590 }]
-  },
-  {
-    code: "BE", name: "Belgium", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Brussels", lat: 50.8503, lon: 4.3517 },
-      { name: "Antwerp", lat: 51.2194, lon: 4.4025 },
-      { name: "Ghent", lat: 51.0543, lon: 3.7174 }
-    ]
-  },
-  {
-    code: "BT", name: "Bhutan", regionCode: "BD", subRegion: "SOUTH_ASIA", tzHours: 6.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [{ name: "Thimphu", lat: 27.4728, lon: 89.6393 }]
-  },
-  {
-    code: "BA", name: "Bosnia and Herzegovina", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Sarajevo", lat: 43.8563, lon: 18.4131 },
-      { name: "Mostar", lat: 43.3438, lon: 17.8078 },
-      { name: "Tuzla", lat: 44.5384, lon: 18.6763 }
-    ]
-  },
-  {
-    code: "BR", name: "Brazil", regionCode: "WEST", subRegion: "NORTH_AMERICA", tzHours: -3.0, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "São Paulo", lat: -23.5505, lon: -46.6333 },
-      { name: "Rio de Janeiro", lat: -22.9068, lon: -43.1729 },
-      { name: "Brasília", lat: -15.7975, lon: -47.8919 }
-    ]
-  },
-  {
-    code: "BN", name: "Brunei Darussalam", regionCode: "ME", subRegion: "SE_ASIA", tzHours: 8.0, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Bandar Seri Begawan", lat: 4.9031, lon: 114.9398 }]
-  },
-  {
-    code: "BG", name: "Bulgaria", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 2.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Sofia", lat: 42.6977, lon: 23.3219 }]
-  },
-  {
-    code: "KH", name: "Cambodia", regionCode: "ME", subRegion: "SE_ASIA", tzHours: 7.0, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Phnom Penh", lat: 11.5564, lon: 104.9282 }]
-  },
-  {
-    code: "CM", name: "Cameroon", regionCode: "ME", subRegion: "AFRICA", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Yaoundé", lat: 3.8480, lon: 11.5021 },
-      { name: "Douala", lat: 4.0511, lon: 9.7679 }
-    ]
-  },
-  {
-    code: "CA", name: "Canada", regionCode: "WEST", subRegion: "NORTH_AMERICA", tzHours: -5.0, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Toronto", lat: 43.6532, lon: -79.3832, tzHours: -5.0 },
-      { name: "Montreal", lat: 45.5017, lon: -73.5673, tzHours: -5.0 },
-      { name: "Ottawa", lat: 45.4215, lon: -75.6972, tzHours: -5.0 },
-      { name: "Vancouver", lat: 49.2827, lon: -123.1207, tzHours: -8.0 },
-      { name: "Calgary", lat: 51.0447, lon: -114.0719, tzHours: -7.0 },
-      { name: "Edmonton", lat: 53.5461, lon: -113.4938, tzHours: -7.0 },
-      { name: "Winnipeg", lat: 49.8951, lon: -97.1384, tzHours: -6.0 },
-      { name: "Halifax", lat: 44.6488, lon: -63.5752, tzHours: -4.0 }
-    ]
-  },
-  {
-    code: "TD", name: "Chad", regionCode: "ME", subRegion: "AFRICA", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "N'Djamena", lat: 12.1348, lon: 15.0557 }]
-  },
-  {
-    code: "CN", name: "China", regionCode: "ME", subRegion: "SE_ASIA", tzHours: 8.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Beijing", lat: 39.9042, lon: 116.4074 },
-      { name: "Shanghai", lat: 31.2304, lon: 121.4737 },
-      { name: "Guangzhou", lat: 23.1291, lon: 113.2644 },
-      { name: "Urumqi", lat: 43.8256, lon: 87.6168 },
-      { name: "Yinchuan", lat: 38.4872, lon: 106.2309 },
-      { name: "Xi'an", lat: 34.3416, lon: 108.9398 }
-    ]
-  },
-  {
-    code: "KM", name: "Comoros", regionCode: "ME", subRegion: "AFRICA", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Moroni", lat: -11.7172, lon: 43.2473 }]
-  },
-  {
-    code: "HR", name: "Croatia (Hrvatska)", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Zagreb", lat: 45.8150, lon: 15.9819 }]
-  },
-  {
-    code: "CY", name: "Cyprus", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 2.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Nicosia", lat: 35.1856, lon: 33.3823 }]
-  },
-  {
-    code: "CZ", name: "Czech Republic", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Prague", lat: 50.0755, lon: 14.4378 }]
-  },
-  {
-    code: "DK", name: "Denmark", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Copenhagen", lat: 55.6761, lon: 12.5683 },
-      { name: "Aarhus", lat: 56.1629, lon: 10.2039 }
-    ]
-  },
-  {
-    code: "DJ", name: "Djibouti", regionCode: "ME", subRegion: "AFRICA", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Djibouti City", lat: 11.8251, lon: 42.5903 }]
-  },
-  {
-    code: "EG", name: "Egypt", regionCode: "ME", subRegion: "AFRICA", tzHours: 2.0, fajrAngle: 19.5, ishaAngle: 17.5, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Cairo", lat: 30.0444, lon: 31.2357 },
-      { name: "Alexandria", lat: 31.2001, lon: 29.9187 },
-      { name: "Giza", lat: 30.0131, lon: 31.2089 },
-      { name: "Port Said", lat: 31.2653, lon: 32.3019 },
-      { name: "Suez", lat: 29.9668, lon: 32.5498 },
-      { name: "Luxor", lat: 25.6872, lon: 32.6396 },
-      { name: "Aswan", lat: 24.0889, lon: 32.8998 }
-    ]
-  },
-  {
-    code: "ET", name: "Ethiopia", regionCode: "ME", subRegion: "AFRICA", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Addis Ababa", lat: 9.0320, lon: 38.7469 },
-      { name: "Dire Dawa", lat: 9.6009, lon: 41.8501 }
-    ]
-  },
-  {
-    code: "FI", name: "Finland", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 2.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Helsinki", lat: 60.1699, lon: 24.9384 },
-      { name: "Espoo", lat: 60.2055, lon: 24.6559 }
-    ]
-  },
-  {
-    code: "FR", name: "France", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Paris", lat: 48.8566, lon: 2.3522 },
-      { name: "Marseille", lat: 43.2965, lon: 5.3698 },
-      { name: "Lyon", lat: 45.7640, lon: 4.8357 },
-      { name: "Toulouse", lat: 43.6047, lon: 1.4442 },
-      { name: "Nice", lat: 43.7102, lon: 7.2620 },
-      { name: "Lille", lat: 50.6292, lon: 3.0573 }
-    ]
-  },
-  {
-    code: "DE", name: "Germany", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Berlin", lat: 52.5200, lon: 13.4050 },
-      { name: "Hamburg", lat: 53.5511, lon: 9.9937 },
-      { name: "Munich", lat: 48.1351, lon: 11.5820 },
-      { name: "Cologne", lat: 50.9375, lon: 6.9603 },
-      { name: "Frankfurt", lat: 50.1109, lon: 8.6821 },
-      { name: "Stuttgart", lat: 48.7758, lon: 9.1829 },
-      { name: "Düsseldorf", lat: 51.2277, lon: 6.7735 }
-    ]
-  },
-  {
-    code: "GH", name: "Ghana", regionCode: "ME", subRegion: "AFRICA", tzHours: 0.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Accra", lat: 5.6037, lon: -0.1870 },
-      { name: "Kumasi", lat: 6.6885, lon: -1.6244 }
-    ]
-  },
-  {
-    code: "GR", name: "Greece", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 2.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Athens", lat: 37.9838, lon: 23.7275 },
-      { name: "Thessaloniki", lat: 40.6401, lon: 22.9444 }
-    ]
-  },
-  {
-    code: "GN", name: "Guinea", regionCode: "ME", subRegion: "AFRICA", tzHours: 0.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Conakry", lat: 9.6412, lon: -13.5784 }]
-  },
-  {
-    code: "HK", name: "Hong Kong", regionCode: "ME", subRegion: "SE_ASIA", tzHours: 8.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Hong Kong", lat: 22.3193, lon: 114.1694 }]
-  },
-  {
-    code: "HU", name: "Hungary", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Budapest", lat: 47.4979, lon: 19.0402 }]
-  },
-  {
-    code: "IN", name: "India", regionCode: "BD", subRegion: "SOUTH_ASIA", tzHours: 5.5, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Kolkata", lat: 22.5726, lon: 88.3639 },
-      { name: "New Delhi", lat: 28.6139, lon: 77.2090 },
-      { name: "Mumbai", lat: 19.0760, lon: 72.8777 },
-      { name: "Hyderabad", lat: 17.3850, lon: 78.4867 },
-      { name: "Bengaluru", lat: 12.9716, lon: 77.5946 },
-      { name: "Chennai", lat: 13.0827, lon: 80.2707 },
-      { name: "Ahmedabad", lat: 23.0225, lon: 72.5714 },
-      { name: "Pune", lat: 18.5204, lon: 73.8567 },
-      { name: "Surat", lat: 21.1702, lon: 72.8311 },
-      { name: "Jaipur", lat: 26.9124, lon: 75.7873 },
-      { name: "Lucknow", lat: 26.8467, lon: 80.9462 },
-      { name: "Kanpur", lat: 26.4499, lon: 80.3319 },
-      { name: "Nagpur", lat: 21.1458, lon: 79.0882 },
-      { name: "Patna", lat: 25.5941, lon: 85.1376 },
-      { name: "Bhopal", lat: 23.2599, lon: 77.4126 },
-      { name: "Guwahati", lat: 26.1445, lon: 91.7362 },
-      { name: "Agartala", lat: 23.8315, lon: 91.2868 },
-      { name: "Silchar", lat: 24.8333, lon: 92.7789 },
-      { name: "Murshidabad", lat: 24.1759, lon: 88.2802 },
-      { name: "Malda", lat: 25.0108, lon: 88.1411 },
-      { name: "Srinagar", lat: 34.0837, lon: 74.7973 },
-      { name: "Kochi", lat: 9.9312, lon: 76.2673 },
-      { name: "Kozhikode", lat: 11.2588, lon: 75.7804 }
-    ]
-  },
-  {
-    code: "ID", name: "Indonesia", regionCode: "ME", subRegion: "SE_ASIA", tzHours: 7.0, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Jakarta", lat: -6.2088, lon: 106.8456, tzHours: 7.0 },
-      { name: "Surabaya", lat: -7.2575, lon: 112.7521, tzHours: 7.0 },
-      { name: "Bandung", lat: -6.9175, lon: 107.6191, tzHours: 7.0 },
-      { name: "Medan", lat: 3.5952, lon: 98.6722, tzHours: 7.0 },
-      { name: "Semarang", lat: -6.9667, lon: 110.4167, tzHours: 7.0 },
-      { name: "Makassar", lat: -5.1477, lon: 119.4327, tzHours: 8.0 },
-      { name: "Banda Aceh", lat: 5.5483, lon: 95.3238, tzHours: 7.0 },
-      { name: "Yogyakarta", lat: -7.7956, lon: 110.3695, tzHours: 7.0 }
-    ]
-  },
-  {
-    code: "IR", name: "Iran (Islamic Republic of)", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 3.5, fajrAngle: 17.7, ishaAngle: 14.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Tehran", lat: 35.6892, lon: 51.3890 },
-      { name: "Mashhad", lat: 36.2605, lon: 59.6168 },
-      { name: "Isfahan", lat: 32.6546, lon: 51.6680 },
-      { name: "Shiraz", lat: 29.5918, lon: 52.5837 },
-      { name: "Tabriz", lat: 38.0962, lon: 46.2738 },
-      { name: "Qom", lat: 34.6416, lon: 50.8746 },
-      { name: "Abadan", lat: 30.3392, lon: 48.3043 },
-      { name: "Ahvaz", lat: 31.3183, lon: 48.6706 },
-      { name: "Kermanshah", lat: 34.3142, lon: 47.0650 },
-      { name: "Rasht", lat: 37.2808, lon: 49.5832 }
-    ]
-  },
-  {
-    code: "IQ", name: "Iraq", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 3.0, fajrAngle: 19.5, ishaAngle: 17.5, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Baghdad", lat: 33.3152, lon: 44.3661 },
-      { name: "Basra", lat: 30.5081, lon: 47.7835 },
-      { name: "Mosul", lat: 36.3489, lon: 43.1577 },
-      { name: "Erbil", lat: 36.1901, lon: 44.0091 },
-      { name: "Kirkuk", lat: 35.4681, lon: 44.3922 },
-      { name: "Najaf", lat: 32.0000, lon: 44.3333 },
-      { name: "Karbala", lat: 32.6160, lon: 44.0249 }
-    ]
-  },
-  {
-    code: "IE", name: "Ireland", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 0.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Dublin", lat: 53.3498, lon: -6.2603 },
-      { name: "Cork", lat: 51.8985, lon: -8.4756 },
-      { name: "Galway", lat: 53.2707, lon: -9.0568 }
-    ]
-  },
-  {
-    code: "IT", name: "Italy", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Rome", lat: 41.9028, lon: 12.4964 },
-      { name: "Milan", lat: 45.4642, lon: 9.1900 },
-      { name: "Naples", lat: 40.8518, lon: 14.2681 },
-      { name: "Turin", lat: 45.0703, lon: 7.6869 },
-      { name: "Venice", lat: 45.4408, lon: 12.3155 },
-      { name: "Florence", lat: 43.7696, lon: 11.2558 },
-      { name: "Bologna", lat: 44.4949, lon: 11.3426 }
-    ]
-  },
-  {
-    code: "JP", name: "Japan", regionCode: "ME", subRegion: "SE_ASIA", tzHours: 9.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Tokyo", lat: 35.6762, lon: 139.6503 },
-      { name: "Osaka", lat: 34.6937, lon: 135.5023 },
-      { name: "Nagoya", lat: 35.1815, lon: 136.9066 },
-      { name: "Kyoto", lat: 35.0116, lon: 135.7681 },
-      { name: "Fukuoka", lat: 33.5902, lon: 130.4017 }
-    ]
-  },
-  {
-    code: "JO", name: "Jordan", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Amman", lat: 31.9454, lon: 35.9284 },
-      { name: "Zarqa", lat: 32.0608, lon: 36.0942 },
-      { name: "Irbid", lat: 32.5568, lon: 35.8469 },
-      { name: "Aqaba", lat: 29.5321, lon: 35.0063 }
-    ]
-  },
-  {
-    code: "KZ", name: "Kazakhstan", regionCode: "ME", subRegion: "CENTRAL_ASIA", tzHours: 5.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Almaty", lat: 43.2220, lon: 76.8512 },
-      { name: "Astana", lat: 51.1694, lon: 71.4491 },
-      { name: "Shymkent", lat: 42.3417, lon: 69.5901 }
-    ]
-  },
-  {
-    code: "KE", name: "Kenya", regionCode: "ME", subRegion: "AFRICA", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Nairobi", lat: -1.2921, lon: 36.8219 },
-      { name: "Mombasa", lat: -4.0435, lon: 39.6682 }
-    ]
-  },
-  {
-    code: "KR", name: "South Korea", regionCode: "ME", subRegion: "SE_ASIA", tzHours: 9.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Seoul", lat: 37.5665, lon: 126.9780 },
-      { name: "Busan", lat: 35.1796, lon: 129.0756 },
-      { name: "Incheon", lat: 37.4563, lon: 126.7052 }
-    ]
-  },
-  {
-    code: "KW", name: "Kuwait", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 17.5, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Kuwait City", lat: 29.3759, lon: 47.9774 },
-      { name: "Al Ahmadi", lat: 29.0769, lon: 48.0839 },
-      { name: "Hawalli", lat: 29.3328, lon: 48.0286 },
-      { name: "Salmiya", lat: 29.3340, lon: 48.0768 }
-    ]
-  },
-  {
-    code: "KG", name: "Kyrgyzstan", regionCode: "ME", subRegion: "CENTRAL_ASIA", tzHours: 6.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Bishkek", lat: 42.8746, lon: 74.5698 },
-      { name: "Osh", lat: 40.5140, lon: 72.8161 }
-    ]
-  },
-  {
-    code: "LB", name: "Lebanon", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 2.0, fajrAngle: 18.0, ishaAngle: 17.5, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Beirut", lat: 33.8938, lon: 35.5018 },
-      { name: "Tripoli", lat: 34.4367, lon: 35.8497 },
-      { name: "Sidon", lat: 33.5571, lon: 35.3729 }
-    ]
-  },
-  {
-    code: "LY", name: "Libyan Arab Jamahiriya", regionCode: "ME", subRegion: "AFRICA", tzHours: 2.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Tripoli", lat: 32.8872, lon: 13.1913 },
-      { name: "Benghazi", lat: 32.1194, lon: 20.0868 },
-      { name: "Misrata", lat: 32.3754, lon: 15.0925 }
-    ]
-  },
-  {
-    code: "MY", name: "Malaysia", regionCode: "ME", subRegion: "SE_ASIA", tzHours: 8.0, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Kuala Lumpur", lat: 3.1390, lon: 101.6869 },
-      { name: "George Town (Penang)", lat: 5.4141, lon: 100.3288 },
-      { name: "Johor Bahru", lat: 1.4927, lon: 103.7414 },
-      { name: "Ipoh", lat: 4.5975, lon: 101.0901 },
-      { name: "Shah Alam", lat: 3.0733, lon: 101.5185 },
-      { name: "Malacca City", lat: 2.1896, lon: 102.2501 },
-      { name: "Kota Kinabalu", lat: 5.9804, lon: 116.0735 },
-      { name: "Kuching", lat: 1.5533, lon: 110.3592 }
-    ]
-  },
-  {
-    code: "MV", name: "Maldives", regionCode: "BD", subRegion: "SOUTH_ASIA", tzHours: 5.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Malé", lat: 4.1755, lon: 73.5093 },
-      { name: "Addu City", lat: -0.6301, lon: 73.1586 }
-    ]
-  },
-  {
-    code: "ML", name: "Mali", regionCode: "ME", subRegion: "AFRICA", tzHours: 0.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Bamako", lat: 12.6392, lon: -8.0029 },
-      { name: "Timbuktu", lat: 16.7666, lon: -3.0026 }
-    ]
-  },
-  {
-    code: "MR", name: "Mauritania", regionCode: "ME", subRegion: "AFRICA", tzHours: 0.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Nouakchott", lat: 18.0735, lon: -15.9582 }]
-  },
-  {
-    code: "MU", name: "Mauritius", regionCode: "ME", subRegion: "AFRICA", tzHours: 4.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Port Louis", lat: -20.1609, lon: 57.5012 }]
-  },
-  {
-    code: "MA", name: "Morocco", regionCode: "ME", subRegion: "AFRICA", tzHours: 1.0, fajrAngle: 19.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Casablanca", lat: 33.5731, lon: -7.5898 },
-      { name: "Rabat", lat: 34.0209, lon: -6.8416 },
-      { name: "Marrakesh", lat: 31.6295, lon: -7.9811 },
-      { name: "Fes", lat: 34.0181, lon: -5.0078 },
-      { name: "Tangier", lat: 35.7595, lon: -5.8340 }
-    ]
-  },
-  {
-    code: "MM", name: "Myanmar", regionCode: "BD", subRegion: "SOUTH_ASIA", tzHours: 6.5, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Yangon", lat: 16.8409, lon: 96.1735 },
-      { name: "Mandalay", lat: 21.9588, lon: 96.0891 },
-      { name: "Naypyidaw", lat: 19.7633, lon: 96.0785 }
-    ]
-  },
-  {
-    code: "NP", name: "Nepal", regionCode: "BD", subRegion: "SOUTH_ASIA", tzHours: 5.75, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Kathmandu", lat: 27.7172, lon: 85.3240 },
-      { name: "Pokhara", lat: 28.2096, lon: 83.9856 }
-    ]
-  },
-  {
-    code: "NL", name: "Netherlands", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Amsterdam", lat: 52.3676, lon: 4.9041 },
-      { name: "Rotterdam", lat: 51.9244, lon: 4.4777 },
-      { name: "The Hague", lat: 52.0705, lon: 4.3007 },
-      { name: "Utrecht", lat: 52.0907, lon: 5.1214 }
-    ]
-  },
-  {
-    code: "NZ", name: "New Zealand", regionCode: "WEST", subRegion: "OCEANIA", tzHours: 12.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Auckland", lat: -36.8485, lon: 174.7633 },
-      { name: "Wellington", lat: -41.2866, lon: 174.7756 },
-      { name: "Christchurch", lat: -43.5320, lon: 172.6306 }
-    ]
-  },
-  {
-    code: "NE", name: "Niger", regionCode: "ME", subRegion: "AFRICA", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Niamey", lat: 13.5116, lon: 2.1254 }]
-  },
-  {
-    code: "NG", name: "Nigeria", regionCode: "ME", subRegion: "AFRICA", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Lagos", lat: 6.5244, lon: 3.3792 },
-      { name: "Abuja", lat: 9.0765, lon: 7.3986 },
-      { name: "Kano", lat: 12.0022, lon: 8.5920 },
-      { name: "Ibadan", lat: 7.3775, lon: 3.9470 },
-      { name: "Kaduna", lat: 10.5105, lon: 7.4165 }
-    ]
-  },
-  {
-    code: "NO", name: "Norway", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Oslo", lat: 59.9139, lon: 10.7522 },
-      { name: "Bergen", lat: 60.3913, lon: 5.3221 },
-      { name: "Stavanger", lat: 58.9700, lon: 5.7331 }
-    ]
-  },
-  {
-    code: "OM", name: "Oman", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 4.0, fajrAngle: 18.2, ishaAngle: 18.2, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Muscat", lat: 23.5880, lon: 58.3829 },
-      { name: "Salalah", lat: 17.0151, lon: 54.0924 },
-      { name: "Sohar", lat: 24.3461, lon: 56.7075 },
-      { name: "Nizwa", lat: 22.9333, lon: 57.5333 }
-    ]
-  },
-  {
-    code: "PK", name: "Pakistan", regionCode: "BD", subRegion: "SOUTH_ASIA", tzHours: 5.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Karachi", lat: 24.8607, lon: 67.0011 },
-      { name: "Lahore", lat: 31.5204, lon: 74.3587 },
-      { name: "Islamabad", lat: 33.6844, lon: 73.0479 },
-      { name: "Rawalpindi", lat: 33.5651, lon: 73.0169 },
-      { name: "Faisalabad", lat: 31.4504, lon: 73.1350 },
-      { name: "Multan", lat: 30.1575, lon: 71.5249 },
-      { name: "Peshawar", lat: 34.0151, lon: 71.5249 },
-      { name: "Quetta", lat: 30.1798, lon: 66.9750 },
-      { name: "Sialkot", lat: 32.4945, lon: 74.5229 },
-      { name: "Gujranwala", lat: 32.1877, lon: 74.1945 }
-    ]
-  },
-  {
-    code: "PS", name: "Palestine", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 2.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Jerusalem (Al-Quds)", lat: 31.7683, lon: 35.2137 },
-      { name: "Gaza", lat: 31.5017, lon: 34.4668 },
-      { name: "Ramallah", lat: 31.9038, lon: 35.2034 },
-      { name: "Hebron (Al-Khalil)", lat: 31.5326, lon: 35.0998 },
-      { name: "Nablus", lat: 32.2211, lon: 35.2544 }
-    ]
-  },
-  {
-    code: "PH", name: "Philippines", regionCode: "ME", subRegion: "SE_ASIA", tzHours: 8.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Manila", lat: 14.5995, lon: 120.9842 },
-      { name: "Davao City", lat: 7.1907, lon: 125.4553 },
-      { name: "Zamboanga City", lat: 6.9214, lon: 122.0790 }
-    ]
-  },
-  {
-    code: "PL", name: "Poland", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Warsaw", lat: 52.2297, lon: 21.0122 },
-      { name: "Kraków", lat: 50.0647, lon: 19.9450 }
-    ]
-  },
-  {
-    code: "PT", name: "Portugal", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 0.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Lisbon", lat: 38.7223, lon: -9.1393 },
-      { name: "Porto", lat: 41.1579, lon: -8.6291 }
-    ]
-  },
-  {
-    code: "QA", name: "Qatar", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 0, ishaFixedMins: 90, asrShadowFactor: 1,
-    cities: [
-      { name: "Doha", lat: 25.2854, lon: 51.5310 },
-      { name: "Al Rayyan", lat: 25.2919, lon: 51.4244 },
-      { name: "Al Wakrah", lat: 25.1715, lon: 51.6034 },
-      { name: "Al Khor", lat: 25.6804, lon: 51.4969 }
-    ]
-  },
-  {
-    code: "RO", name: "Romania", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 2.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Bucharest", lat: 44.4268, lon: 26.1025 }]
-  },
-  {
-    code: "RU", name: "Russian Federation", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Moscow", lat: 55.7558, lon: 37.6173, tzHours: 3.0 },
-      { name: "Saint Petersburg", lat: 59.9311, lon: 30.3609, tzHours: 3.0 },
-      { name: "Kazan", lat: 55.7961, lon: 49.1064, tzHours: 3.0 },
-      { name: "Makhachkala", lat: 42.9849, lon: 47.5047, tzHours: 3.0 },
-      { name: "Grozny", lat: 43.3189, lon: 45.6981, tzHours: 3.0 },
-      { name: "Ufa", lat: 54.7388, lon: 55.9721, tzHours: 5.0 }
-    ]
-  },
-  {
-    code: "SA", name: "Saudi Arabia", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 3.0, fajrAngle: 18.5, ishaAngle: 0, ishaFixedMins: 90, asrShadowFactor: 1,
-    cities: [
-      { name: "Makkah", lat: 21.4225, lon: 39.8262 },
-      { name: "Madinah", lat: 24.4672, lon: 39.6112 },
-      { name: "Riyadh", lat: 24.7136, lon: 46.6753 },
-      { name: "Jeddah", lat: 21.5433, lon: 39.1728 },
-      { name: "Dammam", lat: 26.4207, lon: 50.0888 },
-      { name: "Taif", lat: 21.2703, lon: 40.4158 },
-      { name: "Tabuk", lat: 28.3835, lon: 36.5662 },
-      { name: "Abha", lat: 18.2164, lon: 42.5053 },
-      { name: "Buraidah", lat: 26.3260, lon: 43.9750 },
-      { name: "Khobar", lat: 26.2172, lon: 50.1971 },
-      { name: "Jubail", lat: 27.0116, lon: 49.6583 },
-      { name: "Hail", lat: 27.5114, lon: 41.7208 },
-      { name: "Najran", lat: 17.4924, lon: 44.1277 },
-      { name: "Jazan", lat: 16.8892, lon: 42.5511 },
-      { name: "Yanbu", lat: 24.0891, lon: 38.0637 }
-    ]
-  },
-  {
-    code: "SN", name: "Senegal", regionCode: "ME", subRegion: "AFRICA", tzHours: 0.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Dakar", lat: 14.7167, lon: -17.4677 }]
-  },
-  {
-    code: "SG", name: "Singapore", regionCode: "ME", subRegion: "SE_ASIA", tzHours: 8.0, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Singapore", lat: 1.3521, lon: 103.8198 }]
-  },
-  {
-    code: "SO", name: "Somalia", regionCode: "ME", subRegion: "AFRICA", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Mogadishu", lat: 2.0469, lon: 45.3182 },
-      { name: "Hargeisa", lat: 9.5600, lon: 44.0650 }
-    ]
-  },
-  {
-    code: "ZA", name: "South Africa", regionCode: "ME", subRegion: "AFRICA", tzHours: 2.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Johannesburg", lat: -26.2041, lon: 28.0473 },
-      { name: "Cape Town", lat: -33.9249, lon: 18.4241 },
-      { name: "Durban", lat: -29.8587, lon: 31.0218 },
-      { name: "Pretoria", lat: -25.7479, lon: 28.2293 }
-    ]
-  },
-  {
-    code: "ES", name: "Spain", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Madrid", lat: 40.4168, lon: -3.7038 },
-      { name: "Barcelona", lat: 41.3851, lon: 2.1734 },
-      { name: "Valencia", lat: 39.4699, lon: -0.3763 },
-      { name: "Seville", lat: 37.3891, lon: -5.9845 },
-      { name: "Granada", lat: 37.1773, lon: -3.5986 },
-      { name: "Cordoba", lat: 37.8882, lon: -4.7794 }
-    ]
-  },
-  {
-    code: "LK", name: "Sri Lanka", regionCode: "BD", subRegion: "SOUTH_ASIA", tzHours: 5.5, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Colombo", lat: 6.9271, lon: 79.8612 },
-      { name: "Kandy", lat: 7.2906, lon: 80.6337 },
-      { name: "Galle", lat: 6.0535, lon: 80.2210 }
-    ]
-  },
-  {
-    code: "SD", name: "Sudan", regionCode: "ME", subRegion: "AFRICA", tzHours: 2.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Khartoum", lat: 15.5007, lon: 32.5599 },
-      { name: "Omdurman", lat: 15.6445, lon: 32.4777 },
-      { name: "Port Sudan", lat: 19.6158, lon: 37.2164 }
-    ]
-  },
-  {
-    code: "SE", name: "Sweden", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Stockholm", lat: 59.3293, lon: 18.0686 },
-      { name: "Gothenburg", lat: 57.7089, lon: 11.9746 },
-      { name: "Malmö", lat: 55.6050, lon: 13.0038 }
-    ]
-  },
-  {
-    code: "CH", name: "Switzerland", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Zurich", lat: 47.3769, lon: 8.5417 },
-      { name: "Geneva", lat: 46.2044, lon: 6.1432 },
-      { name: "Basel", lat: 47.5596, lon: 7.5886 },
-      { name: "Bern", lat: 46.9480, lon: 7.4474 }
-    ]
-  },
-  {
-    code: "SY", name: "Syrian Arab Republic", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 17.5, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Damascus", lat: 33.5138, lon: 36.2765 },
-      { name: "Aleppo", lat: 36.2021, lon: 37.1343 },
-      { name: "Homs", lat: 34.7324, lon: 36.7137 }
-    ]
+    id: "bd",
+    name_bn: "বাংলাদেশ (৬৪ জেলা ও উপজেলা)",
+    name_ar: "بنغلاديش (٦٤ مقاطعة)",
+    name_en: "Bangladesh (64 Districts & Upazilas)",
+    isBangladesh: true,
+    regionCode: "BD",
+    subRegion: "SOUTH_ASIA",
+    tzHours: 6.0,
+    fajrAngle: 18.0,
+    ishaAngle: 18.0,
+    ishaFixedMins: 0,
+    asrShadowFactor: 2
+  },
+  {
+    id: "sa",
+    name_bn: "সৌদি আরব (Saudi Arabia)",
+    name_ar: "المملكة العربية السعودية",
+    name_en: "Saudi Arabia",
+    regionCode: "ME",
+    subRegion: "MIDDLE_EAST",
+    tzHours: 3.0,
+    fajrAngle: 18.5,
+    ishaAngle: 0,
+    ishaFixedMins: 90,
+    asrShadowFactor: 1,
+    cities: [
+      { id: "makkah", name_bn: "মক্কা আল-মুকাররমাহ (Makkah)", name_ar: "مكة المكرمة", name_en: "Makkah al-Mukarramah", lat: 21.4225, lon: 39.8262 },
+      { id: "madinah", name_bn: "মদিনা আল-মুনাওয়ারাহ (Madinah)", name_ar: "المدينة المنورة", name_en: "Al-Madinah al-Munawwarah", lat: 24.4672, lon: 39.6112 },
+      { id: "riyadh", name_bn: "রিয়াদ (Riyadh)", name_ar: "الرياض", name_en: "Riyadh", lat: 24.7136, lon: 46.6753 },
+      { id: "jeddah", name_bn: "জেদ্দা (Jeddah)", name_ar: "جدة", name_en: "Jeddah", lat: 21.5433, lon: 39.1728 },
+      { id: "dammam", name_bn: "দাম্মাম (Dammam)", name_ar: "الدمام", name_en: "Dammam", lat: 26.4207, lon: 50.0888 }
+    ]
+  },
+  {
+    id: "ae",
+    name_bn: "সংযুক্ত আরব আমিরাত (UAE)",
+    name_ar: "الإمارات العربية المتحدة",
+    name_en: "United Arab Emirates (UAE)",
+    regionCode: "ME",
+    subRegion: "MIDDLE_EAST",
+    tzHours: 4.0,
+    fajrAngle: 18.2,
+    ishaAngle: 18.2,
+    ishaFixedMins: 0,
+    asrShadowFactor: 1,
+    cities: [
+      { id: "dubai", name_bn: "দুবাই (Dubai)", name_ar: "دبي", name_en: "Dubai", lat: 25.2048, lon: 55.2708 },
+      { id: "abudhabi", name_bn: "আবুধাবি (Abu Dhabi)", name_ar: "أبو ظبي", name_en: "Abu Dhabi", lat: 24.4539, lon: 54.3773 },
+      { id: "sharjah", name_bn: "শারজাহ (Sharjah)", name_ar: "الشارقة", name_en: "Sharjah", lat: 25.3463, lon: 55.4209 }
+    ]
+  },
+  {
+    id: "qa",
+    name_bn: "কাতার (Qatar)",
+    name_ar: "قطر",
+    name_en: "Qatar",
+    regionCode: "ME",
+    subRegion: "MIDDLE_EAST",
+    tzHours: 3.0,
+    fajrAngle: 18.0,
+    ishaAngle: 0,
+    ishaFixedMins: 90,
+    asrShadowFactor: 1,
+    cities: [
+      { id: "doha", name_bn: "দোহা (Doha)", name_ar: "الدوحة", name_en: "Doha", lat: 25.2854, lon: 51.5310 },
+      { id: "alwakrah", name_bn: "আল ওয়াকরাহ (Al Wakrah)", name_ar: "الوكرة", name_en: "Al Wakrah", lat: 25.1659, lon: 51.5976 }
+    ]
+  },
+  {
+    id: "kw",
+    name_bn: "কুয়েত (Kuwait)",
+    name_ar: "الكويت",
+    name_en: "Kuwait",
+    regionCode: "ME",
+    subRegion: "MIDDLE_EAST",
+    tzHours: 3.0,
+    fajrAngle: 18.0,
+    ishaAngle: 17.5,
+    ishaFixedMins: 0,
+    asrShadowFactor: 1,
+    cities: [
+      { id: "kuwaitcity", name_bn: "কুয়েত সিটি (Kuwait City)", name_ar: "مدينة الكويت", name_en: "Kuwait City", lat: 29.3759, lon: 47.9774 }
+    ]
+  },
+  {
+    id: "om",
+    name_bn: "ওমান (Oman)",
+    name_ar: "سلطنة عمان",
+    name_en: "Oman",
+    regionCode: "ME",
+    subRegion: "MIDDLE_EAST",
+    tzHours: 4.0,
+    fajrAngle: 18.2,
+    ishaAngle: 18.2,
+    ishaFixedMins: 0,
+    asrShadowFactor: 1,
+    cities: [
+      { id: "muscat", name_bn: "মাস্কাট (Muscat)", name_ar: "مسقط", name_en: "Muscat", lat: 23.5880, lon: 58.3829 },
+      { id: "salalah", name_bn: "সালালাহ (Salalah)", name_ar: "صلالة", name_en: "Salalah", lat: 17.0151, lon: 54.0924 }
+    ]
   },
   {
-    code: "TJ", name: "Tajikistan", regionCode: "ME", subRegion: "CENTRAL_ASIA", tzHours: 5.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [{ name: "Dushanbe", lat: 38.5598, lon: 68.7870 }]
-  },
-  {
-    code: "TZ", name: "Tanzania", regionCode: "ME", subRegion: "AFRICA", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Dar es Salaam", lat: -6.7924, lon: 39.2083 },
-      { name: "Zanzibar City", lat: -6.1659, lon: 39.2026 }
-    ]
-  },
-  {
-    code: "TH", name: "Thailand", regionCode: "ME", subRegion: "SE_ASIA", tzHours: 7.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Bangkok", lat: 13.7563, lon: 100.5018 },
-      { name: "Phuket", lat: 7.8804, lon: 98.3923 },
-      { name: "Hat Yai", lat: 7.0086, lon: 100.4747 }
-    ]
-  },
-  {
-    code: "TN", name: "Tunisia", regionCode: "ME", subRegion: "AFRICA", tzHours: 1.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Tunis", lat: 36.8065, lon: 10.1815 },
-      { name: "Sfax", lat: 34.7406, lon: 10.7603 }
-    ]
-  },
-  {
-    code: "TR", name: "Turkey", regionCode: "ME", subRegion: "TURKEY", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Istanbul", lat: 41.0082, lon: 28.9784 },
-      { name: "Ankara", lat: 39.9334, lon: 32.8597 },
-      { name: "Izmir", lat: 38.4237, lon: 27.1428 },
-      { name: "Bursa", lat: 40.1885, lon: 29.0610 },
-      { name: "Konya", lat: 37.8746, lon: 32.4932 },
-      { name: "Antalya", lat: 36.8969, lon: 30.7133 },
-      { name: "Adana", lat: 37.0000, lon: 35.3213 },
-      { name: "Gaziantep", lat: 37.0662, lon: 37.3833 }
-    ]
-  },
-  {
-    code: "TM", name: "Turkmenistan", regionCode: "ME", subRegion: "CENTRAL_ASIA", tzHours: 5.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [{ name: "Ashgabat", lat: 37.9601, lon: 58.3261 }]
-  },
-  {
-    code: "UG", name: "Uganda", regionCode: "ME", subRegion: "AFRICA", tzHours: 3.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [{ name: "Kampala", lat: 0.3476, lon: 32.5825 }]
-  },
-  {
-    code: "AE", name: "United Arab Emirates", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 4.0, fajrAngle: 18.2, ishaAngle: 18.2, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Dubai", lat: 25.2048, lon: 55.2708 },
-      { name: "Abu Dhabi", lat: 24.4539, lon: 54.3773 },
-      { name: "Sharjah", lat: 25.3463, lon: 55.4209 },
-      { name: "Ajman", lat: 25.4052, lon: 55.5136 },
-      { name: "Al Ain", lat: 24.1302, lon: 55.8023 },
-      { name: "Ras Al Khaimah", lat: 25.7895, lon: 55.9432 },
-      { name: "Fujairah", lat: 25.1288, lon: 56.3265 }
-    ]
-  },
-  {
-    code: "GB", name: "United Kingdom", regionCode: "WEST", subRegion: "WESTERN_EUROPE", tzHours: 0.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "London", lat: 51.5074, lon: -0.1278 },
-      { name: "Birmingham", lat: 52.4862, lon: -1.8904 },
-      { name: "Manchester", lat: 53.4808, lon: -2.2426 },
-      { name: "Bradford", lat: 53.7960, lon: -1.7594 },
-      { name: "Leeds", lat: 53.8008, lon: -1.5491 },
-      { name: "Glasgow", lat: 55.8642, lon: -4.2518 },
-      { name: "Liverpool", lat: 53.4084, lon: -2.9916 },
-      { name: "Sheffield", lat: 53.3811, lon: -1.4701 },
-      { name: "Edinburgh", lat: 55.9533, lon: -3.1883 },
-      { name: "Cardiff", lat: 51.4816, lon: -3.1791 }
-    ]
-  },
-  {
-    code: "US", name: "United States", regionCode: "WEST", subRegion: "NORTH_AMERICA", tzHours: -5.0, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "New York", lat: 40.7128, lon: -74.0060, tzHours: -5.0 },
-      { name: "Chicago", lat: 41.8781, lon: -87.6298, tzHours: -6.0 },
-      { name: "Detroit", lat: 42.3314, lon: -83.0458, tzHours: -5.0 },
-      { name: "Houston", lat: 29.7604, lon: -95.3698, tzHours: -6.0 },
-      { name: "Dallas", lat: 32.7767, lon: -96.7970, tzHours: -6.0 },
-      { name: "Los Angeles", lat: 34.0522, lon: -118.2437, tzHours: -8.0 },
-      { name: "San Francisco", lat: 37.7749, lon: -122.4194, tzHours: -8.0 },
-      { name: "Washington D.C.", lat: 38.9072, lon: -77.0369, tzHours: -5.0 },
-      { name: "Philadelphia", lat: 39.9526, lon: -75.1652, tzHours: -5.0 },
-      { name: "Atlanta", lat: 33.7490, lon: -84.3880, tzHours: -5.0 },
-      { name: "Miami", lat: 25.7617, lon: -80.1918, tzHours: -5.0 },
-      { name: "Boston", lat: 42.3601, lon: -71.0589, tzHours: -5.0 },
-      { name: "Seattle", lat: 47.6062, lon: -122.3321, tzHours: -8.0 }
-    ]
-  },
-  {
-    code: "UZ", name: "Uzbekistan", regionCode: "ME", subRegion: "CENTRAL_ASIA", tzHours: 5.0, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2,
-    cities: [
-      { name: "Tashkent", lat: 41.2995, lon: 69.2401 },
-      { name: "Samarkand", lat: 39.6542, lon: 66.9597 },
-      { name: "Bukhara", lat: 39.7747, lon: 64.4286 }
-    ]
-  },
-  {
-    code: "VN", name: "Vietnam", regionCode: "ME", subRegion: "SE_ASIA", tzHours: 7.0, fajrAngle: 18.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1,
-    cities: [
-      { name: "Ho Chi Minh City", lat: 10.8231, lon: 106.6297 },
-      { name: "Hanoi", lat: 21.0285, lon: 105.8542 }
-    ]
-  },
-  {
-    code: "YE", name: "Yemen", regionCode: "ME", subRegion: "MIDDLE_EAST", tzHours: 3.0, fajrAngle: 18.5, ishaAngle: 0, ishaFixedMins: 90, asrShadowFactor: 1,
-    cities: [
-      { name: "Sana'a", lat: 15.3694, lon: 44.1910 },
-      { name: "Aden", lat: 12.7855, lon: 45.0187 },
-      { name: "Taiz", lat: 13.5795, lon: 44.0209 },
-      { name: "Mukalla", lat: 14.5425, lon: 49.1242 }
+    id: "in",
+    name_bn: "ভারত (India)",
+    name_ar: "الهند",
+    name_en: "India",
+    regionCode: "BD",
+    subRegion: "SOUTH_ASIA",
+    tzHours: 5.5,
+    fajrAngle: 18.0,
+    ishaAngle: 18.0,
+    ishaFixedMins: 0,
+    asrShadowFactor: 2,
+    cities: [
+      { id: "kolkata", name_bn: "কলকাতা (Kolkata)", name_ar: "كولكاتا", name_en: "Kolkata", lat: 22.5726, lon: 88.3639 },
+      { id: "delhi", name_bn: "নয়াদিল্লি (New Delhi)", name_ar: "نيودلهي", name_en: "New Delhi", lat: 28.6139, lon: 77.2090 },
+      { id: "mumbai", name_bn: "মুম্বাই (Mumbai)", name_ar: "مومباي", name_en: "Mumbai", lat: 19.0760, lon: 72.8777 },
+      { id: "hyderabad", name_bn: "হায়দ্রাবাদ (Hyderabad)", name_ar: "حيدر آباد", name_en: "Hyderabad", lat: 17.3850, lon: 78.4867 }
+    ]
+  },
+  {
+    id: "pk",
+    name_bn: "পাকিস্তান (Pakistan)",
+    name_ar: "باكستان",
+    name_en: "Pakistan",
+    regionCode: "BD",
+    subRegion: "SOUTH_ASIA",
+    tzHours: 5.0,
+    fajrAngle: 18.0,
+    ishaAngle: 18.0,
+    ishaFixedMins: 0,
+    asrShadowFactor: 2,
+    cities: [
+      { id: "karachi", name_bn: "করাচি (Karachi)", name_ar: "كراتشي", name_en: "Karachi", lat: 24.8607, lon: 67.0011 },
+      { id: "lahore", name_bn: "লাহোর (Lahore)", name_ar: "لاهور", name_en: "Lahore", lat: 31.5204, lon: 74.3587 },
+      { id: "islamabad", name_bn: "ইসলামাবাদ (Islamabad)", name_ar: "إسلام آباد", name_en: "Islamabad", lat: 33.6844, lon: 73.0479 }
+    ]
+  },
+  {
+    id: "my",
+    name_bn: "মালয়েশিয়া (Malaysia)",
+    name_ar: "ماليزيا",
+    name_en: "Malaysia",
+    regionCode: "ME",
+    subRegion: "SE_ASIA",
+    tzHours: 8.0,
+    fajrAngle: 20.0,
+    ishaAngle: 18.0,
+    ishaFixedMins: 0,
+    asrShadowFactor: 1,
+    cities: [
+      { id: "kualalumpur", name_bn: "কুয়ালালামপুর (Kuala Lumpur)", name_ar: "كوالالمبور", name_en: "Kuala Lumpur", lat: 3.1390, lon: 101.6869 },
+      { id: "putrajaya", name_bn: "পুত্রজায়া (Putrajaya)", name_ar: "بوتراجايا", name_en: "Putrajaya", lat: 2.9264, lon: 101.6964 },
+      { id: "penang", name_bn: "পেনাং (Penang)", name_ar: "بينانغ", name_en: "Penang", lat: 5.4141, lon: 100.3288 }
+    ]
+  },
+  {
+    id: "uk",
+    name_bn: "যুক্তরাজ্য (United Kingdom)",
+    name_ar: "المملكة المتحدة",
+    name_en: "United Kingdom (UK)",
+    regionCode: "WEST",
+    subRegion: "WESTERN_EUROPE",
+    tzHours: 0.0,
+    fajrAngle: 18.0,
+    ishaAngle: 17.0,
+    ishaFixedMins: 0,
+    asrShadowFactor: 1,
+    cities: [
+      { id: "london", name_bn: "লন্ডন (London)", name_ar: "لندن", name_en: "London", lat: 51.5074, lon: -0.1278 },
+      { id: "birmingham", name_bn: "বার্মিংহাম (Birmingham)", name_ar: "برمنغهام", name_en: "Birmingham", lat: 52.4862, lon: -1.8904 },
+      { id: "manchester", name_bn: "ম্যানচেস্টার (Manchester)", name_ar: "مانشستر", name_en: "Manchester", lat: 53.4808, lon: -2.2426 }
+    ]
+  },
+  {
+    id: "us",
+    name_bn: "যুক্তরাষ্ট্র (United States)",
+    name_ar: "الولايات المتحدة الأمريكية",
+    name_en: "United States (USA)",
+    regionCode: "WEST",
+    subRegion: "NORTH_AMERICA",
+    tzHours: -5.0,
+    fajrAngle: 15.0,
+    ishaAngle: 15.0,
+    ishaFixedMins: 0,
+    asrShadowFactor: 1,
+    cities: [
+      { id: "newyork", name_bn: "নিউ ইয়র্ক (New York)", name_ar: "نيويورك", name_en: "New York", lat: 40.7128, lon: -74.0060, tzHours: -5.0 },
+      { id: "chicago", name_bn: "শিকাগো (Chicago)", name_ar: "شيكاغو", name_en: "Chicago", lat: 41.8781, lon: -87.6298, tzHours: -6.0 },
+      { id: "losangeles", name_bn: "লস অ্যাঞ্জেলেস (Los Angeles)", name_ar: "لوس أنجلوس", name_en: "Los Angeles", lat: 34.0522, lon: -118.2437, tzHours: -8.0 }
     ]
   }
 ]);
 
 function getSavedGlobalOrBdLocation() {
   try {
-    const rawGlobal = localStorage.getItem(GLOBAL_SELECTED_LOC_STORAGE_KEY);
-    if (rawGlobal) {
-      const parsed = JSON.parse(rawGlobal);
-      if (parsed && typeof parsed.lat === "number" && typeof parsed.lon === "number") {
-        return parsed;
-      }
+    const raw = localStorage.getItem(BD_SELECTED_LOC_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed.lat === "number" && typeof parsed.lon === "number") {
+      return parsed;
     }
   } catch {}
-  return getSavedBdLocationSelection();
+  return null;
 }
 
-function saveGlobalOrBdLocation(locObj) {
-  try {
-    localStorage.setItem(GLOBAL_SELECTED_LOC_STORAGE_KEY, JSON.stringify(locObj));
-    if (locObj.countryCode === "BD") {
-      saveBdLocationSelection(locObj);
-    } else {
-      localStorage.removeItem(BD_SELECTED_LOC_STORAGE_KEY);
-    }
-  } catch {}
-}
-
-function getActiveLocationShortLabel() {
+function getActiveLocationDisplayLabel() {
   const saved = getSavedGlobalOrBdLocation();
+  const lang = appState.locale || "bn";
   if (!saved) {
-    return appState.locale === "en" ? "Dhaka" : appState.locale === "ar" ? "دكا" : "ঢাকা";
+    return lang === "bn" ? "📍 ঢাকা ▾" : lang === "ar" ? "📍 دكا ▾" : "📍 Dhaka ▾";
   }
-  if (saved.countryCode === "BD") {
-    if (saved.upazilaCleanBn && appState.locale === "bn") return saved.upazilaCleanBn;
-    if (saved.districtNameBn && appState.locale === "bn") return saved.districtNameBn;
-    return saved.districtNameEn || "Dhaka";
+  if (saved.upazilaName) {
+    const shortUpz = String(saved.upazilaName).split("(")[0].trim();
+    return `📍 ${shortUpz} ▾`;
   }
-  return saved.cityName || "Dhaka";
+  const label =
+    lang === "bn"
+      ? saved.label_bn || saved.districtName_bn || "ঢাকা"
+      : lang === "ar"
+      ? saved.label_ar || saved.districtName_en || "دكا"
+      : saved.label_en || saved.districtName_en || "Dhaka";
+  return `📍 ${label} ▾`;
 }
 
-function updateHeaderLocationPillUI() {
-  const labelEl = document.getElementById("bd-loc-active-label");
-  if (!labelEl) return;
-  const shortName = getActiveLocationShortLabel();
-  labelEl.textContent = `📍 ${shortName} ▾`;
+function syncHeaderLocationPillUI() {
+  const pillLabelEl = document.getElementById("bd-loc-active-label");
+  if (pillLabelEl) {
+    pillLabelEl.textContent = getActiveLocationDisplayLabel();
+  }
+  const coordsEl = document.getElementById("bd-loc-coords-pill");
+  if (coordsEl) {
+    const sched = computeSeasonalPrayerSchedule(new Date());
+    const latNum = (sched.profile && sched.profile.lat) || 23.8103;
+    const lonNum = (sched.profile && sched.profile.lon) || 90.4125;
+    const latStr = localizeDigits(Math.abs(latNum).toFixed(2), appState.locale);
+    const lonStr = localizeDigits(Math.abs(lonNum).toFixed(2), appState.locale);
+    const latHem = latNum >= 0 ? "N" : "S";
+    const lonHem = lonNum >= 0 ? "E" : "W";
+    coordsEl.textContent = `${latStr}°${latHem}, ${lonStr}°${lonHem}`;
+  }
 }
 
-function initMuslimBanglaSearchLocationModal() {
-  const triggerBtn = document.getElementById("bd-loc-toggle-btn");
-  const overlay = document.getElementById("s24-loc-modal-overlay");
-  const promptCard = document.getElementById("s24-loc-prompt-card");
-  const openSearchBtn = document.getElementById("s24-loc-open-search-btn");
-  const pickerCard = document.getElementById("s24-loc-picker-card");
-  const closeBtn = document.getElementById("s24-loc-close-btn");
-  const backBtn = document.getElementById("s24-loc-back-btn");
-  const titleEl = document.getElementById("s24-loc-picker-title");
-  const searchInput = document.getElementById("s24-loc-search-input");
-  const listContainer = document.getElementById("s24-loc-list-container");
+function initBdCascadingSelectorAndGlobalModal() {
+  const divSelect = document.getElementById("bd-division-select");
+  const distSelect = document.getElementById("bd-district-select");
+  const upzSelect = document.getElementById("bd-upazila-select");
+  const locToggleBtn = document.getElementById("bd-loc-toggle-btn");
+  const locPanel = document.getElementById("bd-loc-cascading-panel");
+  const resetBtn = document.getElementById("bd-loc-reset-auto-btn");
+  const doneBtn = document.getElementById("bd-loc-done-btn");
 
-  if (!triggerBtn || !overlay) return;
+  const populateDivisions = () => {
+    if (!divSelect) return;
+    const lang = appState.locale || "bn";
+    divSelect.innerHTML = "";
+    BD_GEO_HIERARCHY.forEach((div) => {
+      const opt = document.createElement("option");
+      opt.value = div.id;
+      opt.textContent = lang === "bn" ? div.name_bn : lang === "ar" ? div.name_ar : div.name_en;
+      divSelect.appendChild(opt);
+    });
+  };
 
-  let currentStep = "country"; // "country" | "bd-district" | "bd-upazila" | "global-city"
-  let selectedCountry = null;
-  let selectedBdDistrict = null;
+  const populateDistricts = (divisionId, selectedDistrictId = null) => {
+    if (!distSelect) return;
+    const lang = appState.locale || "bn";
+    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === divisionId) || BD_GEO_HIERARCHY[0];
+    distSelect.innerHTML = "";
+    divObj.districts.forEach((dist) => {
+      const opt = document.createElement("option");
+      opt.value = dist.id;
+      opt.textContent = lang === "bn" ? `${dist.name_bn} (${dist.name_en})` : dist.name_en;
+      distSelect.appendChild(opt);
+    });
+    if (selectedDistrictId && divObj.districts.some((d) => d.id === selectedDistrictId)) {
+      distSelect.value = selectedDistrictId;
+    }
+  };
 
-  updateHeaderLocationPillUI();
+  const populateUpazilas = (divisionId, districtId, selectedUpzIndex = 0) => {
+    if (!upzSelect) return;
+    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === divisionId) || BD_GEO_HIERARCHY[0];
+    const distObj = divObj.districts.find((d) => d.id === districtId) || divObj.districts[0];
+    upzSelect.innerHTML = "";
+    (distObj.upazilas || []).forEach((upzName, idx) => {
+      const opt = document.createElement("option");
+      opt.value = String(idx);
+      opt.textContent = upzName;
+      upzSelect.appendChild(opt);
+    });
+    if (selectedUpzIndex >= 0 && selectedUpzIndex < (distObj.upazilas || []).length) {
+      upzSelect.value = String(selectedUpzIndex);
+    }
+  };
 
-  function closeLocModal() {
-    overlay.classList.add("hidden");
-    triggerBtn.setAttribute("aria-expanded", "false");
-  }
+  const applyCascadingSelection = () => {
+    if (!divSelect || !distSelect || !upzSelect) return;
+    const divObj = BD_GEO_HIERARCHY.find((d) => d.id === divSelect.value) || BD_GEO_HIERARCHY[0];
+    const distObj = divObj.districts.find((d) => d.id === distSelect.value) || divObj.districts[0];
+    const upzIdx = parseInt(upzSelect.value, 10) || 0;
+    const upzName = (distObj.upazilas || [])[upzIdx] || distObj.name_bn;
+    const coords = computeUpazilaMicroCoordinates(
+      distObj,
+      upzIdx,
+      (distObj.upazilas || []).length
+    );
 
-  function applyChosenLocation(locPayload) {
-    saveGlobalOrBdLocation(locPayload);
-    updateHeaderLocationPillUI();
-    closeLocModal();
-    if (typeof syncMadhabToggleUI === "function") syncMadhabToggleUI();
+    const selection = {
+      countryId: "bd",
+      regionCode: "BD",
+      subRegion: "SOUTH_ASIA",
+      divisionId: divObj.id,
+      districtId: distObj.id,
+      districtName_bn: distObj.name_bn,
+      districtName_en: distObj.name_en,
+      upazilaIndex: upzIdx,
+      upazilaName: upzName,
+      label_bn: distObj.name_bn,
+      label_en: distObj.name_en,
+      label_ar: distObj.name_en,
+      lat: coords.lat,
+      lon: coords.lon,
+      tzHours: 6.0,
+      fajrAngle: 18.0,
+      ishaAngle: 18.0,
+      ishaFixedMins: 0,
+      asrShadowFactor: 2
+    };
+
+    saveBdLocationSelection(selection);
+    syncHeaderLocationPillUI();
+    syncMadhabToggleUI();
     renderHeaderDatesAndPhase();
     renderHabits();
     renderDuas();
-    const toastName = getActiveLocationShortLabel();
-    showTimeLockToast(
-      appState.locale === "bn"
-        ? `📍 অবস্থান সেট করা হয়েছে: ${toastName}`
-        : `📍 Location updated: ${toastName}`
-    );
-  }
+  };
 
-  function renderCurrentList(filterText = "") {
-    const q = filterText.trim().toLowerCase();
-    listContainer.innerHTML = "";
+  if (divSelect && distSelect && upzSelect) {
+    populateDivisions();
+    const saved = getSavedGlobalOrBdLocation();
+    const initDivId = (saved && saved.divisionId) || "dhaka";
+    const initDistId = (saved && saved.districtId) || "dhaka";
+    const initUpzIdx = (saved && typeof saved.upazilaIndex === "number") ? saved.upazilaIndex : 0;
 
-    // STEP 1: Country List (Active Country Pinned First, rest Alphabetical)
-    if (currentStep === "country") {
-      backBtn.classList.add("hidden");
-      titleEl.textContent =
-        appState.locale === "en" ? "Select Country" : appState.locale === "ar" ? "اختر الدولة" : "দেশ শনাক্ত করুন";
+    divSelect.value = initDivId;
+    populateDistricts(initDivId, initDistId);
+    populateUpazilas(initDivId, initDistId, initUpzIdx);
 
-      const saved = getSavedGlobalOrBdLocation();
-      const activeCountryCode = saved?.countryCode || "BD";
+    divSelect.addEventListener("change", () => {
+      populateDistricts(divSelect.value);
+      populateUpazilas(divSelect.value, distSelect.value, 0);
+      applyCascadingSelection();
+    });
 
-      const sortedCountries = [...GLOBAL_COUNTRIES_DIRECTORY].sort((a, b) => {
-        if (a.code === activeCountryCode) return -1;
-        if (b.code === activeCountryCode) return 1;
-        return a.name.localeCompare(b.name);
-      });
+    distSelect.addEventListener("change", () => {
+      populateUpazilas(divSelect.value, distSelect.value, 0);
+      applyCascadingSelection();
+    });
 
-      sortedCountries
-        .filter((c) => !q || c.name.toLowerCase().includes(q))
-        .forEach((country) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = `s24-loc-item-btn ${country.code === activeCountryCode ? "is-active-loc" : ""}`;
-          btn.textContent = country.name;
-          btn.addEventListener("click", () => {
-            selectedCountry = country;
-            searchInput.value = "";
-            currentStep = country.isBangladeshSpecial ? "bd-district" : "global-city";
-            renderCurrentList("");
-          });
-          listContainer.appendChild(btn);
-        });
-      return;
-    }
-
-    // STEP 2A: Bangladesh -> All 64 Districts (সকল ৬৪ জেলা)
-    if (currentStep === "bd-district") {
-      backBtn.classList.remove("hidden");
-      titleEl.textContent = "Bangladesh";
-
-      const allDistricts = [];
-      BD_GEO_HIERARCHY.forEach((div) => {
-        div.districts.forEach((dist) => {
-          allDistricts.push({ ...dist, divisionId: div.id });
-        });
-      });
-
-      allDistricts
-        .filter((d) => !q || d.name_bn.toLowerCase().includes(q) || d.name_en.toLowerCase().includes(q))
-        .forEach((dist) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "s24-loc-item-btn";
-          btn.textContent = appState.locale === "en" ? dist.name_en : dist.name_bn;
-          btn.addEventListener("click", () => {
-            selectedBdDistrict = dist;
-            searchInput.value = "";
-            currentStep = "bd-upazila";
-            renderCurrentList("");
-          });
-          listContainer.appendChild(btn);
-        });
-      return;
-    }
-
-    // STEP 2B: Bangladesh -> Selected District's Upazilas/Thanas
-    if (currentStep === "bd-upazila" && selectedBdDistrict) {
-      backBtn.classList.remove("hidden");
-      titleEl.textContent = appState.locale === "en" ? selectedBdDistrict.name_en : selectedBdDistrict.name_bn;
-
-      const upazilas = selectedBdDistrict.upazilas || [];
-      upazilas
-        .map((u, idx) => ({ raw: u, idx }))
-        .filter((item) => !q || item.raw.toLowerCase().includes(q))
-        .forEach(({ raw, idx }) => {
-          const cleanBn = raw.split("(")[0].trim();
-          const coords = computeUpazilaMicroCoordinates(selectedBdDistrict, idx, upazilas.length);
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "s24-loc-item-btn";
-          btn.textContent = appState.locale === "en" ? raw : cleanBn;
-          btn.addEventListener("click", () => {
-            applyChosenLocation({
-              countryCode: "BD",
-              countryName: "Bangladesh",
-              regionCode: "BD",
-              subRegion: "SOUTH_ASIA",
-              divisionId: selectedBdDistrict.divisionId,
-              districtId: selectedBdDistrict.id,
-              districtNameBn: selectedBdDistrict.name_bn,
-              districtNameEn: selectedBdDistrict.name_en,
-              upazilaRaw: raw,
-              upazilaCleanBn: cleanBn,
-              lat: coords.lat,
-              lon: coords.lon,
-              tzHours: 6.0,
-              fajrAngle: 18.0,
-              ishaAngle: 18.0,
-              ishaFixedMins: 0,
-              asrShadowFactor: 2
-            });
-          });
-          listContainer.appendChild(btn);
-        });
-      return;
-    }
-
-    // STEP 2C: Global Country -> Cities
-    if (currentStep === "global-city" && selectedCountry) {
-      backBtn.classList.remove("hidden");
-      titleEl.textContent = selectedCountry.name;
-
-      (selectedCountry.cities || [])
-        .filter((city) => !q || city.name.toLowerCase().includes(q))
-        .forEach((city) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "s24-loc-item-btn";
-          btn.textContent = city.name;
-          btn.addEventListener("click", () => {
-            applyChosenLocation({
-              countryCode: selectedCountry.code,
-              countryName: selectedCountry.name,
-              cityName: city.name,
-              regionCode: selectedCountry.regionCode,
-              subRegion: selectedCountry.subRegion,
-              lat: city.lat,
-              lon: city.lon,
-              tzHours: typeof city.tzHours === "number" ? city.tzHours : selectedCountry.tzHours,
-              fajrAngle: selectedCountry.fajrAngle,
-              ishaAngle: selectedCountry.ishaAngle,
-              ishaFixedMins: selectedCountry.ishaFixedMins,
-              asrShadowFactor: selectedCountry.asrShadowFactor
-            });
-          });
-          listContainer.appendChild(btn);
-        });
-    }
-  }
-
-  // 1. Clicking Header Pill opens the "অবস্থান অনুসন্ধান করুন" prompt card with localized labels
-  triggerBtn.addEventListener("click", () => {
-    const mainTxtEl = document.getElementById("s24-loc-trigger-main-text");
-    const subTxtEl = document.getElementById("s24-loc-trigger-sub-text");
-    if (mainTxtEl) {
-      mainTxtEl.textContent =
-        appState.locale === "ar"
-          ? "ابحث عن الموقع"
-          : appState.locale === "en"
-          ? "Search Location"
-          : "অবস্থান অনুসন্ধান করুন";
-    }
-    if (subTxtEl) {
-      subTxtEl.textContent =
-        appState.locale === "ar"
-          ? "اضغط هنا لتغيير الدولة أو المدينة أو المنطقة"
-          : appState.locale === "en"
-          ? "Tap here to select your Country, City, District or Upazila"
-          : "দেশ, জেলা বা উপজেলা পরিবর্তন করতে এখানে ট্যাপ করুন";
-    }
-    if (promptCard) promptCard.classList.remove("hidden");
-    pickerCard.classList.add("hidden");
-    overlay.classList.remove("hidden");
-    triggerBtn.setAttribute("aria-expanded", "true");
-    if (typeof pushAppHistoryState === "function") pushAppHistoryState("loc-modal");
-  });
-
-  // 2. Clicking "অবস্থান অনুসন্ধান করুন" opens the Country/City/District Picker
-  if (openSearchBtn) {
-    openSearchBtn.addEventListener("click", () => {
-      promptCard.classList.add("hidden");
-      pickerCard.classList.remove("hidden");
-      currentStep = "country";
-      searchInput.value = "";
-      renderCurrentList("");
-      setTimeout(() => searchInput.focus(), 80);
+    upzSelect.addEventListener("change", () => {
+      applyCascadingSelection();
     });
   }
 
-  // 3. Back Button inside Picker Header
-  backBtn.addEventListener("click", () => {
-    searchInput.value = "";
-    if (currentStep === "bd-upazila") {
-      currentStep = "bd-district";
-    } else {
-      currentStep = "country";
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      saveBdLocationSelection(null);
+      if (divSelect && distSelect && upzSelect) {
+        divSelect.value = "dhaka";
+        populateDistricts("dhaka", "dhaka");
+        populateUpazilas("dhaka", "dhaka", 0);
+      }
+      syncHeaderLocationPillUI();
+      syncMadhabToggleUI();
+      renderHeaderDatesAndPhase();
+      renderHabits();
+      renderDuas();
+      if (locPanel) locPanel.classList.remove("is-open");
+      if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  if (doneBtn) {
+    doneBtn.addEventListener("click", () => {
+      if (locPanel) locPanel.classList.remove("is-open");
+      if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  // Searchable Location Modal ("অবস্থান অনুসন্ধান করুন" -> Country -> District/City -> Upazila)
+  const modalOverlay = document.getElementById("s24-loc-modal-overlay");
+  const promptCard = document.getElementById("s24-loc-prompt-card");
+  const openSearchBtn = document.getElementById("s24-loc-open-search-btn");
+  const pickerCard = document.getElementById("s24-loc-picker-card");
+  const closeModalBtn = document.getElementById("s24-loc-close-btn");
+  const backModalBtn = document.getElementById("s24-loc-back-btn");
+  const pickerTitleEl = document.getElementById("s24-loc-picker-title");
+  const searchInput = document.getElementById("s24-loc-search-input");
+  const listContainer = document.getElementById("s24-loc-list-container");
+
+  let locDrillState = {
+    step: "country", // "country" | "bd_district" | "bd_upazila" | "global_city"
+    selectedCountry: null,
+    selectedDivision: null,
+    selectedDistrict: null
+  };
+
+  const renderModalDrillList = () => {
+    if (!listContainer || !pickerTitleEl) return;
+    const lang = appState.locale || "bn";
+    const query = ((searchInput && searchInput.value) || "").trim().toLowerCase();
+    listContainer.innerHTML = "";
+
+    if (locDrillState.step === "country") {
+      if (backModalBtn) backModalBtn.classList.add("hidden");
+      pickerTitleEl.textContent =
+        lang === "bn" ? "দেশ শনাক্ত করুন" : lang === "ar" ? "اختر الدولة" : "Select Country";
+
+      GLOBAL_COUNTRIES_DIRECTORY.forEach((country) => {
+        const title =
+          lang === "bn" ? country.name_bn : lang === "ar" ? country.name_ar : country.name_en;
+        if (
+          query &&
+          !title.toLowerCase().includes(query) &&
+          !country.name_en.toLowerCase().includes(query)
+        ) {
+          return;
+        }
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "s24-loc-item-btn";
+        btn.innerHTML = `<span>🌍 ${title}</span><span>›</span>`;
+        btn.addEventListener("click", () => {
+          locDrillState.selectedCountry = country;
+          if (searchInput) searchInput.value = "";
+          locDrillState.step = country.isBangladesh ? "bd_district" : "global_city";
+          renderModalDrillList();
+        });
+        listContainer.appendChild(btn);
+      });
+    } else if (locDrillState.step === "bd_district") {
+      if (backModalBtn) backModalBtn.classList.remove("hidden");
+      pickerTitleEl.textContent =
+        lang === "bn"
+          ? "জেলা নির্বাচন করুন (৬৪ জেলা)"
+          : lang === "ar"
+          ? "اختر المقاطعة (٦٤)"
+          : "Select District (64 Zilas)";
+
+      BD_GEO_HIERARCHY.forEach((div) => {
+        div.districts.forEach((dist) => {
+          const title =
+            lang === "bn" ? `${dist.name_bn} (${dist.name_en})` : dist.name_en;
+          if (
+            query &&
+            !dist.name_bn.toLowerCase().includes(query) &&
+            !dist.name_en.toLowerCase().includes(query)
+          ) {
+            return;
+          }
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "s24-loc-item-btn";
+          btn.innerHTML = `<span>📍 ${title}</span><span>›</span>`;
+          btn.addEventListener("click", () => {
+            locDrillState.selectedDivision = div;
+            locDrillState.selectedDistrict = dist;
+            if (searchInput) searchInput.value = "";
+            locDrillState.step = "bd_upazila";
+            renderModalDrillList();
+          });
+          listContainer.appendChild(btn);
+        });
+      });
+    } else if (locDrillState.step === "bd_upazila") {
+      if (backModalBtn) backModalBtn.classList.remove("hidden");
+      const dist = locDrillState.selectedDistrict;
+      const div = locDrillState.selectedDivision;
+      if (!dist || !div) return;
+
+      pickerTitleEl.textContent =
+        lang === "bn"
+          ? `${dist.name_bn} — থানা / উপজেলা`
+          : `${dist.name_en} — Upazila / Thana`;
+
+      (dist.upazilas || []).forEach((upzName, idx) => {
+        if (query && !upzName.toLowerCase().includes(query)) return;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "s24-loc-item-btn";
+        btn.innerHTML = `<span>🕌 ${upzName}</span><span>✓</span>`;
+        btn.addEventListener("click", () => {
+          const coords = computeUpazilaMicroCoordinates(
+            dist,
+            idx,
+            (dist.upazilas || []).length
+          );
+          const selection = {
+            countryId: "bd",
+            regionCode: "BD",
+            subRegion: "SOUTH_ASIA",
+            divisionId: div.id,
+            districtId: dist.id,
+            districtName_bn: dist.name_bn,
+            districtName_en: dist.name_en,
+            upazilaIndex: idx,
+            upazilaName: upzName,
+            label_bn: dist.name_bn,
+            label_en: dist.name_en,
+            label_ar: dist.name_en,
+            lat: coords.lat,
+            lon: coords.lon,
+            tzHours: 6.0,
+            fajrAngle: 18.0,
+            ishaAngle: 18.0,
+            ishaFixedMins: 0,
+            asrShadowFactor: 2
+          };
+          saveBdLocationSelection(selection);
+          if (divSelect && distSelect && upzSelect) {
+            divSelect.value = div.id;
+            populateDistricts(div.id, dist.id);
+            populateUpazilas(div.id, dist.id, idx);
+          }
+          syncHeaderLocationPillUI();
+          syncMadhabToggleUI();
+          renderHeaderDatesAndPhase();
+          renderHabits();
+          renderDuas();
+          if (modalOverlay) modalOverlay.classList.add("hidden");
+          if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
+        });
+        listContainer.appendChild(btn);
+      });
+    } else if (locDrillState.step === "global_city") {
+      if (backModalBtn) backModalBtn.classList.remove("hidden");
+      const country = locDrillState.selectedCountry;
+      if (!country) return;
+      pickerTitleEl.textContent =
+        lang === "bn" ? country.name_bn : lang === "ar" ? country.name_ar : country.name_en;
+
+      (country.cities || []).forEach((city) => {
+        const cityTitle =
+          lang === "bn" ? city.name_bn : lang === "ar" ? city.name_ar : city.name_en;
+        if (
+          query &&
+          !cityTitle.toLowerCase().includes(query) &&
+          !city.name_en.toLowerCase().includes(query)
+        ) {
+          return;
+        }
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "s24-loc-item-btn";
+        btn.innerHTML = `<span>🕌 ${cityTitle}</span><span>✓</span>`;
+        btn.addEventListener("click", () => {
+          const selection = {
+            countryId: country.id,
+            regionCode: country.regionCode,
+            subRegion: country.subRegion,
+            divisionId: country.id,
+            districtId: city.id,
+            districtName_bn: city.name_bn,
+            districtName_en: city.name_en,
+            upazilaName: cityTitle,
+            label_bn: city.name_bn.split("(")[0].trim(),
+            label_en: city.name_en,
+            label_ar: city.name_ar,
+            lat: city.lat,
+            lon: city.lon,
+            tzHours: typeof city.tzHours === "number" ? city.tzHours : country.tzHours,
+            fajrAngle: country.fajrAngle,
+            ishaAngle: country.ishaAngle,
+            ishaFixedMins: country.ishaFixedMins,
+            asrShadowFactor: country.asrShadowFactor
+          };
+          saveBdLocationSelection(selection);
+          syncHeaderLocationPillUI();
+          syncMadhabToggleUI();
+          renderHeaderDatesAndPhase();
+          renderHabits();
+          renderDuas();
+          if (modalOverlay) modalOverlay.classList.add("hidden");
+          if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
+        });
+        listContainer.appendChild(btn);
+      });
     }
-    renderCurrentList("");
-  });
+  };
 
-  // 4. Live Search Filter
-  searchInput.addEventListener("input", (e) => {
-    renderCurrentList(e.target.value);
-  });
+  if (locToggleBtn && modalOverlay && promptCard && pickerCard) {
+    locToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      modalOverlay.classList.remove("hidden");
+      promptCard.classList.remove("hidden");
+      pickerCard.classList.add("hidden");
+      locToggleBtn.setAttribute("aria-expanded", "true");
+      if (typeof pushAppHistoryState === "function") pushAppHistoryState("loc-modal");
+    });
+  }
 
-  // 5. Close Modal on ✕ or Backdrop Tap
-  closeBtn.addEventListener("click", closeLocModal);
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) closeLocModal();
-  });
+  if (openSearchBtn && promptCard && pickerCard) {
+    openSearchBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      promptCard.classList.add("hidden");
+      pickerCard.classList.remove("hidden");
+      locDrillState.step = "country";
+      if (searchInput) searchInput.value = "";
+      renderModalDrillList();
+    });
+  }
+
+  if (backModalBtn) {
+    backModalBtn.addEventListener("click", () => {
+      if (searchInput) searchInput.value = "";
+      if (locDrillState.step === "bd_upazila") {
+        locDrillState.step = "bd_district";
+      } else {
+        locDrillState.step = "country";
+      }
+      renderModalDrillList();
+    });
+  }
+
+  if (closeModalBtn && modalOverlay) {
+    closeModalBtn.addEventListener("click", () => {
+      modalOverlay.classList.add("hidden");
+      if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  if (modalOverlay) {
+    modalOverlay.addEventListener("click", (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.add("hidden");
+        if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      renderModalDrillList();
+    });
+  }
+
+  syncHeaderLocationPillUI();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  initMuslimBanglaSearchLocationModal();
+  initBdCascadingSelectorAndGlobalModal();
 });
 
+// ============================================================================
+// GOOGLE MATERIAL 3 FULL-SCREEN MASTER SECTION & LAUNCHER HUB ENGINE (v5.0)
+// Matches index.html & style.css 100%:
+// - Home Dashboard View (#home-dashboard-view) with 10 Master Section Launcher Cards
+// - Full-Screen Master Section View (#master-section-view) with Sticky Topbar,
+//   Back-to-Home button (#back-to-home-btn), Dynamic Emblem, Title, Subtitle & Badge
+// - 7 Individual Prophetic Habit Phase Master Views (#master-panel-habit-phase)
+// - Independent Masnoon Adhkar Section (#sec-adhkar)
+// - Independent Digital Tasbih Section (#sec-tasbih)
+// - Independent SHA-256 Vault & Analytics Section (#tab-vault / sec-vault)
+// - Full Sticky Header Scroll Shadow & Native Android Back-Button Integration
+// ============================================================================
+const MASTER_SECTIONS_METADATA = deepFreeze({
+  "sec-tahajjud_fajr": {
+    type: "habit-phase",
+    phaseKey: "tahajjud_fajr",
+    logo: "🌌",
+    titleKey: "phase_tahajjud",
+    subKey: "desc_tahajjud"
+  },
+  "sec-duha_work": {
+    type: "habit-phase",
+    phaseKey: "duha_work",
+    logo: "☀️",
+    titleKey: "phase_duha",
+    subKey: "desc_duha"
+  },
+  "sec-dhuhr_asr": {
+    type: "habit-phase",
+    phaseKey: "dhuhr_asr",
+    logo: "🌤️",
+    titleKey: "phase_dhuhr",
+    subKey: "desc_dhuhr"
+  },
+  "sec-maghrib_isha": {
+    type: "habit-phase",
+    phaseKey: "maghrib_isha",
+    logo: "🌆",
+    titleKey: "phase_maghrib",
+    subKey: "desc_maghrib"
+  },
+  "sec-sleep_sunnah": {
+    type: "habit-phase",
+    phaseKey: "sleep_sunnah",
+    logo: "🛌",
+    titleKey: "phase_sleep",
+    subKey: "desc_sleep"
+  },
+  "sec-diet_hygiene": {
+    type: "habit-phase",
+    phaseKey: "diet_hygiene",
+    logo: "🍯",
+    titleKey: "phase_diet",
+    subKey: "desc_diet"
+  },
+  "sec-character_social": {
+    type: "habit-phase",
+    phaseKey: "character_social",
+    logo: "🤝",
+    titleKey: "phase_character",
+    subKey: "desc_character"
+  },
+  "sec-adhkar": {
+    type: "standalone",
+    panelId: "sec-adhkar",
+    logo: "🤲",
+    titleKey: "sec_adhkar_title",
+    subKey: "sec_adhkar_desc"
+  },
+  "sec-tasbih": {
+    type: "standalone",
+    panelId: "sec-tasbih",
+    logo: "📿",
+    titleKey: "sec_tasbih_title",
+    subKey: "sec_tasbih_desc"
+  },
+  "sec-vault": {
+    type: "standalone",
+    panelId: "tab-vault",
+    logo: "🛡️",
+    titleKey: "tab_vault",
+    subKey: "sec_vault_desc"
+  }
+});
+
+let activeMasterSectionId = null; // null means Home Dashboard (#home-dashboard-view) is active
+let masterNavigationHistoryStack = [];
+let savedHomeDashboardScrollY = 0;
+
+function syncMasterSectionsHubProgress() {
+  const allHabits = getAllHabits();
+  const now = new Date();
+  const lang = appState.locale || "bn";
+  const phaseKeys = [
+    "tahajjud_fajr",
+    "duha_work",
+    "dhuhr_asr",
+    "maghrib_isha",
+    "sleep_sunnah",
+    "diet_hygiene",
+    "character_social"
+  ];
+
+  phaseKeys.forEach((pKey) => {
+    const phaseHabits = allHabits.filter((h) => h.phase === pKey);
+    const total = phaseHabits.length;
+    const done = phaseHabits.filter((h) => isHabitCompletedInActiveCycle(h, now)).length;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+    const badgeEl = document.getElementById(`badge-count-${pKey}`);
+    if (badgeEl) {
+      const doneStr = localizeDigits(done, lang);
+      const totalStr = localizeDigits(total, lang);
+      badgeEl.textContent =
+        lang === "bn"
+          ? `${doneStr}/${totalStr}টি সুন্নাহ`
+          : lang === "ar"
+          ? `${doneStr}/${totalStr} سنة`
+          : `${doneStr}/${totalStr} Sunnahs`;
+    }
+
+    const fillEl = document.getElementById(`prog-fill-${pKey}`);
+    if (fillEl) {
+      fillEl.style.width = `${pct}%`;
+    }
+  });
+
+  // Sync Adhkar Section card badge & progress bar
+  const todayKey = getTodayKey();
+  const completedDuas = (appState.duaCompletionsByDate && appState.duaCompletionsByDate[todayKey]) || [];
+  const totalDuas = SUNNAH_24_DUAS.length;
+  const doneDuas = completedDuas.length;
+  const duaPct = totalDuas > 0 ? Math.round((doneDuas / totalDuas) * 100) : 0;
+
+  const adhkarBadgeEl = document.getElementById("badge-count-adhkar");
+  if (adhkarBadgeEl) {
+    const dStr = localizeDigits(doneDuas, lang);
+    const tStr = localizeDigits(totalDuas, lang);
+    adhkarBadgeEl.textContent =
+      lang === "bn"
+        ? `${dStr}/${tStr}টি দোয়া`
+        : lang === "ar"
+        ? `${dStr}/${tStr} دعاء`
+        : `${dStr}/${tStr} Duas`;
+  }
+
+  const adhkarFillEl = document.getElementById("prog-fill-adhkar");
+  if (adhkarFillEl) {
+    adhkarFillEl.style.width = `${duaPct}%`;
+  }
+
+  // Sync Tasbih Section card badge
+  const tasbihBadgeEl = document.getElementById("badge-count-tasbih");
+  if (tasbihBadgeEl) {
+    const lifeCount = localizeDigits(appState.lifetimeDhikr || 0, lang);
+    tasbihBadgeEl.textContent =
+      lang === "bn"
+        ? `${lifeCount} যিকির`
+        : lang === "ar"
+        ? `${lifeCount} ذكر`
+        : `${lifeCount} Dhikr`;
+  }
+
+  // Sync Vault Section card badge
+  const vaultBadgeEl = document.getElementById("badge-count-vault");
+  if (vaultBadgeEl) {
+    vaultBadgeEl.textContent =
+      lang === "bn" ? "SHA-256 ভল্ট" : lang === "ar" ? "خزنة SHA-256" : "SHA-256 Vault";
+  }
+}
+
+function syncActiveMasterHeaderUI() {
+  if (!activeMasterSectionId) return;
+  const meta = MASTER_SECTIONS_METADATA[activeMasterSectionId];
+  if (!meta) return;
+
+  const lang = appState.locale || "bn";
+  const now = new Date();
+  const logoEl = document.getElementById("master-active-logo");
+  const titleEl = document.getElementById("master-active-title");
+  const subEl = document.getElementById("master-active-subtitle");
+  const badgeEl = document.getElementById("master-active-badge");
+
+  if (logoEl) logoEl.textContent = meta.logo;
+  if (titleEl) titleEl.textContent = t(meta.titleKey);
+  if (subEl) subEl.textContent = t(meta.subKey);
+
+  if (meta.type === "habit-phase") {
+    const allHabits = getAllHabits();
+    const phaseHabits = allHabits.filter((h) => h.phase === meta.phaseKey);
+    const total = phaseHabits.length;
+    const done = phaseHabits.filter((h) => isHabitCompletedInActiveCycle(h, now)).length;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+    if (badgeEl) {
+      badgeEl.textContent = `${localizeDigits(done, lang)}/${localizeDigits(total, lang)}`;
+    }
+
+    const phaseHeadlineEl = document.getElementById("master-phase-headline");
+    if (phaseHeadlineEl) {
+      phaseHeadlineEl.textContent = t(meta.titleKey);
+    }
+
+    const phaseScorePillEl = document.getElementById("master-phase-score-pill");
+    if (phaseScorePillEl) {
+      phaseScorePillEl.textContent = `${localizeDigits(pct, lang)}%`;
+    }
+
+    const phaseTimeTagEl = document.getElementById("master-phase-time-tag");
+    if (phaseTimeTagEl) {
+      const openInPhase = phaseHabits.filter((h) => evaluateHabitTimeWindow(h, now).status === "open").length;
+      const openStr = localizeDigits(openInPhase, lang);
+      phaseTimeTagEl.textContent =
+        lang === "bn"
+          ? `⏱️ চলমান আমল: ${openStr}টি`
+          : lang === "ar"
+          ? `⏱️ متاح الآن: ${openStr}`
+          : `⏱️ Open Now: ${openStr}`;
+    }
+
+    // Highlight active chip inside .master-phase-switcher
+    document.querySelectorAll(".master-phase-switcher .chip").forEach((chip) => {
+      chip.classList.toggle("active", chip.getAttribute("data-phase") === meta.phaseKey);
+    });
+  } else if (activeMasterSectionId === "sec-adhkar") {
+    const todayKey = getTodayKey();
+    const completedDuas = (appState.duaCompletionsByDate && appState.duaCompletionsByDate[todayKey]) || [];
+    if (badgeEl) {
+      badgeEl.textContent = `${localizeDigits(completedDuas.length, lang)}/${localizeDigits(SUNNAH_24_DUAS.length, lang)}`;
+    }
+  } else if (activeMasterSectionId === "sec-tasbih") {
+    if (badgeEl) {
+      badgeEl.textContent = `${localizeDigits(tasbihCount, lang)}/${localizeDigits(tasbihTarget, lang)}`;
+    }
+  } else if (activeMasterSectionId === "sec-vault") {
+    if (badgeEl) {
+      badgeEl.textContent = "🛡️ SHA-256";
+    }
+  }
+}
+
+function openMasterSectionScreen(sectionId, pushHistory = true) {
+  const meta = MASTER_SECTIONS_METADATA[sectionId];
+  if (!meta) return;
+
+  const homeView = document.getElementById("home-dashboard-view");
+  const masterView = document.getElementById("master-section-view");
+  const habitPhasePanel = document.getElementById("master-panel-habit-phase");
+  const adhkarPanel = document.getElementById("sec-adhkar");
+  const tasbihPanel = document.getElementById("sec-tasbih");
+  const vaultPanel = document.getElementById("tab-vault");
+
+  if (!homeView || !masterView) return;
+
+  // Save Home scroll position if leaving Home Dashboard
+  if (!activeMasterSectionId) {
+    savedHomeDashboardScrollY = window.scrollY || window.pageYOffset || 0;
+  }
+
+  activeMasterSectionId = sectionId;
+  document.body.setAttribute("data-active-view", sectionId);
+
+  homeView.classList.add("hidden");
+  homeView.classList.remove("active-screen");
+  masterView.classList.remove("hidden");
+
+  // Hide all master panels first
+  [habitPhasePanel, adhkarPanel, tasbihPanel, vaultPanel].forEach((p) => {
+    if (p) p.classList.add("hidden");
+  });
+
+  if (meta.type === "habit-phase") {
+    activePhase = meta.phaseKey;
+    if (habitPhasePanel) habitPhasePanel.classList.remove("hidden");
+    renderHabits();
+  } else if (sectionId === "sec-adhkar") {
+    if (adhkarPanel) adhkarPanel.classList.remove("hidden");
+    renderDuas();
+  } else if (sectionId === "sec-tasbih") {
+    if (tasbihPanel) tasbihPanel.classList.remove("hidden");
+    renderTasbihOptions();
+  } else if (sectionId === "sec-vault") {
+    if (vaultPanel) vaultPanel.classList.remove("hidden");
+    renderWeeklyChart();
+    renderLongTermArchive();
+  }
+
+  syncActiveMasterHeaderUI();
+
+  if (pushHistory) {
+    if (masterNavigationHistoryStack[masterNavigationHistoryStack.length - 1] !== sectionId) {
+      masterNavigationHistoryStack.push(sectionId);
+    }
+    if (typeof pushAppHistoryState === "function") {
+      pushAppHistoryState(sectionId);
+    }
+  }
+
+  if (navigator.vibrate) navigator.vibrate(12);
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+function returnToHomeDashboardView(restoreScroll = true) {
+  const homeView = document.getElementById("home-dashboard-view");
+  const masterView = document.getElementById("master-section-view");
+  if (!homeView || !masterView) return;
+
+  activeMasterSectionId = null;
+  masterNavigationHistoryStack = [];
+  activePhase = "all";
+  document.body.setAttribute("data-active-view", "home");
+
+  masterView.classList.add("hidden");
+  homeView.classList.remove("hidden");
+  homeView.classList.add("active-screen");
+
+  syncMasterSectionsHubProgress();
+  renderHeaderDatesAndPhase();
+
+  requestAnimationFrame(() => {
+    window.scrollTo({
+      top: restoreScroll ? savedHomeDashboardScrollY : 0,
+      behavior: "instant"
+    });
+  });
+}
+
+// Upgrade handleSunnahBackNavigation to support v5.0 Master Section Architecture seamlessly
+window.handleSunnahBackNavigation = function () {
+  // 1. If Fact / History Modal is open -> Close modal first
+  const modal = document.getElementById("fact-modal");
+  if (modal && !modal.classList.contains("hidden")) {
+    modal.classList.add("hidden");
+    return true;
+  }
+
+  // 2A. If Searchable Location Modal is open -> Close modal first
+  const locOverlay = document.getElementById("s24-loc-modal-overlay");
+  const locToggleBtn = document.getElementById("bd-loc-toggle-btn");
+  if (locOverlay && !locOverlay.classList.contains("hidden")) {
+    locOverlay.classList.add("hidden");
+    if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
+    return true;
+  }
+
+  // 2B. If Header Location Popover is open -> Close popover first
+  const locPanel = document.getElementById("bd-loc-cascading-panel");
+  if (locPanel && locPanel.classList.contains("is-open")) {
+    locPanel.classList.remove("is-open");
+    if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
+    return true;
+  }
+
+  // 2C. If 5-Waqt Prayer Time Range Popup is open -> Close popup first
+  if (typeof activeSelectedWaqtPopupId === "string" && activeSelectedWaqtPopupId) {
+    activeSelectedWaqtPopupId = null;
+    if (typeof renderWaqtTimeRangePopup === "function") {
+      renderWaqtTimeRangePopup(null);
+    }
+    return true;
+  }
+
+  // 3. If currently inside Full-Screen Master Section View (#master-section-view) -> Return to Home Dashboard View!
+  if (activeMasterSectionId) {
+    returnToHomeDashboardView(true);
+    return true;
+  }
+
+  // 4. On Home Dashboard View -> Require double back-press within 2s to exit cleanly
+  const now = Date.now();
+  if (now - lastBackTapTime < 2000) {
+    return false;
+  }
+  lastBackTapTime = now;
+  showExitToast();
+  pushAppHistoryState("root-guard");
+  return true;
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Bind Master Section Launcher Cards on Home Dashboard (#master-sections-grid)
+  const sectionsGrid = document.getElementById("master-sections-grid");
+  if (sectionsGrid) {
+    sectionsGrid.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-open-section]");
+      if (!card) return;
+      const targetSecId = card.getAttribute("data-open-section");
+      if (targetSecId) {
+        openMasterSectionScreen(targetSecId, true);
+      }
+    });
+  }
+
+  // 2. Bind Back-to-Home Button inside Master Section Topbar (#back-to-home-btn)
+  const backHomeBtn = document.getElementById("back-to-home-btn");
+  if (backHomeBtn) {
+    backHomeBtn.addEventListener("click", () => {
+      if (navigator.vibrate) navigator.vibrate(10);
+      returnToHomeDashboardView(true);
+    });
+  }
+
+  // 3. Bind Quick Phase Switcher Chips inside Master Habit Phase View (.master-phase-switcher)
+  document.querySelectorAll(".master-phase-switcher .chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const phaseKey = chip.getAttribute("data-phase");
+      if (phaseKey && MASTER_SECTIONS_METADATA[`sec-${phaseKey}`]) {
+        openMasterSectionScreen(`sec-${phaseKey}`, true);
+      }
+    });
+  });
+
+  // 4. Sticky Top App Header Scroll Shadow Watcher (.is-scrolled)
+  const appHeader = document.getElementById("main-app-header");
+  if (appHeader) {
+    window.addEventListener(
+      "scroll",
+      () => {
+        const scY = window.scrollY || window.pageYOffset || 0;
+        appHeader.classList.toggle("is-scrolled", scY > 8);
+      },
+      { passive: true }
+    );
+  }
+
+  // 5. Re-sync Master Section Hub & Active Header whenever language changes
+  const langSwitcher = document.getElementById("lang-switcher");
+  if (langSwitcher) {
+    langSwitcher.addEventListener("change", () => {
+      syncHeaderLocationPillUI();
+      syncMadhabToggleUI();
+      syncMasterSectionsHubProgress();
+      syncActiveMasterHeaderUI();
+      if (typeof syncOpenWaqtPopupIfVisible === "function") {
+        syncOpenWaqtPopupIfVisible(new Date());
+      }
+    });
+  }
+
+  // Initial sync of all 10 Master Section Launcher cards
+  syncMasterSectionsHubProgress();
+});
 
