@@ -4875,3 +4875,39 @@ html[dir="rtl"] .section-launcher-card {
   overflow: visible;
 }
 
+
+/* ==========================================================================
+   V5.5 MASTER SECTION TOPBAR 3D LOGO VISIBILITY & PROPORTIONAL SIZING FIX
+   ========================================================================== */
+.master-topbar-center {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+#master-active-logo,
+.master-topbar-logo {
+  width: 54px !important;
+  height: 54px !important;
+  min-width: 54px !important;
+  min-height: 54px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+#master-active-logo svg,
+.master-topbar-logo svg {
+  width: 52px !important;
+  height: 52px !important;
+  display: block !important;
+  overflow: visible !important;
+}
+
