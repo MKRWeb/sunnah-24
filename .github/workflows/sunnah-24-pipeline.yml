@@ -12,10 +12,19 @@ permissions:
   pages: write
   id-token: write
 
+# Cancels any stuck or queued previous workflow runs on the same branch immediately
+concurrency:
+  group: "sunnah24-ci-${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
 jobs:
   deploy-pages:
+    name: Deploy Web App to GitHub Pages
     if: github.event_name != 'pull_request'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
+    concurrency:
+      group: "pages"
+      cancel-in-progress: true
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -34,6 +43,8 @@ jobs:
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Upload Web App Artifact (www)
         uses: actions/upload-pages-artifact@v3
@@ -43,10 +54,11 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        timeout-minutes: 10
 
   build-and-release-apk:
     name: Build, Verify & Release Sunnah 24 Signed APK & Play Store Ready AAB
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     env:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
