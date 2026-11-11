@@ -195,21 +195,7 @@ const I18N_DICTIONARIES = deepFreeze({
     sec_adhkar_desc: "সকাল-সন্ধ্যার ১৫টি সহীহ মাসনূন দোয়া, অর্থ ও ফযীলত",
     sec_tasbih_title: "ডিজিটাল তাসবীহ",
     sec_tasbih_desc: "হ্যাপটিক গোল্ডেন রিং ও আজীবন যিকির লেজার",
-    sec_vault_desc: "৭-দিনের ম্যাট্রিক্স ও ১২-মাসের সুন্নাহ আর্কাইভ",
-    sec_custom_habit_short: "নতুন আমল",
-    sec_custom_habit_desc: "পছন্দের যেকোনো বিভাগে নিজস্ব সুন্নাহ আমল যুক্ত করুন",
-    sec_custom_habit_sub: "আপনার পছন্দের যেকোনো নেক আমল বা সুন্নাহ অভ্যাস নির্দিষ্ট ওয়াক্ত বা বিভাগে যুক্ত করুন।",
-    custom_lbl_name: "১. আমলের নাম:",
-    custom_lbl_phase: "২. যে বিভাগে যুক্ত করতে চান:",
-    custom_lbl_fact: "৩. দলিল বা ফযীলত (ঐচ্ছিক):",
-    custom_list_heading: "📋 আপনার যুক্ত করা ব্যক্তিগত আমলসমূহ",
-    custom_list_empty: "আপনি এখনও কোনো ব্যক্তিগত সুন্নাহ আমল যুক্ত করেননি। ওপরের ফর্ম থেকে সহজেই যুক্ত করুন।",
-    sec_crypto_vault_short: "ডেটা ব্যাকআপ",
-    sec_crypto_vault_desc: "SHA-256 ট্রিপল-লেয়ার ভল্ট ও JSON ব্যাকআপ রিস্টোর",
-    popup_added_title: "আলহামদুলিল্লাহ! নতুন আমল যুক্ত হয়েছে",
-    popup_added_msg: "আপনার ব্যক্তিগত সুন্নাহ আমল «{habit}» সফলভাবে «{section}» বিভাগে যুক্ত করা হয়েছে এবং ৩-স্তরের ভল্টে সংরক্ষিত হয়েছে।",
-    popup_goto_section_btn: "📂 সেই বিভাগে যান",
-    popup_ok_btn: "✓ ঠিক আছে",
+    sec_vault_desc: "৭-দিনের ম্যাট্রিক্স, ১২-মাসের আর্কাইভ ও ব্যাকআপ ভল্ট",
     desc_tahajjud: "শেষ রাতের কিয়াম, মিসওয়াক, ফজর ও ইশরাক",
     desc_duha: "চাশতের সালাত, তাওয়াক্কুল ও ইহসান ভিত্তিক কাজ",
     desc_dhuhr: "যোহর সুন্নাত, নববী কাইলুলা, আসর ও সন্ধ্যার যিকির",
@@ -370,21 +356,7 @@ const I18N_DICTIONARIES = deepFreeze({
     sec_adhkar_desc: "١٥ دعاءً وذكراً نبوياً للصباح والمساء مع الفضائل",
     sec_tasbih_title: "السبحة الرقمية",
     sec_tasbih_desc: "حلقة التسبيح الذهبية وسجل الأذكار الدائم",
-    sec_vault_desc: "مصفوفة ٧ أيام وأرشيف ١٢ شهراً للسنن",
-    sec_custom_habit_short: "إضافة سنة",
-    sec_custom_habit_desc: "أضف وردك أو سنتك الشخصية في أي قسم تختاره",
-    sec_custom_habit_sub: "أضف أي عمل صالح أو سنة نبوية ترغب في المواظبة عليها إلى القسم المناسب.",
-    custom_lbl_name: "١. اسم العمل أو السنة:",
-    custom_lbl_phase: "٢. القسم المطلوب الإضافة إليه:",
-    custom_lbl_fact: "٣. الدليل أو الفضيلة (اختياري):",
-    custom_list_heading: "📋 السنن والأعمال الشخصية المضافة",
-    custom_list_empty: "لم تقم بإضافة أي سنة شخصية بعد. يمكنك إضافتها من النموذج أعلاه.",
-    sec_crypto_vault_short: "نسخ احتياطي",
-    sec_crypto_vault_desc: "خزنة SHA-256 ثلاثية الطبقات وتصدير واستعادة البيانات",
-    popup_added_title: "الحمد لله! تمت إضافة سنتك الشخصية",
-    popup_added_msg: "تمت إضافة عملك الشخصي «{habit}» بنجاح في قسم «{section}» وحفظه في الخزنة المشفرة.",
-    popup_goto_section_btn: "📂 انتقل إلى القسم",
-    popup_ok_btn: "✓ حسناً",
+    sec_vault_desc: "مصفوفة ٧ أيام وأرشيف ١٢ شهراً والخزنة المشفرة",
     desc_tahajjud: "قيام الليل، السواك، سنة الفجر والإشراق",
     desc_duha: "صلاة الضحى، التوكل وإتقان العمل بإحسان",
     desc_dhuhr: "سنن الظهر، القيلولة النبوية، العصر وأذكار المساء",
@@ -545,21 +517,7 @@ const I18N_DICTIONARIES = deepFreeze({
     sec_adhkar_desc: "15 authentic morning & evening Prophetic Duas with virtues",
     sec_tasbih_title: "Digital Tasbih",
     sec_tasbih_desc: "Haptic golden ring counter & lifetime Dhikr ledger",
-    sec_vault_desc: "7-day consistency matrix & 12-month Sunnah archive",
-    sec_custom_habit_short: "Add Sunnah",
-    sec_custom_habit_desc: "Add your own personal Sunnah habit to any desired section",
-    sec_custom_habit_sub: "Add any personal righteous deed or Sunnah habit to your desired Waqt or lifestyle section.",
-    custom_lbl_name: "1. Habit Title:",
-    custom_lbl_phase: "2. Target Section:",
-    custom_lbl_fact: "3. Hadith Proof or Personal Benefit (Optional):",
-    custom_list_heading: "📋 Your Added Personal Sunnah Habits",
-    custom_list_empty: "You haven't added any personal Sunnah habits yet. Use the form above to add one.",
-    sec_crypto_vault_short: "Data Vault",
-    sec_crypto_vault_desc: "SHA-256 triple-layer vault & signed JSON backup/restore",
-    popup_added_title: "Alhamdulillah! Personal Habit Added",
-    popup_added_msg: "Your personal habit "{habit}" has been added to the "{section}" section and sealed in the triple-layer vault.",
-    popup_goto_section_btn: "📂 Open Section",
-    popup_ok_btn: "✓ Got It",
+    sec_vault_desc: "7-day matrix, 12-month archive & SHA-256 backup vault",
     desc_tahajjud: "Tahajjud Qiyam, Miswak, Fajr Sunnah & Ishraq",
     desc_duha: "Salat al-Duha, Tawakkul exit dua & Ihsan deep work",
     desc_dhuhr: "Dhuhr Rawatib, Prophetic Qaylulah nap, Asr & Evening Adhkar",
@@ -4117,8 +4075,6 @@ function applyLanguageToDOM() {
   renderHeaderDatesAndPhase();
   renderHabits();
   renderDiaryHistory();
-  if (typeof renderCustomHabitsManageList === "function") renderCustomHabitsManageList();
-  if (typeof syncMasterSectionsLiveProgress === "function") syncMasterSectionsLiveProgress();
   updateIntegrityUI(true);
 }
 
@@ -5451,26 +5407,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Muhasabah Diary & combined 24H Routine sections removed per v5.0 Master Section UI architecture
 
   document.getElementById("add-custom-habit-btn").addEventListener("click", async () => {
-    const titleInput = document.getElementById("custom-title");
-    const phaseSelect = document.getElementById("custom-phase");
-    const factInput = document.getElementById("custom-fact");
-    const title = titleInput ? titleInput.value.trim() : "";
-    const phase = phaseSelect ? phaseSelect.value : "tahajjud_fajr";
-    const fact = factInput ? factInput.value.trim() : "";
+    const title = document.getElementById("custom-title").value.trim();
+    const phase = document.getElementById("custom-phase").value;
+    const fact = document.getElementById("custom-fact").value.trim();
+    if (!title) return;
 
-    if (!title) {
-      if (titleInput) titleInput.focus();
-      const emptyMsg =
-        appState.locale === "ar"
-          ? "⚠️ يرجى كتابة اسم السنة أو العمل أولاً"
-          : appState.locale === "en"
-          ? "⚠️ Please enter a habit title first"
-          : "⚠️ অনুগ্রহ করে প্রথমে আমলের নাম লিখুন";
-      showTimeLockToast(emptyMsg);
-      return;
-    }
-
-    const newHabitObj = {
+    appState.customHabits.push({
       id: "s24_custom_" + Date.now(),
       isCustom: true,
       phase,
@@ -5478,21 +5420,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       title_bn: title,
       title_ar: title,
       customFact: fact
-    };
+    });
 
-    appState.customHabits.push(newHabitObj);
-
-    if (titleInput) titleInput.value = "";
-    if (factInput) factInput.value = "";
+    document.getElementById("custom-title").value = "";
+    document.getElementById("custom-fact").value = "";
     await saveAndSealState();
     renderHabits();
-    if (typeof renderCustomHabitsManageList === "function") {
-      renderCustomHabitsManageList();
-    }
-    if (typeof syncMasterSectionsLiveProgress === "function") {
-      syncMasterSectionsLiveProgress();
-    }
-    showCustomHabitAddedModal(newHabitObj);
   });
 
   document.getElementById("export-backup-btn").addEventListener("click", async () => {
@@ -8469,22 +8402,6 @@ const MASTER_SECTION_REGISTRY = {
     titleKey: "tab_vault",
     descKey: "sec_vault_desc",
     logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"> <defs> <linearGradient id="hdr_sec_vault_vtBoard" x1="16" y1="14" x2="68" y2="84" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#ffffff"/> <stop offset="100%" stop-color="#e2e8f0"/> </linearGradient> <linearGradient id="hdr_sec_vault_vtShield" x1="48" y1="38" x2="84" y2="86" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#fef08a"/> <stop offset="50%" stop-color="#facc15"/> <stop offset="100%" stop-color="#b45309"/> </linearGradient> <linearGradient id="hdr_sec_vault_vtClip" x1="30" y1="10" x2="54" y2="24" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#34d399"/> <stop offset="100%" stop-color="#047857"/> </linearGradient> </defs> <g> <rect x="16" y="16" width="50" height="66" rx="8" fill="url(#hdr_sec_vault_vtBoard)" stroke="#059669" stroke-width="2.4"/> <rect x="30" y="10" width="22" height="11" rx="4" fill="url(#hdr_sec_vault_vtClip)"/> <rect x="24" y="30" width="9" height="9" rx="2.5" fill="#10b981"/> <rect x="37" y="32" width="21" height="5" rx="2.5" fill="#059669"/> <rect x="24" y="45" width="9" height="9" rx="2.5" fill="#10b981"/> <rect x="37" y="47" width="16" height="5" rx="2.5" fill="#0ea5e9"/> <rect x="24" y="60" width="9" height="9" rx="2.5" fill="#f59e0b"/> <rect x="37" y="62" width="12" height="5" rx="2.5" fill="#d97706"/> <path d="M66 42L84 49V62C84 74 76.2 83.5 66 87C55.8 83.5 48 74 48 62V49L66 42Z" fill="url(#hdr_sec_vault_vtShield)" stroke="#78350f" stroke-width="2" stroke-linejoin="round"/> <path d="M59.5 64L64 68.5L73.5 59" stroke="#064e3b" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/> </g> </svg>`
-  },
-  "sec-custom_habit": {
-    id: "sec-custom_habit",
-    type: "standalone",
-    panelId: "sec-custom_habit",
-    titleKey: "sec_custom_habit_short",
-    descKey: "sec_custom_habit_desc",
-    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"> <defs> <linearGradient id="hdr_sec_custom_chScroll" x1="16" y1="14" x2="68" y2="84" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#fffbeb"/> <stop offset="55%" stop-color="#fef3c7"/> <stop offset="100%" stop-color="#fde68a"/> </linearGradient> <linearGradient id="hdr_sec_custom_chBorder" x1="16" y1="12" x2="72" y2="86" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#f59e0b"/> <stop offset="100%" stop-color="#92400e"/> </linearGradient> <radialGradient id="hdr_sec_custom_chPlusOrb" cx="35%" cy="30%" r="68%"> <stop offset="0%" stop-color="#6ee7b7"/> <stop offset="50%" stop-color="#10b981"/> <stop offset="100%" stop-color="#047857"/> </radialGradient> <linearGradient id="hdr_sec_custom_chQuill" x1="48" y1="10" x2="84" y2="48" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#fef08a"/> <stop offset="50%" stop-color="#f59e0b"/> <stop offset="100%" stop-color="#b45309"/> </linearGradient> </defs> <g> <rect x="16" y="15" width="50" height="66" rx="10" fill="url(#hdr_sec_custom_chScroll)" stroke="url(#hdr_sec_custom_chBorder)" stroke-width="2.4"/> <path d="M25 29H46" stroke="#b45309" stroke-width="3" stroke-linecap="round"/> <path d="M25 40H54" stroke="#d97706" stroke-width="2.6" stroke-linecap="round"/> <path d="M25 50H48" stroke="#d97706" stroke-width="2.6" stroke-linecap="round"/> <path d="M25 60H40" stroke="#10b981" stroke-width="2.6" stroke-linecap="round"/> <path d="M74 14C64 16 55 25 52 36L48 44L56 40C67 37 76 28 78 18L74 14Z" fill="url(#hdr_sec_custom_chQuill)" stroke="#78350f" stroke-width="1.6" stroke-linejoin="round"/> <circle cx="65" cy="65" r="18" fill="url(#hdr_sec_custom_chPlusOrb)" stroke="#ffffff" stroke-width="2.5"/> <path d="M65 56.5V73.5M56.5 65H73.5" stroke="#ffffff" stroke-width="3.8" stroke-linecap="round"/> </g> </svg>`
-  },
-  "sec-crypto_vault": {
-    id: "sec-crypto_vault",
-    type: "standalone",
-    panelId: "sec-crypto_vault",
-    titleKey: "sec_crypto_vault_short",
-    descKey: "sec_crypto_vault_desc",
-    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"> <defs> <linearGradient id="hdr_sec_crypto_cvLayer3" x1="16" y1="54" x2="80" y2="84" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#0f172a"/> <stop offset="100%" stop-color="#1e293b"/> </linearGradient> <linearGradient id="hdr_sec_crypto_cvLayer2" x1="16" y1="36" x2="80" y2="66" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#047857"/> <stop offset="100%" stop-color="#064e3b"/> </linearGradient> <linearGradient id="hdr_sec_crypto_cvLayer1" x1="16" y1="18" x2="80" y2="48" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#34d399"/> <stop offset="100%" stop-color="#059669"/> </linearGradient> <linearGradient id="hdr_sec_crypto_cvShield" x1="38" y1="28" x2="84" y2="86" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#fef08a"/> <stop offset="50%" stop-color="#facc15"/> <stop offset="100%" stop-color="#b45309"/> </linearGradient> </defs> <g> <rect x="14" y="56" width="54" height="18" rx="6" fill="url(#hdr_sec_crypto_cvLayer3)" stroke="#475569" stroke-width="1.6"/> <circle cx="24" cy="65" r="2.5" fill="#38bdf8"/> <rect x="14" y="37" width="54" height="18" rx="6" fill="url(#hdr_sec_crypto_cvLayer2)" stroke="#10b981" stroke-width="1.6"/> <circle cx="24" cy="46" r="2.5" fill="#fde047"/> <rect x="14" y="18" width="54" height="18" rx="6" fill="url(#hdr_sec_crypto_cvLayer1)" stroke="#a7f3d0" stroke-width="1.6"/> <circle cx="24" cy="27" r="2.5" fill="#ffffff"/> <path d="M62 32L84 40.5V56.5C84 70.5 74.6 81.5 62 86C49.4 81.5 40 70.5 40 56.5V40.5L62 32Z" fill="url(#hdr_sec_crypto_cvShield)" stroke="#78350f" stroke-width="2.2" stroke-linejoin="round"/> <rect x="54.5" y="54" width="15" height="13" rx="3.2" fill="#064e3b"/> <path d="M57.5 54V50C57.5 47.5 59.5 45.5 62 45.5C64.5 45.5 66.5 47.5 66.5 50V54" stroke="#064e3b" stroke-width="3" stroke-linecap="round"/> <circle cx="62" cy="60.5" r="2" fill="#fef08a"/> </g> </svg>`
   }
 };
 
@@ -8538,41 +8455,6 @@ function syncMasterSectionsLiveProgress() {
   const tasbihBadgeEl = document.getElementById("badge-count-tasbih");
   if (tasbihBadgeEl) {
     tasbihBadgeEl.textContent = `${localizeDigits(appState.lifetimeDhikr || 0, lang)}`;
-  }
-
-  // Sync Personal Custom Habit launcher card badge
-  const customHabitBadgeEl = document.getElementById("badge-count-custom_habit");
-  if (customHabitBadgeEl) {
-    const customCount = Array.isArray(appState.customHabits) ? appState.customHabits.length : 0;
-    const countStr = localizeDigits(customCount, lang);
-    customHabitBadgeEl.textContent =
-      lang === "ar"
-        ? `+${countStr} سنة`
-        : lang === "en"
-        ? `+${countStr} Added`
-        : `+${countStr}টি আমল`;
-  }
-
-  // Sync SHA-256 Crypto Vault launcher card badge
-  const cryptoVaultBadgeEl = document.getElementById("badge-count-crypto_vault");
-  if (cryptoVaultBadgeEl) {
-    cryptoVaultBadgeEl.textContent =
-      lang === "ar" ? "٣ طبقات ✓" : lang === "en" ? "3-Layer ✓" : "৩-স্তর সুরক্ষিত";
-  }
-
-  // Sync Vault & Analytics launcher card badge
-  const vaultBadgeEl = document.getElementById("badge-count-vault");
-  if (vaultBadgeEl) {
-    const activeDaysTotal = Object.keys(appState.completionsByDate || {}).filter(
-      (k) => (appState.completionsByDate[k] || []).length > 0
-    ).length;
-    const daysStr = localizeDigits(activeDaysTotal, lang);
-    vaultBadgeEl.textContent =
-      lang === "ar"
-        ? `${daysStr} يوم نشط`
-        : lang === "en"
-        ? `${daysStr} Days`
-        : `${daysStr} দিন সক্রিয়`;
   }
 
   // Sync Active Master Topbar & Phase Banner if a Master Section is currently open
@@ -8632,18 +8514,9 @@ function updateActiveMasterHeaderUI(sectionId) {
     if (badgeEl) {
       badgeEl.textContent = `📿 ${localizeDigits(tasbihCount, lang)}/${localizeDigits(tasbihTarget, lang)}`;
     }
-  } else if (sectionId === "sec-custom_habit") {
-    const customCount = Array.isArray(appState.customHabits) ? appState.customHabits.length : 0;
-    if (badgeEl) {
-      badgeEl.textContent = `➕ ${localizeDigits(customCount, lang)}`;
-    }
-  } else if (sectionId === "sec-crypto_vault") {
-    if (badgeEl) {
-      badgeEl.textContent = "🔐 SHA-256";
-    }
   } else {
     if (badgeEl) {
-      badgeEl.textContent = "📊 S24";
+      badgeEl.textContent = "🛡️ S24";
     }
   }
 }
@@ -8692,12 +8565,6 @@ function openMasterSection(sectionId, recordHistory = true) {
       renderWeeklyChart();
       renderLongTermArchive();
     }
-    if (sectionId === "sec-custom_habit") {
-      renderCustomHabitsManageList();
-    }
-    if (sectionId === "sec-crypto_vault") {
-      updateIntegrityUI(true);
-    }
   }
 
   updateActiveMasterHeaderUI(sectionId);
@@ -8731,14 +8598,7 @@ function closeMasterSectionToHome() {
 // Override Back-Button Navigation so Android APK Back Button & Browser Back
 // return smoothly from any Full-Screen Master Section to the Home Dashboard!
 window.handleSunnahBackNavigation = function () {
-  // 1A. Close Custom Habit Added Confirmation Modal if open
-  const customAddedModal = document.getElementById("custom-habit-added-modal");
-  if (customAddedModal && !customAddedModal.classList.contains("hidden")) {
-    customAddedModal.classList.add("hidden");
-    return true;
-  }
-
-  // 1B. Close Fact / History Modal if open
+  // 1. Close Fact / History Modal if open
   const modal = document.getElementById("fact-modal");
   if (modal && !modal.classList.contains("hidden")) {
     modal.classList.add("hidden");
@@ -8845,164 +8705,6 @@ window.Sunnah24SectionEngine = {
   }
 };
 
-
-const PHASE_KEY_TO_TITLE_I18N = deepFreeze({
-  tahajjud_fajr: "phase_tahajjud",
-  duha_work: "phase_duha",
-  dhuhr_asr: "phase_dhuhr",
-  maghrib_isha: "phase_maghrib",
-  sleep_sunnah: "phase_sleep",
-  diet_hygiene: "phase_diet",
-  character_social: "phase_character"
-});
-
-function getPhaseLocalizedName(phaseKey) {
-  const i18nKey = PHASE_KEY_TO_TITLE_I18N[phaseKey] || "phase_tahajjud";
-  return t(i18nKey);
-}
-
-let lastAddedCustomHabitPhase = "tahajjud_fajr";
-
-function showCustomHabitAddedModal(habitObj) {
-  const modalEl = document.getElementById("custom-habit-added-modal");
-  if (!modalEl || !habitObj) return;
-
-  const phaseKey = habitObj.phase || "tahajjud_fajr";
-  lastAddedCustomHabitPhase = phaseKey;
-  const sectionName = getPhaseLocalizedName(phaseKey);
-  const habitTitle = getHabitTitle(habitObj);
-
-  const titleEl = document.getElementById("custom-added-modal-title");
-  const chipEl = document.getElementById("custom-added-modal-phase-chip");
-  const habitNameEl = document.getElementById("custom-added-habit-name");
-  const msgEl = document.getElementById("custom-added-modal-msg");
-  const gotoBtn = document.getElementById("custom-added-goto-section-btn");
-  const closeBtn = document.getElementById("custom-added-close-btn");
-
-  if (titleEl) titleEl.textContent = t("popup_added_title");
-  if (chipEl) chipEl.textContent = `🕌 ${sectionName}`;
-  if (habitNameEl) habitNameEl.textContent = `✨ ${habitTitle}`;
-  if (msgEl) {
-    msgEl.textContent = t("popup_added_msg", {
-      habit: habitTitle,
-      section: sectionName
-    });
-  }
-  if (gotoBtn) {
-    gotoBtn.textContent = `${t("popup_goto_section_btn")} (${sectionName})`;
-  }
-  if (closeBtn) {
-    closeBtn.textContent = t("popup_ok_btn");
-  }
-
-  modalEl.classList.remove("hidden");
-  if (navigator.vibrate) navigator.vibrate([25, 45, 30]);
-  if (typeof pushAppHistoryState === "function") {
-    pushAppHistoryState("custom-habit-added-modal");
-  }
-}
-
-function renderCustomHabitsManageList() {
-  const listEl = document.getElementById("custom-habits-manage-list");
-  const totalPillEl = document.getElementById("custom-habits-total-pill");
-  if (!listEl) return;
-
-  const lang = appState.locale || "bn";
-  const customList = Array.isArray(appState.customHabits) ? appState.customHabits : [];
-
-  if (totalPillEl) {
-    const countStr = localizeDigits(customList.length, lang);
-    totalPillEl.textContent =
-      lang === "ar"
-        ? `${countStr} سنة`
-        : lang === "en"
-        ? `${countStr} Added`
-        : `${countStr}টি আমল`;
-  }
-
-  if (customList.length === 0) {
-    listEl.innerHTML = `<p class="muted" style="text-align:center;padding:10px 4px;">${t("custom_list_empty")}</p>`;
-    return;
-  }
-
-  const now = new Date();
-  listEl.innerHTML = "";
-  [...customList].reverse().forEach((habit) => {
-    const sectionName = getPhaseLocalizedName(habit.phase);
-    const isDone = isHabitCompletedInActiveCycle(habit, now);
-    const iconMeta = getHabitIconMeta(habit);
-
-    const item = document.createElement("div");
-    item.className = `habit-item ${isDone ? "completed" : ""}`;
-    item.innerHTML = `
-      <div class="habit-left">
-        <div class="item-circle-avatar theme-${iconMeta.theme}">
-          <span>${iconMeta.icon}</span>
-          ${isDone ? '<span class="avatar-done-dot">✓</span>' : ""}
-        </div>
-        <div class="habit-info">
-          <div class="habit-time-row">
-            <span class="habit-time">${t("custom_time_label")}</span>
-            <span class="time-status-badge status-open">📂 ${sectionName}</span>
-          </div>
-          <h4>${getHabitTitle(habit)}</h4>
-          <p class="habit-snippet">${getHabitWisdom(habit)}</p>
-        </div>
-      </div>
-      <div class="habit-right-actions">
-        <button type="button" class="info-btn" data-open-custom-phase="sec-${habit.phase}">
-          📂 ${sectionName}
-        </button>
-      </div>
-    `;
-    listEl.appendChild(item);
-  });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const customAddedModal = document.getElementById("custom-habit-added-modal");
-  const gotoSecBtn = document.getElementById("custom-added-goto-section-btn");
-  const closeAddedBtn = document.getElementById("custom-added-close-btn");
-
-  if (closeAddedBtn && customAddedModal) {
-    closeAddedBtn.addEventListener("click", () => {
-      customAddedModal.classList.add("hidden");
-    });
-  }
-
-  if (gotoSecBtn && customAddedModal) {
-    gotoSecBtn.addEventListener("click", () => {
-      customAddedModal.classList.add("hidden");
-      const targetSecId = "sec-" + (lastAddedCustomHabitPhase || "tahajjud_fajr");
-      if (MASTER_SECTION_REGISTRY[targetSecId]) {
-        openMasterSection(targetSecId, true);
-      }
-    });
-  }
-
-  if (customAddedModal) {
-    customAddedModal.addEventListener("click", (e) => {
-      if (e.target === customAddedModal) {
-        customAddedModal.classList.add("hidden");
-      }
-    });
-  }
-
-  const customManageListEl = document.getElementById("custom-habits-manage-list");
-  if (customManageListEl) {
-    customManageListEl.addEventListener("click", (e) => {
-      const openPhaseBtn = e.target.closest("[data-open-custom-phase]");
-      if (!openPhaseBtn) return;
-      const targetSec = openPhaseBtn.getAttribute("data-open-custom-phase");
-      if (targetSec && MASTER_SECTION_REGISTRY[targetSec]) {
-        openMasterSection(targetSec, true);
-      }
-    });
-  }
-
-  renderCustomHabitsManageList();
-});
-
 document.addEventListener("DOMContentLoaded", () => {
   // 1. Click on any Section Card in the Home Master Launcher Grid
   const sectionsGrid = document.getElementById("master-sections-grid");
@@ -9064,9 +8766,5 @@ document.addEventListener("DOMContentLoaded", () => {
     syncMasterSectionsLiveProgress();
   }, 60);
 });
-
-
-
-
 
 
