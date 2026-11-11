@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="bn" dir="ltr" data-theme="light">
 <head>
   <meta charset="UTF-8" />
@@ -21,6 +21,7 @@
     </div>
   </div>
 
+
   <!-- Compact Commercial Top App Bar with Universal Asr Madhab Toggle & Header Location Pill -->
   <header class="app-header" id="main-app-header">
     <div class="header-left">
@@ -30,6 +31,7 @@
         <p id="current-date-display" style="display:none;"></p>
       </div>
     </div>
+
 
     <div class="header-right">
       <span id="integrity-badge" class="badge-verified" style="display:none;">🛡️ S24 যাচাইকৃত</span>
@@ -50,6 +52,7 @@
         </a>
       </div>
 
+
       <!-- Madhab Toggle + Direct Header Location Selector Stack -->
       <div class="header-madhab-loc-stack" id="bd-loc-selector-bar">
         <button
@@ -64,6 +67,7 @@
           <span id="madhab-toggle-label" data-i18n="madhab_hanafi_btn">হানাফী</span>
         </button>
 
+
         <button
           type="button"
           id="bd-loc-toggle-btn"
@@ -74,6 +78,7 @@
         >
           <span id="bd-loc-active-label">📍 ঢাকা ▾</span>
         </button>
+
 
         <!-- Clean Anchored Popover Panel: Division -> District -> Upazila -->
         <div id="bd-loc-cascading-panel" class="bd-loc-Cascading-panel header-loc-popover" role="dialog" aria-label="Bangladesh Location Selector">
@@ -104,6 +109,7 @@
     </div>
   </header>
 
+
   <!-- ========================================================================
        HOME DASHBOARD VIEW (#home-dashboard-view)
        When any section is clicked, this entire Home View hides and the clicked
@@ -119,6 +125,7 @@
       <p id="bangla-ponjika-subline" class="bangla-ponjika-sub">বাংলা ও ইংরেজি তারিখ সিঙ্ক হচ্ছে...</p>
     </section>
 
+
     <!-- 2. COMPACT DAILY PROGRESS & CIRCULAR STREAK HERO BANNER -->
     <section class="hero-card hero-card-compact">
       <div class="hero-stats">
@@ -128,6 +135,7 @@
           <p id="completed-count-text">আজ ৩২টি নববী সুন্নাহর মধ্যে ০টি সম্পন্ন হয়েছে</p>
           <div id="time-lock-summary" class="time-lock-pill">⏱️ রিয়েল-টাইম ওয়াক্ত লক সক্রিয়</div>
         </div>
+
 
         <div class="streak-circle-wrapper" title="Daily Progress & Streak Ring">
           <svg class="progress-ring-svg" width="92" height="92" viewBox="0 0 92 92">
@@ -160,15 +168,18 @@
         </div>
       </div>
 
+
       <div class="progress-track" style="display:none;">
         <div id="daily-progress-bar" class="progress-fill" style="width: 0%"></div>
       </div>
+
 
       <div class="hero-meta">
         <span id="next-phase-banner" style="display:none;">🌌 চলমান ওয়াক্ত...</span>
         <span id="fasting-banner">🌙 সুন্নাহ রোজা যাচাই...</span>
       </div>
     </section>
+
 
     <!-- 3. UNIFIED 5-WAQT PRAYER TIME SECTION WITH LIVE ONGOING PRAYER PROGRESS BAR -->
     <section id="home-waqt-section" class="waqt-strip-card" aria-label="Five Daily Prayers & Live Ongoing Waqt">
@@ -189,8 +200,10 @@
         </div>
       </div>
 
+
       <div id="five-waqt-grid" class="five-waqt-grid"></div>
     </section>
+
 
     <!-- 4. PROHIBITED TIME FOR SALAH — DIRECTLY BELOW 5 DAILY PRAYERS SECTION -->
     <section id="prohibited-salah-card" class="prohibited-static-card is-collapsed home-prohibited-card" aria-label="Prohibited Times for Salah">
@@ -214,9 +227,11 @@
         <span id="prohibited-chevron" class="prohibited-chevron" aria-hidden="true">▼</span>
       </button>
 
+
       <div id="prohibited-collapsible-body" class="prohibited-collapsible-body">
         <div class="prohibited-static-inner">
           <div class="prohibited-dashed-divider" style="margin-top:0;"></div>
+
 
           <div class="prohibited-static-list">
             <div class="prohibited-static-row">
@@ -224,10 +239,12 @@
               <strong id="time-slot-sunrise" class="prohibited-time-pill">--:-- - --:--</strong>
             </div>
 
+
             <div class="prohibited-static-row">
               <span class="prohibited-row-label" data-i18n="prohibited_zawal">২. ঠিক দ্বিপ্রহর/দুপুরের সময় (Midday Zenith/Zawal):</span>
               <strong id="time-slot-zawal" class="prohibited-time-pill">--:-- - --:--</strong>
             </div>
+
 
             <div class="prohibited-static-row">
               <span class="prohibited-row-label" data-i18n="prohibited_sunset">৩. সূর্যাস্তের সময় (Sunset):</span>
@@ -235,7 +252,9 @@
             </div>
           </div>
 
+
           <div class="prohibited-dashed-divider"></div>
+
 
           <div class="prohibited-amber-alert-box">
             <small class="prohibited-hadith-proof" data-i18n="prohibited_hadith_ref">
@@ -245,6 +264,7 @@
         </div>
       </div>
     </section>
+
 
     <!-- 5. WORLD-CLASS MASTER SECTION LAUNCHER GRID (10 INDEPENDENT SECTIONS + EXTENSIBLE) -->
     <section class="sections-hub-wrapper" aria-label="Sunnah 24 Master Sections">
@@ -256,8 +276,10 @@
         <span id="sections-hub-sub" class="sections-hub-subtitle" data-i18n="sections_hub_subtitle">যেকোনো বিভাগে ট্যাপ করে পূর্ণাঙ্গ স্ক্রিনে প্রবেশ করুন</span>
       </div>
 
+
       <!-- Extensible Grid of Independent Sections -->
       <div id="master-sections-grid" class="master-sections-grid" role="navigation" aria-label="Independent App Sections">
+
 
         <!-- SECTION 1: তাহাজ্জুদ ও ফজর (Tahajjud & Fajr) -->
         <button type="button" class="section-launcher-card theme-indigo" data-open-section="sec-tahajjud_fajr" data-phase-key="tahajjud_fajr">
@@ -322,6 +344,7 @@
           </div>
         </button>
 
+
         <!-- SECTION 2: সকাল ও কর্মক্ষেত্র (Duha & Work) -->
         <button type="button" class="section-launcher-card theme-amber" data-open-section="sec-duha_work" data-phase-key="duha_work">
           <div class="section-card-top">
@@ -373,6 +396,7 @@
             <div class="section-mini-track"><div class="section-mini-fill" id="prog-fill-duha_work" style="width:0%"></div></div>
           </div>
         </button>
+
 
         <!-- SECTION 3: যোহর, কাইলুলা ও আসর (Dhuhr, Qaylulah & Asr) -->
         <button type="button" class="section-launcher-card theme-emerald" data-open-section="sec-dhuhr_asr" data-phase-key="dhuhr_asr">
@@ -432,6 +456,7 @@
           </div>
         </button>
 
+
         <!-- SECTION 4: মাগরিব ও ইশা (Maghrib & Isha) -->
         <button type="button" class="section-launcher-card theme-purple" data-open-section="sec-maghrib_isha" data-phase-key="maghrib_isha">
           <div class="section-card-top">
@@ -485,6 +510,7 @@
           </div>
         </button>
 
+
         <!-- SECTION 5: সুন্নাহ সম্মত ঘুম (Prophetic Sleep) -->
         <button type="button" class="section-launcher-card theme-teal" data-open-section="sec-sleep_sunnah" data-phase-key="sleep_sunnah">
           <div class="section-card-top">
@@ -534,6 +560,7 @@
           </div>
         </button>
 
+
         <!-- SECTION 6: তিব্বে নববী ও ফিতরাত (Tibb Nabawi & Fitrah) -->
         <button type="button" class="section-launcher-card theme-gold" data-open-section="sec-diet_hygiene" data-phase-key="diet_hygiene">
           <div class="section-card-top">
@@ -580,6 +607,7 @@
             <div class="section-mini-track"><div class="section-mini-fill" id="prog-fill-diet_hygiene" style="width:0%"></div></div>
           </div>
         </button>
+
 
         <!-- SECTION 7: আখলাক ও সুন্নাহ দিবস (Akhlaq & Sunnah Days) -->
         <button type="button" class="section-launcher-card theme-rose" data-open-section="sec-character_social" data-phase-key="character_social">
@@ -634,6 +662,7 @@
           </div>
         </button>
 
+
         <!-- SECTION 8: মাসনূন আযকার ও দোয়া (Independent Adhkar Section — Separated from Tasbih!) -->
         <button type="button" class="section-launcher-card theme-emerald-deep" data-open-section="sec-adhkar">
           <div class="section-card-top">
@@ -679,6 +708,7 @@
             <div class="section-mini-track"><div class="section-mini-fill" id="prog-fill-adhkar" style="width:0%"></div></div>
           </div>
         </button>
+
 
         <!-- SECTION 9: ডিজিটাল তাসবীহ (Independent Digital Tasbih Section — Separated from Adhkar!) -->
         <button type="button" class="section-launcher-card theme-cyan" data-open-section="sec-tasbih">
@@ -732,6 +762,7 @@
           </div>
         </button>
 
+
         <!-- SECTION 10: ভল্ট ও তথ্য (Vault, Analytics & Custom Sunnah) -->
         <button type="button" class="section-launcher-card theme-slate" data-open-section="sec-vault">
           <div class="section-card-top">
@@ -781,11 +812,116 @@
           </div>
         </button>
 
+
+                <!-- SECTION 11: নতুন আমল যুক্ত করুন (Independent Personal Sunnah Creator Section) -->
+        <button type="button" class="section-launcher-card theme-emerald" data-open-section="sec-custom_habit">
+          <div class="section-card-top">
+            <div class="section-world-logo logo-emerald" aria-hidden="true">
+              <svg viewBox="0 0 96 96" width="76" height="76" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="home_sec_custom_chScroll" x1="16" y1="14" x2="68" y2="84" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#fffbeb"/>
+                    <stop offset="55%" stop-color="#fef3c7"/>
+                    <stop offset="100%" stop-color="#fde68a"/>
+                  </linearGradient>
+                  <linearGradient id="home_sec_custom_chBorder" x1="16" y1="12" x2="72" y2="86" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#92400e"/>
+                  </linearGradient>
+                  <radialGradient id="home_sec_custom_chPlusOrb" cx="35%" cy="30%" r="68%">
+                    <stop offset="0%" stop-color="#6ee7b7"/>
+                    <stop offset="50%" stop-color="#10b981"/>
+                    <stop offset="100%" stop-color="#047857"/>
+                  </radialGradient>
+                  <linearGradient id="home_sec_custom_chQuill" x1="48" y1="10" x2="84" y2="48" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#fef08a"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b45309"/>
+                  </linearGradient>
+                </defs>
+                <g>
+                  <!-- 3D Illuminated Prophetic Parchment Scroll -->
+                  <rect x="16" y="15" width="50" height="66" rx="10" fill="url(#home_sec_custom_chScroll)" stroke="url(#home_sec_custom_chBorder)" stroke-width="2.4"/>
+                  <path d="M25 29H46" stroke="#b45309" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M25 40H54" stroke="#d97706" stroke-width="2.6" stroke-linecap="round"/>
+                  <path d="M25 50H48" stroke="#d97706" stroke-width="2.6" stroke-linecap="round"/>
+                  <path d="M25 60H40" stroke="#10b981" stroke-width="2.6" stroke-linecap="round"/>
+                  <!-- Golden CalligraphyNib / Feather -->
+                  <path d="M74 14C64 16 55 25 52 36L48 44L56 40C67 37 76 28 78 18L74 14Z" fill="url(#home_sec_custom_chQuill)" stroke="#78350f" stroke-width="1.6" stroke-linejoin="round"/>
+                  <!-- 3D Emerald Plus Orb -->
+                  <circle cx="65" cy="65" r="18" fill="url(#home_sec_custom_chPlusOrb)" stroke="#ffffff" stroke-width="2.5"/>
+                  <path d="M65 56.5V73.5M56.5 65H73.5" stroke="#ffffff" stroke-width="3.8" stroke-linecap="round"/>
+                </g>
+              </svg>
+            </div>
+            <span class="section-live-pill" id="badge-count-custom_habit">নিজস্ব রুটিন</span>
+          </div>
+          <div class="section-card-body">
+            <h4 class="section-card-title" data-i18n="sec_custom_habit_short">নতুন আমল</h4>
+          </div>
+          <div class="section-card-footer">
+            <div class="section-mini-track"><div class="section-mini-fill" id="prog-fill-custom_habit" style="width:100%"></div></div>
+          </div>
+        </button>
+
+
+        <!-- SECTION 12: ডেটা ব্যাকআপ ও ভল্ট (Independent SHA-256 Tamper-Proof Triple-Layer Vault Section) -->
+        <button type="button" class="section-launcher-card theme-gold" data-open-section="sec-crypto_vault">
+          <div class="section-card-top">
+            <div class="section-world-logo logo-gold" aria-hidden="true">
+              <svg viewBox="0 0 96 96" width="76" height="76" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="home_sec_crypto_cvLayer3" x1="16" y1="54" x2="80" y2="84" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#0f172a"/>
+                    <stop offset="100%" stop-color="#1e293b"/>
+                  </linearGradient>
+                  <linearGradient id="home_sec_crypto_cvLayer2" x1="16" y1="36" x2="80" y2="66" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#047857"/>
+                    <stop offset="100%" stop-color="#064e3b"/>
+                  </linearGradient>
+                  <linearGradient id="home_sec_crypto_cvLayer1" x1="16" y1="18" x2="80" y2="48" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#34d399"/>
+                    <stop offset="100%" stop-color="#059669"/>
+                  </linearGradient>
+                  <linearGradient id="home_sec_crypto_cvShield" x1="38" y1="28" x2="84" y2="86" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#fef08a"/>
+                    <stop offset="50%" stop-color="#facc15"/>
+                    <stop offset="100%" stop-color="#b45309"/>
+                  </linearGradient>
+                </defs>
+                <g>
+                  <!-- Triple-Layer Vault Cylinders (LocalStorage + IndexedDB + Native Vault) -->
+                  <rect x="14" y="56" width="54" height="18" rx="6" fill="url(#home_sec_crypto_cvLayer3)" stroke="#475569" stroke-width="1.6"/>
+                  <circle cx="24" cy="65" r="2.5" fill="#38bdf8"/>
+                  <rect x="14" y="37" width="54" height="18" rx="6" fill="url(#home_sec_crypto_cvLayer2)" stroke="#10b981" stroke-width="1.6"/>
+                  <circle cx="24" cy="46" r="2.5" fill="#fde047"/>
+                  <rect x="14" y="18" width="54" height="18" rx="6" fill="url(#home_sec_crypto_cvLayer1)" stroke="#a7f3d0" stroke-width="1.6"/>
+                  <circle cx="24" cy="27" r="2.5" fill="#ffffff"/>
+                  <!-- 3D Golden SHA-256 Cryptographic Shield & Keyhole Lock -->
+                  <path d="M62 32L84 40.5V56.5C84 70.5 74.6 81.5 62 86C49.4 81.5 40 70.5 40 56.5V40.5L62 32Z" fill="url(#home_sec_crypto_cvShield)" stroke="#78350f" stroke-width="2.2" stroke-linejoin="round"/>
+                  <rect x="54.5" y="54" width="15" height="13" rx="3.2" fill="#064e3b"/>
+                  <path d="M57.5 54V50C57.5 47.5 59.5 45.5 62 45.5C64.5 45.5 66.5 47.5 66.5 50V54" stroke="#064e3b" stroke-width="3" stroke-linecap="round"/>
+                  <circle cx="62" cy="60.5" r="2" fill="#fef08a"/>
+                </g>
+              </svg>
+            </div>
+            <span class="section-live-pill" id="badge-count-crypto_vault">৩-স্তর সুরক্ষা</span>
+          </div>
+          <div class="section-card-body">
+            <h4 class="section-card-title" data-i18n="sec_crypto_vault_short">ডেটা ব্যাকআপ</h4>
+          </div>
+          <div class="section-card-footer">
+            <div class="section-mini-track"><div class="section-mini-fill" id="prog-fill-crypto_vault" style="width:100%"></div></div>
+          </div>
+        </button>
+
+
         <!-- EXTENSIBLE DYNAMIC SECTIONS SLOT (For future independent sections) -->
         <div id="custom-independent-sections-slot" class="extensible-grid-slot" style="display:contents;"></div>
       </div>
     </section>
   </div>
+
 
   <!-- ========================================================================
        FULL-SCREEN MASTER SECTION VIEW (#master-section-view)
@@ -795,6 +931,7 @@
   <div id="master-section-view" class="master-section-view hidden">
     <!-- Sticky Master App-Bar for Active Section with Back-to-Home Button & World-Class Emblem -->
     <div class="master-section-topbar" id="master-section-topbar">
+
 
       <div class="master-topbar-center">
         <div id="master-active-logo" class="master-topbar-logo"><svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -850,8 +987,10 @@
         </div>
       </div>
 
+
       <div id="master-active-badge" class="master-topbar-badge">০/০</div>
     </div>
+
 
     <!-- ======================================================================
          MASTER PANEL A: INDIVIDUAL PROPHETIC HABIT PHASE SCREEN
@@ -873,12 +1012,15 @@
         </div>
       </div>
 
+
       <!-- Extensible Sub-Sections Slot for Future Phase Sub-Categories -->
       <div id="phase-subsections-slot" class="subsection-slot" data-extensible-slot="phase-subsections"></div>
+
 
       <!-- Habit Cards Container for the Active Individual Section -->
       <div id="habit-list-container" class="habit-list"></div>
     </main>
+
 
     <!-- ======================================================================
          MASTER PANEL B: INDEPENDENT MASNOON ADHKAR & DUAS SECTION (#sec-adhkar)
@@ -913,12 +1055,15 @@
           </div>
         </div>
 
+
         <!-- Extensible Sub-Section Slot for Future Adhkar Categories -->
         <div id="adhkar-subsections-slot" class="subsection-slot" data-extensible-slot="adhkar-subsections"></div>
+
 
         <div id="duas-list-container" class="duas-list"></div>
       </div>
     </main>
+
 
     <!-- ======================================================================
          MASTER PANEL C: INDEPENDENT DIGITAL TASBIH SECTION (#sec-tasbih)
@@ -929,6 +1074,7 @@
         <h3 data-i18n="tasbih_title">📿 সুন্নাহ ২৪ ডিজিটাল তাসবীহ</h3>
         <p class="muted" data-i18n="tasbih_subtitle">একটি সহীহ যিকির নির্বাচন করুন এবং গণনা করতে সোনালী বৃত্তে ট্যাপ করুন।</p>
         <select id="tasbih-selector" class="input-select"></select>
+
 
         <!-- World-Standard SVG Circular Progress Ring around Digital Tasbih -->
         <div class="tasbih-ring-container" id="tasbih-tap-area">
@@ -956,15 +1102,18 @@
           </div>
         </div>
 
+
         <div class="stats-mini">
           <span><span data-i18n="lifetime_dhikr">মোট যাচাইকৃত যিকির গণনা:</span> <strong id="lifetime-dhikr-count">০</strong></span>
         </div>
+
 
         <div class="btn-row">
           <button id="tasbih-reset-btn" class="btn-secondary" data-i18n="reset_cycle">পুনরায় শুরু করুন</button>
         </div>
       </div>
     </main>
+
 
     <!-- ======================================================================
          MASTER PANEL D: TAMPER-PROOF VAULT, 7-DAY MATRIX & 12-MONTH ARCHIVE (#tab-vault / #sec-vault)
@@ -974,6 +1123,7 @@
         <h3 data-i18n="vault_matrix_title">📊 ৭-দিনের সুন্নাহ ধারাবাহিকতা ম্যাট্রিক্স</h3>
         <p class="muted" data-i18n="vault_matrix_sub">গত ৭ দিনে আপনার দৈনিক সুন্নাহ পালনের অগ্রগতি (দিনে ট্যাপ করে বিস্তারিত দেখুন)।</p>
         <div id="weekly-chart" class="weekly-grid"></div>
+
 
         <!-- WEEKLY CATEGORY AVERAGE BAR GRAPH + LOWEST CATEGORY ADVISORY COMMENT -->
         <div class="category-breakdown-panel">
@@ -986,12 +1136,14 @@
         </div>
       </div>
 
+
       <!-- MULTI-MONTH AUTOMATIC HISTORY ARCHIVE -->
       <div class="card">
         <div class="archive-header-row">
           <h3 data-i18n="vault_archive_title">🗓️ দীর্ঘমেয়াদী সুন্নাহ আর্কাইভ</h3>
         </div>
         <p class="muted" data-i18n="vault_archive_sub">আপনার বিগত কয়েক মাসের সকল দিনের রেকর্ড ডিভাইসে স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকে (অন্য মাসের কার্ডে ট্যাপ করে সেই মাসের বিস্তারিত দেখুন)।</p>
+
 
         <div class="archive-range-pills" id="archive-range-pills" role="group" aria-label="Archive Range">
           <button type="button" class="range-pill-btn active" data-range-days="30" data-i18n="range_30d">৩০ দিন (১ মাস)</button>
@@ -1000,7 +1152,9 @@
           <button type="button" class="range-pill-btn" data-range-days="365" data-i18n="range_365d">৩৬৫ দিন (১ বছর)</button>
         </div>
 
+
         <div id="monthly-summary-list" class="monthly-summary-grid"></div>
+
 
         <div class="category-breakdown-panel monthly-breakdown-panel">
           <div class="category-breakdown-header">
@@ -1011,15 +1165,38 @@
           <div id="monthly-category-advice" class="category-advice-comment"></div>
         </div>
 
+
         <div class="selected-month-history-header">
           <span id="selected-month-records-label" class="muted-small">📅 নির্বাচিত মাসের দৈনিক আমল তালিকা</span>
         </div>
         <div id="longterm-history-list" class="longterm-history-list"></div>
       </div>
 
+
       <div class="card">
+        <h3 data-i18n="vault_compliance_title">🏛️ কর্পোরেট ও গুগল প্লে কমপ্লায়েন্স</h3>
+        <p class="muted" data-i18n="vault_compliance_sub">সুন্নাহ ২৪ সম্পূর্ণ অফলাইনে চলে—কোনো থার্ড-পার্টি ট্র্যাকার বা বিজ্ঞাপন নেই।</p>
+        <div class="btn-row">
+          <a href="privacy.html" class="btn-secondary" style="text-align:center;text-decoration:none;" data-i18n="privacy_policy_btn">📄 প্রাইভেসি পলিসি দেখুন</a>
+        </div>
+      </div>
+    </main>
+
+
+    <!-- ======================================================================
+         MASTER PANEL E: INDEPENDENT PERSONAL SUNNAH HABIT CREATOR (#sec-custom_habit)
+         ====================================================================== -->
+    <main id="sec-custom_habit" class="master-screen-panel hidden" data-section-type="standalone">
+      <div class="card master-section-hero-card">
         <h3 data-i18n="vault_custom_title">➕ ব্যক্তিগত সুন্নাহ আমল যুক্ত করুন</h3>
+        <p class="muted" data-i18n="sec_custom_habit_sub">আপনার পছন্দের যেকোনো নেক আমল বা সুন্নাহ অভ্যাস নির্দিষ্ট ওয়াক্ত বা বিভাগে যুক্ত করুন।</p>
+
+
+        <label class="field-label" for="custom-title" data-i18n="custom_lbl_name">১. আমলের নাম</label>
         <input type="text" id="custom-title" class="input-text" data-i18n-placeholder="custom_title_ph" placeholder="আমলের নাম (যেমন: ফজরের পর ৫ আয়াত হিফজ)" />
+
+
+        <label class="field-label" for="custom-phase" data-i18n="custom_lbl_phase">২. যে বিভাগে যুক্ত করতে চান</label>
         <select id="custom-phase" class="input-select">
           <option value="tahajjud_fajr" data-i18n="phase_tahajjud">তাহাজ্জুদ ও ফজর</option>
           <option value="duha_work" data-i18n="phase_duha">সকাল ও কর্মক্ষেত্র</option>
@@ -1029,11 +1206,32 @@
           <option value="diet_hygiene" data-i18n="phase_diet">তিব্বে নববী ও ফিতরাত</option>
           <option value="character_social" data-i18n="phase_character">আখলাক ও সুন্নাহ দিবস</option>
         </select>
+
+
+        <label class="field-label" for="custom-fact" data-i18n="custom_lbl_fact">৩. দলিল বা ফযীলত (ঐচ্ছিক)</label>
         <input type="text" id="custom-fact" class="input-text" data-i18n-placeholder="custom_fact_ph" placeholder="হাদিস সূত্র / ব্যক্তিগত উপকারিতা" />
+
+
         <button id="add-custom-habit-btn" class="btn-primary" data-i18n="custom_add_btn">সুন্নাহ ২৪ রুটিনে যুক্ত করুন</button>
       </div>
 
+
+      <!-- User's Added Personal Habits List inside the Independent Section -->
       <div class="card">
+        <div class="duas-header-top" style="margin-bottom:8px;">
+          <h3 data-i18n="custom_list_heading">📋 আপনার যুক্ত করা ব্যক্তিগত আমলসমূহ</h3>
+          <span id="custom-habits-total-pill" class="section-live-pill" style="position:static !important;">০টি</span>
+        </div>
+        <div id="custom-habits-manage-list" class="habit-list"></div>
+      </div>
+    </main>
+
+
+    <!-- ======================================================================
+         MASTER PANEL F: INDEPENDENT SHA-256 TAMPER-PROOF TRIPLE-LAYER VAULT (#sec-crypto_vault)
+         ====================================================================== -->
+    <main id="sec-crypto_vault" class="master-screen-panel hidden" data-section-type="standalone">
+      <div class="card master-section-hero-card">
         <h3 data-i18n="vault_crypto_title">🔐 SHA-256 টেম্পার-প্রুফ ট্রিপল-লেয়ার ভল্ট</h3>
         <p class="muted" data-i18n="vault_crypto_sub">
           প্রতিটি আমল স্বয়ংক্রিয়ভাবে ৩টি স্তরে (LocalStorage, IndexedDB এবং Native Android Vault) সংরক্ষিত হয় যাতে মাসের পর মাস ডেটা কখনোই মুছে না যায়।
@@ -1059,6 +1257,7 @@
         </div>
       </div>
 
+
       <div class="card">
         <h3 data-i18n="vault_compliance_title">🏛️ কর্পোরেট ও গুগল প্লে কমপ্লায়েন্স</h3>
         <p class="muted" data-i18n="vault_compliance_sub">সুন্নাহ ২৪ সম্পূর্ণ অফলাইনে চলে—কোনো থার্ড-পার্টি ট্র্যাকার বা বিজ্ঞাপন নেই।</p>
@@ -1068,9 +1267,11 @@
       </div>
     </main>
 
+
     <!-- EXTENSIBLE CUSTOM MASTER PANELS CONTAINER (For Future Independent Sections) -->
     <div id="extensible-master-panels-slot"></div>
   </div>
+
 
   <!-- MODAL FOR ISLAMIC HABITUAL FACT & HADITH REFERENCE -->
   <div id="fact-modal" class="modal-overlay hidden">
@@ -1089,6 +1290,27 @@
     </div>
   </div>
 
+
+  <!-- POP-UP INFO MODAL WHEN USER ADDS A PERSONAL HABIT MANUALLY -->
+  <div id="custom-habit-added-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="custom-added-modal-title">
+    <div class="modal-card custom-added-popup-card">
+      <div class="custom-added-popup-icon-wrap" aria-hidden="true">
+        <div class="custom-added-popup-orb">✓</div>
+      </div>
+      <h3 id="custom-added-modal-title">আলহামদুলিল্লাহ! নতুন আমল যুক্ত হয়েছে</h3>
+      <span id="custom-added-modal-phase-chip" class="chip active" style="align-self:center;margin:4px 0 8px;">বিভাগ</span>
+      <div class="modal-section custom-added-summary-box">
+        <h4 id="custom-added-habit-name">আমলের নাম</h4>
+        <p id="custom-added-modal-msg"></p>
+      </div>
+      <div class="btn-row" style="margin-top:12px;">
+        <button type="button" id="custom-added-goto-section-btn" class="btn-primary">📂 সেই বিভাগে যান</button>
+        <button type="button" id="custom-added-close-btn" class="btn-secondary">✓ ঠিক আছে</button>
+      </div>
+    </div>
+  </div>
+
+
   <!-- LOCATION SEARCH MODAL ("অবস্থান অনুসন্ধান করুন" -> Country -> City / 64 Districts -> Upazila) -->
   <div id="s24-loc-modal-overlay" class="s24-loc-overlay hidden" role="dialog" aria-modal="true" aria-label="Location Selector">
     <div id="s24-loc-prompt-card" class="s24-loc-prompt-card">
@@ -1104,13 +1326,16 @@
       </button>
     </div>
 
+
     <div id="s24-loc-picker-card" class="s24-loc-picker-card hidden">
       <button type="button" id="s24-loc-close-btn" class="s24-loc-floating-close" aria-label="Close">✕</button>
+
 
       <div class="s24-loc-picker-header">
         <button type="button" id="s24-loc-back-btn" class="s24-loc-back-btn hidden" aria-label="Back">‹</button>
         <h4 id="s24-loc-picker-title">দেশ শনাক্ত করুন</h4>
       </div>
+
 
       <div class="s24-loc-search-wrap">
         <input
@@ -1122,12 +1347,12 @@
         />
       </div>
 
+
       <div id="s24-loc-list-container" class="s24-loc-list-scroll"></div>
     </div>
   </div>
 
+
   <script src="app.js"></script>
 </body>
 </html>
-
-
