@@ -3,10 +3,6 @@
  * SHA-256 Tamper-Proof Engine + Triple-Redundant Multi-Month Vault (LocalStorage + IndexedDB + Native Android)
  * Local Timezone Date Engine + Accurate Hijri Calendar + Full Bangla (Default), Arabic & English Localization
  */
-
-
-
-
 const STORAGE_KEY = "SUNNAH_24_ENTERPRISE_LEDGER_V24";
 const BACKUP_MIRROR_KEY = "SUNNAH_24_ENTERPRISE_MIRROR_V35";
 const IDB_NAME = "Sunnah24EnterpriseDB";
@@ -14,9 +10,6 @@ const IDB_STORE = "Sunnah24VaultStore";
 const IDB_KEY = "primary_ledger_v35";
 const LEDGER_SALT = "MKRWEB-SUNNAH-24-CORPORATE-IMMUTABLE-SALT";
 const I18N_SALT = "MKRWEB-SUNNAH-24-I18N-DICTIONARY-IMMUTABLE-SALT-V25";
-
-
-
 
 function deepFreeze(obj) {
   if (obj && typeof obj === "object" && !Object.isFrozen(obj)) {
@@ -1483,10 +1476,6 @@ function isFridayJumuahDay(dateObj = new Date()) {
     dateObj instanceof Date && !isNaN(dateObj.getTime()) ? dateObj : new Date();
   return safeDate.getDay() === 5;
 }
-
-
-
-
 function resolveMiddayWaqtMeta(dateObj = new Date(), locale = appState.locale) {
   const isJumuah = isFridayJumuahDay(dateObj);
   const lang = locale || "bn";
@@ -1726,10 +1715,6 @@ function getCanonicalStatePayload(stateObj) {
 // ============================================================================
 // TRIPLE-REDUNDANT STORAGE ENGINE (LocalStorage + IndexedDB + Native Android)
 // ============================================================================
-
-
-
-
 function openSunnahIDB() {
   return new Promise((resolve) => {
     if (!window.indexedDB) {
@@ -2127,9 +2112,6 @@ const DUA_RING_CIRCUMFERENCE = 150.8;     // 2 * PI * 24
 const GEO_LOCATION_CACHE_KEY = "SUNNAH_24_X_GEO_COORDS_V1";
 const MADHAB_STORAGE_KEY = "SUNNAH_24_ASR_MADHAB_PREF_V1";
 
-
-
-
 const REGIONAL_PRAYER_PROFILES = deepFreeze({
   bn: {
     regionCode: "BD",
@@ -2383,9 +2365,6 @@ function silentlyAcquireGpsPosition() {
 function initXStyleAutoGeographicDetector() {
   loadCachedDeviceGeoCoords();
 
-
-
-
   try {
     lastObservedTimezoneId =
       Intl.DateTimeFormat().resolvedOptions().timeZone ||
@@ -2439,18 +2418,11 @@ function initXStyleAutoGeographicDetector() {
 
 
 
-
-
-
-
 // ============================================================================
 // INTERACTIVE BANGLADESH 8 DIVISIONS → ALL 64 DISTRICTS (ZILAS) → UPAZILA/THANA
 // SELECTOR ENGINE (ISLAMIC FOUNDATION BANGLADESH COORDINATES & DYNAMIC UI)
 // ============================================================================
 const BD_SELECTED_LOC_STORAGE_KEY = "SUNNAH_24_BD_SELECTED_LOCATION_V1";
-
-
-
 
 const BD_GEO_HIERARCHY = deepFreeze([
   {
@@ -5494,8 +5466,6 @@ function renderHabits() {
     card.className = `habit-item ${itemStateClass}`;
 
 
-
-
     const iconMeta = getHabitIconMeta(habit);
     card.innerHTML = `
       <div class="habit-left">
@@ -5555,10 +5525,6 @@ function renderHabits() {
       appState.locale
     );
   }
-
-
-
-
   renderWeeklyChart();
   renderLongTermArchive();
 }
@@ -6532,10 +6498,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
   // Muhasabah Diary & combined 24H Routine sections removed per v5.0 Master Section UI architecture
-
-
-
-
   document.getElementById("add-custom-habit-btn").addEventListener("click", async () => {
     const titleInput = document.getElementById("custom-title");
     const phaseSelect = document.getElementById("custom-phase");
@@ -6718,9 +6680,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 let navTabStack = ["tab-routine"];
 let tabScrollPositions = { "tab-routine": 0 };
 let lastBackTapTime = 0;
-
-
-
 
 function pushAppHistoryState(contextTag = "nav") {
   try {
@@ -6926,9 +6885,6 @@ window.handleSunnahBackNavigation = function () {
   return true;
 };
 
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   // Seed initial history state so back button is intercepted by WebView
   pushAppHistoryState("root-guard");
@@ -6937,10 +6893,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // Tab clicks are tracked & scroll-preserved via switchTabProgrammatically
-
-
-
-
   // Track Phase chip clicks
   document.querySelectorAll(".filter-bar .chip").forEach((chip) => {
     chip.addEventListener("click", () => {
@@ -7419,14 +7371,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
-
-
-
-
-
-
-
 // ============================================================================
 // STANDALONE STATIC PROHIBITED TIME FOR SALAH ENGINE (SAHIH MUSLIM 831)
 // Automatically computes and displays the 3 daily seasonal prohibited prayer
@@ -7514,11 +7458,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderProhibitedSalahTimes();
 });
-
-
-
-
-
 
 
 
@@ -7800,9 +7739,6 @@ function getExactWaqtPopupDetails(waqtId, now = new Date()) {
     };
   }
 
-
-
-
   return meta;
 }
 
@@ -7963,7 +7899,6 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
 
 
 
-
       <div class="waqt-popup-meta-rows">
         <div class="waqt-popup-meta-item single-line-meta-row">
           <span class="meta-row-label">${primeLbl}</span>
@@ -7984,14 +7919,7 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
       </div>
     </div>
   `;
-
-
-
-
   popupWrap.classList.remove("hidden");
-
-
-
 
   document.querySelectorAll(".waqt-pill-card").forEach((btn) => {
     const isTarget = btn.getAttribute("data-waqt-id") === waqtId;
@@ -8004,8 +7932,6 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
 
   requestAnimationFrame(() => positionWaqtPopupArrow(waqtId));
 }
-
-
 
 
 function syncOpenWaqtPopupIfVisible(now = new Date()) {
@@ -8024,10 +7950,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!pillBtn) return;
       const clickedId = pillBtn.getAttribute("data-waqt-id");
       if (navigator.vibrate) navigator.vibrate(14);
-
-
-
-
       if (activeSelectedWaqtPopupId === clickedId) {
         activeSelectedWaqtPopupId = null;
         renderWaqtTimeRangePopup(null);
@@ -8052,9 +7974,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
-
-
     const filterBtn = e.target.closest("[data-popup-filter-phase]");
     if (filterBtn) {
       const targetPhase = filterBtn.getAttribute("data-popup-filter-phase");
@@ -8078,20 +7997,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-
-
-
   window.addEventListener("resize", () => {
     if (activeSelectedWaqtPopupId) {
       positionWaqtPopupArrow(activeSelectedWaqtPopupId);
     }
   });
 });
-
-
-
-
-
 
 
 
@@ -8107,8 +8018,6 @@ function getActiveMadhabMode(dateObj = new Date()) {
   const profile = resolveActiveRegionalProfile(dateObj);
   return profile && profile.asrShadowFactor === 1 ? "standard" : "hanafi";
 }
-
-
 
 
 function syncMadhabToggleUI() {
@@ -8175,8 +8084,6 @@ function applyMadhabPreference(mode, showFeedback = true) {
   renderDuas();
 
 
-
-
   if (showFeedback && typeof showTimeLockToast === "function") {
     const sched = computeSeasonalPrayerSchedule(new Date());
     const asrClock = formatMinutesToLocalizedTime(sched.asr, appState.locale);
@@ -8191,8 +8098,6 @@ function applyMadhabPreference(mode, showFeedback = true) {
 
 document.addEventListener("DOMContentLoaded", () => {
   syncMadhabToggleUI();
-
-
 
 
   const madhabBtn = document.getElementById("madhab-toggle-btn");
@@ -8218,11 +8123,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
-
-
-
-
 // ============================================================================
 // FULL-BLEED STICKY MARGIN-BAR HEADER SCROLL ELEVATION GUARD
 // Ensures scrolling content strictly passes underneath the solid top header bar
@@ -8236,20 +8136,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", syncHeaderScrollState, { passive: true });
   syncHeaderScrollState();
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // ============================================================================
@@ -8282,14 +8168,11 @@ function getDefaultDhakaSelection() {
 
 
 
-
 function getEffectiveBdLocationSelection() {
   const saved = getSavedBdLocationSelection();
   if (saved) return saved;
   return getDefaultDhakaSelection();
 }
-
-
 
 
 function getLocalizedBdDivisionName(divObj, locale = appState.locale) {
@@ -8300,15 +8183,11 @@ function getLocalizedBdDivisionName(divObj, locale = appState.locale) {
 }
 
 
-
-
 function getLocalizedBdDistrictName(distObj, locale = appState.locale) {
   if (!distObj) return "";
   if (locale === "en" || locale === "ar") return distObj.name_en;
   return distObj.name_bn;
 }
-
-
 
 
 function getLocalizedUpazilaName(rawUpazila, locale = appState.locale) {
@@ -8495,8 +8374,6 @@ function triggerFullWaqtAndLockRefresh(showToast = false) {
   syncBdLocationBannerText();
 
 
-
-
   if (showToast && typeof showTimeLockToast === "function") {
     const activeLoc = getEffectiveBdLocationSelection();
     const sched = computeSeasonalPrayerSchedule(new Date());
@@ -8526,9 +8403,6 @@ function syncBdLocationBannerText() {
   const lblDist = document.getElementById("bd-lbl-district");
   const lblUpz = document.getElementById("bd-lbl-upazila");
   if (!summaryLabelEl) return;
-
-
-
 
   if (typeof getSavedGlobalOrBdLocation === "function") {
     const savedGlobal = getSavedGlobalOrBdLocation();
@@ -8624,8 +8498,6 @@ function initBdLocationSelectorEngine() {
   injectBdLocationSelectorStyles();
 
 
-
-
   // Ensure default Dhaka selection is initialized if no saved location exists yet
   if (!getSavedBdLocationSelection()) {
     saveBdLocationSelection(getDefaultDhakaSelection());
@@ -8647,9 +8519,6 @@ function initBdLocationSelectorEngine() {
 
   if (!divSelect || !distSelect || !upzSelect) return;
 
-
-
-
   const populateDivisions = (selectedDivId) => {
     const lang = appState.locale || "bn";
     divSelect.innerHTML = "";
@@ -8661,8 +8530,6 @@ function initBdLocationSelectorEngine() {
       divSelect.appendChild(opt);
     });
   };
-
-
 
 
   const populateDistricts = (divisionId, selectedDistId) => {
@@ -8677,8 +8544,6 @@ function initBdLocationSelectorEngine() {
       distSelect.appendChild(opt);
     });
   };
-
-
 
 
   const populateUpazilas = (divisionId, districtId, selectedUpazila) => {
@@ -8706,10 +8571,6 @@ function initBdLocationSelectorEngine() {
     const distId = distSelect.value;
     const upzName = upzSelect.value;
     const upzIdx = upzSelect.selectedIndex >= 0 ? upzSelect.selectedIndex : 0;
-
-
-
-
     const divObj = BD_GEO_HIERARCHY.find((d) => d.id === divId) || BD_GEO_HIERARCHY[0];
     const distObj = divObj.districts.find((z) => z.id === distId) || divObj.districts[0];
     const coords = computeUpazilaMicroCoordinates(
@@ -8734,10 +8595,6 @@ function initBdLocationSelectorEngine() {
       lon: coords.lon,
       updatedAt: Date.now()
     };
-
-
-
-
     saveBdLocationSelection(payload);
     triggerFullWaqtAndLockRefresh(showToast);
   };
@@ -8751,18 +8608,11 @@ function initBdLocationSelectorEngine() {
     const defaultDistId = activeLoc.districtId || "dhaka";
     const defaultUpz = activeLoc.upazilaName || "";
 
-
-
-
     populateDivisions(defaultDivId);
     populateDistricts(defaultDivId, defaultDistId);
     populateUpazilas(defaultDivId, defaultDistId, defaultUpz);
     syncBdLocationBannerText();
   };
-
-
-
-
   syncDropdownsFromStorage();
   triggerFullWaqtAndLockRefresh(false);
 
@@ -8890,9 +8740,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // 64 DISTRICTS -> UPAZILA/THANA DRILL-DOWN ENGINE
 // ============================================================================
 const GLOBAL_SELECTED_LOC_STORAGE_KEY = "SUNNAH_24_GLOBAL_LOCATION_V3";
-
-
-
 
 const GLOBAL_COUNTRIES_DIRECTORY = deepFreeze([
   { code: "BD", name: "Bangladesh", isBangladeshSpecial: true },
@@ -9852,7 +9699,6 @@ function initMuslimBanglaSearchLocationModal() {
 
 
 
-
       const sortedCountries = [...GLOBAL_COUNTRIES_DIRECTORY].sort((a, b) => {
         if (a.code === activeCountryCode) return -1;
         if (b.code === activeCountryCode) return 1;
@@ -9887,10 +9733,6 @@ function initMuslimBanglaSearchLocationModal() {
     if (currentStep === "bd-district") {
       backBtn.classList.remove("hidden");
       titleEl.textContent = "Bangladesh";
-
-
-
-
       const allDistricts = [];
       BD_GEO_HIERARCHY.forEach((div) => {
         div.districts.forEach((dist) => {
@@ -9926,9 +9768,6 @@ function initMuslimBanglaSearchLocationModal() {
     if (currentStep === "bd-upazila" && selectedBdDistrict) {
       backBtn.classList.remove("hidden");
       titleEl.textContent = appState.locale === "en" ? selectedBdDistrict.name_en : selectedBdDistrict.name_bn;
-
-
-
 
       const upazilas = selectedBdDistrict.upazilas || [];
       upazilas
@@ -9974,9 +9813,6 @@ function initMuslimBanglaSearchLocationModal() {
     if (currentStep === "global-city" && selectedCountry) {
       backBtn.classList.remove("hidden");
       titleEl.textContent = selectedCountry.name;
-
-
-
 
       (selectedCountry.cities || [])
         .filter((city) => !q || city.name.toLowerCase().includes(q))
@@ -10037,8 +9873,6 @@ function initMuslimBanglaSearchLocationModal() {
   });
 
 
-
-
   // 2. Clicking "অবস্থান অনুসন্ধান করুন" opens the Country/City/District Picker
   if (openSearchBtn) {
     openSearchBtn.addEventListener("click", () => {
@@ -10050,8 +9884,6 @@ function initMuslimBanglaSearchLocationModal() {
       setTimeout(() => searchInput.focus(), 80);
     });
   }
-
-
 
 
   // 3. Back Button inside Picker Header
@@ -10075,7 +9907,6 @@ function initMuslimBanglaSearchLocationModal() {
 
 
 
-
   // 5. Close Modal on ✕ or Backdrop Tap
   closeBtn.addEventListener("click", closeLocModal);
   overlay.addEventListener("click", (e) => {
@@ -10084,26 +9915,9 @@ function initMuslimBanglaSearchLocationModal() {
 }
 
 
-
-
 document.addEventListener("DOMContentLoaded", () => {
   initMuslimBanglaSearchLocationModal();
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -10225,6 +10039,27 @@ const MASTER_SECTION_REGISTRY = {
 
 
 
+function applyCornerPillState(badgeEl, doneCount, totalCount) {
+  if (!badgeEl) return;
+  badgeEl.classList.remove(
+    "pill-state-zero",
+    "pill-state-progress",
+    "pill-state-complete",
+    "pill-state-utility"
+  );
+  const parentCard = badgeEl.closest(".section-launcher-card");
+  if (parentCard) parentCard.classList.remove("card-state-complete");
+
+  if (totalCount > 0 && doneCount >= totalCount) {
+    badgeEl.classList.add("pill-state-complete");
+    if (parentCard) parentCard.classList.add("card-state-complete");
+  } else if (doneCount > 0) {
+    badgeEl.classList.add("pill-state-progress");
+  } else {
+    badgeEl.classList.add("pill-state-zero");
+  }
+}
+
 function syncMasterSectionsLiveProgress() {
   const now = new Date();
   const lang = appState.locale || "bn";
@@ -10239,99 +10074,107 @@ function syncMasterSectionsLiveProgress() {
     "character_social"
   ];
 
-
-
+  let totalHabitsAllPhases = 0;
+  let totalDoneAllPhases = 0;
 
   phaseKeys.forEach((pKey) => {
     const phaseHabits = allHabits.filter((h) => h.phase === pKey);
     const total = phaseHabits.length;
     const done = phaseHabits.filter((h) => isHabitCompletedInActiveCycle(h, now)).length;
-    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-
-
-
+    totalHabitsAllPhases += total;
+    totalDoneAllPhases += done;
 
     const badgeEl = document.getElementById(`badge-count-${pKey}`);
     if (badgeEl) {
-      badgeEl.textContent = `${localizeDigits(done, lang)}/${localizeDigits(total, lang)}`;
+      const doneStr = localizeDigits(done, lang);
+      const totalStr = localizeDigits(total, lang);
+      badgeEl.textContent =
+        total > 0 && done >= total ? `✓ ${doneStr}/${totalStr}` : `${doneStr}/${totalStr}`;
+      applyCornerPillState(badgeEl, done, total);
     }
-    // Homepage section progress loading bars removed per v5.9
   });
 
+  // Sync Unified Hub Header Summary Pill ("১২/৩২ সুন্নাহ সম্পন্ন")
+  const hubSummaryPillEl = document.getElementById("sections-hub-summary-pill");
+  if (hubSummaryPillEl) {
+    const doneAllStr = localizeDigits(totalDoneAllPhases, lang);
+    const totalAllStr = localizeDigits(totalHabitsAllPhases, lang);
+    const isAllComplete = totalHabitsAllPhases > 0 && totalDoneAllPhases >= totalHabitsAllPhases;
+    const checkPrefix = isAllComplete ? "✓ " : "";
+    hubSummaryPillEl.textContent =
+      lang === "ar"
+        ? `${checkPrefix}${doneAllStr}/${totalAllStr} سنة مكتملة`
+        : lang === "en"
+        ? `${checkPrefix}${doneAllStr}/${totalAllStr} Sunnah Done`
+        : `${checkPrefix}${doneAllStr}/${totalAllStr} সুন্নাহ সম্পন্ন`;
+    hubSummaryPillEl.classList.toggle("all-completed", isAllComplete);
+  }
 
-
-
-  // Sync Masnoon Adhkar launcher card progress
+  // Sync Masnoon Adhkar launcher card progress (3-state color-coded pill)
   const todayKey = getTodayKey();
   const completedDuas = (appState.duaCompletionsByDate && appState.duaCompletionsByDate[todayKey]) || [];
   const totalDuas = SUNNAH_24_DUAS.length;
   const doneDuas = completedDuas.length;
-  const duaPct = totalDuas > 0 ? Math.round((doneDuas / totalDuas) * 100) : 0;
-
-
-
 
   const adhkarBadgeEl = document.getElementById("badge-count-adhkar");
   if (adhkarBadgeEl) {
-    adhkarBadgeEl.textContent = `${localizeDigits(doneDuas, lang)}/${localizeDigits(totalDuas, lang)}`;
+    const doneDuasStr = localizeDigits(doneDuas, lang);
+    const totalDuasStr = localizeDigits(totalDuas, lang);
+    adhkarBadgeEl.textContent =
+      totalDuas > 0 && doneDuas >= totalDuas
+        ? `✓ ${doneDuasStr}/${totalDuasStr}`
+        : `${doneDuasStr}/${totalDuasStr}`;
+    applyCornerPillState(adhkarBadgeEl, doneDuas, totalDuas);
   }
-  // Homepage Adhkar progress loading bar removed per v5.9
 
-
-
-
-  // Sync Tasbih launcher card badge
+  // Sync Tasbih launcher card badge (Micro-icon prefix for instant recognition)
   const tasbihBadgeEl = document.getElementById("badge-count-tasbih");
   if (tasbihBadgeEl) {
-    tasbihBadgeEl.textContent = `${localizeDigits(appState.lifetimeDhikr || 0, lang)}`;
+    tasbihBadgeEl.classList.remove("pill-state-zero", "pill-state-progress", "pill-state-complete");
+    tasbihBadgeEl.classList.add("pill-state-utility");
+    tasbihBadgeEl.textContent = `📿 ${localizeDigits(appState.lifetimeDhikr || 0, lang)}`;
   }
-
-
-
 
   // Sync Personal Custom Habit launcher card badge
   const customHabitBadgeEl = document.getElementById("badge-count-custom_habit");
   if (customHabitBadgeEl) {
+    customHabitBadgeEl.classList.remove("pill-state-zero", "pill-state-progress", "pill-state-complete");
+    customHabitBadgeEl.classList.add("pill-state-utility");
     const customCount = Array.isArray(appState.customHabits) ? appState.customHabits.length : 0;
     const countStr = localizeDigits(customCount, lang);
     customHabitBadgeEl.textContent =
       lang === "ar"
-        ? `+${countStr} سنة`
+        ? `➕ ${countStr}`
         : lang === "en"
-        ? `+${countStr} Added`
-        : `+${countStr}টি আমল`;
+        ? `➕ ${countStr}`
+        : `➕ ${countStr}টি`;
   }
-
-
-
 
   // Sync SHA-256 Crypto Vault launcher card badge
   const cryptoVaultBadgeEl = document.getElementById("badge-count-crypto_vault");
   if (cryptoVaultBadgeEl) {
+    cryptoVaultBadgeEl.classList.remove("pill-state-zero", "pill-state-progress", "pill-state-complete");
+    cryptoVaultBadgeEl.classList.add("pill-state-utility");
     cryptoVaultBadgeEl.textContent =
-      lang === "ar" ? "٣ طبقات ✓" : lang === "en" ? "3-Layer ✓" : "৩-স্তর সুরক্ষিত";
+      lang === "ar" ? "🛡️ آمن" : lang === "en" ? "🛡️ Secured" : "🛡️ সুরক্ষিত";
   }
-
-
-
 
   // Sync Vault & Analytics launcher card badge
   const vaultBadgeEl = document.getElementById("badge-count-vault");
   if (vaultBadgeEl) {
+    vaultBadgeEl.classList.remove("pill-state-zero", "pill-state-progress", "pill-state-complete");
+    vaultBadgeEl.classList.add("pill-state-utility");
     const activeDaysTotal = Object.keys(appState.completionsByDate || {}).filter(
       (k) => (appState.completionsByDate[k] || []).length > 0
     ).length;
     const daysStr = localizeDigits(activeDaysTotal, lang);
     vaultBadgeEl.textContent =
       lang === "ar"
-        ? `${daysStr} يوم نشط`
+        ? `🔥 ${daysStr} يوم`
         : lang === "en"
-        ? `${daysStr} Days`
-        : `${daysStr} দিন সক্রিয়`;
+        ? `🔥 ${daysStr}d`
+        : `🔥 ${daysStr} দিন`;
   }
-
-
-
 
   // Sync Active Master Topbar & Phase Banner if a Master Section is currently open
   if (activeMasterSectionId && MASTER_SECTION_REGISTRY[activeMasterSectionId]) {
