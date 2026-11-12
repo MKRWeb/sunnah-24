@@ -14,9 +14,9 @@ permissions:
   pages: write
   id-token: write
 
-# Single unified workflow-level concurrency group:
-# If you edit index.html, style.css, and app.js one by one via GitHub Web UI,
-# earlier intermediate runs are immediately canceled so only the final combined state deploys.
+# Unified workflow-level concurrency group:
+# Rapid multi-file edits (index.html, style.css, app.js) cancel intermediate runs
+# so only the final combined state deploys to GitHub Pages and compiles into APK/AAB.
 concurrency:
   group: "sunnah24-atomic-pipeline-${{ github.ref }}"
   cancel-in-progress: true
@@ -32,17 +32,27 @@ jobs:
     steps:
       - name: 1. Batch Stabilization Buffer (Coalesce Multi-File Web Commits)
         run: |
-          echo "⏳ Waiting 12s to allow rapid multi-file commits (index.html, style.css, app.js) to coalesce..."
-          sleep 12
+          echo "⏳ Waiting 8s to allow rapid multi-file commits (index.html, style.css, app.js) to coalesce..."
+          sleep 8
 
-      - name: 2. Checkout Latest Repository HEAD
+      - name: 2. Checkout Repository & Pull Latest Branch HEAD
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }}
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
-      - name: 3. Atomic Sync of Root & www/ Assets + Auto Cache-Busting
+      - name: 3. Setup Node.js 22 for JS Syntax Verification
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 4. Atomic Sync of Root & www/ Assets + Auto Cache-Busting
         run: |
+          # Ensure we are on the absolute latest commit of the branch after the stabilization buffer
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --hard "origin/${GITHUB_REF_NAME}"
+          LATEST_SHA=$(git rev-parse --short=7 HEAD)
+
           mkdir -p www
           # Bi-directional freshest-file resolution: ensures root and www/ never contradict each other
           for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
@@ -63,33 +73,39 @@ jobs:
             fi
           done
 
-          # Stamp Service Worker cache version & HTML asset query strings with unique run_number + commit SHA
-          # so browsers & PWA WebViews load all updated files (HTML + CSS + JS) simultaneously!
-          CACHE_VER="v4.2.${GITHUB_RUN_NUMBER}-${GITHUB_SHA::7}"
+          # Stamp Service Worker cache version & HTML asset query strings with properly escaped quotes
+          CACHE_VER="v4.2.${GITHUB_RUN_NUMBER}-${LATEST_SHA}"
           if [ -f "www/sw.js" ]; then
             sed -i "s/sunnah-24-cache-[a-zA-Z0-9._-]*/sunnah-24-cache-${CACHE_VER}/g" www/sw.js || true
-            sed -i "s/CACHE_NAME = ['"][^'"]*['"]/CACHE_NAME = 'sunnah-24-cache-${CACHE_VER}'/g" www/sw.js || true
+            sed -i "s/CACHE_NAME = ['\"][^'\"]*['\"]/CACHE_NAME = 'sunnah-24-cache-${CACHE_VER}'/g" www/sw.js || true
           fi
           if [ -f "www/index.html" ]; then
-            sed -i "s|href="style.css[^"]*"|href="style.css?v=${CACHE_VER}"|g" www/index.html || true
-            sed -i "s|src="app.js[^"]*"|src="app.js?v=${CACHE_VER}"|g" www/index.html || true
+            sed -i "s|href=\"style.css[^\"]*\"|href=\"style.css?v=${CACHE_VER}\"|g" www/index.html || true
+            sed -i "s|src=\"app.js[^\"]*\"|src=\"app.js?v=${CACHE_VER}\"|g" www/index.html || true
           fi
 
           node --check www/app.js
           if [ -f "www/sw.js" ]; then node --check www/sw.js; fi
           echo "✅ Atomic Web Bundle verified with cache version: ${CACHE_VER}"
 
-      - name: 4. Setup GitHub Pages
+      - name: 5. Persist Verified www/ Bundle for Android APK/AAB Job
+        uses: actions/upload-artifact@v4
+        with:
+          name: sunnah24-verified-www-bundle
+          path: ./www
+          if-no-files-found: error
+
+      - name: 6. Setup GitHub Pages
         uses: actions/configure-pages@v5
         with:
           enablement: true
 
-      - name: 5. Upload Web App Artifact (www)
+      - name: 7. Upload Web App Artifact (www)
         uses: actions/upload-pages-artifact@v3
         with:
           path: './www'
 
-      - name: 6. Deploy to GitHub Pages
+      - name: 8. Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
         timeout-minutes: 10
@@ -108,10 +124,10 @@ jobs:
       VERSION_NAME: "4.2.${{ github.run_number }}"
 
     steps:
-      - name: 1. Checkout Latest Repository HEAD
+      - name: 1. Checkout Repository & Pull Latest Branch HEAD
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }}
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - name: 2. Setup Node.js 22 & Java 21 (Android Gradle Toolchain for API 35)
@@ -123,18 +139,17 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: 3. Atomic Sync & Verify Web Assets for APK/AAB Bundle
+      - name: 3. Download Verified www/ Web Bundle from Job 1
+        uses: actions/download-artifact@v4
+        with:
+          name: sunnah24-verified-www-bundle
+          path: ./www
+
+      - name: 4. Verify Web Assets for APK/AAB Bundle
         run: |
-          mkdir -p www
           for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
-            if [ -f "$f" ] && [ -f "www/$f" ]; then
-              ROOT_TS=$(git log -1 --format="%ct" -- "$f" 2>/dev/null || echo 0)
-              WWW_TS=$(git log -1 --format="%ct" -- "www/$f" 2>/dev/null || echo 0)
-              if [ "${WWW_TS:-0}" -gt "${ROOT_TS:-0}" ]; then
-                cp -f "www/$f" "$f"
-              else
-                cp -f "$f" "www/$f"
-              fi
+            if [ -f "www/$f" ]; then
+              cp -f "www/$f" "$f"
             elif [ -f "$f" ]; then
               cp -f "$f" "www/$f"
             fi
@@ -151,7 +166,7 @@ jobs:
           node --check www/sw.js
           echo "✅ All Sunnah 24 assets and JS syntax verified for Android packaging!"
 
-      - name: 4. Prepare Persistent Release Keystore
+      - name: 5. Prepare Persistent Release Keystore
         run: |
           mkdir -p signing
           KEYSTORE_FILE="$PWD/signing/sunnah24-release.keystore"
@@ -189,7 +204,7 @@ jobs:
           echo "K_ALIAS=${K_ALIAS}" >> $GITHUB_ENV
           echo "K_PASS=${K_PASS}" >> $GITHUB_ENV
 
-      - name: 5. Build Capacitor Android Bridge, Play Store API 35 Config & Strict Source-Set Isolation
+      - name: 6. Build Capacitor Android Bridge, Play Store API 35 Config & Strict Source-Set Isolation
         env:
           NODE_OPTIONS: "--tls-min-v1.2 --dns-result-order=ipv4first"
         run: |
@@ -204,7 +219,7 @@ jobs:
           npx cap copy android
           npx cap sync android
 
-          # 5A. Enforce Google Play Console Target API 35 (Android 15) in variables.gradle
+          # 6A. Enforce Google Play Console Target API 35 (Android 15) in variables.gradle
           VARS_GRADLE="android/variables.gradle"
           if [ -f "$VARS_GRADLE" ]; then
             sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 35/g' "$VARS_GRADLE"
@@ -212,7 +227,7 @@ jobs:
             echo "✅ Enforced compileSdkVersion=35 and targetSdkVersion=35 in variables.gradle"
           fi
 
-          # 5B. Compute VERSION_CODE, inject Native Release Signing, R8 Mapping & Play Store Compliance into app/build.gradle
+          # 6B. Compute VERSION_CODE, inject Native Release Signing, R8 Mapping & Play Store Compliance into app/build.gradle
           VERSION_CODE=$((2100 + RUN_NUMBER))
           echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_ENV
 
@@ -259,7 +274,7 @@ jobs:
             echo "✅ Configured Play Store API 35, R8 Minification & Native Release Signing in $APP_GRADLE"
           fi
 
-          # 5C. Append Keep Rules for WebView JavascriptInterface & Capacitor Plugins to proguard-rules.pro
+          # 6C. Append Keep Rules for WebView JavascriptInterface & Capacitor Plugins to proguard-rules.pro
           PROGUARD_FILE="android/app/proguard-rules.pro"
           if ! grep -q "com.mkrweb.sunnah24" "$PROGUARD_FILE" 2>/dev/null; then
             cat << 'PROGUARD_EOF' >> "$PROGUARD_FILE"
@@ -274,7 +289,7 @@ jobs:
             sed -i 's/^          //' "$PROGUARD_FILE"
           fi
 
-          # 5D. Convert www/icon.svg into All Android Launcher Icons & Adaptive Mipmaps
+          # 6D. Convert www/icon.svg into All Android Launcher Icons & Adaptive Mipmaps
           sudo apt-get update && sudo apt-get install -y librsvg2-bin imagemagick
           RES_DIR="android/app/src/main/res"
 
@@ -306,7 +321,7 @@ jobs:
           rm -rf "$RES_DIR/mipmap-anydpi-v26"
           echo "✅ Custom Sunnah 24 Launcher Icons & Splash Screens generated!"
 
-          # 5E. Strip Legacy Storage & Sideload Permissions from Merged Manifest for Play Store Compliance
+          # 6E. Strip Legacy Storage & Sideload Permissions from Merged Manifest for Play Store Compliance
           MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
           if [ -f "$MANIFEST_FILE" ]; then
             if ! grep -q "xmlns:tools" "$MANIFEST_FILE"; then
@@ -319,7 +334,7 @@ jobs:
             sed -i '/<\/manifest>/i \    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.AD_ID" tools:node="remove" />' "$MANIFEST_FILE"
           fi
 
-          # 5F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/debug/AndroidManifest.xml for Sideload APK
+          # 6F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/debug/AndroidManifest.xml for Sideload APK
           DEBUG_MANIFEST_DIR="android/app/src/debug"
           mkdir -p "$DEBUG_MANIFEST_DIR"
           cat << 'EOF' > "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
@@ -330,7 +345,7 @@ jobs:
           EOF
           sed -i 's/^          //' "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
 
-          # 5G. Inject FileProvider XML for Scoped Storage
+          # 6G. Inject FileProvider XML for Scoped Storage
           XML_DIR="android/app/src/main/res/xml"
           mkdir -p "$XML_DIR"
           cat << 'EOF' > "$XML_DIR/file_paths.xml"
@@ -360,7 +375,7 @@ jobs:
             fi
           fi
 
-          # 5H. STRICT SOURCE-SET ISOLATION FOR GOOGLE PLAY POLICY COMPLIANCE:
+          # 6H. STRICT SOURCE-SET ISOLATION FOR GOOGLE PLAY POLICY COMPLIANCE:
           rm -f android/app/src/main/java/com/mkrweb/sunnah24/MainActivity.java
 
           RELEASE_JAVA_DIR="android/app/src/release/java/com/mkrweb/sunnah24"
@@ -991,13 +1006,13 @@ jobs:
           sed -i 's/^          //' "$DEBUG_JAVA_DIR/MainActivity.java"
           echo "✅ Isolated Play Store Safe Release MainActivity & Sideload Debug MainActivity!"
 
-      - name: 6. Compile Sideload APK (assembleDebug) & Play Store Signed AAB (bundleRelease)
+      - name: 7. Compile Sideload APK (assembleDebug) & Play Store Signed AAB (bundleRelease)
         working-directory: ./android
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug bundleRelease --no-daemon
 
-      - name: 7. Sign Sideload APK & Verify Signed Play Store AAB
+      - name: 8. Sign Sideload APK & Verify Signed Play Store AAB
         run: |
           UNSIGNED_APK="android/app/build/outputs/apk/debug/app-debug.apk"
           SIGNED_APK="Sunnah-24-v4.2-Enterprise-Signed.apk"
@@ -1028,7 +1043,7 @@ jobs:
             exit 1
           fi
 
-      - name: 8. Upload Signed APK & Play Store AAB as Build Artifacts
+      - name: 9. Upload Signed APK & Play Store AAB as Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Sunnah-24-Enterprise-Release-Bundle
@@ -1036,7 +1051,7 @@ jobs:
             Sunnah-24-v4.2-Enterprise-Signed.apk
             Sunnah-24-v4.2-PlayStore-Signed.aab
 
-      - name: 9. Publish Atomic GitHub Release with APK & Play Store AAB
+      - name: 10. Publish Atomic GitHub Release with APK & Play Store AAB
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
@@ -1051,4 +1066,3 @@ jobs:
           files: |
             Sunnah-24-v4.2-Enterprise-Signed.apk
             Sunnah-24-v4.2-PlayStore-Signed.aab
-
