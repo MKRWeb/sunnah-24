@@ -7227,4 +7227,247 @@ html[data-theme="dark"] .custom-added-summary-box p {
 .section-mini-fill {
   display: none !important;
 }
+/* ==========================================================================
+   V6.0 ZERO-FATIGUE AT-A-GLANCE TYPOGRAPHY, 3-STATE COLOR-CODED CORNER BADGES
+   & UNIFIED HUB SUMMARY PILL (ERGONOMIC VISUAL HIERARCHY UPGRADE)
+   - Enlarges corner pills (.section-live-pill) from 0.54rem to 0.72rem (0.66rem on <=360px)
+     with bold high-contrast numerals so users never have to squint
+   - Enlarges 3D section logos (62x62px) and titles (0.86rem) for instant scannability
+   - Color-codes corner pills into 3 distinct states:
+       1) .pill-state-zero (0 completed): Soft neutral slate-mint
+       2) .pill-state-progress (in progress): Warm amber-gold highlight
+       3) .pill-state-complete (100% completed): Solid emerald badge with white text & ✓
+       4) .pill-state-utility (Cards 9–12): Crisp teal-emerald utility badge with micro-icon
+   - Adds #sections-hub-summary-pill in the Hub Header ("১২/৩২ সুন্নাহ সম্পন্ন")
+   ========================================================================== */
+.sections-hub-title-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+.sections-hub-title-left {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+.sections-hub-summary-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  font-size: 0.75rem !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+  padding: 5px 11px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important;
+  color: #065f46 !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.42) !important;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.12) !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+.sections-hub-summary-pill.all-completed {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: #ffffff !important;
+  border-color: #047857 !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3) !important;
+}
+
+.section-launcher-card {
+  padding: 32px 6px 13px !important;
+  border-radius: 20px !important;
+  gap: 7px !important;
+}
+
+/* Ergonomic At-A-Glance Corner Badge Sizing */
+.section-live-pill {
+  position: absolute !important;
+  top: 7px !important;
+  right: 7px !important;
+  font-size: 0.72rem !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.01em !important;
+  padding: 3px 8.5px !important;
+  min-height: 22px !important;
+  border-radius: 999px !important;
+  line-height: 1.15 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2.5px !important;
+  max-width: calc(100% - 14px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  z-index: 3 !important;
+  transition: transform 0.2s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+html[dir="rtl"] .section-live-pill {
+  right: auto !important;
+  left: 7px !important;
+}
+
+/* State 1: 0 Completed (Quiet Neutral Slate-Mint) */
+.section-live-pill.pill-state-zero {
+  background: #f1f5f4 !important;
+  color: #52665e !important;
+  border: 1.2px solid rgba(100, 116, 139, 0.26) !important;
+  box-shadow: none !important;
+}
+
+/* State 2: Partially Completed / In Progress (Warm Amber-Gold Highlight) */
+.section-live-pill.pill-state-progress {
+  background: linear-gradient(135deg, #fef3c7, #fde68a) !important;
+  color: #92400e !important;
+  border: 1.5px solid rgba(217, 119, 6, 0.48) !important;
+  box-shadow: 0 3px 8px rgba(217, 119, 6, 0.16) !important;
+}
+
+/* State 3: 100% Completed (Rewarding Solid Emerald Pill with White Text) */
+.section-live-pill.pill-state-complete {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: #ffffff !important;
+  border: 1.5px solid #047857 !important;
+  box-shadow: 0 4px 11px rgba(16, 185, 129, 0.32) !important;
+}
+
+/* State 4: Utility Cards 9–12 (Crisp Tinted Utility Badge) */
+.section-live-pill.pill-state-utility {
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important;
+  color: #065f46 !important;
+  border: 1.3px solid rgba(16, 185, 129, 0.38) !important;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Enlarged 3D Centerpiece Artwork & Card Title for Effortless Scanning */
+.section-world-logo,
+.section-world-logo.logo-indigo,
+.section-world-logo.logo-amber,
+.section-world-logo.logo-emerald,
+.section-world-logo.logo-emerald-deep,
+.section-world-logo.logo-purple,
+.section-world-logo.logo-teal,
+.section-world-logo.logo-gold,
+.section-world-logo.logo-rose,
+.section-world-logo.logo-cyan,
+.section-world-logo.logo-slate {
+  width: 62px !important;
+  height: 62px !important;
+  margin: 2px auto 0 auto !important;
+}
+
+.section-world-logo svg {
+  width: 60px !important;
+  height: 60px !important;
+}
+
+.section-card-body {
+  min-height: 2.45em !important;
+  padding: 0 3px !important;
+}
+
+.section-card-title {
+  font-size: 0.85rem !important;
+  font-weight: 900 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Subtle Emerald Card Border Accent When Section is 100% Completed */
+.section-launcher-card.card-state-complete {
+  border-color: rgba(16, 185, 129, 0.55) !important;
+  background: linear-gradient(165deg, #ffffff 0%, #f0fdf6 100%) !important;
+}
+
+/* Dark Theme Support for 3-State Badges & Hub Summary Pill */
+html[data-theme="dark"] .sections-hub-summary-pill {
+  background: rgba(16, 185, 129, 0.18) !important;
+  color: #6ee7b7 !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+}
+
+html[data-theme="dark"] .sections-hub-summary-pill.all-completed {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] .section-live-pill.pill-state-zero {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #94a3b8 !important;
+  border-color: rgba(148, 163, 184, 0.25) !important;
+}
+
+html[data-theme="dark"] .section-live-pill.pill-state-progress {
+  background: rgba(234, 179, 8, 0.22) !important;
+  color: #fde047 !important;
+  border-color: rgba(234, 179, 8, 0.5) !important;
+}
+
+html[data-theme="dark"] .section-live-pill.pill-state-complete {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: #ffffff !important;
+  border-color: #34d399 !important;
+}
+
+html[data-theme="dark"] .section-live-pill.pill-state-utility {
+  background: rgba(16, 185, 129, 0.16) !important;
+  color: #6ee7b7 !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+html[data-theme="dark"] .section-launcher-card.card-state-complete {
+  background: linear-gradient(165deg, #0d2b20 0%, #071913 100%) !important;
+  border-color: rgba(16, 185, 129, 0.55) !important;
+}
+
+/* Small Screen Safeguard (<=360px) keeping text crisp and readable */
+@media (max-width: 360px) {
+  .section-launcher-card {
+    padding: 29px 4px 10px !important;
+  }
+  .section-live-pill {
+    top: 5px !important;
+    right: 5px !important;
+    font-size: 0.65rem !important;
+    padding: 2.5px 7px !important;
+    min-height: 20px !important;
+  }
+  html[dir="rtl"] .section-live-pill {
+    right: auto !important;
+    left: 5px !important;
+  }
+  .section-world-logo,
+  .section-world-logo.logo-indigo,
+  .section-world-logo.logo-amber,
+  .section-world-logo.logo-emerald,
+  .section-world-logo.logo-emerald-deep,
+  .section-world-logo.logo-purple,
+  .section-world-logo.logo-teal,
+  .section-world-logo.logo-gold,
+  .section-world-logo.logo-rose,
+  .section-world-logo.logo-cyan,
+  .section-world-logo.logo-slate {
+    width: 52px !important;
+    height: 52px !important;
+  }
+  .section-world-logo svg {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  .section-card-title {
+    font-size: 0.78rem !important;
+  }
+  .sections-hub-summary-pill {
+    font-size: 0.68rem !important;
+    padding: 4px 9px !important;
+  }
+}
 
