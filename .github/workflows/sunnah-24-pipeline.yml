@@ -3,6 +3,8 @@ name: Sunnah 24 — Enterprise CI/CD, GitHub Pages, Signed APK & Play Store AAB 
 on:
   push:
     branches: [ main, master ]
+    paths-ignore:
+      - 'signing/**'
   pull_request:
     branches: [ main, master ]
   workflow_dispatch:
@@ -12,52 +14,90 @@ permissions:
   pages: write
   id-token: write
 
-# Cancels any stuck or queued previous workflow runs on the same branch immediately
+# Single unified workflow-level concurrency group:
+# If you edit index.html, style.css, and app.js one by one via GitHub Web UI,
+# earlier intermediate runs are immediately canceled so only the final combined state deploys.
 concurrency:
-  group: "sunnah24-ci-${{ github.workflow }}-${{ github.ref }}"
+  group: "sunnah24-atomic-pipeline-${{ github.ref }}"
   cancel-in-progress: true
 
 jobs:
   deploy-pages:
-    name: Deploy Web App to GitHub Pages
+    name: 1. Atomic Web Verification, Cache-Busting & GitHub Pages Deploy
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    concurrency:
-      group: "pages"
-      cancel-in-progress: true
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: 1. Batch Stabilization Buffer (Coalesce Multi-File Web Commits)
+        run: |
+          echo "⏳ Waiting 12s to allow rapid multi-file commits (index.html, style.css, app.js) to coalesce..."
+          sleep 12
 
-      - name: Sync Root Web Files into www Directory
+      - name: 2. Checkout Latest Repository HEAD
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: 3. Atomic Sync of Root & www/ Assets + Auto Cache-Busting
         run: |
           mkdir -p www
+          # Bi-directional freshest-file resolution: ensures root and www/ never contradict each other
           for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
-            if [ -f "$f" ]; then
-              cp -f "$f" www/
+            if [ -f "$f" ] && [ -f "www/$f" ]; then
+              ROOT_TS=$(git log -1 --format="%ct" -- "$f" 2>/dev/null || echo 0)
+              WWW_TS=$(git log -1 --format="%ct" -- "www/$f" 2>/dev/null || echo 0)
+              if [ "${WWW_TS:-0}" -gt "${ROOT_TS:-0}" ]; then
+                echo "🔄 Syncing newer www/$f -> root $f"
+                cp -f "www/$f" "$f"
+              else
+                echo "✅ Syncing root $f -> www/$f"
+                cp -f "$f" "www/$f"
+              fi
+            elif [ -f "$f" ]; then
+              cp -f "$f" "www/$f"
+            elif [ -f "www/$f" ]; then
+              cp -f "www/$f" "$f"
             fi
           done
 
-      - name: Setup GitHub Pages
+          # Stamp Service Worker cache version & HTML asset query strings with unique run_number + commit SHA
+          # so browsers & PWA WebViews load all updated files (HTML + CSS + JS) simultaneously!
+          CACHE_VER="v4.2.${GITHUB_RUN_NUMBER}-${GITHUB_SHA::7}"
+          if [ -f "www/sw.js" ]; then
+            sed -i "s/sunnah-24-cache-[a-zA-Z0-9._-]*/sunnah-24-cache-${CACHE_VER}/g" www/sw.js || true
+            sed -i "s/CACHE_NAME = ['"][^'"]*['"]/CACHE_NAME = 'sunnah-24-cache-${CACHE_VER}'/g" www/sw.js || true
+          fi
+          if [ -f "www/index.html" ]; then
+            sed -i "s|href="style.css[^"]*"|href="style.css?v=${CACHE_VER}"|g" www/index.html || true
+            sed -i "s|src="app.js[^"]*"|src="app.js?v=${CACHE_VER}"|g" www/index.html || true
+          fi
+
+          node --check www/app.js
+          if [ -f "www/sw.js" ]; then node --check www/sw.js; fi
+          echo "✅ Atomic Web Bundle verified with cache version: ${CACHE_VER}"
+
+      - name: 4. Setup GitHub Pages
         uses: actions/configure-pages@v5
         with:
           enablement: true
 
-      - name: Upload Web App Artifact (www)
+      - name: 5. Upload Web App Artifact (www)
         uses: actions/upload-pages-artifact@v3
         with:
           path: './www'
 
-      - name: Deploy to GitHub Pages
+      - name: 6. Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
         timeout-minutes: 10
 
   build-and-release-apk:
-    name: Build, Verify & Release Sunnah 24 Signed APK & Play Store Ready AAB
+    name: 2. Build, Verify & Release Signed APK & Play Store Ready AAB
+    needs: deploy-pages
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     env:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -68,9 +108,10 @@ jobs:
       VERSION_NAME: "4.2.${{ github.run_number }}"
 
     steps:
-      - name: 1. Checkout Repository
+      - name: 1. Checkout Latest Repository HEAD
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.ref }}
           fetch-depth: 0
 
       - name: 2. Setup Node.js 22 & Java 21 (Android Gradle Toolchain for API 35)
@@ -82,14 +123,23 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: 3. Sync & Verify Web Assets
+      - name: 3. Atomic Sync & Verify Web Assets for APK/AAB Bundle
         run: |
           mkdir -p www
           for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
-            if [ -f "$f" ]; then
-              cp -f "$f" www/
+            if [ -f "$f" ] && [ -f "www/$f" ]; then
+              ROOT_TS=$(git log -1 --format="%ct" -- "$f" 2>/dev/null || echo 0)
+              WWW_TS=$(git log -1 --format="%ct" -- "www/$f" 2>/dev/null || echo 0)
+              if [ "${WWW_TS:-0}" -gt "${ROOT_TS:-0}" ]; then
+                cp -f "www/$f" "$f"
+              else
+                cp -f "$f" "www/$f"
+              fi
+            elif [ -f "$f" ]; then
+              cp -f "$f" "www/$f"
             fi
           done
+
           test -f www/index.html
           test -f www/style.css
           test -f www/app.js
@@ -99,7 +149,7 @@ jobs:
           test -f www/privacy.html
           node --check www/app.js
           node --check www/sw.js
-          echo "✅ All Sunnah 24 assets and JS syntax verified!"
+          echo "✅ All Sunnah 24 assets and JS syntax verified for Android packaging!"
 
       - name: 4. Prepare Persistent Release Keystore
         run: |
@@ -130,6 +180,7 @@ jobs:
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add -f "signing/sunnah24-release.keystore"
             git commit -m "chore(signing): persist permanent Android release keystore [skip ci]" || true
+            git pull --rebase origin ${GITHUB_REF_NAME} || true
             git push origin HEAD:${GITHUB_REF_NAME} || true
           fi
 
@@ -150,6 +201,7 @@ jobs:
           if [ ! -d "android" ]; then
             npx cap add android
           fi
+          npx cap copy android
           npx cap sync android
 
           # 5A. Enforce Google Play Console Target API 35 (Android 15) in variables.gradle
@@ -309,9 +361,6 @@ jobs:
           fi
 
           # 5H. STRICT SOURCE-SET ISOLATION FOR GOOGLE PLAY POLICY COMPLIANCE:
-          # Remove MainActivity.java from src/main so the Play Store Release AAB (src/release)
-          # has ZERO self-updating/APK-installer bytecode (application/vnd.android.package-archive
-          # or ACTION_MANAGE_UNKNOWN_APP_SOURCES), while Sideload Debug APK (src/debug) retains it!
           rm -f android/app/src/main/java/com/mkrweb/sunnah24/MainActivity.java
 
           RELEASE_JAVA_DIR="android/app/src/release/java/com/mkrweb/sunnah24"
@@ -351,6 +400,7 @@ jobs:
                       WebSettings ws = webView.getSettings();
                       ws.setDomStorageEnabled(true);
                       ws.setDatabaseEnabled(true);
+                      ws.setCacheMode(WebSettings.LOAD_DEFAULT);
                       webView.addJavascriptInterface(new PlayStoreSafeVaultBridge(), "AndroidDownloader");
                   }
 
@@ -541,6 +591,8 @@ jobs:
                       WebSettings ws = webView.getSettings();
                       ws.setDomStorageEnabled(true);
                       ws.setDatabaseEnabled(true);
+                      ws.setCacheMode(WebSettings.LOAD_NO_CACHE);
+                      webView.clearCache(true);
                       webView.addJavascriptInterface(new WebAppDownloader(), "AndroidDownloader");
                   }
 
@@ -943,7 +995,7 @@ jobs:
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug bundleRelease
+          ./gradlew assembleDebug bundleRelease --no-daemon
 
       - name: 7. Sign Sideload APK & Verify Signed Play Store AAB
         run: |
@@ -984,11 +1036,12 @@ jobs:
             Sunnah-24-v4.2-Enterprise-Signed.apk
             Sunnah-24-v4.2-PlayStore-Signed.aab
 
-      - name: 9. Publish Automatic GitHub Release with APK & Play Store AAB
+      - name: 9. Publish Atomic GitHub Release with APK & Play Store AAB
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION_NAME }}
+          target_commitish: ${{ github.sha }}
           name: "☪️ Sunnah 24 v${{ env.VERSION_NAME }} — Play Store Ready AAB & Signed Enterprise APK"
           body: |
             ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Play Store Ready `.aab` & Signed Android `.apk` (v${{ env.VERSION_NAME }})
@@ -998,5 +1051,4 @@ jobs:
           files: |
             Sunnah-24-v4.2-Enterprise-Signed.apk
             Sunnah-24-v4.2-PlayStore-Signed.aab
-
 
