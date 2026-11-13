@@ -4211,12 +4211,12 @@ function renderFiveWaqtStrip(now = new Date()) {
       const isPopupSelected =
         typeof activeSelectedWaqtPopupId === "string" && activeSelectedWaqtPopupId === w.id;
       return `
-        <button type="button" class="waqt-pill-card m3-interactive-waqt-pill ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""} ${isPopupSelected ? "waqt-popup-selected" : ""}" data-waqt-id="${w.id}" data-waqt-phase="${w.phase}" aria-expanded="${isPopupSelected ? "true" : "false"}" title="${w.name}">
-          <span class="waqt-info-micro-badge" aria-hidden="true">i</span>
+        <div class="waqt-pill-card m3-interactive-waqt-pill ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""} ${isPopupSelected ? "waqt-popup-selected" : ""}" data-waqt-id="${w.id}" data-waqt-phase="${w.phase}" aria-expanded="${isPopupSelected ? "true" : "false"}" title="${w.name}">
+          <button type="button" class="waqt-info-micro-badge" data-waqt-info-btn="${w.id}" aria-label="${w.name} Info" title="${w.name} Info">i</button>
           <div class="waqt-circle-logo">${w.icon}</div>
           <span class="waqt-name">${w.name}</span>
           <strong class="waqt-time">${formatShortWaqtClock(w.start, lang)}</strong>
-        </button>
+        </div>
       `;
     })
     .join("");
@@ -7043,9 +7043,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const waqtGrid = document.getElementById("five-waqt-grid");
   if (waqtGrid) {
     waqtGrid.addEventListener("click", (e) => {
-      const pillBtn = e.target.closest(".waqt-pill-card[data-waqt-id]");
-      if (!pillBtn) return;
-      const clickedId = pillBtn.getAttribute("data-waqt-id");
+      // Strictly require clicking on the `i` button itself to open/toggle the 5-Waqt popup window
+      const infoBtn = e.target.closest("[data-waqt-info-btn], .waqt-info-micro-badge");
+      if (!infoBtn) return;
+      const pillBtn = infoBtn.closest(".waqt-pill-card[data-waqt-id]");
+      const clickedId =
+        infoBtn.getAttribute("data-waqt-info-btn") ||
+        (pillBtn && pillBtn.getAttribute("data-waqt-id"));
+      if (!clickedId) return;
       if (navigator.vibrate) navigator.vibrate(14);
 
 
@@ -10554,10 +10559,10 @@ function getNaflPrayersScheduleList(now = new Date()) {
           : "5. Salat al-Tasbih & Tahiyyatul Wudu (Day & Night)",
       rakahBadge:
         lang === "bn"
-          ? "দিন-রাত (নিষিদ্ধ সময় ছাড়া) • ৪ / ২ রাকাত"
+          ? "৪ রাকাত (তাসবীহ) • ২ রাকাত (অযু)"
           : lang === "ar"
-          ? "ليلاً ونهاراً • ٤ / ٢ ركعات"
-          : "Day & Night • 4 / 2 Rak'ah",
+          ? "٤ ركعات (التسبيح) • ركعتا الوضوء"
+          : "4 Rak'ah (Tasbih) • 2 Rak'ah (Wudu)",
       timeRangeText:
         lang === "bn"
           ? "নিষিদ্ধ ৩ সময় ব্যতীত"
@@ -10646,21 +10651,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const naflCardEl = document.getElementById("nafl-salah-card");
   if (naflCardEl) {
     naflCardEl.addEventListener("click", (e) => {
-      const proofBtn = e.target.closest("[data-nafl-proof]");
-      if (proofBtn) {
-        e.stopPropagation();
-        const naflId = proofBtn.getAttribute("data-nafl-proof");
-        if (navigator.vibrate) navigator.vibrate(12);
-        openNaflHadithModal(naflId);
-        return;
-      }
-
-      const rowEl = e.target.closest(".nafl-minimal-row[data-nafl-id]");
-      if (rowEl) {
-        const naflId = rowEl.getAttribute("data-nafl-id");
-        if (navigator.vibrate) navigator.vibrate(12);
-        openNaflHadithModal(naflId);
-      }
+      // Strictly require clicking on the `i` button itself to open the Nafl Hadith modal
+      const proofBtn = e.target.closest("button.nafl-corner-info-btn[data-nafl-proof]");
+      if (!proofBtn) return;
+      e.stopPropagation();
+      const naflId = proofBtn.getAttribute("data-nafl-proof");
+      if (!naflId) return;
+      if (navigator.vibrate) navigator.vibrate(12);
+      openNaflHadithModal(naflId);
     });
   }
 });
