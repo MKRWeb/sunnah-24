@@ -3,6 +3,14 @@
  * SHA-256 Tamper-Proof Engine + Triple-Redundant Multi-Month Vault (LocalStorage + IndexedDB + Native Android)
  * Local Timezone Date Engine + Accurate Hijri Calendar + Full Bangla (Default), Arabic & English Localization
  */
+
+
+
+
+
+
+
+
 const STORAGE_KEY = "SUNNAH_24_ENTERPRISE_LEDGER_V24";
 const BACKUP_MIRROR_KEY = "SUNNAH_24_ENTERPRISE_MIRROR_V35";
 const IDB_NAME = "Sunnah24EnterpriseDB";
@@ -11,6 +19,13 @@ const IDB_KEY = "primary_ledger_v35";
 const LEDGER_SALT = "MKRWEB-SUNNAH-24-CORPORATE-IMMUTABLE-SALT";
 const I18N_SALT = "MKRWEB-SUNNAH-24-I18N-DICTIONARY-IMMUTABLE-SALT-V25";
 
+
+
+
+
+
+
+
 function deepFreeze(obj) {
   if (obj && typeof obj === "object" && !Object.isFrozen(obj)) {
     Object.freeze(obj);
@@ -18,6 +33,10 @@ function deepFreeze(obj) {
   }
   return obj;
 }
+
+
+
+
 
 
 
@@ -42,6 +61,10 @@ function canonicalizeObject(value) {
 
 
 
+
+
+
+
 function localizeDigits(val, locale) {
   const str = String(val);
   if (locale === "bn") {
@@ -58,6 +81,10 @@ function localizeDigits(val, locale) {
 
 
 
+
+
+
+
 // Local Timezone Date Key Generator (Fixes UTC midnight shift bug permanently)
 function getLocalDateKey(dateObj = new Date()) {
   const year = dateObj.getFullYear();
@@ -69,9 +96,17 @@ function getLocalDateKey(dateObj = new Date()) {
 
 
 
+
+
+
+
 function getTodayKey() {
   return getLocalDateKey(new Date());
 }
+
+
+
+
 
 
 
@@ -243,6 +278,10 @@ const I18N_DICTIONARIES = deepFreeze({
       { target: 100, label: "আস্তাগফিরুল্লাহ ওয়া আতুবু ইলাইহি", text: "আস্তাগফিরুল্লাহ ওয়া আতুবু ইলাইহি — ১০০ বার" },
       { target: 100, label: "সুবহানাল্লাহি ওয়া বিহামদিহি", text: "সুবহানাল্লাহি ওয়া বিহামদিহি — ১০০ বার" },
       { target: 10, label: "আল্লাহুম্মা সাল্লি আলা মুহাম্মাদ ﷺ", text: "নবীজি ﷺ-এর ওপর দরূদ পাঠ — ১০ বার" },
+
+
+
+
 
 
 
@@ -425,11 +464,19 @@ const I18N_DICTIONARIES = deepFreeze({
 
 
 
+
+
+
+
             {
         target: 100,
         label: "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
         text: "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ — ١٠٠ مرة"
       },
+
+
+
+
 
 
 
@@ -616,10 +663,22 @@ const I18N_DICTIONARIES = deepFreeze({
 
 
 
+
+
+
+
+
+
+
+
       { target: 33, label: "La hawla wa la quwwata illa billah", text: "Hawqalah (Treasure of Paradise) — 33x" }
     ]
   }
 });
+
+
+
+
 
 
 
@@ -1143,6 +1202,10 @@ const SUNNAH_24_HABITS = deepFreeze([
 
 
 
+
+
+
+
 // 12 Essential Full Morning & Evening Masnoon Duas
 const SUNNAH_24_DUAS = deepFreeze([
   {
@@ -1420,6 +1483,10 @@ const SUNNAH_24_DUAS = deepFreeze([
 
 
 
+
+
+
+
 // Application State (Default Language set to Bangla: 'bn')
 let appState = {
   appName: "Sunnah 24",
@@ -1438,6 +1505,10 @@ let appState = {
 
 
 
+
+
+
+
 let activePhase = "tahajjud_fajr";
 let activeMasterSectionId = null;
 let homeDashboardScrollY = 0;
@@ -1448,6 +1519,10 @@ let verifiedI18nDigest = "";
 let historyRangeDays = 30;
 let selectedArchiveMonthKey = getTodayKey().slice(0, 7);
 let lastObservedDateKey = getTodayKey();
+
+
+
+
 
 
 
@@ -1464,6 +1539,10 @@ function t(key, replacements = {}) {
 
 
 
+
+
+
+
 // ============================================================================
 // UNCRACKABLE FRIDAY (JUMU'AH) DETECTION & DYNAMIC WAQT RESOLVER ENGINE
 // Automatically detects Friday (Yawm al-Jumu'ah, getDay() === 5) and resolves
@@ -1476,9 +1555,21 @@ function isFridayJumuahDay(dateObj = new Date()) {
     dateObj instanceof Date && !isNaN(dateObj.getTime()) ? dateObj : new Date();
   return safeDate.getDay() === 5;
 }
+
+
+
+
+
+
+
+
 function resolveMiddayWaqtMeta(dateObj = new Date(), locale = appState.locale) {
   const isJumuah = isFridayJumuahDay(dateObj);
   const lang = locale || "bn";
+
+
+
+
 
 
 
@@ -1531,6 +1622,10 @@ function resolveMiddayWaqtMeta(dateObj = new Date(), locale = appState.locale) {
 
 
 
+
+
+
+
   return {
     isJumuah: false,
     pillName: t("waqt_dhuhr"),
@@ -1577,6 +1672,10 @@ function resolveMiddayWaqtMeta(dateObj = new Date(), locale = appState.locale) {
 
 
 
+
+
+
+
 function getHabitTitle(habit, dateObj = new Date()) {
   if (habit && habit.id === "s24_11_dhuhr_rawatib" && isFridayJumuahDay(dateObj)) {
     if (appState.locale === "bn") {
@@ -1595,6 +1694,10 @@ function getHabitTitle(habit, dateObj = new Date()) {
 
 
 
+
+
+
+
 function getHabitTime(habit, dateObj = new Date()) {
   if (habit.isCustom) return t("custom_time_label");
   const rawLabel =
@@ -1603,6 +1706,10 @@ function getHabitTime(habit, dateObj = new Date()) {
       : appState.locale === "ar"
       ? habit.time_ar || habit.time
       : habit.time;
+
+
+
+
 
 
 
@@ -1635,6 +1742,10 @@ function getHabitTime(habit, dateObj = new Date()) {
 
 
 
+
+
+
+
 function getHabitWisdom(habit) {
   if (habit.isCustom && habit.customFact) return habit.customFact;
   if (habit.isCustom) return t("custom_default_wisdom");
@@ -1646,6 +1757,10 @@ function getHabitWisdom(habit) {
 
 
 
+
+
+
+
 function getHabitEvidence(habit) {
   if (habit.isCustom && habit.customFact) return habit.customFact;
   if (habit.isCustom) return t("custom_default_evidence");
@@ -1653,6 +1768,10 @@ function getHabitEvidence(habit) {
   if (appState.locale === "ar") return habit.evidence_ar || habit.evidence;
   return habit.evidence;
 }
+
+
+
+
 
 
 
@@ -1683,6 +1802,10 @@ async function computeSHA256(payloadString, salt = LEDGER_SALT) {
 
 
 
+
+
+
+
 async function computeI18nDictionaryHash() {
   const canonicalPayload = canonicalizeObject({
     dictionaries: I18N_DICTIONARIES,
@@ -1691,6 +1814,10 @@ async function computeI18nDictionaryHash() {
   });
   return computeSHA256(canonicalPayload, I18N_SALT);
 }
+
+
+
+
 
 
 
@@ -1712,9 +1839,21 @@ function getCanonicalStatePayload(stateObj) {
 
 
 
+
+
+
+
 // ============================================================================
 // TRIPLE-REDUNDANT STORAGE ENGINE (LocalStorage + IndexedDB + Native Android)
 // ============================================================================
+
+
+
+
+
+
+
+
 function openSunnahIDB() {
   return new Promise((resolve) => {
     if (!window.indexedDB) {
@@ -1740,6 +1879,10 @@ function openSunnahIDB() {
 
 
 
+
+
+
+
 async function saveToIndexedDB(jsonStr) {
   const db = await openSunnahIDB();
   if (!db) return false;
@@ -1754,6 +1897,10 @@ async function saveToIndexedDB(jsonStr) {
     }
   });
 }
+
+
+
+
 
 
 
@@ -1776,10 +1923,18 @@ async function loadFromIndexedDB() {
 
 
 
+
+
+
+
 // Deep-merge multiple storage snapshots so no past day's history is ever lost
 function mergeHistoryStates(statesArray) {
   const validStates = statesArray.filter((s) => s && typeof s === "object");
   if (validStates.length === 0) return null;
+
+
+
+
 
 
 
@@ -1791,11 +1946,19 @@ function mergeHistoryStates(statesArray) {
 
 
 
+
+
+
+
   const mergedCompletions = {};
   const mergedDuaCompletions = {};
   const mergedCustomMap = new Map();
   const mergedDiaryMap = new Map();
   let maxDhikr = 0;
+
+
+
+
 
 
 
@@ -1841,6 +2004,10 @@ function mergeHistoryStates(statesArray) {
 
 
 
+
+
+
+
   const finalCompletions = {};
   Object.keys(mergedCompletions)
     .sort()
@@ -1854,6 +2021,10 @@ function mergeHistoryStates(statesArray) {
 
 
 
+
+
+
+
   const finalDuaCompletions = {};
   Object.keys(mergedDuaCompletions)
     .sort()
@@ -1863,6 +2034,10 @@ function mergeHistoryStates(statesArray) {
         finalDuaCompletions[dateKey] = list;
       }
     });
+
+
+
+
 
 
 
@@ -1885,6 +2060,10 @@ function mergeHistoryStates(statesArray) {
 
 
 
+
+
+
+
 async function saveAndSealState() {
   verifiedI18nDigest = await computeI18nDictionaryHash();
   appState.version = 42;
@@ -1896,7 +2075,15 @@ async function saveAndSealState() {
 
 
 
+
+
+
+
   const serialized = JSON.stringify(appState);
+
+
+
+
 
 
 
@@ -1914,8 +2101,16 @@ async function saveAndSealState() {
 
 
 
+
+
+
+
   // Layer 2: IndexedDB Asynchronous Database
   const idbOk = await saveToIndexedDB(serialized);
+
+
+
+
 
 
 
@@ -1936,9 +2131,17 @@ async function saveAndSealState() {
 
 
 
+
+
+
+
   updateStorageStatusIndicator(lsOk, idbOk, nativeOk);
   updateIntegrityUI(true);
 }
+
+
+
+
 
 
 
@@ -1965,8 +2168,16 @@ function updateStorageStatusIndicator(lsOk, idbOk, nativeOk) {
 
 
 
+
+
+
+
 async function loadAndVerifyState() {
   verifiedI18nDigest = await computeI18nDictionaryHash();
+
+
+
+
 
 
 
@@ -1979,7 +2190,15 @@ async function loadAndVerifyState() {
 
 
 
+
+
+
+
   const candidates = [];
+
+
+
+
 
 
 
@@ -1993,6 +2212,10 @@ async function loadAndVerifyState() {
 
 
 
+
+
+
+
   // 2. Read Mirror LocalStorage
   try {
     const rawMirror = localStorage.getItem(BACKUP_MIRROR_KEY);
@@ -2002,11 +2225,19 @@ async function loadAndVerifyState() {
 
 
 
+
+
+
+
   // 3. Read IndexedDB
   try {
     const rawIDB = await loadFromIndexedDB();
     if (rawIDB) candidates.push(JSON.parse(rawIDB));
   } catch {}
+
+
+
+
 
 
 
@@ -2027,11 +2258,19 @@ async function loadAndVerifyState() {
 
 
 
+
+
+
+
   if (candidates.length === 0) {
     appState.locale = "bn";
     await saveAndSealState();
     return;
   }
+
+
+
+
 
 
 
@@ -2047,10 +2286,18 @@ async function loadAndVerifyState() {
 
 
 
+
+
+
+
 function updateIntegrityUI(isVerified) {
   const badge = document.getElementById("integrity-badge");
   const hashEl = document.getElementById("latest-hash-display");
   const i18nHashEl = document.getElementById("i18n-hash-display");
+
+
+
+
 
 
 
@@ -2081,6 +2328,14 @@ function updateIntegrityUI(isVerified) {
 
 
 
+
+
+
+
+
+
+
+
 // ============================================================================
 // WORLD-STANDARD STRICT TIME-WINDOW LOCK, REGIONAL SEASONAL ISLAMIC PRAYER
 // ASTRONOMICAL ENGINE (BANGLADESH • MIDDLE EAST • WESTERN) & SVG RINGS
@@ -2088,6 +2343,10 @@ function updateIntegrityUI(isVerified) {
 const HERO_RING_CIRCUMFERENCE = 245.04;   // 2 * PI * 39 (Sleek 92x92 Hero Ring)
 const TASBIH_RING_CIRCUMFERENCE = 703.72; // 2 * PI * 112
 const DUA_RING_CIRCUMFERENCE = 150.8;     // 2 * PI * 24
+
+
+
+
 
 
 
@@ -2111,6 +2370,13 @@ const DUA_RING_CIRCUMFERENCE = 150.8;     // 2 * PI * 24
 //             between Hanafi (2x shadow) and Standard / Shafi'i (1x shadow) with zero contradiction.
 const GEO_LOCATION_CACHE_KEY = "SUNNAH_24_X_GEO_COORDS_V1";
 const MADHAB_STORAGE_KEY = "SUNNAH_24_ASR_MADHAB_PREF_V1";
+
+
+
+
+
+
+
 
 const REGIONAL_PRAYER_PROFILES = deepFreeze({
   bn: {
@@ -2160,6 +2426,10 @@ const REGIONAL_PRAYER_PROFILES = deepFreeze({
 
 
 
+
+
+
+
 // Comprehensive IANA Timezone -> Exact Geographic Hub & Calculation Authority Registry
 // Region-Matched Defaults:
 // - South Asia, Central Asia & Turkey -> asrShadowFactor: 2 (Hanafi)
@@ -2183,6 +2453,10 @@ const IANA_GEO_TIMEZONE_REGISTRY = deepFreeze({
 
 
 
+
+
+
+
   // --- CENTRAL ASIA & TURKEY (Hanafi Regional Default: asrShadowFactor = 2) ---
   "asia/tashkent": { regionCode: "ME", subRegion: "CENTRAL_ASIA", lat: 41.2995, lon: 69.2401, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
   "asia/almaty": { regionCode: "ME", subRegion: "CENTRAL_ASIA", lat: 43.222, lon: 76.8512, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
@@ -2191,6 +2465,10 @@ const IANA_GEO_TIMEZONE_REGISTRY = deepFreeze({
   "asia/ashgabat": { regionCode: "ME", subRegion: "CENTRAL_ASIA", lat: 37.9601, lon: 58.3261, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
   "asia/baku": { regionCode: "ME", subRegion: "CENTRAL_ASIA", lat: 40.4093, lon: 49.8671, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
   "europe/istanbul": { regionCode: "ME", subRegion: "TURKEY", lat: 41.0082, lon: 28.9784, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 2 },
+
+
+
+
 
 
 
@@ -2220,11 +2498,19 @@ const IANA_GEO_TIMEZONE_REGISTRY = deepFreeze({
 
 
 
+
+
+
+
   // --- SOUTHEAST ASIA (20° Fajr, 18° Isha, Standard Shafi'i Asr Default: asrShadowFactor = 1) ---
   "asia/kuala_lumpur": { regionCode: "ME", subRegion: "SE_ASIA", lat: 3.139, lon: 101.6869, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1 },
   "asia/singapore": { regionCode: "ME", subRegion: "SE_ASIA", lat: 1.3521, lon: 103.8198, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1 },
   "asia/jakarta": { regionCode: "ME", subRegion: "SE_ASIA", lat: -6.2088, lon: 106.8456, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1 },
   "asia/brunei": { regionCode: "ME", subRegion: "SE_ASIA", lat: 4.9031, lon: 114.9398, fajrAngle: 20.0, ishaAngle: 18.0, ishaFixedMins: 0, asrShadowFactor: 1 },
+
+
+
+
 
 
 
@@ -2250,6 +2536,10 @@ const IANA_GEO_TIMEZONE_REGISTRY = deepFreeze({
 
 
 
+
+
+
+
   // --- WESTERN COUNTRIES: NORTH AMERICA (ISNA 15° Fajr, 15° Isha, Standard Asr Default: asrShadowFactor = 1) ---
   "america/new_york": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 40.7128, lon: -74.006, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 1 },
   "america/toronto": { regionCode: "WEST", subRegion: "NORTH_AMERICA", lat: 43.6532, lon: -79.3832, fajrAngle: 15.0, ishaAngle: 15.0, ishaFixedMins: 0, asrShadowFactor: 1 },
@@ -2266,6 +2556,10 @@ const IANA_GEO_TIMEZONE_REGISTRY = deepFreeze({
 
 
 
+
+
+
+
   // --- WESTERN COUNTRIES: OCEANIA (MWL 18° Fajr, 17° Isha, Standard Asr Default: asrShadowFactor = 1) ---
   "australia/sydney": { regionCode: "WEST", subRegion: "OCEANIA", lat: -33.8688, lon: 151.2093, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1 },
   "australia/melbourne": { regionCode: "WEST", subRegion: "OCEANIA", lat: -37.8136, lon: 144.9631, fajrAngle: 18.0, ishaAngle: 17.0, ishaFixedMins: 0, asrShadowFactor: 1 },
@@ -2278,8 +2572,16 @@ const IANA_GEO_TIMEZONE_REGISTRY = deepFreeze({
 
 
 
+
+
+
+
 let cachedDeviceGeoCoords = null;
 let lastObservedTimezoneId = "";
+
+
+
+
 
 
 
@@ -2292,6 +2594,10 @@ function getSavedMadhabOverride() {
   } catch {}
   return null;
 }
+
+
+
+
 
 
 
@@ -2316,6 +2622,10 @@ function loadCachedDeviceGeoCoords() {
   } catch {}
   return null;
 }
+
+
+
+
 
 
 
@@ -2357,6 +2667,10 @@ function silentlyAcquireGpsPosition() {
 
 
 
+
+
+
+
 // X (Twitter)-style Silent Background Multi-Tier Geographic Location Detector
 // Never interrupts the user with intrusive permission dialogs:
 // - Immediately resolves timezone & geographic hub via `Intl.DateTimeFormat().resolvedOptions().timeZone`
@@ -2365,11 +2679,22 @@ function silentlyAcquireGpsPosition() {
 function initXStyleAutoGeographicDetector() {
   loadCachedDeviceGeoCoords();
 
+
+
+
+
+
+
+
   try {
     lastObservedTimezoneId =
       Intl.DateTimeFormat().resolvedOptions().timeZone ||
       String(new Date().getTimezoneOffset());
   } catch {}
+
+
+
+
 
 
 
@@ -2396,6 +2721,10 @@ function initXStyleAutoGeographicDetector() {
 
 
 
+
+
+
+
   // Silent Background Resume Watcher: If device changes timezone or returns to foreground, sync immediately
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
@@ -2418,11 +2747,30 @@ function initXStyleAutoGeographicDetector() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 // ============================================================================
 // INTERACTIVE BANGLADESH 8 DIVISIONS → ALL 64 DISTRICTS (ZILAS) → UPAZILA/THANA
 // SELECTOR ENGINE (ISLAMIC FOUNDATION BANGLADESH COORDINATES & DYNAMIC UI)
 // ============================================================================
 const BD_SELECTED_LOC_STORAGE_KEY = "SUNNAH_24_BD_SELECTED_LOCATION_V1";
+
+
+
+
+
+
+
 
 const BD_GEO_HIERARCHY = deepFreeze([
   {
@@ -2558,6 +2906,10 @@ const BD_GEO_HIERARCHY = deepFreeze([
 
 
 
+
+
+
+
 // Upazila-level micro-coordinate offsets so selecting a specific Upazila/Thana refines local solar transit
 function computeUpazilaMicroCoordinates(districtObj, upazilaIndex, totalUpazilas) {
   if (!districtObj) return { lat: 24.0, lon: 89.85 };
@@ -2572,6 +2924,10 @@ function computeUpazilaMicroCoordinates(districtObj, upazilaIndex, totalUpazilas
     lon: Number((districtObj.lon + lonOffset).toFixed(4))
   };
 }
+
+
+
+
 
 
 
@@ -2597,6 +2953,10 @@ function getSavedBdLocationSelection() {
 
 
 
+
+
+
+
 function saveBdLocationSelection(selectionObj) {
   try {
     if (!selectionObj) {
@@ -2606,6 +2966,10 @@ function saveBdLocationSelection(selectionObj) {
     localStorage.setItem(BD_SELECTED_LOC_STORAGE_KEY, JSON.stringify(selectionObj));
   } catch {}
 }
+
+
+
+
 
 
 
@@ -2624,8 +2988,16 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
 
 
 
+
+
+
+
   const tzLower = tzName.toLowerCase();
   const gps = loadCachedDeviceGeoCoords();
+
+
+
+
 
 
 
@@ -2634,6 +3006,10 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
     typeof getSavedGlobalOrBdLocation === "function"
       ? getSavedGlobalOrBdLocation()
       : getSavedBdLocationSelection();
+
+
+
+
 
 
 
@@ -2673,9 +3049,17 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
 
 
 
+
+
+
+
     // Store the automatic Region-Matched Default before checking user's manual Madhab Toggle override
     const regionalDefaultFactor = profileObj.asrShadowFactor === 1 ? 1 : 2;
     profileObj.regionalDefaultAsrFactor = regionalDefaultFactor;
+
+
+
+
 
 
 
@@ -2693,6 +3077,10 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
     }
     return profileObj;
   };
+
+
+
+
 
 
 
@@ -2724,6 +3112,10 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
 
 
 
+
+
+
+
   // Tier 1: Exact IANA Timezone Match from Global Registry (Preserves exact Region-Matched asrShadowFactor: 2 or 1)
   if (tzLower && IANA_GEO_TIMEZONE_REGISTRY[tzLower]) {
     const regEntry = IANA_GEO_TIMEZONE_REGISTRY[tzLower];
@@ -2740,6 +3132,10 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
     };
     return finalizeProfileWithGpsAndMadhab(matched);
   }
+
+
+
+
 
 
 
@@ -2784,6 +3180,10 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
 
 
 
+
+
+
+
     if (Math.abs(localTzOffsetHours - 6.0) < 0.15) {
       saProfile.lat = 24.0;
       saProfile.lon = 89.85;
@@ -2804,6 +3204,10 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
     }
     return finalizeProfileWithGpsAndMadhab(saProfile);
   }
+
+
+
+
 
 
 
@@ -2835,6 +3239,10 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
     };
     return finalizeProfileWithGpsAndMadhab(seBase);
   }
+
+
+
+
 
 
 
@@ -2895,6 +3303,10 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
 
 
 
+
+
+
+
   // Tier 5: Western Countries Automatic Catcher (North/South America, UK/Europe, Australia/New Zealand) -> Region-Matched Default: Standard (asrShadowFactor = 1)
   if (
     tzLower.startsWith("europe/") ||
@@ -2938,6 +3350,10 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
 
 
 
+
+
+
+
   // Tier 6: Fallback to selected locale profile with its Region-Matched Default
   const lang = appState.locale || "bn";
   const fallbackProfile = {
@@ -2949,9 +3365,17 @@ function resolveActiveRegionalProfile(dateObj = new Date()) {
 
 
 
+
+
+
+
 // Astronomical Solar Declination & Equation of Time Calculator (NOAA / Jean Meeus High-Precision)
 function computeSeasonalPrayerSchedule(dateObj = new Date()) {
   const profile = resolveActiveRegionalProfile(dateObj);
+
+
+
+
 
 
 
@@ -2967,14 +3391,26 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
 
 
 
+
+
+
+
   const deg2rad = (d) => (d * Math.PI) / 180;
   const rad2deg = (r) => (r * 180) / Math.PI;
 
 
 
 
+
+
+
+
   // Fractional year gamma (radians) evaluated at local solar noon
   const gamma = ((2 * Math.PI) / 365.25) * (dayOfYear - 1 + 0.5);
+
+
+
+
 
 
 
@@ -2987,6 +3423,10 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
       0.032077 * Math.sin(gamma) -
       0.014615 * Math.cos(2 * gamma) -
       0.040849 * Math.sin(2 * gamma));
+
+
+
+
 
 
 
@@ -3004,7 +3444,15 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
 
 
 
+
+
+
+
   const latRad = deg2rad(profile.lat);
+
+
+
+
 
 
 
@@ -3015,12 +3463,20 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
 
 
 
+
+
+
+
   // Sunrise & Sunset (-0.833° atmospheric refraction + solar limb radius)
   function getSolarElevationMinutes(altitudeDeg, fallbackPortionOfNight = null, nightLen = 660) {
     const altRad = deg2rad(altitudeDeg);
     const cosH =
       (Math.sin(altRad) - Math.sin(latRad) * Math.sin(declRad)) /
       (Math.cos(latRad) * Math.cos(declRad));
+
+
+
+
 
 
 
@@ -3039,10 +3495,18 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
 
 
 
+
+
+
+
   const sunHalfDayMins = getSolarElevationMinutes(-0.833);
   const sunriseMins = solarNoonMins - sunHalfDayMins;
   const sunsetMins = solarNoonMins + sunHalfDayMins;
   const nightDuration = 1440 - (sunsetMins - sunriseMins);
+
+
+
+
 
 
 
@@ -3054,6 +3518,10 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
     120,
     solarNoonMins - Math.min(fajrOffsetFromNoon, maxSafeFajrOffset)
   );
+
+
+
+
 
 
 
@@ -3070,6 +3538,10 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
 
 
 
+
+
+
+
   // Asr Calculation (Non-Contradictory Dual-Madhab Engine: Hanafi factor = 2 vs Standard/Shafi'i factor = 1):
   const zenithDiffRad = Math.abs(latRad - declRad);
   const asrShafiiAltDeg = rad2deg(Math.atan(1 / (1 + Math.tan(zenithDiffRad))));
@@ -3081,8 +3553,16 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
 
 
 
+
+
+
+
   // Maghrib begins immediately after Sunset (+2 mins precaution)
   const maghribMins = sunsetMins + 2;
+
+
+
+
 
 
 
@@ -3103,6 +3583,10 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
 
 
 
+
+
+
+
   // World-Standard Islamic Night Divisions (Sunset/Maghrib to Fajr / Subh Sadiq):
   // - 1st Third End (Prime / Mustahabb Isha time ends — Sahih Muslim 638)
   // - Islamic Midnight (Nisf al-Layl)
@@ -3115,6 +3599,10 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
 
 
 
+
+
+
+
   // Season indicator (Winter, Summer, Equinox)
   const isNorthern = profile.lat >= 0;
   let seasonType = "equinox";
@@ -3123,6 +3611,10 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
   } else if (month >= 4 && month <= 7) {
     seasonType = isNorthern ? "summer" : "winter";
   }
+
+
+
+
 
 
 
@@ -3157,6 +3649,10 @@ function computeSeasonalPrayerSchedule(dateObj = new Date()) {
 
 
 
+
+
+
+
 // Formats minute-of-day (0..1439) into localized 12-hour time string (e.g., ভোর ০৪:৫২, ٠٤:٥٢ ص, 04:52 AM)
 function formatMinutesToLocalizedTime(totalMins, locale = appState.locale) {
   const clamped = ((Math.round(totalMins) % 1440) + 1440) % 1440;
@@ -3165,6 +3661,10 @@ function formatMinutesToLocalizedTime(totalMins, locale = appState.locale) {
   const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
   const hStr = localizeDigits(String(h12).padStart(2, "0"), locale);
   const mStr = localizeDigits(String(mins).padStart(2, "0"), locale);
+
+
+
+
 
 
 
@@ -3182,6 +3682,10 @@ function formatMinutesToLocalizedTime(totalMins, locale = appState.locale) {
 
 
 
+
+
+
+
   if (locale === "ar") {
     const suffix = h24 < 12 ? "ص" : "م";
     return `${hStr}:${mStr} ${suffix}`;
@@ -3190,9 +3694,17 @@ function formatMinutesToLocalizedTime(totalMins, locale = appState.locale) {
 
 
 
+
+
+
+
   const suffix = h24 < 12 ? "AM" : "PM";
   return `${hStr}:${mStr} ${suffix}`;
 }
+
+
+
+
 
 
 
@@ -3209,9 +3721,17 @@ function formatWindowRangeLabel(startMins, endMins, locale = appState.locale) {
 
 
 
+
+
+
+
 // Dynamically computes the exact seasonal start & end minutes for each of the 32 Prophetic habits
 function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
   const s = computeSeasonalPrayerSchedule(now);
+
+
+
+
 
 
 
@@ -3277,6 +3797,10 @@ function getDynamicSeasonalHabitWindow(habit, now = new Date()) {
 
 
 
+
+
+
+
 // Computes the daytime (Suhoor-to-Iftar) Hijri day/month/year for any solar date,
 // respecting the regional moon-sighting offset (Bangladesh/South Asia vs Makkah/Global).
 function getDaytimeHijriPartsForSolarDate(dateObj = new Date()) {
@@ -3290,6 +3814,10 @@ function getDaytimeHijriPartsForSolarDate(dateObj = new Date()) {
   );
   return extractRawHijriParts(baseSolarDate);
 }
+
+
+
+
 
 
 
@@ -3308,6 +3836,10 @@ function evaluateSunnahFastingDayStatus(now = new Date()) {
 
 
 
+
+
+
+
   // Forbidden Eid / Tashreeq fasting days safeguard (1 Shawwal, 10-13 Dhu al-Hijjah)
   const isEidAlFitr = daytimeHijri.hMonth === 10 && hDay === 1;
   const isEidOrTashreeq = daytimeHijri.hMonth === 12 && hDay >= 10 && hDay <= 13;
@@ -3315,9 +3847,17 @@ function evaluateSunnahFastingDayStatus(now = new Date()) {
 
 
 
+
+
+
+
   const isHijriWhiteDay = hDay >= 13 && hDay <= 15 && !isEidOrTashreeq;
   const isGregorianMidMonth = gDay >= 13 && gDay <= 15 && !isEidAlFitr && !isEidOrTashreeq;
   const isFastingDay = !isEidAlFitr && !isEidOrTashreeq && (isMonOrThu || isHijriWhiteDay || isGregorianMidMonth);
+
+
+
+
 
 
 
@@ -3335,6 +3875,10 @@ function evaluateSunnahFastingDayStatus(now = new Date()) {
 
 
 
+
+
+
+
 // ============================================================================
 // CROSS-MIDNIGHT ISLAMIC NIGHT LEDGER ENGINE (ISHA, WITR & SURAH MULK/BAQARAH)
 // Keeps a single unified Isha-to-Fajr completion state across 12:00 AM midnight
@@ -3345,6 +3889,10 @@ function getPreviousSolarDateKey(now = new Date()) {
   const prev = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
   return getLocalDateKey(prev);
 }
+
+
+
+
 
 
 
@@ -3365,11 +3913,19 @@ function resolveHabitLedgerDateKey(habit, now = new Date()) {
 
 
 
+
+
+
+
 function isHabitCompletedInActiveCycle(habit, now = new Date()) {
   if (!habit) return false;
   const targetKey = resolveHabitLedgerDateKey(habit, now);
   const targetList = (appState.completionsByDate && appState.completionsByDate[targetKey]) || [];
   if (targetList.includes(habit.id)) return true;
+
+
+
+
 
 
 
@@ -3386,11 +3942,19 @@ function isHabitCompletedInActiveCycle(habit, now = new Date()) {
 
 
 
+
+
+
+
 // Evaluates whether a habit is currently "open", "upcoming", or "expired" based on seasonal Waqt
 function evaluateHabitTimeWindow(habit, now = new Date()) {
   const rule = getDynamicSeasonalHabitWindow(habit, now);
   const nowMins = now.getHours() * 60 + now.getMinutes();
   const winLabel = formatWindowRangeLabel(rule.start, rule.end, appState.locale);
+
+
+
+
 
 
 
@@ -3418,6 +3982,10 @@ function evaluateHabitTimeWindow(habit, now = new Date()) {
 
 
 
+
+
+
+
   // Special check for Sunnah Fasting (Habit #31): Strictly locked unless today is Monday, Thursday, or 13th–15th of the month!
   if (rule.fastingDaysOnly) {
     const fastStatus = evaluateSunnahFastingDayStatus(now);
@@ -3440,6 +4008,10 @@ function evaluateHabitTimeWindow(habit, now = new Date()) {
       };
     }
   }
+
+
+
+
 
 
 
@@ -3476,6 +4048,10 @@ function evaluateHabitTimeWindow(habit, now = new Date()) {
 
 
 
+
+
+
+
   // Support Tahajjud early-night opening (after 1st third of the night) + Golden Last Third
   if (typeof rule.earlyStart === "number") {
     const inEarlyNight =
@@ -3500,6 +4076,10 @@ function evaluateHabitTimeWindow(habit, now = new Date()) {
 
 
 
+
+
+
+
   if (nowMins < rule.start) {
     return {
       status: "upcoming",
@@ -3513,6 +4093,10 @@ function evaluateHabitTimeWindow(habit, now = new Date()) {
           : `⏳ সময় শুরু হয়নি (${winLabel})`
     };
   }
+
+
+
+
 
 
 
@@ -3534,6 +4118,10 @@ function evaluateHabitTimeWindow(habit, now = new Date()) {
 
 
 
+
+
+
+
   return {
     status: "open",
     canTick: true,
@@ -3550,6 +4138,10 @@ function evaluateHabitTimeWindow(habit, now = new Date()) {
 
 
 
+
+
+
+
 // Evaluates Morning/Evening Masnoon Dua Time Windows using seasonal Fajr, Zawal, Asr & Isha
 function evaluateDuaTimeWindow(dua, now = new Date()) {
   const s = computeSeasonalPrayerSchedule(now);
@@ -3558,10 +4150,18 @@ function evaluateDuaTimeWindow(dua, now = new Date()) {
 
 
 
+
+
+
+
   const morningStart = s.fajr;
   const morningEnd = s.zawal;
   const eveningStart = s.asr;
   const eveningEnd = 23 * 60 + 59;
+
+
+
+
 
 
 
@@ -3577,12 +4177,20 @@ function evaluateDuaTimeWindow(dua, now = new Date()) {
 
 
 
+
+
+
+
   // Evening/Night-only Duas (dua_01_kalimat_tammat, dua_15_baqarah_last2)
   if (dua.id === "dua_01_kalimat_tammat" || dua.id === "dua_15_baqarah_last2") {
     const lbl = formatWindowRangeLabel(eveningStart, eveningEnd, appState.locale);
     if (nowMins < eveningStart) return { status: "upcoming", canTick: false, windowLabel: lbl };
     return { status: "open", canTick: true, windowLabel: lbl };
   }
+
+
+
+
 
 
 
@@ -3597,9 +4205,17 @@ function evaluateDuaTimeWindow(dua, now = new Date()) {
 
 
 
+
+
+
+
   // Morning & Evening Duas (Open during Seasonal Morning Fajr..Zawal OR Seasonal Evening Asr..Midnight)
   const inMorning = nowMins >= morningStart && nowMins <= morningEnd;
   const inEvening = nowMins >= eveningStart && nowMins <= eveningEnd;
+
+
+
+
 
 
 
@@ -3639,6 +4255,10 @@ function evaluateDuaTimeWindow(dua, now = new Date()) {
 
 
 
+
+
+
+
 function showTimeLockToast(message) {
   let toast = document.getElementById("s24-exit-toast");
   if (!toast) {
@@ -3658,6 +4278,10 @@ function showTimeLockToast(message) {
 
 
 
+
+
+
+
 function updateSvgCircleProgress(circleId, pct, circumference) {
   const circle = document.getElementById(circleId);
   if (!circle) return;
@@ -3666,6 +4290,10 @@ function updateSvgCircleProgress(circleId, pct, circumference) {
   circle.style.strokeDasharray = `${circumference}`;
   circle.style.strokeDashoffset = `${offset.toFixed(2)}`;
 }
+
+
+
+
 
 
 
@@ -3688,11 +4316,19 @@ function updateTasbihCircularUI() {
 
 
 
+
+
+
+
 function renderTasbihOptions() {
   const selector = document.getElementById("tasbih-selector");
   if (!selector) return;
   const currentIdx = selector.selectedIndex >= 0 ? selector.selectedIndex : 0;
   const options = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).tasbih_options;
+
+
+
+
 
 
 
@@ -3708,6 +4344,10 @@ function renderTasbihOptions() {
 
 
 
+
+
+
+
   const safeIdx = currentIdx >= 0 && currentIdx < options.length ? currentIdx : 0;
   selector.selectedIndex = safeIdx;
   const chosen = options[safeIdx] || options[0];
@@ -3716,10 +4356,18 @@ function renderTasbihOptions() {
 
 
 
+
+
+
+
   const currentEl = document.getElementById("tasbih-current");
   const targetEl = document.getElementById("tasbih-target");
   const labelEl = document.getElementById("tasbih-label");
   const lifetimeEl = document.getElementById("lifetime-dhikr-count");
+
+
+
+
 
 
 
@@ -3736,6 +4384,10 @@ function renderTasbihOptions() {
 
 
 
+
+
+
+
 async function toggleDuaCompletion(duaId) {
   const dua = SUNNAH_24_DUAS.find((d) => d.id === duaId);
   if (!dua) return;
@@ -3746,9 +4398,17 @@ async function toggleDuaCompletion(duaId) {
 
 
 
+
+
+
+
   const list = appState.duaCompletionsByDate[todayKey];
   const isDone = list.includes(duaId);
   const winState = evaluateDuaTimeWindow(dua, new Date());
+
+
+
+
 
 
 
@@ -3767,6 +4427,10 @@ async function toggleDuaCompletion(duaId) {
 
 
 
+
+
+
+
   if (isDone) {
     list.splice(list.indexOf(duaId), 1);
   } else {
@@ -3779,6 +4443,14 @@ async function toggleDuaCompletion(duaId) {
   renderLongTermArchive();
   if (typeof syncMasterSectionsLiveProgress === 'function') syncMasterSectionsLiveProgress();
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -3829,6 +4501,10 @@ const HABIT_CIRCULAR_ICONS = deepFreeze({
 
 
 
+
+
+
+
 const DUA_CIRCULAR_ICONS = deepFreeze({
   dua_01_kalimat_tammat: { icon: "🛡️", theme: "emerald" },
   dua_02_tahlil: { icon: "☝️", theme: "gold" },
@@ -3846,6 +4522,10 @@ const DUA_CIRCULAR_ICONS = deepFreeze({
   dua_14_ayatul_kursi: { icon: "👑", theme: "emerald" },
   dua_15_baqarah_last2: { icon: "🌙", theme: "indigo" }
 });
+
+
+
+
 
 
 
@@ -3869,12 +4549,20 @@ function getHabitIconMeta(habit) {
 
 
 
+
+
+
+
 function getDuaIconMeta(dua) {
   if (dua && DUA_CIRCULAR_ICONS[dua.id]) {
     return DUA_CIRCULAR_ICONS[dua.id];
   }
   return { icon: "🤲", theme: "emerald" };
 }
+
+
+
+
 
 
 
@@ -3892,10 +4580,18 @@ function formatShortWaqtClock(totalMins, locale = appState.locale) {
 
 
 
+
+
+
+
 function formatRemainingDurationText(remainingMins, locale = appState.locale, includeSuffix = false) {
   const safeMins = Math.max(1, Math.ceil(remainingMins));
   const hrs = Math.floor(safeMins / 60);
   const mins = safeMins % 60;
+
+
+
+
 
 
 
@@ -3914,6 +4610,10 @@ function formatRemainingDurationText(remainingMins, locale = appState.locale, in
 
 
 
+
+
+
+
   if (locale === "ar") {
     const prefix = includeSuffix ? "متبقي " : "";
     if (hrs > 0 && mins > 0) {
@@ -3924,6 +4624,10 @@ function formatRemainingDurationText(remainingMins, locale = appState.locale, in
     }
     return `${prefix}${localizeDigits(mins, "ar")} دقيقة`;
   }
+
+
+
+
 
 
 
@@ -3941,6 +4645,10 @@ function formatRemainingDurationText(remainingMins, locale = appState.locale, in
 
 
 
+
+
+
+
 function renderFiveWaqtStrip(now = new Date()) {
   const gridEl = document.getElementById("five-waqt-grid");
   if (!gridEl) return;
@@ -3948,6 +4656,10 @@ function renderFiveWaqtStrip(now = new Date()) {
   const nowMins = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
   const lang = appState.locale || "bn";
   const middayMeta = resolveMiddayWaqtMeta(now, lang);
+
+
+
+
 
 
 
@@ -4005,12 +4717,20 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
   // Authentic 3 Prohibited Salah Windows (Sahih Muslim 831) synchronized with Live Waqt Card:
   const pWindows = sched.prohibitedWindows || {
     sunrise: { start: sched.sunrise, end: sched.sunrise + 15 },
     zawal: { start: sched.zawal, end: sched.dhuhr },
     sunset: { start: sched.sunset - 15, end: sched.sunset }
   };
+
+
+
+
 
 
 
@@ -4046,8 +4766,16 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
     const startLbl = lang === "bn" ? "শুরু (Start)" : lang === "ar" ? "بداية الوقت" : "Starts At";
     const endLbl = lang === "bn" ? "শেষ (End)" : lang === "ar" ? "نهاية الوقت" : "Ends At";
+
+
+
+
 
 
 
@@ -4069,9 +4797,17 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
       const fajrStartClock = formatShortWaqtClock(sched.fajr, lang);
       const fajrPrimeEnd = Math.min(pWindows.sunrise.start - 5, sched.fajr + 38);
       const fajrPrimeClock = formatShortWaqtClock(fajrPrimeEnd, lang);
+
+
+
+
 
 
 
@@ -4102,6 +4838,10 @@ function renderFiveWaqtStrip(now = new Date()) {
       winEnd = pWindows.sunrise.end;
       isProhibitedNow = true;
       exactEndDisplay = true;
+
+
+
+
 
 
 
@@ -4146,9 +4886,17 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
       const ishraqStartClock = formatShortWaqtClock(pWindows.sunrise.end, lang);
       const ishraqPrimeEnd = Math.min(pWindows.zawal.start - 15, pWindows.sunrise.end + 45);
       const ishraqPrimeClock = formatShortWaqtClock(ishraqPrimeEnd, lang);
+
+
+
+
 
 
 
@@ -4179,6 +4927,10 @@ function renderFiveWaqtStrip(now = new Date()) {
       winEnd = pWindows.zawal.end;
       isProhibitedNow = true;
       exactEndDisplay = true;
+
+
+
+
 
 
 
@@ -4223,9 +4975,17 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
       const dhuhrStartClock = formatShortWaqtClock(pWindows.zawal.end, lang);
       const dhuhrPrimeEnd = Math.min(sched.asr - 15, pWindows.zawal.end + 50);
       const dhuhrPrimeClock = formatShortWaqtClock(dhuhrPrimeEnd, lang);
+
+
+
+
 
 
 
@@ -4269,9 +5029,17 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
       const asrStartClock = formatShortWaqtClock(sched.asr, lang);
       const asrPrimeEnd = Math.max(sched.asr + 30, pWindows.sunset.start - 25);
       const asrPrimeClock = formatShortWaqtClock(asrPrimeEnd, lang);
+
+
+
+
 
 
 
@@ -4302,6 +5070,10 @@ function renderFiveWaqtStrip(now = new Date()) {
       winEnd = sched.maghrib;
       isProhibitedNow = true;
       exactEndDisplay = true;
+
+
+
+
 
 
 
@@ -4346,9 +5118,17 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
       const maghribStartClock = formatShortWaqtClock(sched.maghrib, lang);
       const maghribPrimeEnd = Math.min(sched.isha - 5, sched.maghrib + 25);
       const maghribPrimeClock = formatShortWaqtClock(maghribPrimeEnd, lang);
+
+
+
+
 
 
 
@@ -4370,6 +5150,10 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
       const normFirstThirdEnd =
         sched.firstThirdEnd < sched.isha ? sched.firstThirdEnd + 1440 : sched.firstThirdEnd;
       const normLastThirdStart =
@@ -4380,10 +5164,18 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
       const ishaStartClock = formatShortWaqtClock(sched.isha, lang);
       const fajrEndClock = formatShortWaqtClock(fajrEndMinusOne, lang);
       const firstThirdClock = formatShortWaqtClock(firstThirdEndMinusOne, lang);
       const lastThirdClock = formatShortWaqtClock(sched.lastThirdStart, lang);
+
+
+
+
 
 
 
@@ -4404,6 +5196,10 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
       primeValueHtml = `${ishaStartClock} – ${firstThirdClock}`;
       rakahSummary =
         lang === "bn"
@@ -4411,6 +5207,10 @@ function renderFiveWaqtStrip(now = new Date()) {
           : lang === "ar"
           ? "🕌 ٤ ركعات فرض + ركعتان سنة + صلاة الوتر"
           : "🕌 4 Rak'ah Fard + 2 Rak'ah Sunnah + Witr Prayer";
+
+
+
+
 
 
 
@@ -4437,12 +5237,20 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
       const tahajjudMiniTitle =
         lang === "bn"
           ? "তাহাজ্জুদ (শেষ ১/৩ শ্রেষ্ঠ সময়):"
           : lang === "ar"
           ? "التهجد (الثلث الأخير):"
           : "Tahajjud (Best Last 1/3):";
+
+
+
+
 
 
 
@@ -4464,10 +5272,18 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
     const totalDuration = Math.max(1, winEnd - winStart);
     const elapsed = Math.max(0, Math.min(totalDuration, currentPos - winStart));
     const remaining = Math.max(0, winEnd - currentPos);
     const pct = Math.max(4, Math.min(100, Math.round((elapsed / totalDuration) * 100)));
+
+
+
+
 
 
 
@@ -4480,11 +5296,19 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
     const startShortStr = formatShortWaqtClock(winStart, lang);
     const endShortStr = formatShortWaqtClock(displayEndMins, lang);
     const startFullStr = formatMinutesToLocalizedTime(winStart, lang);
     const endFullStr = formatMinutesToLocalizedTime(displayEndMins, lang);
     const remainingTextStr = formatRemainingDurationText(remaining, lang);
+
+
+
+
 
 
 
@@ -4504,6 +5328,10 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
     const countdownRowLabel = isProhibitedNow
       ? lang === "bn"
         ? "⏱️ নিষিদ্ধ সময় বাকি:"
@@ -4519,7 +5347,15 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
     boxEl.classList.toggle("waqt-prohibited-active", isProhibitedNow);
+
+
+
+
 
 
 
@@ -4546,6 +5382,10 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
       <div class="waqt-popup-time-grid ongoing-static-time-grid">
         <div class="waqt-popup-time-box start-box">
           <span class="waqt-popup-time-lbl">${startLbl}</span>
@@ -4557,6 +5397,10 @@ function renderFiveWaqtStrip(now = new Date()) {
           <strong class="waqt-popup-time-val">${endFullStr}</strong>
         </div>
       </div>
+
+
+
+
 
 
 
@@ -4575,7 +5419,15 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
       ${tahajjudSubCardHtml}
+
+
+
+
 
 
 
@@ -4587,6 +5439,10 @@ function renderFiveWaqtStrip(now = new Date()) {
       }
     `;
   }
+
+
+
+
 
 
 
@@ -4615,10 +5471,18 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+
+
+
+
   if (typeof syncOpenWaqtPopupIfVisible === "function") {
     syncOpenWaqtPopupIfVisible(now);
   }
 }
+
+
+
+
 
 
 
@@ -4631,10 +5495,18 @@ function renderDuas() {
 
 
 
+
+
+
+
   const lang = appState.locale || "bn";
   const todayKey = getTodayKey();
   const completedDuas = (appState.duaCompletionsByDate && appState.duaCompletionsByDate[todayKey]) || [];
   const now = new Date();
+
+
+
+
 
 
 
@@ -4649,9 +5521,17 @@ function renderDuas() {
 
 
 
+
+
+
+
     const isDone = completedDuas.includes(dua.id);
     const winState = evaluateDuaTimeWindow(dua, now);
     const isLocked = !winState.canTick && !isDone;
+
+
+
+
 
 
 
@@ -4666,6 +5546,10 @@ function renderDuas() {
     } else {
       btnLabel = lang === "ar" ? "📿 تحديد كمقروء" : lang === "en" ? "📿 Mark Recited" : "📿 পাঠ সম্পন্ন করুন";
     }
+
+
+
+
 
 
 
@@ -4700,6 +5584,10 @@ function renderDuas() {
 
 
 
+
+
+
+
   const totalDuas = SUNNAH_24_DUAS.length;
   const doneDuasCount = completedDuas.length;
   const duaPct = totalDuas > 0 ? Math.round((doneDuasCount / totalDuas) * 100) : 0;
@@ -4714,6 +5602,10 @@ function renderDuas() {
 
 
 
+
+
+
+
 function applyLanguageToDOM() {
   const langConfig = I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn;
   document.documentElement.lang = appState.locale;
@@ -4722,8 +5614,16 @@ function applyLanguageToDOM() {
 
 
 
+
+
+
+
   const switcher = document.getElementById("lang-switcher");
   if (switcher) switcher.value = appState.locale;
+
+
+
+
 
 
 
@@ -4736,10 +5636,18 @@ function applyLanguageToDOM() {
 
 
 
+
+
+
+
   document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
     const key = el.getAttribute("data-i18n-placeholder");
     el.setAttribute("placeholder", t(key));
   });
+
+
+
+
 
 
 
@@ -4753,6 +5661,10 @@ function applyLanguageToDOM() {
   if (typeof syncMasterSectionsLiveProgress === "function") syncMasterSectionsLiveProgress();
   updateIntegrityUI(true);
 }
+
+
+
+
 
 
 
@@ -4771,6 +5683,10 @@ function extractRawHijriParts(targetDateObj) {
 
 
 
+
+
+
+
   const calendars = ["islamic-umalqura", "islamic-civil", "islamic"];
   for (const cal of calendars) {
     try {
@@ -4783,9 +5699,17 @@ function extractRawHijriParts(targetDateObj) {
 
 
 
+
+
+
+
       const d = parseInt(parts.find((p) => p.type === "day")?.value, 10);
       const m = parseInt(parts.find((p) => p.type === "month")?.value, 10);
       const y = parseInt(parts.find((p) => p.type === "year")?.value, 10);
+
+
+
+
 
 
 
@@ -4799,6 +5723,10 @@ function extractRawHijriParts(targetDateObj) {
       }
     } catch {}
   }
+
+
+
+
 
 
 
@@ -4824,8 +5752,16 @@ function extractRawHijriParts(targetDateObj) {
 
 
 
+
+
+
+
   return { hDay, hMonth, hYear };
 }
+
+
+
+
 
 
 
@@ -4879,6 +5815,10 @@ function getMoonBasedHijriDetails(dateObj = new Date(), locale = appState.locale
 
 
 
+
+
+
+
   const arabicWeekdays = {
     bn: [
       "ইয়াওমুল আহাদ",
@@ -4912,8 +5852,16 @@ function getMoonBasedHijriDetails(dateObj = new Date(), locale = appState.locale
 
 
 
+
+
+
+
   const sched = computeSeasonalPrayerSchedule(dateObj);
   const nowMins = dateObj.getHours() * 60 + dateObj.getMinutes();
+
+
+
+
 
 
 
@@ -4928,6 +5876,10 @@ function getMoonBasedHijriDetails(dateObj = new Date(), locale = appState.locale
 
 
 
+
+
+
+
   const baseSolarDate = new Date(
     dateObj.getFullYear(),
     dateObj.getMonth(),
@@ -4938,8 +5890,16 @@ function getMoonBasedHijriDetails(dateObj = new Date(), locale = appState.locale
 
 
 
+
+
+
+
   let activeHijri = daytimeHijri;
   let prevDaytimeHijri = null;
+
+
+
+
 
 
 
@@ -4957,10 +5917,18 @@ function getMoonBasedHijriDetails(dateObj = new Date(), locale = appState.locale
 
 
 
+
+
+
+
   // Islamic Yawm also rolls over to the next weekday at Maghrib!
   const islamicWeekdayIndex = isAfterMaghrib
     ? (dateObj.getDay() + 1) % 7
     : dateObj.getDay();
+
+
+
+
 
 
 
@@ -4974,8 +5942,16 @@ function getMoonBasedHijriDetails(dateObj = new Date(), locale = appState.locale
 
 
 
+
+
+
+
   let shortHeaderText = "";
   let cardHeadlineHtml = "";
+
+
+
+
 
 
 
@@ -5008,6 +5984,10 @@ function getMoonBasedHijriDetails(dateObj = new Date(), locale = appState.locale
 
 
 
+
+
+
+
   return {
     shortHeaderText,
     cardHeadlineHtml,
@@ -5018,9 +5998,17 @@ function getMoonBasedHijriDetails(dateObj = new Date(), locale = appState.locale
 
 
 
+
+
+
+
 function getAccurateHijriDate(dateObj, locale) {
   return getMoonBasedHijriDetails(dateObj, locale).shortHeaderText;
 }
+
+
+
+
 
 
 
@@ -5075,11 +6063,19 @@ function getBanglaPonjikaDetails(dateObj = new Date(), locale = appState.locale)
 
 
 
+
+
+
+
   const banglaSeasons = {
     bn: ["গ্রীষ্মকাল", "বর্ষাকাল", "শরৎকাল", "হেমন্তকাল", "শীতকাল", "বসন্তকাল"],
     ar: ["فصل الصيف", "فصل الأمطار", "فصل الخريف", "فصل الخريف المتأخر", "فصل الشتاء", "فصل الربيع"],
     en: ["Grishmo (Summer)", "Borsha (Monsoon)", "Shorot (Autumn)", "Hemonto (Late Autumn)", "Sheet (Winter)", "Bosonto (Spring)"]
   };
+
+
+
+
 
 
 
@@ -5093,8 +6089,16 @@ function getBanglaPonjikaDetails(dateObj = new Date(), locale = appState.locale)
 
 
 
+
+
+
+
   const gYear = dateObj.getFullYear();
   const isLeap = (gYear % 4 === 0 && gYear % 100 !== 0) || gYear % 400 === 0;
+
+
+
+
 
 
 
@@ -5106,9 +6110,17 @@ function getBanglaPonjikaDetails(dateObj = new Date(), locale = appState.locale)
 
 
 
+
+
+
+
   const startOfBoishakhThisYear = Date.UTC(gYear, 3, 14); // April 14
   const currentUtcMidnight = Date.UTC(gYear, dateObj.getMonth(), dateObj.getDate());
   let dayDiff = Math.floor((currentUtcMidnight - startOfBoishakhThisYear) / 86400000);
+
+
+
+
 
 
 
@@ -5122,6 +6134,10 @@ function getBanglaPonjikaDetails(dateObj = new Date(), locale = appState.locale)
     dayDiff = prevYearTotalDays + dayDiff;
     monthLengths[10] = prevLeap ? 30 : 29;
   }
+
+
+
+
 
 
 
@@ -5141,12 +6157,20 @@ function getBanglaPonjikaDetails(dateObj = new Date(), locale = appState.locale)
 
 
 
+
+
+
+
   const lang = banglaMonths[locale] ? locale : "bn";
   const weekdayName = (banglaWeekdays[lang] || banglaWeekdays.bn)[dateObj.getDay()];
   const bDayStr = localizeDigits(bDay, lang);
   const bYearStr = localizeDigits(bYear, lang);
   const bMonthName = (banglaMonths[lang] || banglaMonths.bn)[bMonthIndex];
   const seasonName = (banglaSeasons[lang] || banglaSeasons.bn)[seasonIndex];
+
+
+
+
 
 
 
@@ -5172,9 +6196,17 @@ function getBanglaPonjikaDetails(dateObj = new Date(), locale = appState.locale)
 
 
 
+
+
+
+
 function renderHeaderDatesAndPhase() {
   const now = new Date();
   const localeTag = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).localeTag;
+
+
+
+
 
 
 
@@ -5188,9 +6220,17 @@ function renderHeaderDatesAndPhase() {
 
 
 
+
+
+
+
   const hijriDetails = getMoonBasedHijriDetails(now, appState.locale);
   const banglaDetails = getBanglaPonjikaDetails(now, appState.locale);
   const sched = computeSeasonalPrayerSchedule(now);
+
+
+
+
 
 
 
@@ -5200,6 +6240,10 @@ function renderHeaderDatesAndPhase() {
   if (headerDateEl) {
     headerDateEl.textContent = "";
   }
+
+
+
+
 
 
 
@@ -5221,9 +6265,21 @@ function renderHeaderDatesAndPhase() {
 
 
 
+
+
+
+
+
+
+
+
   const nowMins = now.getHours() * 60 + now.getMinutes();
   let phaseLabel = t("phase_banner_night");
   let activeWaqtWindow = "";
+
+
+
+
 
 
 
@@ -5248,11 +6304,19 @@ function renderHeaderDatesAndPhase() {
 
 
 
+
+
+
+
   // Null-safe update in case #next-phase-banner is replaced by the Live Waqt Countdown Bar
   const nextPhaseBannerEl = document.getElementById("next-phase-banner");
   if (nextPhaseBannerEl) {
     nextPhaseBannerEl.textContent = `${phaseLabel} (${activeWaqtWindow})`;
   }
+
+
+
+
 
 
 
@@ -5280,6 +6344,10 @@ function renderHeaderDatesAndPhase() {
 
 
 
+
+
+
+
   if (typeof renderFiveWaqtStrip === "function") {
     renderFiveWaqtStrip(now);
   }
@@ -5291,9 +6359,17 @@ function renderHeaderDatesAndPhase() {
 
 
 
+
+
+
+
 function getAllHabits() {
   return [...SUNNAH_24_HABITS, ...(appState.customHabits || [])];
 }
+
+
+
+
 
 
 
@@ -5309,9 +6385,17 @@ function calculateStreak() {
 
 
 
+
+
+
+
   if (doneToday === 0) {
     cursor.setDate(cursor.getDate() - 1);
   }
+
+
+
+
 
 
 
@@ -5332,11 +6416,19 @@ function calculateStreak() {
 
 
 
+
+
+
+
 function renderHabits() {
   const container = document.getElementById("habit-list-container");
   if (!container) return;
   const allHabits = getAllHabits();
   const now = new Date();
+
+
+
+
 
 
 
@@ -5348,6 +6440,10 @@ function renderHabits() {
 
 
 
+
+
+
+
   allHabits.forEach((h) => {
     const isDone = isHabitCompletedInActiveCycle(h, now);
     if (isDone) activeCycleDoneCount++;
@@ -5355,6 +6451,10 @@ function renderHabits() {
     if (win.status === "open") openCount++;
     if (win.status === "expired" && !isDone) expiredMissedCount++;
   });
+
+
+
+
 
 
 
@@ -5386,6 +6486,10 @@ function renderHabits() {
 
 
 
+
+
+
+
     lockSummaryEl.textContent =
       appState.locale === "ar"
         ? `${seasonBadge} • متاح: ${openStr} | انتهى: ${expStr}`
@@ -5397,9 +6501,17 @@ function renderHabits() {
 
 
 
+
+
+
+
   const filtered = allHabits.filter((h) => {
     return activePhase === "all" || h.phase === activePhase;
   });
+
+
+
+
 
 
 
@@ -5415,7 +6527,15 @@ function renderHabits() {
 
 
 
+
+
+
+
   container.innerHTML = "";
+
+
+
+
 
 
 
@@ -5427,10 +6547,18 @@ function renderHabits() {
 
 
 
+
+
+
+
     let itemStateClass = "";
     let checkStateClass = "";
     let checkSymbol = "";
     let statusBadgeHtml = "";
+
+
+
+
 
 
 
@@ -5462,8 +6590,18 @@ function renderHabits() {
 
 
 
+
+
+
+
     const card = document.createElement("div");
     card.className = `habit-item ${itemStateClass}`;
+
+
+
+
+
+
 
 
     const iconMeta = getHabitIconMeta(habit);
@@ -5493,8 +6631,16 @@ function renderHabits() {
 
 
 
+
+
+
+
     container.appendChild(card);
   });
+
+
+
+
 
 
 
@@ -5502,6 +6648,10 @@ function renderHabits() {
   const total = allHabits.length;
   const doneCount = activeCycleDoneCount;
   const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+
+
+
+
 
 
 
@@ -5525,9 +6675,21 @@ function renderHabits() {
       appState.locale
     );
   }
+
+
+
+
+
+
+
+
   renderWeeklyChart();
   renderLongTermArchive();
 }
+
+
+
+
 
 
 
@@ -5607,6 +6769,10 @@ const CATEGORY_GRAPH_DEFINITIONS = deepFreeze([
 
 
 
+
+
+
+
 // Renders the 7 Native Phase Horizontal Progress Bar Graph + Lowest Phase Improvement Recommendation
 function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceContainerId) {
   const barsContainer = document.getElementById(barsContainerId);
@@ -5616,8 +6782,16 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
 
 
 
+
+
+
+
   const lang = appState.locale || "bn";
   const allHabits = getAllHabits();
+
+
+
+
 
 
 
@@ -5632,9 +6806,17 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
 
 
 
+
+
+
+
   // Never fallback to [getTodayKey()] when an unused month/range has 0 active days
   const hasActiveData = activeDateKeys.length > 0;
   const numDays = hasActiveData ? activeDateKeys.length : 1;
+
+
+
+
 
 
 
@@ -5651,6 +6833,10 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
 
 
 
+
+
+
+
     const phaseHabitIds = allHabits
       .filter((h) => h.phase === cat.phaseKey)
       .map((h) => h.id);
@@ -5658,9 +6844,17 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
 
 
 
+
+
+
+
     const perDayTarget = Math.max(1, phaseHabitIds.length);
     const totalPossible = Math.max(1, perDayTarget * numDays);
     let totalCompleted = 0;
+
+
+
+
 
 
 
@@ -5675,6 +6869,10 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
 
 
 
+
+
+
+
     const pct = Math.min(100, Math.round((totalCompleted / totalPossible) * 100));
     return {
       ...cat,
@@ -5682,6 +6880,10 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
       pct
     };
   });
+
+
+
+
 
 
 
@@ -5711,6 +6913,10 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
 
 
 
+
+
+
+
   if (adviceContainer) {
     if (!hasActiveData) {
       adviceContainer.innerHTML = `ℹ️ ${t("archive_empty")}`;
@@ -5721,11 +6927,19 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
 
 
 
+
+
+
+
     const overallAvg = Math.round(
       categoryResults.reduce((acc, c) => acc + c.pct, 0) / categoryResults.length
     );
     const sortedByLowest = [...categoryResults].sort((a, b) => a.pct - b.pct);
     const lowest = sortedByLowest[0];
+
+
+
+
 
 
 
@@ -5747,6 +6961,10 @@ function renderCategoryBreakdownGraph(dateKeysArray, barsContainerId, adviceCont
 
 
 
+
+
+
+
 // 7-Day Consistency Matrix Using Local Timezone Date Keys + Weekly Category Breakdown Graph
 function renderWeeklyChart() {
   const chart = document.getElementById("weekly-chart");
@@ -5760,6 +6978,10 @@ function renderWeeklyChart() {
 
 
 
+
+
+
+
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
@@ -5769,6 +6991,10 @@ function renderWeeklyChart() {
     const dayNum = localizeDigits(d.getDate(), appState.locale);
     const count = (appState.completionsByDate[key] || []).length;
     const pct = totalHabits > 0 ? Math.round((count / totalHabits) * 100) : 0;
+
+
+
+
 
 
 
@@ -5788,13 +7014,25 @@ function renderWeeklyChart() {
 
 
 
+
+
+
+
   renderCategoryBreakdownGraph(weekDateKeys, "weekly-category-bars", "weekly-category-advice");
 }
 
 
 
 
+
+
+
+
 let archiveFilterBySpecificMonth = true;
+
+
+
+
 
 
 
@@ -5808,8 +7046,16 @@ function renderLongTermArchive() {
 
 
 
+
+
+
+
   monthlyEl.innerHTML = "";
   historyListEl.innerHTML = "";
+
+
+
+
 
 
 
@@ -5817,6 +7063,10 @@ function renderLongTermArchive() {
   const totalHabits = getAllHabits().length || 32;
   const localeTag = (I18N_DICTIONARIES[appState.locale] || I18N_DICTIONARIES.bn).localeTag;
   const currentMonthKey = getTodayKey().slice(0, 7);
+
+
+
+
 
 
 
@@ -5830,8 +7080,16 @@ function renderLongTermArchive() {
 
 
 
+
+
+
+
   const monthlyStats = {};
   const allRangeDateKeys = [];
+
+
+
+
 
 
 
@@ -5853,6 +7111,10 @@ function renderLongTermArchive() {
 
 
 
+
+
+
+
   for (let i = 0; i < historyRangeDays; i++) {
     const d = new Date();
     d.setDate(d.getDate() - i);
@@ -5862,6 +7124,10 @@ function renderLongTermArchive() {
     const doneList = appState.completionsByDate[key] || [];
     const duaList = (appState.duaCompletionsByDate && appState.duaCompletionsByDate[key]) || [];
     const count = doneList.length;
+
+
+
+
 
 
 
@@ -5881,7 +7147,15 @@ function renderLongTermArchive() {
 
 
 
+
+
+
+
     monthlyStats[monthKey].dateKeys.push(key);
+
+
+
+
 
 
 
@@ -5896,12 +7170,20 @@ function renderLongTermArchive() {
 
 
 
+
+
+
+
       const readableDate = d.toLocaleDateString(localeTag, {
         weekday: "short",
         month: "short",
         day: "numeric",
         year: "numeric"
       });
+
+
+
+
 
 
 
@@ -5918,10 +7200,18 @@ function renderLongTermArchive() {
 
 
 
+
+
+
+
   const monthKeys = Object.keys(monthlyStats).sort().reverse();
   if (!selectedArchiveMonthKey || !monthlyStats[selectedArchiveMonthKey]) {
     selectedArchiveMonthKey = currentMonthKey;
   }
+
+
+
+
 
 
 
@@ -5949,10 +7239,18 @@ function renderLongTermArchive() {
 
 
 
+
+
+
+
   const activeMonthObj = monthlyStats[selectedArchiveMonthKey] || monthlyStats[currentMonthKey];
   const monthlyHeadingEl = document.getElementById("monthly-cat-heading");
   const selectedMonthLabelEl = document.getElementById("selected-month-records-label");
   const monthlyBreakdownPanel = document.querySelector(".monthly-breakdown-panel");
+
+
+
+
 
 
 
@@ -5967,8 +7265,16 @@ function renderLongTermArchive() {
 
 
 
+
+
+
+
   // Strictly bind the monthly graph to the selected month's own dateKeys
   const graphDateKeys = activeMonthObj ? activeMonthObj.dateKeys : [];
+
+
+
+
 
 
 
@@ -5985,11 +7291,19 @@ function renderLongTermArchive() {
 
 
 
+
+
+
+
   renderCategoryBreakdownGraph(
     graphDateKeys,
     "monthly-category-bars",
     "monthly-category-advice"
   );
+
+
+
+
 
 
 
@@ -6000,6 +7314,10 @@ function renderLongTermArchive() {
     historyListEl.innerHTML = `<p class="muted">${t("archive_empty")}</p>`;
     return;
   }
+
+
+
+
 
 
 
@@ -6020,6 +7338,10 @@ function renderLongTermArchive() {
 
 
 
+
+
+
+
 // Inspect Any Past Day's Completed Habits in a Compact Scrollable Modal
 function openDayHistoryModal(dateKey) {
   const doneIds = appState.completionsByDate[dateKey] || [];
@@ -6031,8 +7353,16 @@ function openDayHistoryModal(dateKey) {
 
 
 
+
+
+
+
   document.getElementById("modal-title").textContent = `${t("day_detail_title")} ${localizeDigits(dateKey, appState.locale)}`;
   document.getElementById("modal-category").textContent = `${localizeDigits(doneIds.length, appState.locale)} / ${localizeDigits(allHabits.length, appState.locale)} (${localizeDigits(Math.round((doneIds.length / (allHabits.length || 32)) * 100), appState.locale)}%)`;
+
+
+
+
 
 
 
@@ -6051,8 +7381,16 @@ function openDayHistoryModal(dateKey) {
 
 
 
+
+
+
+
   const wisdomSection = document.getElementById("modal-wisdom")?.parentElement;
   if (wisdomSection) wisdomSection.style.display = "none";
+
+
+
+
 
 
 
@@ -6068,6 +7406,10 @@ function openDayHistoryModal(dateKey) {
 
 
 
+
+
+
+
   document.getElementById("fact-modal").classList.remove("hidden");
   if (typeof pushAppHistoryState === "function") pushAppHistoryState("modal");
 }
@@ -6075,9 +7417,17 @@ function openDayHistoryModal(dateKey) {
 
 
 
+
+
+
+
 async function toggleHabit(habitId) {
   const habit = getAllHabits().find((h) => h.id === habitId);
   if (!habit) return;
+
+
+
+
 
 
 
@@ -6091,6 +7441,10 @@ async function toggleHabit(habitId) {
   const list = appState.completionsByDate[targetKey];
   const isDone = isHabitCompletedInActiveCycle(habit, now);
   const winState = evaluateHabitTimeWindow(habit, now);
+
+
+
+
 
 
 
@@ -6110,6 +7464,10 @@ async function toggleHabit(habitId) {
 
 
 
+
+
+
+
   // 2. Block ticking if daily time window has not started yet
   if (!isDone && winState.status === "upcoming") {
     const upcomingMsg =
@@ -6125,6 +7483,10 @@ async function toggleHabit(habitId) {
 
 
 
+
+
+
+
   // 3. Seal completed habit once its window finishes so past window records cannot be tampered with
   if (isDone && !winState.canTick) {
     const sealedMsg =
@@ -6136,6 +7498,10 @@ async function toggleHabit(habitId) {
     showTimeLockToast(sealedMsg);
     return;
   }
+
+
+
+
 
 
 
@@ -6160,6 +7526,10 @@ async function toggleHabit(habitId) {
 
 
 
+
+
+
+
 function openHabitModal(habitId) {
   const habit = getAllHabits().find((h) => h.id === habitId);
   if (!habit) return;
@@ -6174,6 +7544,10 @@ function openHabitModal(habitId) {
 
 
 
+
+
+
+
   document.getElementById("modal-title").textContent = getHabitTitle(habit);
   document.getElementById("modal-category").textContent = getHabitTime(habit);
   evidenceEl.textContent = getHabitEvidence(habit);
@@ -6181,6 +7555,14 @@ function openHabitModal(habitId) {
   document.getElementById("fact-modal").classList.remove("hidden");
   if (typeof pushAppHistoryState === "function") pushAppHistoryState("modal");
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -6201,6 +7583,10 @@ function getLocalizedMoodLabel(moodCode) {
 
 
 
+
+
+
+
 function renderDiaryHistory() {
   const listEl = document.getElementById("diary-history-list");
   if (!listEl) return;
@@ -6210,10 +7596,18 @@ function renderDiaryHistory() {
 
 
 
+
+
+
+
   if (entries.length === 0) {
     listEl.innerHTML = `<p class="muted">${t("diary_empty")}</p>`;
     return;
   }
+
+
+
+
 
 
 
@@ -6235,6 +7629,10 @@ function renderDiaryHistory() {
 
 
 
+
+
+
+
 document.addEventListener("DOMContentLoaded", async () => {
   await loadAndVerifyState();
   initXStyleAutoGeographicDetector();
@@ -6243,9 +7641,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
+
+
+
+
 
 
 
@@ -6268,11 +7674,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
   const langSwitcher = document.getElementById("lang-switcher");
   if (langSwitcher) {
     langSwitcher.addEventListener("change", async (e) => {
       const requestedLang = e.target.value;
       if (!I18N_DICTIONARIES[requestedLang]) return;
+
+
+
+
 
 
 
@@ -6287,11 +7701,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
       appState.locale = requestedLang;
       applyLanguageToDOM();
       await saveAndSealState();
     });
   }
+
+
+
+
 
 
 
@@ -6314,11 +7736,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
   document.querySelectorAll(".tab-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       switchTabProgrammatically(btn.dataset.tab, true);
     });
   });
+
+
+
+
 
 
 
@@ -6333,6 +7763,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
     // Keep deeds whose time window has already expired (sealed) and only reset currently open windows
     const currentList = appState.completionsByDate[todayKey] || [];
     appState.completionsByDate[todayKey] = currentList.filter((hId) => {
@@ -6340,6 +7774,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!h) return false;
       return !evaluateHabitTimeWindow(h, now).canTick;
     });
+
+
+
+
 
 
 
@@ -6360,9 +7798,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
     await saveAndSealState();
     renderHabits();
   });
+
+
+
+
 
 
 
@@ -6379,6 +7825,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
   document.getElementById("habit-list-container").addEventListener("click", (e) => {
     const checkEl = e.target.closest("[data-toggle]");
     if (checkEl) {
@@ -6390,6 +7840,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       openHabitModal(infoEl.dataset.info);
     }
   });
+
+
+
+
 
 
 
@@ -6413,9 +7867,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
   document.getElementById("close-modal-btn").addEventListener("click", () => {
     document.getElementById("fact-modal").classList.add("hidden");
   });
+
+
+
+
 
 
 
@@ -6435,6 +7897,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       updateTasbihCircularUI();
     });
   }
+
+
+
+
 
 
 
@@ -6468,6 +7934,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
   const resetTasbihBtn = document.getElementById("tasbih-reset-btn");
   if (resetTasbihBtn) {
     resetTasbihBtn.addEventListener("click", () => {
@@ -6480,6 +7950,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (navigator.vibrate) navigator.vibrate(15);
     });
   }
+
+
+
+
 
 
 
@@ -6497,7 +7971,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
   // Muhasabah Diary & combined 24H Routine sections removed per v5.0 Master Section UI architecture
+
+
+
+
+
+
+
+
   document.getElementById("add-custom-habit-btn").addEventListener("click", async () => {
     const titleInput = document.getElementById("custom-title");
     const phaseSelect = document.getElementById("custom-phase");
@@ -6505,6 +7991,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const title = titleInput ? titleInput.value.trim() : "";
     const phase = phaseSelect ? phaseSelect.value : "tahajjud_fajr";
     const fact = factInput ? factInput.value.trim() : "";
+
+
+
+
 
 
 
@@ -6524,6 +8014,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
     const newHabitObj = {
       id: "s24_custom_" + Date.now(),
       isCustom: true,
@@ -6537,7 +8031,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
     appState.customHabits.push(newHabitObj);
+
+
+
+
 
 
 
@@ -6558,11 +8060,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
   document.getElementById("export-backup-btn").addEventListener("click", async () => {
     await saveAndSealState();
     const timeStamp = new Date().toTimeString().slice(0, 8).replace(/:/g, "-");
     const fileName = `sunnah-24-backup-${getTodayKey()}-${timeStamp}.json`;
     const jsonString = JSON.stringify(appState, null, 2);
+
+
+
+
 
 
 
@@ -6576,6 +8086,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       return `✅ সুন্নাহ ২৪ ব্যাকআপ আপনার ফোনে সংরক্ষিত হয়েছে!\n📁 ফোল্ডার: ${savedLocation}`;
     };
+
+
+
+
 
 
 
@@ -6594,6 +8108,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
     try {
       const blob = new Blob([jsonString], { type: "application/json;charset=utf-8" });
       const url = URL.createObjectURL(blob);
@@ -6603,6 +8121,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       a.setAttribute("download", fileName);
       document.body.appendChild(a);
       a.click();
+
+
+
+
 
 
 
@@ -6625,6 +8147,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
   document.getElementById("import-backup-input").addEventListener("change", async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -6642,6 +8168,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
       if (imported.signature) {
         const expectedSig = await computeSHA256(getCanonicalStatePayload(imported));
         if (expectedSig !== imported.signature) {
@@ -6651,6 +8181,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           return;
         }
       }
+
+
+
+
 
 
 
@@ -6674,6 +8208,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+
+
+
+
 // ============================================================================
 // SMART ANDROID APK & PWA BACK-BUTTON NAVIGATION ENGINE (NEVER EXITS ABRUPTLY)
 // ============================================================================
@@ -6681,11 +8219,22 @@ let navTabStack = ["tab-routine"];
 let tabScrollPositions = { "tab-routine": 0 };
 let lastBackTapTime = 0;
 
+
+
+
+
+
+
+
 function pushAppHistoryState(contextTag = "nav") {
   try {
     history.pushState({ sunnah24: contextTag, ts: Date.now() }, "");
   } catch {}
 }
+
+
+
+
 
 
 
@@ -6713,6 +8262,10 @@ function showExitToast() {
 
 
 
+
+
+
+
 // Computes the exact viewport anchor offset so opening a non-Routine section
 // (Adhkar, Muhasabah, Vault & Info) for the first time brings the user slightly
 // down directly into that section's content card instead of jumping to the very top.
@@ -6722,6 +8275,10 @@ function computeSectionFocusScrollOffset(targetTabId) {
   const tabNavEl = document.querySelector(".tab-nav");
   const targetSectionEl = document.getElementById(targetTabId);
   const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 58;
+
+
+
+
 
 
 
@@ -6742,11 +8299,19 @@ function computeSectionFocusScrollOffset(targetTabId) {
 
 
 
+
+
+
+
 function switchTabProgrammatically(targetTabId, recordInStack = true) {
   const currentActiveBtn = document.querySelector(".tab-btn.active");
   if (currentActiveBtn) {
     tabScrollPositions[currentActiveBtn.dataset.tab] = window.scrollY || window.pageYOffset || 0;
   }
+
+
+
+
 
 
 
@@ -6761,6 +8326,10 @@ function switchTabProgrammatically(targetTabId, recordInStack = true) {
 
 
 
+
+
+
+
   if (recordInStack && navTabStack[navTabStack.length - 1] !== targetTabId) {
     navTabStack.push(targetTabId);
     pushAppHistoryState(targetTabId);
@@ -6769,10 +8338,18 @@ function switchTabProgrammatically(targetTabId, recordInStack = true) {
 
 
 
+
+
+
+
   requestAnimationFrame(() => {
     const hasSavedPosition =
       Object.prototype.hasOwnProperty.call(tabScrollPositions, targetTabId) &&
       tabScrollPositions[targetTabId] > 0;
+
+
+
+
 
 
 
@@ -6792,6 +8369,10 @@ function switchTabProgrammatically(targetTabId, recordInStack = true) {
 
 
 
+
+
+
+
 // Global handler invoked by both Android Native Back Button & Browser popstate
 // Strictly preserves section scroll positions during navigation and lets the user
 // exit upon clicking back twice from any scroll position without auto-scrolling to top.
@@ -6802,6 +8383,10 @@ window.handleSunnahBackNavigation = function () {
     modal.classList.add("hidden");
     return true;
   }
+
+
+
+
 
 
 
@@ -6818,6 +8403,10 @@ window.handleSunnahBackNavigation = function () {
 
 
 
+
+
+
+
   // 2B. If Header Location Popover is open -> Close popover first
   const locPanel = document.getElementById("bd-loc-cascading-panel");
   if (locPanel && locPanel.classList.contains("is-open")) {
@@ -6825,6 +8414,10 @@ window.handleSunnahBackNavigation = function () {
     if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
     return true;
   }
+
+
+
+
 
 
 
@@ -6837,6 +8430,10 @@ window.handleSunnahBackNavigation = function () {
     }
     return true;
   }
+
+
+
+
 
 
 
@@ -6855,6 +8452,10 @@ window.handleSunnahBackNavigation = function () {
 
 
 
+
+
+
+
   // 4. If user navigated across tabs (Adhkar, Muhasabah, Vault, Routine) -> Return directly to the previous section with its exact saved scroll position
   if (navTabStack.length > 1) {
     navTabStack.pop(); // remove current section
@@ -6866,10 +8467,18 @@ window.handleSunnahBackNavigation = function () {
 
 
 
+
+
+
+
   if (activeTab && activeTab !== "tab-routine") {
     switchTabProgrammatically("tab-routine", false);
     return true;
   }
+
+
+
+
 
 
 
@@ -6885,6 +8494,13 @@ window.handleSunnahBackNavigation = function () {
   return true;
 };
 
+
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   // Seed initial history state so back button is intercepted by WebView
   pushAppHistoryState("root-guard");
@@ -6892,7 +8508,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
   // Tab clicks are tracked & scroll-preserved via switchTabProgrammatically
+
+
+
+
+
+
+
+
   // Track Phase chip clicks
   document.querySelectorAll(".filter-bar .chip").forEach((chip) => {
     chip.addEventListener("click", () => {
@@ -6905,10 +8533,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
   window.addEventListener("popstate", () => {
     window.handleSunnahBackNavigation();
   });
 });
+
+
+
+
 
 
 
@@ -6919,6 +8555,10 @@ document.addEventListener("DOMContentLoaded", () => {
 function initWebsiteOnlyApkInstaller() {
   const apkBtn = document.getElementById("web-apk-download-btn");
   if (!apkBtn) return;
+
+
+
+
 
 
 
@@ -6934,6 +8574,10 @@ function initWebsiteOnlyApkInstaller() {
 
 
 
+
+
+
+
   // If inside the APK, keep the button strictly hidden
   if (isInsideNativeApk) {
     apkBtn.classList.add("hidden");
@@ -6943,8 +8587,16 @@ function initWebsiteOnlyApkInstaller() {
 
 
 
+
+
+
+
   // 2. Running on the Website (https://mkrweb.github.io/sunnah-24/) -> Show Button!
   apkBtn.classList.remove("hidden");
+
+
+
+
 
 
 
@@ -6957,11 +8609,19 @@ function initWebsiteOnlyApkInstaller() {
 
 
 
+
+
+
+
   updateApkButtonLabel();
   const langSwitcher = document.getElementById("lang-switcher");
   if (langSwitcher) {
     langSwitcher.addEventListener("change", updateApkButtonLabel);
   }
+
+
+
+
 
 
 
@@ -6988,9 +8648,17 @@ function initWebsiteOnlyApkInstaller() {
 
 
 
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   initWebsiteOnlyApkInstaller();
 });
+
+
+
+
 
 
 
@@ -7005,6 +8673,10 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============================================================================
 let latestRemoteApkUrl = "";
 let latestRemoteVersionTag = "";
+
+
+
+
 
 
 
@@ -7031,6 +8703,10 @@ function isSideloadSelfUpdateEnabled() {
 
 
 
+
+
+
+
 function getInstalledAppVersionTag() {
   try {
     if (
@@ -7047,6 +8723,10 @@ function getInstalledAppVersionTag() {
 
 
 
+
+
+
+
 function renderInstalledVersionBadge() {
   const badge = document.getElementById("integrity-badge");
   if (badge && window.AndroidDownloader) {
@@ -7057,9 +8737,17 @@ function renderInstalledVersionBadge() {
 
 
 
+
+
+
+
 function initInAppUpdateChecker(manualTrigger = false) {
   // Strictly disabled inside Play Store Release AAB builds to satisfy Google Play Device & Network Abuse Policy
   if (!isSideloadSelfUpdateEnabled()) return;
+
+
+
+
 
 
 
@@ -7073,12 +8761,24 @@ function initInAppUpdateChecker(manualTrigger = false) {
 
 
 
+
+
+
+
   if (!isInsideNativeApk && !manualTrigger) return;
 
 
 
 
+
+
+
+
   const installedTag = getInstalledAppVersionTag();
+
+
+
+
 
 
 
@@ -7092,6 +8792,10 @@ function initInAppUpdateChecker(manualTrigger = false) {
 
 
 
+
+
+
+
       if (latestTag !== installedTag) {
         const apkAsset = (release.assets || []).find(
           (a) => a.name && a.name.toLowerCase().endsWith(".apk")
@@ -7101,8 +8805,16 @@ function initInAppUpdateChecker(manualTrigger = false) {
 
 
 
+
+
+
+
         latestRemoteApkUrl = apkAsset.browser_download_url;
         latestRemoteVersionTag = latestTag;
+
+
+
+
 
 
 
@@ -7114,6 +8826,10 @@ function initInAppUpdateChecker(manualTrigger = false) {
         ) {
           alreadyOnDevice = Boolean(window.AndroidDownloader.isVersionApkCached(latestTag));
         }
+
+
+
+
 
 
 
@@ -7133,14 +8849,26 @@ function initInAppUpdateChecker(manualTrigger = false) {
 
 
 
+
+
+
+
 function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
   if (!isSideloadSelfUpdateEnabled()) return;
 
 
 
 
+
+
+
+
   const existing = document.getElementById("s24-update-banner");
   if (existing) existing.remove();
+
+
+
+
 
 
 
@@ -7153,12 +8881,20 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
 
 
 
+
+
+
+
   const msgText =
     appState.locale === "ar"
       ? `✨ تحديث جديد (${newVersion}) متاح لتطبيق سنة ٢٤!`
       : appState.locale === "en"
       ? `✨ Update (${newVersion}) Available for Sunnah 24!`
       : `✨ সুন্নাহ ২৪-এর নতুন আপডেট (${newVersion}) প্রস্তুত!`;
+
+
+
+
 
 
 
@@ -7174,6 +8910,10 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
 
 
 
+
+
+
+
   const btnText = isAlreadyOnDevice
     ? appState.locale === "bn"
       ? "📦 এখনই ইনস্টল করুন"
@@ -7185,8 +8925,16 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
 
 
 
+
+
+
+
   const dismissText =
     appState.locale === "ar" ? "لاحقاً" : appState.locale === "en" ? "Later" : "পরে";
+
+
+
+
 
 
 
@@ -7211,7 +8959,15 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
 
 
 
+
+
+
+
   document.body.appendChild(banner);
+
+
+
+
 
 
 
@@ -7220,6 +8976,10 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
     const btn = document.getElementById("trigger-native-update-btn");
     const statusEl = document.getElementById("s24-update-status");
     const progWrap = document.getElementById("s24-update-progress-wrap");
+
+
+
+
 
 
 
@@ -7240,6 +9000,10 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
         return;
       }
     }
+
+
+
+
 
 
 
@@ -7267,6 +9031,10 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
 
 
 
+
+
+
+
     if (
       window.AndroidDownloader &&
       typeof window.AndroidDownloader.downloadAndInstallApk === "function"
@@ -7277,6 +9045,10 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
     }
   });
 }
+
+
+
+
 
 
 
@@ -7292,12 +9064,20 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
 
 
 
+
+
+
+
   if (progWrap && percent >= 0) {
     progWrap.style.display = "block";
   }
   if (progBar && percent >= 0) {
     progBar.style.width = `${Math.min(100, percent)}%`;
   }
+
+
+
+
 
 
 
@@ -7312,6 +9092,10 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
 
 
 
+
+
+
+
   if (percent >= 100) {
     if (banner) banner.setAttribute("data-cached", "true");
     if (progBar) progBar.style.width = "100%";
@@ -7319,6 +9103,10 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
       window.AndroidDownloader &&
       typeof window.AndroidDownloader.canRequestPackageInstalls === "function" &&
       !window.AndroidDownloader.canRequestPackageInstalls();
+
+
+
+
 
 
 
@@ -7350,11 +9138,19 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
 
 
 
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   renderInstalledVersionBadge();
   if (isSideloadSelfUpdateEnabled()) {
     setTimeout(() => initInAppUpdateChecker(false), 2500);
   }
+
+
+
+
 
 
 
@@ -7371,6 +9167,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ============================================================================
 // STANDALONE STATIC PROHIBITED TIME FOR SALAH ENGINE (SAHIH MUSLIM 831)
 // Automatically computes and displays the 3 daily seasonal prohibited prayer
@@ -7379,6 +9195,10 @@ document.addEventListener("DOMContentLoaded", () => {
 // active-window alerts (since Live Ongoing Prayers already handles live states).
 // ============================================================================
 let userToggledProhibitedCard = false;
+
+
+
+
 
 
 
@@ -7399,6 +9219,10 @@ function formatProhibitedClockRange(startMins, endMins, locale = appState.locale
 
 
 
+
+
+
+
 function renderProhibitedSalahTimes() {
   const card = document.getElementById("prohibited-salah-card");
   if (!card) return;
@@ -7406,9 +9230,17 @@ function renderProhibitedSalahTimes() {
 
 
 
+
+
+
+
   const now = new Date();
   const lang = appState.locale || "bn";
   const sched = computeSeasonalPrayerSchedule(now);
+
+
+
+
 
 
 
@@ -7422,9 +9254,17 @@ function renderProhibitedSalahTimes() {
 
 
 
+
+
+
+
   const srEl = document.getElementById("time-slot-sunrise");
   const zwEl = document.getElementById("time-slot-zawal");
   const ssEl = document.getElementById("time-slot-sunset");
+
+
+
+
 
 
 
@@ -7437,9 +9277,17 @@ function renderProhibitedSalahTimes() {
 
 
 
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.getElementById("prohibited-toggle-btn");
   const card = document.getElementById("prohibited-salah-card");
+
+
+
+
 
 
 
@@ -7456,8 +9304,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
   renderProhibitedSalahTimes();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7472,6 +9337,10 @@ let activeSelectedWaqtPopupId = null;
 
 
 
+
+
+
+
 function ensureWaqtPopupContainer() {
   let popupWrap = document.getElementById("waqt-range-popup-wrap");
   if (popupWrap) return popupWrap;
@@ -7479,8 +9348,16 @@ function ensureWaqtPopupContainer() {
 
 
 
+
+
+
+
   const stripCard = document.querySelector(".waqt-strip-card");
   if (!stripCard) return null;
+
+
+
+
 
 
 
@@ -7493,6 +9370,10 @@ function ensureWaqtPopupContainer() {
   stripCard.appendChild(popupWrap);
   return popupWrap;
 }
+
+
+
+
 
 
 
@@ -7511,8 +9392,16 @@ function getExactWaqtPopupDetails(waqtId, now = new Date()) {
 
 
 
+
+
+
+
   const isHanafi = sched.profile && sched.profile.asrShadowFactor === 2;
   let meta = null;
+
+
+
+
 
 
 
@@ -7528,6 +9417,10 @@ function getExactWaqtPopupDetails(waqtId, now = new Date()) {
       : nowMins < sched.fajr
       ? sched.fajr - nowMins
       : 1440 - nowMins + sched.fajr;
+
+
+
+
 
 
 
@@ -7567,6 +9460,10 @@ function getExactWaqtPopupDetails(waqtId, now = new Date()) {
       : nowMins < sched.dhuhr
       ? sched.dhuhr - nowMins
       : 1440 - nowMins + sched.dhuhr;
+
+
+
+
 
 
 
@@ -7625,6 +9522,10 @@ function getExactWaqtPopupDetails(waqtId, now = new Date()) {
 
 
 
+
+
+
+
     meta = {
       id: "asr",
       phase: "dhuhr_asr",
@@ -7674,6 +9575,10 @@ function getExactWaqtPopupDetails(waqtId, now = new Date()) {
 
 
 
+
+
+
+
     meta = {
       id: "maghrib",
       phase: "maghrib_isha",
@@ -7713,6 +9618,10 @@ function getExactWaqtPopupDetails(waqtId, now = new Date()) {
 
 
 
+
+
+
+
     meta = {
       id: "isha",
       phase: "maghrib_isha",
@@ -7739,8 +9648,19 @@ function getExactWaqtPopupDetails(waqtId, now = new Date()) {
     };
   }
 
+
+
+
+
+
+
+
   return meta;
 }
+
+
+
+
 
 
 
@@ -7754,9 +9674,17 @@ function positionWaqtPopupArrow(waqtId) {
 
 
 
+
+
+
+
   const wrapRect = wrapEl.getBoundingClientRect();
   const pillRect = pillEl.getBoundingClientRect();
   if (wrapRect.width <= 0) return;
+
+
+
+
 
 
 
@@ -7769,9 +9697,17 @@ function positionWaqtPopupArrow(waqtId) {
 
 
 
+
+
+
+
 function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
   const popupWrap = ensureWaqtPopupContainer();
   if (!popupWrap) return;
+
+
+
+
 
 
 
@@ -7789,8 +9725,16 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
 
 
 
+
+
+
+
   const info = getExactWaqtPopupDetails(waqtId, now);
   if (!info) return;
+
+
+
+
 
 
 
@@ -7804,10 +9748,18 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
 
 
 
+
+
+
+
   let statusClass = "status-upcoming";
   let statusBadgeText = "";
   let countdownLabel = "";
   let countdownVal = formatRemainingDurationText(info.remOrStartsMins, lang);
+
+
+
+
 
 
 
@@ -7847,6 +9799,10 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
 
 
 
+
+
+
+
   const startLbl = lang === "bn" ? "শুরু (Start)" : lang === "ar" ? "بداية الوقت" : "Starts At";
   const endLbl = lang === "bn" ? "শেষ (End)" : lang === "ar" ? "نهاية الوقت" : "Ends At";
   const primeLbl =
@@ -7861,6 +9817,10 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
       : lang === "ar"
       ? "عرض سنن هذا الوقت ➔"
       : "Filter Phase Sunnahs ➔";
+
+
+
+
 
 
 
@@ -7885,6 +9845,10 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
 
 
 
+
+
+
+
       <div class="waqt-popup-time-grid">
         <div class="waqt-popup-time-box start-box">
           <span class="waqt-popup-time-lbl">${startLbl}</span>
@@ -7896,6 +9860,11 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
           <strong class="waqt-popup-time-val">${endClockFull}</strong>
         </div>
       </div>
+
+
+
+
+
 
 
 
@@ -7913,13 +9882,32 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
 
 
 
+
+
+
+
       <div class="waqt-popup-sunnah-note">
         <span>${info.rakahNote}</span>
         <button type="button" class="waqt-popup-filter-btn" data-popup-filter-phase="${info.phase}">${filterBtnTxt}</button>
       </div>
     </div>
   `;
+
+
+
+
+
+
+
+
   popupWrap.classList.remove("hidden");
+
+
+
+
+
+
+
 
   document.querySelectorAll(".waqt-pill-card").forEach((btn) => {
     const isTarget = btn.getAttribute("data-waqt-id") === waqtId;
@@ -7930,14 +9918,28 @@ function renderWaqtTimeRangePopup(waqtId, now = new Date()) {
 
 
 
+
+
+
+
   requestAnimationFrame(() => positionWaqtPopupArrow(waqtId));
 }
+
+
+
+
+
+
 
 
 function syncOpenWaqtPopupIfVisible(now = new Date()) {
   if (!activeSelectedWaqtPopupId) return;
   renderWaqtTimeRangePopup(activeSelectedWaqtPopupId, now);
 }
+
+
+
+
 
 
 
@@ -7950,6 +9952,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!pillBtn) return;
       const clickedId = pillBtn.getAttribute("data-waqt-id");
       if (navigator.vibrate) navigator.vibrate(14);
+
+
+
+
+
+
+
+
       if (activeSelectedWaqtPopupId === clickedId) {
         activeSelectedWaqtPopupId = null;
         renderWaqtTimeRangePopup(null);
@@ -7966,6 +9976,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
   document.addEventListener("click", (e) => {
     const closeBtn = e.target.closest("#waqt-popup-close-btn");
     if (closeBtn) {
@@ -7973,6 +9987,13 @@ document.addEventListener("DOMContentLoaded", () => {
       renderWaqtTimeRangePopup(null);
       return;
     }
+
+
+
+
+
+
+
 
     const filterBtn = e.target.closest("[data-popup-filter-phase]");
     if (filterBtn) {
@@ -7990,6 +10011,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
     // Dismiss popup automatically when tapping outside the 5-Waqt card
     if (activeSelectedWaqtPopupId && !e.target.closest(".waqt-strip-card")) {
       activeSelectedWaqtPopupId = null;
@@ -7997,12 +10022,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+
+
+
+
+
+
+
   window.addEventListener("resize", () => {
     if (activeSelectedWaqtPopupId) {
       positionWaqtPopupArrow(activeSelectedWaqtPopupId);
     }
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -8020,11 +10065,21 @@ function getActiveMadhabMode(dateObj = new Date()) {
 }
 
 
+
+
+
+
+
+
 function syncMadhabToggleUI() {
   // Always keep clean Commercial White ('light') theme locked
   document.documentElement.setAttribute("data-theme", "light");
   const metaTheme = document.querySelector('meta[name="theme-color"]');
   if (metaTheme) metaTheme.setAttribute("content", "#ffffff");
+
+
+
+
 
 
 
@@ -8037,7 +10092,15 @@ function syncMadhabToggleUI() {
 
 
 
+
+
+
+
   if (!btnEl || !iconEl || !labelEl) return;
+
+
+
+
 
 
 
@@ -8069,6 +10132,10 @@ function syncMadhabToggleUI() {
 
 
 
+
+
+
+
 function applyMadhabPreference(mode, showFeedback = true) {
   const cleanMode = mode === "standard" ? "standard" : "hanafi";
   try {
@@ -8078,10 +10145,20 @@ function applyMadhabPreference(mode, showFeedback = true) {
 
 
 
+
+
+
+
   syncMadhabToggleUI();
   renderHeaderDatesAndPhase();
   renderHabits();
   renderDuas();
+
+
+
+
+
+
 
 
   if (showFeedback && typeof showTimeLockToast === "function") {
@@ -8096,8 +10173,18 @@ function applyMadhabPreference(mode, showFeedback = true) {
 
 
 
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   syncMadhabToggleUI();
+
+
+
+
+
+
 
 
   const madhabBtn = document.getElementById("madhab-toggle-btn");
@@ -8113,6 +10200,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
   const langSwitcher = document.getElementById("lang-switcher");
   if (langSwitcher) {
     langSwitcher.addEventListener("change", () => {
@@ -8120,6 +10211,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -8136,6 +10240,36 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", syncHeaderScrollState, { passive: true });
   syncHeaderScrollState();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // ============================================================================
@@ -8168,11 +10302,22 @@ function getDefaultDhakaSelection() {
 
 
 
+
+
+
+
+
 function getEffectiveBdLocationSelection() {
   const saved = getSavedBdLocationSelection();
   if (saved) return saved;
   return getDefaultDhakaSelection();
 }
+
+
+
+
+
+
 
 
 function getLocalizedBdDivisionName(divObj, locale = appState.locale) {
@@ -8183,11 +10328,23 @@ function getLocalizedBdDivisionName(divObj, locale = appState.locale) {
 }
 
 
+
+
+
+
+
+
 function getLocalizedBdDistrictName(distObj, locale = appState.locale) {
   if (!distObj) return "";
   if (locale === "en" || locale === "ar") return distObj.name_en;
   return distObj.name_bn;
 }
+
+
+
+
+
+
 
 
 function getLocalizedUpazilaName(rawUpazila, locale = appState.locale) {
@@ -8198,6 +10355,10 @@ function getLocalizedUpazilaName(rawUpazila, locale = appState.locale) {
   }
   return rawUpazila.replace(/\s*\([^)]*\)/g, "").trim();
 }
+
+
+
+
 
 
 
@@ -8366,12 +10527,22 @@ function injectBdLocationSelectorStyles() {
 
 
 
+
+
+
+
 function triggerFullWaqtAndLockRefresh(showToast = false) {
   if (typeof syncMadhabToggleUI === "function") syncMadhabToggleUI();
   renderHeaderDatesAndPhase();
   renderHabits();
   renderDuas();
   syncBdLocationBannerText();
+
+
+
+
+
+
 
 
   if (showToast && typeof showTimeLockToast === "function") {
@@ -8393,6 +10564,10 @@ function triggerFullWaqtAndLockRefresh(showToast = false) {
 
 
 
+
+
+
+
 function syncBdLocationBannerText() {
   const summaryLabelEl = document.getElementById("bd-loc-active-label");
   const coordsPillEl = document.getElementById("bd-loc-coords-pill");
@@ -8403,6 +10578,13 @@ function syncBdLocationBannerText() {
   const lblDist = document.getElementById("bd-lbl-district");
   const lblUpz = document.getElementById("bd-lbl-upazila");
   if (!summaryLabelEl) return;
+
+
+
+
+
+
+
 
   if (typeof getSavedGlobalOrBdLocation === "function") {
     const savedGlobal = getSavedGlobalOrBdLocation();
@@ -8417,10 +10599,18 @@ function syncBdLocationBannerText() {
 
 
 
+
+
+
+
   const lang = appState.locale || "bn";
   const activeLoc = getEffectiveBdLocationSelection();
   const divObj = BD_GEO_HIERARCHY.find((d) => d.id === activeLoc.divisionId) || BD_GEO_HIERARCHY[0];
   const distObj = divObj.districts.find((z) => z.id === activeLoc.districtId) || divObj.districts[0];
+
+
+
+
 
 
 
@@ -8433,23 +10623,30 @@ function syncBdLocationBannerText() {
 
 
 
+
+
+
+
   if (isDefaultDhaka) {
     summaryLabelEl.textContent =
       lang === "ar"
-        ? "📍 دكا ▾"
+        ? "دكا ▾"
         : lang === "en"
-        ? "📍 Dhaka ▾"
-        : "📍 ঢাকা ▾";
+        ? "Dhaka ▾"
+        : "ঢাকা ▾";
   } else {
     const distShort = getLocalizedBdDistrictName(distObj, lang);
     const upzShort = getLocalizedUpazilaName(activeLoc.upazilaName, lang);
-    // Keep header pill super clean and concise
     if (!upzShort || upzShort === distShort || upzShort.includes("সদর") || upzShort.toLowerCase().includes("sadar")) {
-      summaryLabelEl.textContent = `📍 ${distShort} ▾`;
+      summaryLabelEl.textContent = `${distShort} ▾`;
     } else {
-      summaryLabelEl.textContent = `📍 ${upzShort}, ${distShort} ▾`;
+      summaryLabelEl.textContent = `${upzShort}, ${distShort} ▾`;
     }
   }
+
+
+
+
 
 
 
@@ -8494,14 +10691,28 @@ function syncBdLocationBannerText() {
 
 
 
+
+
+
+
 function initBdLocationSelectorEngine() {
   injectBdLocationSelectorStyles();
+
+
+
+
+
+
 
 
   // Ensure default Dhaka selection is initialized if no saved location exists yet
   if (!getSavedBdLocationSelection()) {
     saveBdLocationSelection(getDefaultDhakaSelection());
   }
+
+
+
+
 
 
 
@@ -8517,7 +10728,18 @@ function initBdLocationSelectorEngine() {
 
 
 
+
+
+
+
   if (!divSelect || !distSelect || !upzSelect) return;
+
+
+
+
+
+
+
 
   const populateDivisions = (selectedDivId) => {
     const lang = appState.locale || "bn";
@@ -8532,6 +10754,12 @@ function initBdLocationSelectorEngine() {
   };
 
 
+
+
+
+
+
+
   const populateDistricts = (divisionId, selectedDistId) => {
     const lang = appState.locale || "bn";
     const divObj = BD_GEO_HIERARCHY.find((d) => d.id === divisionId) || BD_GEO_HIERARCHY[0];
@@ -8544,6 +10772,12 @@ function initBdLocationSelectorEngine() {
       distSelect.appendChild(opt);
     });
   };
+
+
+
+
+
+
 
 
   const populateUpazilas = (divisionId, districtId, selectedUpazila) => {
@@ -8566,11 +10800,23 @@ function initBdLocationSelectorEngine() {
 
 
 
+
+
+
+
   const persistCurrentDropdownSelection = (showToast = true) => {
     const divId = divSelect.value;
     const distId = distSelect.value;
     const upzName = upzSelect.value;
     const upzIdx = upzSelect.selectedIndex >= 0 ? upzSelect.selectedIndex : 0;
+
+
+
+
+
+
+
+
     const divObj = BD_GEO_HIERARCHY.find((d) => d.id === divId) || BD_GEO_HIERARCHY[0];
     const distObj = divObj.districts.find((z) => z.id === distId) || divObj.districts[0];
     const coords = computeUpazilaMicroCoordinates(
@@ -8578,6 +10824,10 @@ function initBdLocationSelectorEngine() {
       upzIdx,
       (distObj.upazilas || []).length
     );
+
+
+
+
 
 
 
@@ -8595,9 +10845,21 @@ function initBdLocationSelectorEngine() {
       lon: coords.lon,
       updatedAt: Date.now()
     };
+
+
+
+
+
+
+
+
     saveBdLocationSelection(payload);
     triggerFullWaqtAndLockRefresh(showToast);
   };
+
+
+
+
 
 
 
@@ -8608,13 +10870,32 @@ function initBdLocationSelectorEngine() {
     const defaultDistId = activeLoc.districtId || "dhaka";
     const defaultUpz = activeLoc.upazilaName || "";
 
+
+
+
+
+
+
+
     populateDivisions(defaultDivId);
     populateDistricts(defaultDivId, defaultDistId);
     populateUpazilas(defaultDivId, defaultDistId, defaultUpz);
     syncBdLocationBannerText();
   };
+
+
+
+
+
+
+
+
   syncDropdownsFromStorage();
   triggerFullWaqtAndLockRefresh(false);
+
+
+
+
 
 
 
@@ -8625,6 +10906,10 @@ function initBdLocationSelectorEngine() {
       if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
     }
   };
+
+
+
+
 
 
 
@@ -8641,12 +10926,20 @@ function initBdLocationSelectorEngine() {
 
 
 
+
+
+
+
   if (doneBtn) {
     doneBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       closePopover();
     });
   }
+
+
+
+
 
 
 
@@ -8659,6 +10952,10 @@ function initBdLocationSelectorEngine() {
       closePopover();
     }
   });
+
+
+
+
 
 
 
@@ -8676,6 +10973,10 @@ function initBdLocationSelectorEngine() {
 
 
 
+
+
+
+
   // 2. Selecting a District immediately updates the Upazilas under that District
   distSelect.addEventListener("change", () => {
     const curDivId = divSelect.value;
@@ -8687,10 +10988,18 @@ function initBdLocationSelectorEngine() {
 
 
 
+
+
+
+
   // 3. Selecting an Upazila immediately updates the micro-coordinates & prayer schedule
   upzSelect.addEventListener("change", () => {
     persistCurrentDropdownSelection(true);
   });
+
+
+
+
 
 
 
@@ -8705,6 +11014,10 @@ function initBdLocationSelectorEngine() {
       closePopover();
     });
   }
+
+
+
+
 
 
 
@@ -8728,9 +11041,17 @@ function initBdLocationSelectorEngine() {
 
 
 
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   initBdLocationSelectorEngine();
 });
+
+
+
+
 
 
 
@@ -8740,6 +11061,13 @@ document.addEventListener("DOMContentLoaded", () => {
 // 64 DISTRICTS -> UPAZILA/THANA DRILL-DOWN ENGINE
 // ============================================================================
 const GLOBAL_SELECTED_LOC_STORAGE_KEY = "SUNNAH_24_GLOBAL_LOCATION_V3";
+
+
+
+
+
+
+
 
 const GLOBAL_COUNTRIES_DIRECTORY = deepFreeze([
   { code: "BD", name: "Bangladesh", isBangladeshSpecial: true },
@@ -9563,6 +11891,10 @@ const GLOBAL_COUNTRIES_DIRECTORY = deepFreeze([
 
 
 
+
+
+
+
 function getSavedGlobalOrBdLocation() {
   try {
     const rawGlobal = localStorage.getItem(GLOBAL_SELECTED_LOC_STORAGE_KEY);
@@ -9579,6 +11911,10 @@ function getSavedGlobalOrBdLocation() {
 
 
 
+
+
+
+
 function saveGlobalOrBdLocation(locObj) {
   try {
     localStorage.setItem(GLOBAL_SELECTED_LOC_STORAGE_KEY, JSON.stringify(locObj));
@@ -9589,6 +11925,10 @@ function saveGlobalOrBdLocation(locObj) {
     }
   } catch {}
 }
+
+
+
+
 
 
 
@@ -9609,12 +11949,20 @@ function getActiveLocationShortLabel() {
 
 
 
+
+
+
+
 function updateHeaderLocationPillUI() {
   const labelEl = document.getElementById("bd-loc-active-label");
   if (!labelEl) return;
   const shortName = getActiveLocationShortLabel();
-  labelEl.textContent = `📍 ${shortName} ▾`;
+  labelEl.textContent = `${shortName} ▾`;
 }
+
+
+
+
 
 
 
@@ -9634,7 +11982,15 @@ function initMuslimBanglaSearchLocationModal() {
 
 
 
+
+
+
+
   if (!triggerBtn || !overlay) return;
+
+
+
+
 
 
 
@@ -9646,7 +12002,15 @@ function initMuslimBanglaSearchLocationModal() {
 
 
 
+
+
+
+
   updateHeaderLocationPillUI();
+
+
+
+
 
 
 
@@ -9655,6 +12019,10 @@ function initMuslimBanglaSearchLocationModal() {
     overlay.classList.add("hidden");
     triggerBtn.setAttribute("aria-expanded", "false");
   }
+
+
+
+
 
 
 
@@ -9678,9 +12046,17 @@ function initMuslimBanglaSearchLocationModal() {
 
 
 
+
+
+
+
   function renderCurrentList(filterText = "") {
     const q = filterText.trim().toLowerCase();
     listContainer.innerHTML = "";
+
+
+
+
 
 
 
@@ -9694,8 +12070,17 @@ function initMuslimBanglaSearchLocationModal() {
 
 
 
+
+
+
+
       const saved = getSavedGlobalOrBdLocation();
       const activeCountryCode = saved?.countryCode || "BD";
+
+
+
+
+
 
 
 
@@ -9704,6 +12089,10 @@ function initMuslimBanglaSearchLocationModal() {
         if (b.code === activeCountryCode) return 1;
         return a.name.localeCompare(b.name);
       });
+
+
+
+
 
 
 
@@ -9729,16 +12118,32 @@ function initMuslimBanglaSearchLocationModal() {
 
 
 
+
+
+
+
     // STEP 2A: Bangladesh -> All 64 Districts (সকল ৬৪ জেলা)
     if (currentStep === "bd-district") {
       backBtn.classList.remove("hidden");
       titleEl.textContent = "Bangladesh";
+
+
+
+
+
+
+
+
       const allDistricts = [];
       BD_GEO_HIERARCHY.forEach((div) => {
         div.districts.forEach((dist) => {
           allDistricts.push({ ...dist, divisionId: div.id });
         });
       });
+
+
+
+
 
 
 
@@ -9764,10 +12169,21 @@ function initMuslimBanglaSearchLocationModal() {
 
 
 
+
+
+
+
     // STEP 2B: Bangladesh -> Selected District's Upazilas/Thanas
     if (currentStep === "bd-upazila" && selectedBdDistrict) {
       backBtn.classList.remove("hidden");
       titleEl.textContent = appState.locale === "en" ? selectedBdDistrict.name_en : selectedBdDistrict.name_bn;
+
+
+
+
+
+
+
 
       const upazilas = selectedBdDistrict.upazilas || [];
       upazilas
@@ -9809,10 +12225,21 @@ function initMuslimBanglaSearchLocationModal() {
 
 
 
+
+
+
+
     // STEP 2C: Global Country -> Cities
     if (currentStep === "global-city" && selectedCountry) {
       backBtn.classList.remove("hidden");
       titleEl.textContent = selectedCountry.name;
+
+
+
+
+
+
+
 
       (selectedCountry.cities || [])
         .filter((city) => !q || city.name.toLowerCase().includes(q))
@@ -9845,6 +12272,10 @@ function initMuslimBanglaSearchLocationModal() {
 
 
 
+
+
+
+
   // 1. Clicking Header Pill opens the "অবস্থান অনুসন্ধান করুন" prompt card with localized labels
   triggerBtn.addEventListener("click", () => {
     const mainTxtEl = document.getElementById("s24-loc-trigger-main-text");
@@ -9873,6 +12304,12 @@ function initMuslimBanglaSearchLocationModal() {
   });
 
 
+
+
+
+
+
+
   // 2. Clicking "অবস্থান অনুসন্ধান করুন" opens the Country/City/District Picker
   if (openSearchBtn) {
     openSearchBtn.addEventListener("click", () => {
@@ -9884,6 +12321,12 @@ function initMuslimBanglaSearchLocationModal() {
       setTimeout(() => searchInput.focus(), 80);
     });
   }
+
+
+
+
+
+
 
 
   // 3. Back Button inside Picker Header
@@ -9900,10 +12343,19 @@ function initMuslimBanglaSearchLocationModal() {
 
 
 
+
+
+
+
   // 4. Live Search Filter
   searchInput.addEventListener("input", (e) => {
     renderCurrentList(e.target.value);
   });
+
+
+
+
+
 
 
 
@@ -9915,9 +12367,50 @@ function initMuslimBanglaSearchLocationModal() {
 }
 
 
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   initMuslimBanglaSearchLocationModal();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -9933,6 +12426,10 @@ document.addEventListener("DOMContentLoaded", () => {
 // - Exposes window.Sunnah24SectionEngine for registering future independent
 //   sections or sub-sections dynamically.
 // ============================================================================
+
+
+
+
 
 
 
@@ -10039,6 +12536,10 @@ const MASTER_SECTION_REGISTRY = {
 
 
 
+
+
+
+
 function applyCornerPillState(badgeEl, doneCount, totalCount) {
   if (!badgeEl) return;
   badgeEl.classList.remove(
@@ -10050,6 +12551,7 @@ function applyCornerPillState(badgeEl, doneCount, totalCount) {
   const parentCard = badgeEl.closest(".section-launcher-card");
   if (parentCard) parentCard.classList.remove("card-state-complete");
 
+
   if (totalCount > 0 && doneCount >= totalCount) {
     badgeEl.classList.add("pill-state-complete");
     if (parentCard) parentCard.classList.add("card-state-complete");
@@ -10059,6 +12561,7 @@ function applyCornerPillState(badgeEl, doneCount, totalCount) {
     badgeEl.classList.add("pill-state-zero");
   }
 }
+
 
 function syncMasterSectionsLiveProgress() {
   const now = new Date();
@@ -10074,8 +12577,10 @@ function syncMasterSectionsLiveProgress() {
     "character_social"
   ];
 
+
   let totalHabitsAllPhases = 0;
   let totalDoneAllPhases = 0;
+
 
   phaseKeys.forEach((pKey) => {
     const phaseHabits = allHabits.filter((h) => h.phase === pKey);
@@ -10083,6 +12588,7 @@ function syncMasterSectionsLiveProgress() {
     const done = phaseHabits.filter((h) => isHabitCompletedInActiveCycle(h, now)).length;
     totalHabitsAllPhases += total;
     totalDoneAllPhases += done;
+
 
     const badgeEl = document.getElementById(`badge-count-${pKey}`);
     if (badgeEl) {
@@ -10093,6 +12599,7 @@ function syncMasterSectionsLiveProgress() {
       applyCornerPillState(badgeEl, done, total);
     }
   });
+
 
   // Sync Unified Hub Header Summary Pill ("১২/৩২ সুন্নাহ সম্পন্ন")
   const hubSummaryPillEl = document.getElementById("sections-hub-summary-pill");
@@ -10110,11 +12617,13 @@ function syncMasterSectionsLiveProgress() {
     hubSummaryPillEl.classList.toggle("all-completed", isAllComplete);
   }
 
+
   // Sync Masnoon Adhkar launcher card progress (3-state color-coded pill)
   const todayKey = getTodayKey();
   const completedDuas = (appState.duaCompletionsByDate && appState.duaCompletionsByDate[todayKey]) || [];
   const totalDuas = SUNNAH_24_DUAS.length;
   const doneDuas = completedDuas.length;
+
 
   const adhkarBadgeEl = document.getElementById("badge-count-adhkar");
   if (adhkarBadgeEl) {
@@ -10127,6 +12636,7 @@ function syncMasterSectionsLiveProgress() {
     applyCornerPillState(adhkarBadgeEl, doneDuas, totalDuas);
   }
 
+
   // Sync Tasbih launcher card badge (Micro-icon prefix for instant recognition)
   const tasbihBadgeEl = document.getElementById("badge-count-tasbih");
   if (tasbihBadgeEl) {
@@ -10134,6 +12644,7 @@ function syncMasterSectionsLiveProgress() {
     tasbihBadgeEl.classList.add("pill-state-utility");
     tasbihBadgeEl.textContent = `📿 ${localizeDigits(appState.lifetimeDhikr || 0, lang)}`;
   }
+
 
   // Sync Personal Custom Habit launcher card badge
   const customHabitBadgeEl = document.getElementById("badge-count-custom_habit");
@@ -10150,6 +12661,7 @@ function syncMasterSectionsLiveProgress() {
         : `➕ ${countStr}টি`;
   }
 
+
   // Sync SHA-256 Crypto Vault launcher card badge
   const cryptoVaultBadgeEl = document.getElementById("badge-count-crypto_vault");
   if (cryptoVaultBadgeEl) {
@@ -10158,6 +12670,7 @@ function syncMasterSectionsLiveProgress() {
     cryptoVaultBadgeEl.textContent =
       lang === "ar" ? "🛡️ آمن" : lang === "en" ? "🛡️ Secured" : "🛡️ সুরক্ষিত";
   }
+
 
   // Sync Vault & Analytics launcher card badge
   const vaultBadgeEl = document.getElementById("badge-count-vault");
@@ -10176,6 +12689,7 @@ function syncMasterSectionsLiveProgress() {
         : `🔥 ${daysStr} দিন`;
   }
 
+
   // Sync Active Master Topbar & Phase Banner if a Master Section is currently open
   if (activeMasterSectionId && MASTER_SECTION_REGISTRY[activeMasterSectionId]) {
     updateActiveMasterHeaderUI(activeMasterSectionId);
@@ -10185,9 +12699,17 @@ function syncMasterSectionsLiveProgress() {
 
 
 
+
+
+
+
 function updateActiveMasterHeaderUI(sectionId) {
   const meta = MASTER_SECTION_REGISTRY[sectionId];
   if (!meta) return;
+
+
+
+
 
 
 
@@ -10202,9 +12724,17 @@ function updateActiveMasterHeaderUI(sectionId) {
 
 
 
+
+
+
+
   if (logoEl && meta.logoHtml) logoEl.innerHTML = meta.logoHtml;
   if (titleEl) titleEl.textContent = meta.customTitle || t(meta.titleKey);
   if (subEl) subEl.textContent = meta.customDesc || t(meta.descKey);
+
+
+
+
 
 
 
@@ -10218,9 +12748,17 @@ function updateActiveMasterHeaderUI(sectionId) {
 
 
 
+
+
+
+
     if (badgeEl) {
       badgeEl.textContent = `${localizeDigits(done, lang)}/${localizeDigits(total, lang)}`;
     }
+
+
+
+
 
 
 
@@ -10231,8 +12769,16 @@ function updateActiveMasterHeaderUI(sectionId) {
 
 
 
+
+
+
+
     const phaseScoreEl = document.getElementById("master-phase-score-pill");
     if (phaseScoreEl) phaseScoreEl.textContent = `${localizeDigits(pct, lang)}%`;
+
+
+
+
 
 
 
@@ -10276,6 +12822,10 @@ function updateActiveMasterHeaderUI(sectionId) {
 
 
 
+
+
+
+
 function openMasterSection(sectionId, recordHistory = true) {
   const meta = MASTER_SECTION_REGISTRY[sectionId];
   if (!meta) return;
@@ -10283,9 +12833,17 @@ function openMasterSection(sectionId, recordHistory = true) {
 
 
 
+
+
+
+
   const homeView = document.getElementById("home-dashboard-view");
   const masterView = document.getElementById("master-section-view");
   if (!homeView || !masterView) return;
+
+
+
+
 
 
 
@@ -10298,8 +12856,16 @@ function openMasterSection(sectionId, recordHistory = true) {
 
 
 
+
+
+
+
   activeMasterSectionId = sectionId;
   document.body.setAttribute("data-active-view", sectionId);
+
+
+
+
 
 
 
@@ -10307,6 +12873,10 @@ function openMasterSection(sectionId, recordHistory = true) {
   // Hide Home Dashboard completely & show Full-Screen Master View
   homeView.classList.add("hidden");
   masterView.classList.remove("hidden");
+
+
+
+
 
 
 
@@ -10319,6 +12889,10 @@ function openMasterSection(sectionId, recordHistory = true) {
 
 
 
+
+
+
+
   if (meta.type === "habit-phase") {
     activePhase = meta.phaseKey;
     const habitPanel = document.getElementById("master-panel-habit-phase");
@@ -10327,9 +12901,17 @@ function openMasterSection(sectionId, recordHistory = true) {
 
 
 
+
+
+
+
     document.querySelectorAll(".master-phase-switcher .chip").forEach((c) => {
       c.classList.toggle("active", c.getAttribute("data-phase") === meta.phaseKey);
     });
+
+
+
+
 
 
 
@@ -10355,7 +12937,15 @@ function openMasterSection(sectionId, recordHistory = true) {
 
 
 
+
+
+
+
   updateActiveMasterHeaderUI(sectionId);
+
+
+
+
 
 
 
@@ -10367,9 +12957,17 @@ function openMasterSection(sectionId, recordHistory = true) {
 
 
 
+
+
+
+
   if (navigator.vibrate) navigator.vibrate(12);
   window.scrollTo({ top: 0, behavior: "instant" });
 }
+
+
+
+
 
 
 
@@ -10382,8 +12980,16 @@ function closeMasterSectionToHome() {
 
 
 
+
+
+
+
   activeMasterSectionId = null;
   document.body.setAttribute("data-active-view", "home");
+
+
+
+
 
 
 
@@ -10394,7 +13000,15 @@ function closeMasterSectionToHome() {
 
 
 
+
+
+
+
   syncMasterSectionsLiveProgress();
+
+
+
+
 
 
 
@@ -10407,9 +13021,20 @@ function closeMasterSectionToHome() {
 
 
 
+
+
+
+
 // Override Back-Button Navigation so Android APK Back Button & Browser Back
 // return smoothly from any Full-Screen Master Section to the Home Dashboard!
 window.handleSunnahBackNavigation = function () {
+  // 1.0 Close Settings & Preferences Modal if open
+  const settingsModalEl = document.getElementById("s24-settings-modal");
+  if (settingsModalEl && !settingsModalEl.classList.contains("hidden")) {
+    settingsModalEl.classList.add("hidden");
+    return true;
+  }
+
   // 1A. Close Custom Habit Added Confirmation Modal if open
   const customAddedModal = document.getElementById("custom-habit-added-modal");
   if (customAddedModal && !customAddedModal.classList.contains("hidden")) {
@@ -10420,12 +13045,20 @@ window.handleSunnahBackNavigation = function () {
 
 
 
+
+
+
+
   // 1B. Close Fact / History Modal if open
   const modal = document.getElementById("fact-modal");
   if (modal && !modal.classList.contains("hidden")) {
     modal.classList.add("hidden");
     return true;
   }
+
+
+
+
 
 
 
@@ -10442,6 +13075,10 @@ window.handleSunnahBackNavigation = function () {
 
 
 
+
+
+
+
   // 2B. Close Header Location Popover if open
   const locPanel = document.getElementById("bd-loc-cascading-panel");
   if (locPanel && locPanel.classList.contains("is-open")) {
@@ -10449,6 +13086,10 @@ window.handleSunnahBackNavigation = function () {
     if (locToggleBtn) locToggleBtn.setAttribute("aria-expanded", "false");
     return true;
   }
+
+
+
+
 
 
 
@@ -10465,11 +13106,19 @@ window.handleSunnahBackNavigation = function () {
 
 
 
+
+
+
+
   // 3. If any Full-Screen Master Section is open -> Return directly to Home Dashboard!
   if (activeMasterSectionId) {
     closeMasterSectionToHome();
     return true;
   }
+
+
+
+
 
 
 
@@ -10484,6 +13133,10 @@ window.handleSunnahBackNavigation = function () {
   pushAppHistoryState("root-guard");
   return true;
 };
+
+
+
+
 
 
 
@@ -10507,6 +13160,10 @@ window.Sunnah24SectionEngine = {
 
 
 
+
+
+
+
     const gridSlot = document.getElementById("custom-independent-sections-slot");
     if (gridSlot) {
       const cardBtn = document.createElement("button");
@@ -10523,9 +13180,14 @@ window.Sunnah24SectionEngine = {
           <p class="section-card-desc">${subtitle || ""}</p>
         </div>
 
+
       `;
       gridSlot.appendChild(cardBtn);
     }
+
+
+
+
 
 
 
@@ -10556,6 +13218,14 @@ window.Sunnah24SectionEngine = {
 
 
 
+
+
+
+
+
+
+
+
 const PHASE_KEY_TO_TITLE_I18N = deepFreeze({
   tahajjud_fajr: "phase_tahajjud",
   duha_work: "phase_duha",
@@ -10569,10 +13239,18 @@ const PHASE_KEY_TO_TITLE_I18N = deepFreeze({
 
 
 
+
+
+
+
 function getPhaseLocalizedName(phaseKey) {
   const i18nKey = PHASE_KEY_TO_TITLE_I18N[phaseKey] || "phase_tahajjud";
   return t(i18nKey);
 }
+
+
+
+
 
 
 
@@ -10582,9 +13260,17 @@ let lastAddedCustomHabitPhase = "tahajjud_fajr";
 
 
 
+
+
+
+
 function showCustomHabitAddedModal(habitObj) {
   const modalEl = document.getElementById("custom-habit-added-modal");
   if (!modalEl || !habitObj) return;
+
+
+
+
 
 
 
@@ -10597,12 +13283,20 @@ function showCustomHabitAddedModal(habitObj) {
 
 
 
+
+
+
+
   const titleEl = document.getElementById("custom-added-modal-title");
   const chipEl = document.getElementById("custom-added-modal-phase-chip");
   const habitNameEl = document.getElementById("custom-added-habit-name");
   const msgEl = document.getElementById("custom-added-modal-msg");
   const gotoBtn = document.getElementById("custom-added-goto-section-btn");
   const closeBtn = document.getElementById("custom-added-close-btn");
+
+
+
+
 
 
 
@@ -10626,12 +13320,20 @@ function showCustomHabitAddedModal(habitObj) {
 
 
 
+
+
+
+
   modalEl.classList.remove("hidden");
   if (navigator.vibrate) navigator.vibrate([25, 45, 30]);
   if (typeof pushAppHistoryState === "function") {
     pushAppHistoryState("custom-habit-added-modal");
   }
 }
+
+
+
+
 
 
 
@@ -10644,8 +13346,16 @@ function renderCustomHabitsManageList() {
 
 
 
+
+
+
+
   const lang = appState.locale || "bn";
   const customList = Array.isArray(appState.customHabits) ? appState.customHabits : [];
+
+
+
+
 
 
 
@@ -10663,10 +13373,18 @@ function renderCustomHabitsManageList() {
 
 
 
+
+
+
+
   if (customList.length === 0) {
     listEl.innerHTML = `<p class="muted" style="text-align:center;padding:10px 4px;">${t("custom_list_empty")}</p>`;
     return;
   }
+
+
+
+
 
 
 
@@ -10677,6 +13395,10 @@ function renderCustomHabitsManageList() {
     const sectionName = getPhaseLocalizedName(habit.phase);
     const isDone = isHabitCompletedInActiveCycle(habit, now);
     const iconMeta = getHabitIconMeta(habit);
+
+
+
+
 
 
 
@@ -10711,10 +13433,18 @@ function renderCustomHabitsManageList() {
 
 
 
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const customAddedModal = document.getElementById("custom-habit-added-modal");
   const gotoSecBtn = document.getElementById("custom-added-goto-section-btn");
   const closeAddedBtn = document.getElementById("custom-added-close-btn");
+
+
+
+
 
 
 
@@ -10724,6 +13454,10 @@ document.addEventListener("DOMContentLoaded", () => {
       customAddedModal.classList.add("hidden");
     });
   }
+
+
+
+
 
 
 
@@ -10741,6 +13475,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
   if (customAddedModal) {
     customAddedModal.addEventListener("click", (e) => {
       if (e.target === customAddedModal) {
@@ -10748,6 +13486,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+
+
+
 
 
 
@@ -10767,8 +13509,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
   renderCustomHabitsManageList();
 });
+
+
+
+
 
 
 
@@ -10790,6 +13540,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
   // Allow tapping top-left App Brand Logo/Title to return to Home Dashboard from any Master Section
   const headerLeftEl = document.querySelector(".header-left");
   if (headerLeftEl) {
@@ -10801,6 +13555,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+
+
+
 
 
 
@@ -10817,6 +13575,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
   // 3. Click on Quick Phase Switcher Chips inside Master Habit Phase View
   document.querySelectorAll(".master-phase-switcher .chip").forEach((chip) => {
     chip.addEventListener("click", () => {
@@ -10826,6 +13588,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+
+
+
 
 
 
@@ -10844,8 +13610,357 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
   // Initial sync of all 10 section cards on Home Grid
   setTimeout(() => {
     syncMasterSectionsLiveProgress();
   }, 60);
 });
+
+
+// ============================================================================
+// V7.5 GOOGLE DEEPMIND ULTIMATE 10/10 UI/UX ENGINE:
+// 1. Unified Custom 3D Vector SVG Iconography (Replaces System Emojis across
+//    Live Waqt Avatar, 5-Waqt Strip Pills, Fasting Banner, Time-Lock Pill,
+//    Madhab Selector, and Utility Corner Badges)
+// 2. Clean Settings & Preferences Modal Drawer Controller (Language & Madhab)
+// 3. Sticky 4-Tab Bottom Navigation Bar Controller (Home, Sunnah Grid, Tasbih, Stats)
+// 4. Active Time-Phase Highlighting on the 12-Card Grid
+// ============================================================================
+
+const S24_VECTOR_ICONS = deepFreeze({
+  fajr: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><defs><linearGradient id="vFajrG" x1="4" y1="4" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient></defs><path d="M4 20h20M7 16a7 7 0 0 1 14 0" stroke="url(#vFajrG)" stroke-width="2.3" stroke-linecap="round"/><path d="M14 5v3M6.5 8.5l2 2M21.5 8.5l-2 2" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/></svg>`,
+  duha: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><circle cx="14" cy="14" r="5.5" fill="#facc15" stroke="#d97706" stroke-width="1.6"/><path d="M14 3v3M14 22v3M3 14h3M22 14h3M6.2 6.2l2.1 2.1M19.7 19.7l2.1 2.1M21.8 6.2l-2.1 2.1M8.3 19.7l-2.1 2.1" stroke="#ea580c" stroke-width="2" stroke-linecap="round"/></svg>`,
+  dhuhr: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><circle cx="14" cy="14" r="6.2" fill="#fde047" stroke="#ca8a04" stroke-width="1.8"/><path d="M14 2.5v3M14 22.5v3M2.5 14h3M22.5 14h3M5.8 5.8l2.2 2.2M20 20l2.2 2.2M22.2 5.8L20 8M8 20l-2.2 2.2" stroke="#d97706" stroke-width="2.1" stroke-linecap="round"/></svg>`,
+  jumuah: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><path d="M6 22V14c0-4.4 3.6-8 8-8s8 3.6 8 8v8H6z" fill="#10b981" stroke="#065f46" stroke-width="1.7"/><path d="M14 3v3" stroke="#d97706" stroke-width="2" stroke-linecap="round"/><rect x="11.5" y="15" width="5" height="7" rx="2.5" fill="#fef08a"/><path d="M3 22h22" stroke="#065f46" stroke-width="2" stroke-linecap="round"/></svg>`,
+  asr: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><circle cx="11.5" cy="11.5" r="5" fill="#fbbf24"/><path d="M11 19.5h9.5a3.5 3.5 0 0 0 .5-6.96A5 5 0 0 0 11.3 11a4 4 0 0 0-.3 8.5z" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
+  maghrib: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><path d="M3 20h22M6 23h16" stroke="#9a3412" stroke-width="2" stroke-linecap="round"/><path d="M7 20a7 7 0 0 1 14 0" fill="#fb923c" stroke="#dc2626" stroke-width="1.7"/><path d="M14 6v3M6.5 9.5l2 2M21.5 9.5l-2 2" stroke="#ea580c" stroke-width="1.9" stroke-linecap="round"/></svg>`,
+  isha: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><path d="M17.5 4.5c-4.5 1.1-7.3 5.7-6.2 10.2 1.1 4.5 5.7 7.3 10.2 6.2-3.4 2.5-8.2 2.1-11.2-.9-3-3-3.4-7.8-.9-11.2 1.9-2.6 5-4.1 8.1-4.3z" fill="#facc15" stroke="#ca8a04" stroke-width="1.4"/><circle cx="20" cy="8" r="1.3" fill="#fde047"/><circle cx="22.5" cy="13" r="1" fill="#fef08a"/></svg>`,
+  prohibited: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><circle cx="14" cy="14" r="9.5" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/><path d="M8.5 8.5l11 11" stroke="#dc2626" stroke-width="2.2" stroke-linecap="round"/></svg>`,
+  clockLock: `<svg viewBox="0 0 20 20" width="13" height="13" fill="none" style="vertical-align:-2px;margin-right:3px;"><circle cx="10" cy="10" r="7.5" stroke="#065f46" stroke-width="1.8"/><path d="M10 6v4.2l2.8 1.6" stroke="#0d9467" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  crescentInline: `<svg viewBox="0 0 20 20" width="14" height="14" fill="none" style="vertical-align:-2px;margin-right:4px;"><path d="M13.5 2.8c-3.5.9-5.6 4.4-4.7 7.9.9 3.5 4.4 5.6 7.9 4.7-2.6 1.9-6.3 1.6-8.6-.7-2.3-2.3-2.6-6-.7-8.6 1.4-2 3.8-3.1 6.1-3.3z" fill="#eab308" stroke="#ca8a04" stroke-width="1.1"/></svg>`,
+  mosqueInline: `<svg viewBox="0 0 20 20" width="14" height="14" fill="none" style="vertical-align:-2px;margin-right:3px;"><path d="M4 16v-5.5c0-3.3 2.7-6 6-6s6 2.7 6 6V16H4z" fill="#10b981"/><path d="M10 2v2.5M2.5 16h15" stroke="#fde047" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+  sparkleInline: `<svg viewBox="0 0 20 20" width="14" height="14" fill="none" style="vertical-align:-2px;margin-right:3px;"><path d="M10 2l2.1 5.4L17.5 9.5l-5.4 2.1L10 17l-2.1-5.4L2.5 9.5l5.4-2.1L10 2z" fill="#facc15" stroke="#ca8a04" stroke-width="1"/></svg>`,
+  tasbihMini: `<svg viewBox="0 0 18 18" width="12" height="12" fill="none" style="vertical-align:-1.5px;margin-right:2px;"><circle cx="9" cy="8.5" r="5.2" stroke="#065f46" stroke-width="1.7" stroke-dasharray="2 2"/><path d="M9 14v2.5" stroke="#b45309" stroke-width="1.7" stroke-linecap="round"/></svg>`,
+  flameMini: `<svg viewBox="0 0 18 18" width="12" height="12" fill="none" style="vertical-align:-1.5px;margin-right:2px;"><path d="M9.3 2C9.3 2 14 6 14 10.6c0 3.3-2.3 5.6-5 5.6s-5-2.3-5-5.6c0-2.5 1.5-4.7 2.7-5.8 0 0-.3 2.1 1.1 2.7C7.3 5.2 9.3 2 9.3 2z" fill="#f97316"/></svg>`,
+  plusMini: `<svg viewBox="0 0 18 18" width="12" height="12" fill="none" style="vertical-align:-1.5px;margin-right:2px;"><circle cx="9" cy="9" r="6.8" fill="#10b981"/><path d="M9 5.8v6.4M5.8 9h6.4" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  shieldMini: `<svg viewBox="0 0 18 18" width="12" height="12" fill="none" style="vertical-align:-1.5px;margin-right:2px;"><path d="M9 2l6 2.3v4.5c0 4-2.6 7.1-6 8.4-3.4-1.3-6-4.4-6-8.4V4.3L9 2z" fill="#10b981"/><path d="M6.8 9.2l1.6 1.6 3.2-3.2" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+});
+
+function upgradeEmojisToCustomVectors() {
+  // 1. Replace 5-Waqt Strip Pill emojis with custom vector SVGs
+  const now = new Date();
+  const isFri = isFridayJumuahDay(now);
+  document.querySelectorAll(".waqt-pill-card[data-waqt-id]").forEach((btn) => {
+    const wId = btn.getAttribute("data-waqt-id");
+    const logoBox = btn.querySelector(".waqt-circle-logo");
+    if (!logoBox) return;
+    if (wId === "fajr") logoBox.innerHTML = S24_VECTOR_ICONS.fajr;
+    else if (wId === "dhuhr") logoBox.innerHTML = isFri ? S24_VECTOR_ICONS.jumuah : S24_VECTOR_ICONS.dhuhr;
+    else if (wId === "asr") logoBox.innerHTML = S24_VECTOR_ICONS.asr;
+    else if (wId === "maghrib") logoBox.innerHTML = S24_VECTOR_ICONS.maghrib;
+    else if (wId === "isha") logoBox.innerHTML = S24_VECTOR_ICONS.isha;
+  });
+
+  // 2. Replace Live Ongoing Waqt Avatar emoji with custom vector SVG
+  const liveBox = document.getElementById("live-waqt-countdown-box");
+  if (liveBox) {
+    const avatarEl = liveBox.querySelector(".waqt-popup-avatar");
+    if (avatarEl) {
+      if (liveBox.classList.contains("waqt-prohibited-active")) {
+        avatarEl.innerHTML = S24_VECTOR_ICONS.prohibited;
+      } else {
+        const sched = computeSeasonalPrayerSchedule(now);
+        const nowMins = now.getHours() * 60 + now.getMinutes();
+        const pWin = sched.prohibitedWindows || {
+          sunrise: { start: sched.sunrise, end: sched.sunrise + 15 },
+          zawal: { start: sched.zawal, end: sched.dhuhr },
+          sunset: { start: sched.sunset - 15, end: sched.sunset }
+        };
+        if (nowMins >= sched.fajr && nowMins < pWin.sunrise.start) {
+          avatarEl.innerHTML = S24_VECTOR_ICONS.fajr;
+        } else if (nowMins >= pWin.sunrise.end && nowMins < pWin.zawal.start) {
+          avatarEl.innerHTML = S24_VECTOR_ICONS.duha;
+        } else if (nowMins >= pWin.zawal.end && nowMins < sched.asr) {
+          avatarEl.innerHTML = isFri ? S24_VECTOR_ICONS.jumuah : S24_VECTOR_ICONS.dhuhr;
+        } else if (nowMins >= sched.asr && nowMins < pWin.sunset.start) {
+          avatarEl.innerHTML = S24_VECTOR_ICONS.asr;
+        } else if (nowMins >= sched.maghrib && nowMins < sched.isha) {
+          avatarEl.innerHTML = S24_VECTOR_ICONS.maghrib;
+        } else {
+          avatarEl.innerHTML = S24_VECTOR_ICONS.isha;
+        }
+      }
+    }
+
+    // Replace emojis inside Prime Window, Countdown & Rakah Footer of Live Waqt Box
+    liveBox.querySelectorAll(".meta-row-label").forEach((lbl) => {
+      const rawTxt = lbl.textContent.replace(/^[✨⏱️⏭️]\s*/, "").trim();
+      if (lbl.closest(".countdown-single-line-row")) {
+        lbl.innerHTML = `${S24_VECTOR_ICONS.clockLock}<span>${rawTxt}</span>`;
+      } else {
+        lbl.innerHTML = `${S24_VECTOR_ICONS.sparkleInline}<span>${rawTxt}</span>`;
+      }
+    });
+
+    const rakahFooterSpan = liveBox.querySelector(".ongoing-rakah-footer span");
+    if (rakahFooterSpan) {
+      const cleanRakah = rakahFooterSpan.textContent.replace(/^[🕌📖]\s*/, "").trim();
+      rakahFooterSpan.innerHTML = `${S24_VECTOR_ICONS.mosqueInline}<span>${cleanRakah}</span>`;
+    }
+  }
+
+  // 3. Replace Time-Lock Pill & Fasting Banner Emojis in Hero Card with Custom SVGs
+  const lockPill = document.getElementById("time-lock-summary");
+  if (lockPill) {
+    const cleanLock = lockPill.textContent.replace(/^[❄️☀️🌿⏱️]\s*/, "").trim();
+    lockPill.innerHTML = `${S24_VECTOR_ICONS.clockLock}<span>${cleanLock}</span>`;
+  }
+
+  const fastBanner = document.getElementById("fasting-banner");
+  if (fastBanner) {
+    const cleanFast = fastBanner.textContent.replace(/^[🌙🕌✨]\s*/, "").trim();
+    fastBanner.innerHTML = `${S24_VECTOR_ICONS.crescentInline}<span>${cleanFast}</span>`;
+  }
+
+  // 4. Replace Madhab Toggle Icon with Custom Mosque SVG
+  const madhabIcon = document.getElementById("madhab-toggle-icon");
+  if (madhabIcon) {
+    madhabIcon.innerHTML = S24_VECTOR_ICONS.mosqueInline;
+  }
+
+  // 5. Replace Utility Corner Badges on Cards 9–12 with Custom Vector Micro-SVGs + Active Phase Highlight
+  const lang = appState.locale || "bn";
+  const tasbihBadgeEl = document.getElementById("badge-count-tasbih");
+  if (tasbihBadgeEl) {
+    tasbihBadgeEl.innerHTML = `${S24_VECTOR_ICONS.tasbihMini}<span>${localizeDigits(appState.lifetimeDhikr || 0, lang)}</span>`;
+  }
+
+  const vaultBadgeEl = document.getElementById("badge-count-vault");
+  if (vaultBadgeEl) {
+    const activeDaysTotal = Object.keys(appState.completionsByDate || {}).filter(
+      (k) => (appState.completionsByDate[k] || []).length > 0
+    ).length;
+    const daysStr = localizeDigits(activeDaysTotal, lang);
+    const dayTxt = lang === "ar" ? `${daysStr} يوم` : lang === "en" ? `${daysStr}d` : `${daysStr} দিন`;
+    vaultBadgeEl.innerHTML = `${S24_VECTOR_ICONS.flameMini}<span>${dayTxt}</span>`;
+  }
+
+  const customHabitBadgeEl = document.getElementById("badge-count-custom_habit");
+  if (customHabitBadgeEl) {
+    const customCount = Array.isArray(appState.customHabits) ? appState.customHabits.length : 0;
+    const countStr = localizeDigits(customCount, lang);
+    const unitTxt = lang === "ar" ? countStr : lang === "en" ? countStr : `${countStr}টি`;
+    customHabitBadgeEl.innerHTML = `${S24_VECTOR_ICONS.plusMini}<span>${unitTxt}</span>`;
+  }
+
+  const cryptoVaultBadgeEl = document.getElementById("badge-count-crypto_vault");
+  if (cryptoVaultBadgeEl) {
+    const secTxt = lang === "ar" ? "آمن" : lang === "en" ? "Secured" : "সুরক্ষিত";
+    cryptoVaultBadgeEl.innerHTML = `${S24_VECTOR_ICONS.shieldMini}<span>${secTxt}</span>`;
+  }
+
+  // 6. Highlight Active Phase Card on the 12-Card Grid (.is-active-phase-now)
+  const schedNow = computeSeasonalPrayerSchedule(now);
+  const minsNow = now.getHours() * 60 + now.getMinutes();
+  let currentLivePhaseKey = "sleep_sunnah";
+  if (minsNow >= schedNow.lastThirdStart && minsNow < schedNow.sunrise + 20) {
+    currentLivePhaseKey = "tahajjud_fajr";
+  } else if (minsNow >= schedNow.sunrise + 20 && minsNow < schedNow.dhuhr) {
+    currentLivePhaseKey = "duha_work";
+  } else if (minsNow >= schedNow.dhuhr && minsNow < schedNow.maghrib) {
+    currentLivePhaseKey = "dhuhr_asr";
+  } else if (minsNow >= schedNow.maghrib && minsNow < Math.min(1380, schedNow.isha + 90)) {
+    currentLivePhaseKey = "maghrib_isha";
+  }
+  document.querySelectorAll(".section-launcher-card[data-phase-key]").forEach((cardEl) => {
+    const pKey = cardEl.getAttribute("data-phase-key");
+    cardEl.classList.toggle("is-active-phase-now", pKey === currentLivePhaseKey);
+  });
+}
+
+// Wrap renderFiveWaqtStrip, renderHeaderDatesAndPhase, and syncMasterSectionsLiveProgress so custom vectors always stay in sync
+const _origRenderFiveWaqtStrip = renderFiveWaqtStrip;
+renderFiveWaqtStrip = function (now = new Date()) {
+  _origRenderFiveWaqtStrip(now);
+  upgradeEmojisToCustomVectors();
+};
+
+const _origSyncMasterSectionsLiveProgress = syncMasterSectionsLiveProgress;
+syncMasterSectionsLiveProgress = function () {
+  _origSyncMasterSectionsLiveProgress();
+  upgradeEmojisToCustomVectors();
+};
+
+// Sync Bottom Navigation Bar active state
+function setBottomNavActiveTab(tabKey) {
+  document.querySelectorAll("#s24-bottom-nav .s24-bnav-btn").forEach((btn) => {
+    btn.classList.toggle("active", btn.getAttribute("data-bnav") === tabKey);
+  });
+}
+
+const _origOpenMasterSection = openMasterSection;
+openMasterSection = function (sectionId, recordHistory = true) {
+  _origOpenMasterSection(sectionId, recordHistory);
+  if (sectionId === "sec-tasbih") {
+    setBottomNavActiveTab("tasbih");
+  } else if (sectionId === "sec-vault") {
+    setBottomNavActiveTab("stats");
+  } else {
+    setBottomNavActiveTab("grid");
+  }
+};
+
+const _origCloseMasterSectionToHome = closeMasterSectionToHome;
+closeMasterSectionToHome = function () {
+  _origCloseMasterSectionToHome();
+  setBottomNavActiveTab("home");
+};
+
+// Localize Settings Modal & Bottom Nav labels dynamically
+function syncSettingsAndBottomNavI18n() {
+  const lang = appState.locale || "bn";
+  const dict = {
+    bn: {
+      settings_modal_title: "সেটিংস ও পছন্দসমূহ",
+      settings_lang_label: "অ্যাপের ভাষা (Language)",
+      settings_madhab_label: "আসরের ওয়াক্ত গণনা পদ্ধতি (Asr Madhab)",
+      settings_madhab_sub: "হানাফী (২ গুণ ছায়া) অথবা শাফিঈ/জমহুর (১ গুণ ছায়া) পরিবর্তন করুন",
+      bnav_home: "হোম",
+      bnav_grid: "সুন্নাহ গ্রিড",
+      bnav_tasbih: "তাসবীহ",
+      bnav_stats: "পরিসংখ্যান"
+    },
+    ar: {
+      settings_modal_title: "الإعدادات والتفضيلات",
+      settings_lang_label: "لغة التطبيق (Language)",
+      settings_madhab_label: "مذهب حساب وقت العصر",
+      settings_madhab_sub: "التبديل بين المذهب الحنفي (ظل مضاعف) ومذهب الجمهور/الشافعي (ظل واحد)",
+      bnav_home: "الرئيسية",
+      bnav_grid: "الأقسام",
+      bnav_tasbih: "السبحة",
+      bnav_stats: "الإحصائيات"
+    },
+    en: {
+      settings_modal_title: "Settings & Preferences",
+      settings_lang_label: "App Language",
+      settings_madhab_label: "Asr Prayer Calculation (Madhab)",
+      settings_madhab_sub: "Switch between Hanafi (2x shadow) and Standard Shafi'i/Jumhur (1x shadow)",
+      bnav_home: "Home",
+      bnav_grid: "Sunnah Grid",
+      bnav_tasbih: "Tasbih",
+      bnav_stats: "Stats"
+    }
+  }[lang] || {};
+
+  Object.keys(dict).forEach((k) => {
+    document.querySelectorAll(`[data-i18n="${k}"]`).forEach((el) => {
+      el.textContent = dict[k];
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  upgradeEmojisToCustomVectors();
+  syncSettingsAndBottomNavI18n();
+
+  // 1. Settings & Preferences Modal Drawer Events
+  const settingsOpenBtn = document.getElementById("s24-settings-open-btn");
+  const settingsModal = document.getElementById("s24-settings-modal");
+  const settingsCloseBtn = document.getElementById("s24-settings-close-btn");
+  const settingsDoneBtn = document.getElementById("s24-settings-done-btn");
+
+  const closeSettingsModal = () => {
+    if (settingsModal) settingsModal.classList.add("hidden");
+    if (settingsOpenBtn) settingsOpenBtn.setAttribute("aria-expanded", "false");
+  };
+
+  if (settingsOpenBtn && settingsModal) {
+    settingsOpenBtn.addEventListener("click", () => {
+      syncSettingsAndBottomNavI18n();
+      if (typeof syncMadhabToggleUI === "function") syncMadhabToggleUI();
+      upgradeEmojisToCustomVectors();
+      settingsModal.classList.remove("hidden");
+      settingsOpenBtn.setAttribute("aria-expanded", "true");
+      if (navigator.vibrate) navigator.vibrate(10);
+      if (typeof pushAppHistoryState === "function") pushAppHistoryState("settings-modal");
+    });
+  }
+  if (settingsCloseBtn) settingsCloseBtn.addEventListener("click", closeSettingsModal);
+  if (settingsDoneBtn) settingsDoneBtn.addEventListener("click", closeSettingsModal);
+  if (settingsModal) {
+    settingsModal.addEventListener("click", (e) => {
+      if (e.target === settingsModal) closeSettingsModal();
+    });
+  }
+
+  const langSwitcher = document.getElementById("lang-switcher");
+  if (langSwitcher) {
+    langSwitcher.addEventListener("change", () => {
+      setTimeout(() => {
+        syncSettingsAndBottomNavI18n();
+        upgradeEmojisToCustomVectors();
+      }, 30);
+    });
+  }
+
+  // 2. Sticky 4-Tab Bottom Navigation Bar Events (Home, Sunnah Grid, Tasbih, Stats)
+  const bottomNav = document.getElementById("s24-bottom-nav");
+  if (bottomNav) {
+    bottomNav.addEventListener("click", (e) => {
+      const btn = e.target.closest(".s24-bnav-btn[data-bnav]");
+      if (!btn) return;
+      const target = btn.getAttribute("data-bnav");
+      if (navigator.vibrate) navigator.vibrate(12);
+
+      if (target === "home") {
+        if (activeMasterSectionId) {
+          closeMasterSectionToHome();
+        }
+        setBottomNavActiveTab("home");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (target === "grid") {
+        if (activeMasterSectionId) {
+          closeMasterSectionToHome();
+        }
+        setBottomNavActiveTab("grid");
+        setTimeout(() => {
+          const hubEl = document.querySelector(".sections-hub-wrapper");
+          const headerEl = document.querySelector(".app-header");
+          if (hubEl) {
+            const hHeight = headerEl ? headerEl.getBoundingClientRect().height : 56;
+            const topPos = (window.scrollY || window.pageYOffset || 0) + hubEl.getBoundingClientRect().top - hHeight - 8;
+            window.scrollTo({ top: Math.max(0, topPos), behavior: "smooth" });
+          }
+        }, 40);
+      } else if (target === "tasbih") {
+        openMasterSection("sec-tasbih", true);
+        setBottomNavActiveTab("tasbih");
+      } else if (target === "stats") {
+        openMasterSection("sec-vault", true);
+        setBottomNavActiveTab("stats");
+      }
+    });
+  }
+
+  // Update Bottom Nav active tab when scrolling on Home Dashboard between Top Waqt & 12-Section Grid
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (activeMasterSectionId) return;
+      const hubEl = document.querySelector(".sections-hub-wrapper");
+      if (!hubEl) return;
+      const rect = hubEl.getBoundingClientRect();
+      if (rect.top <= 240) {
+        setBottomNavActiveTab("grid");
+      } else {
+        setBottomNavActiveTab("home");
+      }
+    },
+    { passive: true }
+  );
+});
+
