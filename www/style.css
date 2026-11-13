@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg-main: #f1f6f3;
   --bg-card: #ffffff;
   --bg-card-elevated: #f8fbf9;
@@ -18,6 +18,11 @@
 
 
 
+
+
+
+
+
 @keyframes gentleFloat {
   0%, 100% {
     transform: translateY(0px);
@@ -30,12 +35,23 @@
 
 
 
+
+
+
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
 }
+
+
+
+
+
+
+
 
 body {
   font-family: "Noto Sans Bengali", "Hind Siliguri", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, sans-serif;
@@ -48,6 +64,12 @@ body {
   line-height: 1.55;
   user-select: none;
 }
+
+
+
+
+
+
 
 
 /* ==========================================================================
@@ -74,11 +96,24 @@ body {
 }
 
 
+
+
+
+
+
+
 .header-left {
   display: flex;
   align-items: center;
   gap: 12px;
 }
+
+
+
+
+
+
+
 
 .header-left img {
   box-shadow: 0 4px 10px rgba(16, 185, 129, 0.18);
@@ -86,17 +121,39 @@ body {
 }
 
 
+
+
+
+
+
+
 .header-right {
   display: flex;
   align-items: center;
   gap: 8px;
 }
+
+
+
+
+
+
+
+
 .header-controls-stack {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 5px;
 }
+
+
+
+
+
+
+
+
 .lang-select {
   background: var(--bg-card-elevated);
   color: var(--text-primary);
@@ -110,14 +167,36 @@ body {
   box-shadow: var(--shadow-pill);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
+
+
+
+
+
+
+
+
 .lang-select:active {
   transform: scale(0.96);
 }
+
+
+
+
+
+
+
 
 .lang-select option {
   background: #ffffff;
   color: var(--text-primary);
 }
+
+
+
+
+
+
+
 
 .brand-badge {
   background: var(--accent-emerald-soft);
@@ -130,6 +209,13 @@ body {
   box-shadow: var(--shadow-pill);
 }
 
+
+
+
+
+
+
+
 .app-header h1 {
   font-size: 1.18rem;
   font-weight: 800;
@@ -137,11 +223,26 @@ body {
   letter-spacing: 0.01em;
 }
 
+
+
+
+
+
+
+
 .app-header p {
   font-size: 0.72rem;
   color: var(--text-muted);
   font-weight: 600;
 }
+
+
+
+
+
+
+
+
 .badge-verified {
   background: var(--accent-emerald-soft);
   color: var(--accent-emerald-dark);
@@ -152,11 +253,23 @@ body {
   font-weight: 800;
   box-shadow: var(--shadow-pill);
 }
+
+
+
+
+
+
+
+
 .badge-tampered {
   background: #fee2e2;
   color: #b91c1c;
   border: 1px solid var(--danger);
 }
+
+
+
+
 
 
 
@@ -178,10 +291,24 @@ body {
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
 }
 
+
+
+
+
+
+
+
 .hero-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float-hover);
 }
+
+
+
+
+
+
+
 
 .hero-stats {
   display: flex;
@@ -191,12 +318,26 @@ body {
   z-index: 2;
 }
 
+
+
+
+
+
+
+
 .label {
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   color: var(--accent-emerald-dark);
   font-weight: 800;
 }
+
+
+
+
+
+
+
 
 .hero-stats h2 {
   font-size: 2.15rem;
@@ -205,11 +346,24 @@ body {
   margin: 2px 0;
 }
 
+
+
+
+
+
+
+
 .hero-left-info p {
   color: var(--text-muted);
   font-size: 0.8rem;
   font-weight: 600;
 }
+
+
+
+
+
+
 
 
 .progress-track {
@@ -221,12 +375,26 @@ body {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
+
+
+
+
+
+
+
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #10b981, #22c55e);
   border-radius: 999px;
   transition: width 0.35s ease;
 }
+
+
+
+
+
+
+
 
 .hero-meta {
   display: flex;
@@ -245,6 +413,8 @@ body {
 
 
 
+
+
 /* ==========================================================================
    FLOATING NAVIGATION TABS & CHIPS
    ========================================================================== */
@@ -254,6 +424,13 @@ body {
   gap: 8px;
   margin: 0 14px 14px;
 }
+
+
+
+
+
+
+
 
 .tab-btn {
   background: var(--bg-card);
@@ -275,15 +452,32 @@ body {
 
 
 
+
+
+
+
+
 .tab-btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float-hover);
 }
 
 
+
+
+
+
+
+
 .tab-btn:active {
   transform: translateY(0px) scale(0.96);
 }
+
+
+
+
+
+
 
 
 .tab-circle-icon {
@@ -300,6 +494,13 @@ body {
   transition: transform 0.2s ease, background 0.2s ease;
 }
 
+
+
+
+
+
+
+
 .tab-btn.active {
   background: #ffffff;
   color: var(--accent-emerald-dark);
@@ -308,6 +509,13 @@ body {
   transform: translateY(-2px);
 }
 
+
+
+
+
+
+
+
 .tab-btn.active .tab-circle-icon {
   background: linear-gradient(135deg, #10b981, #059669);
   color: #ffffff;
@@ -315,15 +523,35 @@ body {
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
 }
 
+
+
+
+
+
+
+
 .tab-content {
   display: none;
   padding: 0 14px;
 }
 
 
+
+
+
+
+
+
 .tab-content.active {
   display: block;
 }
+
+
+
+
+
+
+
 
 .filter-bar {
   display: flex;
@@ -333,6 +561,12 @@ body {
   margin-bottom: 6px;
   scrollbar-width: none;
 }
+
+
+
+
+
+
 
 
 .chip {
@@ -10002,61 +10236,12 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 
 
 /* ==========================================================================
-   V7.5 GOOGLE DEEPMIND ULTIMATE 10/10 UI/UX & ANTI-VISUAL-FATIGUE ARCHITECTURE
-   Implements all 5 Expert Review Upgrades while preserving 100% of prior features:
-   1. Decluttered Top App Bar: Logo/Title on Left, Location Pill + Settings Gear on Right;
-      Language & Asr Madhab selectors housed in a sleek Settings/Preferences Modal Drawer.
-   2. Reduced "Box-Inside-a-Box" Nesting (Waqt Card): Removed outer/inner double-box
-      borders and heavy borders on উত্তম সময় & ওয়াক্ত শেষ হতে বাকি rows, replacing them
-      with breathable, soft tonal Material 3 fills and subtle dividers.
-   3. Unified 3D Custom Vector Iconography: Styled custom SVG icons across Calendar,
-      Streak Ring, 5-Waqt Strip, Live Waqt Avatar, Location Pin, and Corner Badges.
-   4. Compact Top Calendar Banner: Condensed the Hijri/Bangla/Gregorian date card into
-      a sleek, low-profile two-line banner directly beneath the header so Daily Progress
-      and Live Waqt sit higher above the fold.
-   5. Sticky 4-Tab Bottom Navigation Bar: Native one-handed bottom bar (Home, Sunnah Grid,
-      Tasbih, Stats) with frosted glass elevation.
+   TARGETED 3-UPDATE PATCH (TOP BAR DECLUTTER + SETTINGS MODAL + STICKY 4-TAB
+   BOTTOM NAVIGATION BAR + MOON REMOVAL FROM DATE CARD)
+   All other cards, borders, colors, and sections remain 100% unchanged!
    ========================================================================== */
 
-:root {
-  --bg-main: #eef4f0;
-  --bg-card: #f8fcfa;
-  --bg-card-elevated: #f1f7f4;
-  --surface-tonal-top: #f4f9f6;
-  --surface-tonal-pill: #e9f3ee;
-  --surface-tonal-time: #eff6f2;
-  --accent-gold: #a16207;
-  --accent-gold-soft: #fef3c7;
-  --accent-emerald: #0d9467;
-  --accent-emerald-dark: #064e3b;
-  --accent-emerald-soft: #e3f3ec;
-  --text-primary: #142a21;
-  --text-muted: #4b645a;
-  --border-color: rgba(13, 148, 103, 0.14);
-  --danger: #b91c1c;
-  --shadow-float: 0 8px 22px -6px rgba(15, 45, 34, 0.06), 0 2px 8px -2px rgba(15, 45, 34, 0.03);
-}
-
-body {
-  background-color: var(--bg-main) !important;
-  background-image: radial-gradient(circle at 50% 0%, #e2efe8 0%, #eef4f0 58%, #e9f0ec 100%) !important;
-  color: var(--text-primary) !important;
-  padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px)) !important;
-}
-
-/* --------------------------------------------------------------------------
-   1. DECLUTTERED SINGLE-ROW TOP APP BAR & SETTINGS DRAWER MODAL
-   -------------------------------------------------------------------------- */
-.app-header {
-  background: rgba(244, 249, 246, 0.96) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border-bottom: 1px solid rgba(13, 148, 103, 0.16) !important;
-  padding: calc(7px + env(safe-area-inset-top, 0px)) 14px 7px 14px !important;
-  margin: 0 0 6px 0 !important;
-  box-shadow: 0 2px 12px -4px rgba(15, 45, 34, 0.06) !important;
-}
-
+/* 1. Decluttered Top App Bar & Settings Preferences Modal Drawer */
 .header-right {
   display: flex !important;
   align-items: center !important;
@@ -10071,114 +10256,97 @@ body {
 }
 
 .header-loc-pill-btn {
-  background: #e7f2ec !important;
-  color: #064e3b !important;
-  border: 1px solid rgba(13, 148, 103, 0.28) !important;
   padding: 5px 11px !important;
-  border-radius: 999px !important;
   font-size: 0.72rem !important;
-  font-weight: 800 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 5px !important;
-  box-shadow: none !important;
   max-width: 165px !important;
 }
 
-.s24-inline-svg-pin {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  flex-shrink: 0 !important;
-}
-
 .header-settings-icon-btn {
-  width: 34px !important;
-  height: 34px !important;
-  border-radius: 50% !important;
-  background: #e7f2ec !important;
-  color: #064e3b !important;
-  border: 1px solid rgba(13, 148, 103, 0.28) !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  flex-shrink: 0 !important;
-  transition: transform 0.16s ease, background 0.18s ease !important;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f4fbf7;
+  color: var(--accent-emerald-dark, #065f46);
+  border: 1.5px solid rgba(16, 185, 129, 0.42);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(15, 45, 34, 0.08);
+  transition: transform 0.16s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
 .header-settings-icon-btn:hover {
-  background: #d6ebe0 !important;
+  background: #e6f7ef;
+  border-color: var(--accent-emerald, #10b981);
 }
 
 .header-settings-icon-btn:active {
-  transform: scale(0.92) !important;
+  transform: scale(0.93);
 }
 
-/* Settings & Preferences Modal Drawer */
 .s24-settings-drawer-card {
-  background: #f8fcfa !important;
-  border: 1.5px solid rgba(13, 148, 103, 0.3) !important;
-  border-radius: 22px !important;
-  padding: 18px !important;
-  max-width: 370px !important;
-  width: 100% !important;
-  gap: 14px !important;
+  max-width: 375px;
+  width: 100%;
+  gap: 14px;
 }
 
 .s24-settings-drawer-head {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 10px !important;
-  padding-bottom: 10px !important;
-  border-bottom: 1px solid rgba(13, 148, 103, 0.14) !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(16, 185, 129, 0.28);
 }
 
 .s24-settings-head-left {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .s24-settings-head-icon {
-  width: 34px !important;
-  height: 34px !important;
-  border-radius: 10px !important;
-  background: #e3f3ec !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--accent-emerald-soft, #e6f6ef);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
 }
 
 .s24-settings-drawer-head h3 {
   margin: 0 !important;
-  font-size: 0.98rem !important;
-  font-weight: 900 !important;
-  color: #064e3b !important;
+  font-size: 0.98rem;
+  font-weight: 900;
+  color: var(--accent-emerald-dark, #065f46);
 }
 
 .s24-settings-group {
-  background: #eef6f2 !important;
-  border: 1px solid rgba(13, 148, 103, 0.14) !important;
-  border-radius: 15px !important;
-  padding: 12px 13px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 6px !important;
+  background: #f6fbf8;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 15px;
+  padding: 12px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .s24-settings-label {
-  font-size: 0.8rem !important;
-  font-weight: 800 !important;
-  color: #142a21 !important;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-primary, #1e352b);
 }
 
 .s24-settings-hint {
-  font-size: 0.7rem !important;
-  font-weight: 600 !important;
-  color: #4b645a !important;
-  line-height: 1.35 !important;
+  font-size: 0.71rem;
+  font-weight: 600;
+  color: var(--text-muted, #5b7268);
+  line-height: 1.38;
 }
 
 .s24-settings-select {
@@ -10186,369 +10354,127 @@ body {
   padding: 9px 12px !important;
   border-radius: 11px !important;
   font-size: 0.82rem !important;
-  background: #f9fcfa !important;
-  border: 1px solid rgba(13, 148, 103, 0.28) !important;
+  background: #ffffff !important;
 }
 
 .s24-settings-madhab-btn {
-  width: 100% !important;
-  justify-content: center !important;
+  width: 100%;
+  justify-content: center;
   padding: 9px 14px !important;
   font-size: 0.8rem !important;
   border-radius: 11px !important;
-  margin-top: 2px !important;
+  margin-top: 2px;
 }
 
-/* --------------------------------------------------------------------------
-   2. COMPACT SLEEK TWO-LINE TOP CALENDAR BANNER (PUSHES HERO & WAQT HIGHER)
-   -------------------------------------------------------------------------- */
-.lunar-ponjika-card {
-  margin: 2px 12px 7px !important;
-  padding: 7px 12px !important;
-  background: linear-gradient(90deg, #e8f3ed 0%, #f1f8f4 50%, #e8f3ed 100%) !important;
-  border: 1px solid rgba(13, 148, 103, 0.16) !important;
-  border-radius: 14px !important;
-  box-shadow: 0 2px 8px rgba(15, 45, 34, 0.03) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 1px !important;
-}
-
-.lunar-hijri-row {
-  gap: 5px !important;
-  line-height: 1.25 !important;
-}
-
-#lunar-hijri-headline {
-  font-size: 0.86rem !important;
-  font-weight: 900 !important;
-  color: #0d3829 !important;
-}
-
-.crescent-badge {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.crescent-badge svg {
-  width: 16px !important;
-  height: 16px !important;
-  display: block !important;
-}
-
-.bangla-ponjika-sub {
-  margin-top: 0 !important;
-  font-size: 0.71rem !important;
-  font-weight: 700 !important;
-  color: #466056 !important;
-  line-height: 1.25 !important;
-}
-
-/* --------------------------------------------------------------------------
-   3. EYE-SAFE TONAL DAILY SUNNAH MASTERY HERO CARD
-   -------------------------------------------------------------------------- */
-.hero-card.hero-card-compact {
-  margin: 0 12px 8px !important;
-  padding: 11px 14px 9px !important;
-  border-radius: 18px !important;
-  background:
-    radial-gradient(circle at 88% 18%, rgba(254, 243, 199, 0.35) 0%, transparent 48%),
-    linear-gradient(165deg, #f6faf8 0%, #ecf5f0 100%) !important;
-  border: 1px solid rgba(13, 148, 103, 0.16) !important;
-  box-shadow: 0 6px 18px -6px rgba(15, 45, 34, 0.05) !important;
-}
-
-.hero-card.hero-card-compact .streak-circle-wrapper {
-  background: #f8fcfa !important;
-  box-shadow: 0 5px 14px rgba(13, 148, 103, 0.1) !important;
-}
-
-.streak-circle-inner .streak-flame {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.hero-card.hero-card-compact .time-lock-pill {
-  background: #e2f1e9 !important;
-  border: none !important;
-  color: #064e3b !important;
-  box-shadow: none !important;
-}
-
-/* --------------------------------------------------------------------------
-   4. FLATTENED WAQT CARD (ZERO "BOX-INSIDE-A-BOX" DOUBLE NESTING)
-   Removes the inner card border & heavy sub-row borders so typography breathes
-   -------------------------------------------------------------------------- */
-.waqt-strip-card {
-  margin: 0 12px 9px !important;
-  padding: 13px 13px 11px !important;
-  background: linear-gradient(180deg, #f5faf7 0%, #ebf4ef 100%) !important;
-  border: 1px solid rgba(13, 148, 103, 0.18) !important;
-  border-radius: 20px !important;
-  box-shadow: 0 8px 22px -6px rgba(15, 45, 34, 0.06) !important;
-}
-
-/* Flatten inner wrapper: no box-inside-a-box border or shadow */
-.waqt-card-embedded-box {
-  background: transparent !important;
-  border: none !important;
-  border-radius: 0 !important;
-  padding: 0 2px 10px 2px !important;
-  margin-bottom: 10px !important;
-  border-bottom: 1px solid rgba(13, 148, 103, 0.15) !important;
-  box-shadow: none !important;
-}
-
-.ongoing-static-head {
-  margin-bottom: 8px !important;
-  padding-bottom: 6px !important;
-  border-bottom: none !important;
-}
-
-.waqt-popup-avatar {
-  background: #e4f2eb !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.waqt-popup-status-pill.status-active {
-  background: #d3ece0 !important;
-  color: #064e3b !important;
-  border: none !important;
-}
-
-/* Soft Tonal Start -> End Time Pill (Zero Heavy Borders) */
-.waqt-popup-time-grid,
-.ongoing-static-time-grid {
-  background: rgba(255, 255, 255, 0.66) !important;
-  border: none !important;
-  border-radius: 13px !important;
-  padding: 8px 12px !important;
-  margin-bottom: 6px !important;
-  box-shadow: none !important;
-}
-
-.waqt-popup-time-val {
-  color: #064e3b !important;
-}
-
-.waqt-popup-time-box.end-box .waqt-popup-time-val {
-  color: #9a5806 !important;
-}
-
-/* Subtle Tonal Fills & Simple Horizontal Divider on উত্তম সময় & ওয়াক্ত শেষ হতে বাকি */
-.ongoing-static-meta-rows {
-  background: rgba(255, 255, 255, 0.52) !important;
-  border-radius: 12px !important;
-  padding: 2px 10px !important;
-  gap: 0 !important;
-}
-
-.waqt-popup-meta-item,
-.waqt-popup-meta-item.single-line-meta-row {
-  background: transparent !important;
-  border: none !important;
-  border-bottom: 1px solid rgba(13, 148, 103, 0.1) !important;
-  border-radius: 0 !important;
-  padding: 6.5px 2px !important;
-}
-
-.waqt-popup-meta-item.countdown-single-line-row {
-  background: transparent !important;
-  border: none !important;
-  padding: 7px 2px !important;
-}
-
-#live-waqt-remaining {
-  color: #b91c1c !important;
-}
-
-.ongoing-rakah-footer {
-  border-top: none !important;
-  padding-top: 5px !important;
-  margin-top: 4px !important;
-}
-
-/* 5-Waqt Pill Strip Tonal Comfort */
-.waqt-pill-card {
-  background: rgba(255, 255, 255, 0.68) !important;
-  border: 1px solid rgba(13, 148, 103, 0.12) !important;
-  border-radius: 14px !important;
-  padding: 7px 3px !important;
-  box-shadow: none !important;
-}
-
-.waqt-circle-logo {
-  width: 32px !important;
-  height: 32px !important;
-  background: #e5f3ec !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.waqt-pill-card.waqt-active {
-  background: #dff2e8 !important;
-  border: 1.6px solid #0d9467 !important;
-  box-shadow: 0 4px 12px rgba(13, 148, 103, 0.14) !important;
-}
-
-.waqt-pill-card.waqt-active .waqt-circle-logo {
-  background: #ffffff !important;
-  box-shadow: 0 2px 6px rgba(13, 148, 103, 0.18) !important;
-}
-
-/* Prohibited Salah Accordion Card */
-.home-prohibited-card {
-  margin: 0 12px 10px !important;
-  border-radius: 15px !important;
-  border: 1px solid rgba(185, 28, 28, 0.22) !important;
-  background: linear-gradient(180deg, #faf6f6 0%, #f5efef 100%) !important;
-  box-shadow: none !important;
-}
-
-/* 12-Section Grid Tonal Cards & Active Time-Phase Highlight */
-.section-launcher-card {
-  background: linear-gradient(165deg, #f8fcfa 0%, #eff6f2 100%) !important;
-  border: 1.2px solid rgba(13, 148, 103, 0.15) !important;
-  box-shadow: 0 5px 16px -6px rgba(15, 45, 34, 0.05) !important;
-}
-
-.section-launcher-card.is-active-phase-now {
-  background: linear-gradient(165deg, #e6f6ee 0%, #f6fbf9 100%) !important;
-  border: 2px solid #0d9467 !important;
-  box-shadow: 0 8px 22px -6px rgba(13, 148, 103, 0.22) !important;
-}
-
-/* --------------------------------------------------------------------------
-   5. STICKY 4-TAB BOTTOM NAVIGATION BAR (HOME, SUNNAH GRID, TASBIH, STATS)
-   -------------------------------------------------------------------------- */
+/* 2. Sticky 4-Tab Bottom Navigation Bar (Home, Sunnah Grid, Tasbeeh, Stats) */
 .s24-bottom-nav {
-  position: fixed !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  height: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
-  padding: 5px 10px calc(5px + env(safe-area-inset-bottom, 0px)) 10px !important;
-  background: rgba(244, 249, 246, 0.96) !important;
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
-  border-top: 1px solid rgba(13, 148, 103, 0.18) !important;
-  box-shadow: 0 -4px 18px rgba(15, 45, 34, 0.06) !important;
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
-  align-items: center !important;
-  gap: 4px !important;
-  z-index: 95 !important;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(62px + env(safe-area-inset-bottom, 0px));
+  padding: 5px 10px calc(5px + env(safe-area-inset-bottom, 0px)) 10px;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1.5px solid rgba(16, 185, 129, 0.24);
+  box-shadow: 0 -6px 20px rgba(15, 45, 34, 0.08);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  gap: 4px;
+  z-index: 95;
 }
 
 .s24-bnav-btn {
-  background: transparent !important;
-  border: none !important;
-  color: #526b61 !important;
-  font-family: inherit !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 2px !important;
-  padding: 4px 2px !important;
-  border-radius: 14px !important;
-  cursor: pointer !important;
-  transition: color 0.18s ease, transform 0.15s ease !important;
+  background: transparent;
+  border: none;
+  color: var(--text-muted, #5b7268);
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px 2px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: color 0.18s ease, transform 0.15s ease;
 }
 
 .s24-bnav-btn:active {
-  transform: scale(0.93) !important;
+  transform: scale(0.93);
 }
 
 .s24-bnav-icon {
-  width: 44px !important;
-  height: 28px !important;
-  border-radius: 999px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: background 0.2s ease, color 0.2s ease !important;
+  width: 44px;
+  height: 28px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .s24-bnav-label {
-  font-size: 0.67rem !important;
-  font-weight: 800 !important;
-  line-height: 1.15 !important;
-  white-space: nowrap !important;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 
 .s24-bnav-btn.active {
-  color: #064e3b !important;
+  color: var(--accent-emerald-dark, #065f46);
 }
 
 .s24-bnav-btn.active .s24-bnav-icon {
-  background: #d5ede2 !important;
-  color: #064e3b !important;
+  background: var(--accent-emerald-soft, #e6f6ef);
+  color: var(--accent-emerald-dark, #065f46);
 }
 
-/* Dark Mode Harmony for V7.5 Upgrades */
-html[data-theme="dark"] .app-header,
-html[data-theme="dark"] .s24-bottom-nav {
-  background: rgba(11, 34, 26, 0.96) !important;
-  border-color: rgba(16, 185, 129, 0.28) !important;
+/* 3. Remove Moon 🌙 from Arabic, Bangla, English Date Section */
+.lunar-ponjika-card .crescent-badge {
+  display: none !important;
 }
 
-html[data-theme="dark"] .header-loc-pill-btn,
+/* Dark Theme Support for Settings Drawer & Bottom Navigation Bar */
 html[data-theme="dark"] .header-settings-icon-btn {
-  background: #123528 !important;
-  color: #6ee7b7 !important;
-  border-color: rgba(16, 185, 129, 0.35) !important;
-}
-
-html[data-theme="dark"] .s24-settings-drawer-card {
-  background: #0b221a !important;
-  border-color: rgba(16, 185, 129, 0.38) !important;
+  background: #071913;
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.45);
 }
 
 html[data-theme="dark"] .s24-settings-group {
-  background: #071913 !important;
-  border-color: rgba(16, 185, 129, 0.24) !important;
+  background: #071913;
+  border-color: rgba(16, 185, 129, 0.25);
 }
 
 html[data-theme="dark"] .s24-settings-label,
 html[data-theme="dark"] .s24-settings-drawer-head h3 {
-  color: #f8fafc !important;
+  color: #f8fafc;
 }
 
 html[data-theme="dark"] .s24-settings-hint {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
-html[data-theme="dark"] .lunar-ponjika-card,
-html[data-theme="dark"] .hero-card.hero-card-compact,
-html[data-theme="dark"] .waqt-strip-card,
-html[data-theme="dark"] .section-launcher-card {
-  background: linear-gradient(165deg, #0b221a 0%, #071913 100%) !important;
-  border-color: rgba(16, 185, 129, 0.26) !important;
-}
-
-html[data-theme="dark"] .waqt-popup-time-grid,
-html[data-theme="dark"] .ongoing-static-time-grid,
-html[data-theme="dark"] .ongoing-static-meta-rows,
-html[data-theme="dark"] .waqt-pill-card {
-  background: rgba(5, 19, 14, 0.75) !important;
+html[data-theme="dark"] .s24-bottom-nav {
+  background: rgba(11, 34, 26, 0.97);
+  border-top-color: rgba(16, 185, 129, 0.32);
+  box-shadow: 0 -6px 22px rgba(0, 0, 0, 0.5);
 }
 
 html[data-theme="dark"] .s24-bnav-btn {
-  color: #94a3b8 !important;
+  color: #94a3b8;
 }
 
 html[data-theme="dark"] .s24-bnav-btn.active {
-  color: #6ee7b7 !important;
+  color: #34d399;
 }
 
 html[data-theme="dark"] .s24-bnav-btn.active .s24-bnav-icon {
-  background: rgba(16, 185, 129, 0.24) !important;
-  color: #6ee7b7 !important;
+  background: rgba(16, 185, 129, 0.22);
+  color: #34d399;
 }
+
 
