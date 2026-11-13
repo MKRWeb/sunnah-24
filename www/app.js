@@ -3959,49 +3959,6 @@ function formatRemainingDurationText(remainingMins, locale = appState.locale, in
 
 
 
-function getFardWaqtSvgIcon(waqtId, isJumuah = false) {
-  switch (waqtId) {
-    case "fajr":
-      return `<svg class="fard-waqt-svg-icon svg-fajr" viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M3 17h18M5 20h14" stroke="#0d9488" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M12 6v2M6.3 8.3l1.4 1.4M17.7 8.3l-1.4 1.4" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M7 17a5 5 0 0 1 10 0H7z" fill="#fde047" stroke="#d97706" stroke-width="1.6"/>
-      </svg>`;
-    case "dhuhr":
-      if (isJumuah) {
-        return `<svg class="fard-waqt-svg-icon svg-jumuah" viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 3v2.5" stroke="#d97706" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M6 13c0-3.5 2.7-6.2 6-6.2s6 2.7 6 6.2v6H6v-6z" fill="#d1fae5" stroke="#059669" stroke-width="1.6" stroke-linejoin="round"/>
-          <path d="M10 19v-3.2a2 2 0 0 1 4 0V19" fill="#fef08a" stroke="#059669" stroke-width="1.4"/>
-          <path d="M3.5 19h17" stroke="#047857" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>`;
-      }
-      return `<svg class="fard-waqt-svg-icon svg-dhuhr" viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="12" cy="12" r="4.5" fill="#fde047" stroke="#d97706" stroke-width="1.7"/>
-        <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round"/>
-      </svg>`;
-    case "asr":
-      return `<svg class="fard-waqt-svg-icon svg-asr" viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="9" cy="9" r="3.8" fill="#fde047" stroke="#d97706" stroke-width="1.6"/>
-        <path d="M9 3v1.5M3 9h1.5M4.8 4.8l1.1 1.1M13.2 4.8l-1.1 1.1" stroke="#f59e0b" stroke-width="1.6" stroke-linecap="round"/>
-        <path d="M10.5 18.5H18a3.2 3.2 0 0 0 .4-6.4 4.3 4.3 0 0 0-8.2-1.1A3.4 3.4 0 0 0 10.5 18.5z" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.6" stroke-linejoin="round"/>
-      </svg>`;
-    case "maghrib":
-      return `<svg class="fard-waqt-svg-icon svg-maghrib" viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M3 16.5h18M6 19.5h12" stroke="#7c3aed" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M7.2 16.5a4.8 4.8 0 0 1 9.6 0H7.2z" fill="#fb923c" stroke="#ea580c" stroke-width="1.6"/>
-        <path d="M12 5.5v3.5m0 0l-2-2m2 2l2-2" stroke="#ea580c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>`;
-    case "isha":
-    default:
-      return `<svg class="fard-waqt-svg-icon svg-isha" viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M15.5 14.8A6.5 6.5 0 0 1 9.2 4.5a6.5 6.5 0 1 0 9.3 9.3c-.9.6-1.9 1-3 1z" fill="#fef08a" stroke="#ca8a04" stroke-width="1.6" stroke-linejoin="round"/>
-        <circle cx="17.5" cy="6" r="1.1" fill="#f59e0b"/>
-        <circle cx="19.5" cy="9.5" r="0.9" fill="#f59e0b"/>
-      </svg>`;
-  }
-}
-
 function renderFiveWaqtStrip(now = new Date()) {
   const gridEl = document.getElementById("five-waqt-grid");
   if (!gridEl) return;
@@ -4652,23 +4609,10 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
-  const fardTitleEl = document.getElementById("fard-card-title");
-  if (fardTitleEl) {
-    fardTitleEl.textContent =
-      lang === "ar"
-        ? "أوقات الصلوات المفروضة"
-        : lang === "en"
-        ? "Fard Prayer Schedule"
-        : "ফরজ নামাজের সময়সূচী";
-  }
-
   gridEl.innerHTML = waqts
-    .map((w, idx) => {
+    .map((w) => {
       // Ensure Asr pill ends at pWindows.sunset.start so it doesn't conflict with Sunset prohibited time
       const effectiveEnd = w.id === "asr" ? pWindows.sunset.start : w.end;
-      const displayEndMins = (effectiveEnd - 1 + 1440) % 1440;
-      const timeRangeText = `${formatShortWaqtClock(w.start, lang)} - ${formatShortWaqtClock(displayEndMins, lang)}`;
-      const numPrefix = localizeDigits(idx + 1, lang);
       const isActive =
         w.id === "isha"
           ? nowMins >= w.start || nowMins < sched.fajr
@@ -4676,18 +4620,12 @@ function renderFiveWaqtStrip(now = new Date()) {
       const isPassed = w.id !== "isha" && nowMins >= effectiveEnd && nowMins >= sched.fajr;
       const isPopupSelected =
         typeof activeSelectedWaqtPopupId === "string" && activeSelectedWaqtPopupId === w.id;
-      const svgIconHtml = getFardWaqtSvgIcon(w.id, w.id === "dhuhr" && middayMeta.isJumuah);
       return `
-        <div class="waqt-pill-card m3-interactive-waqt-pill nafl-minimal-row fard-minimal-row ${isActive ? "waqt-active is-active-nafl" : ""} ${isPassed ? "waqt-passed" : ""} ${isPopupSelected ? "waqt-popup-selected" : ""}" data-waqt-id="${w.id}" data-waqt-phase="${w.phase}" aria-expanded="${isPopupSelected ? "true" : "false"}" title="${w.name}" role="listitem">
-          <div class="nafl-minimal-left">
-            <span class="nafl-minimal-dot ${isActive ? "active" : ""}" aria-hidden="true"></span>
-            <span class="fard-waqt-svg-badge" aria-hidden="true">${svgIconHtml}</span>
-            <span class="nafl-minimal-label waqt-name">${numPrefix}. ${w.name}</span>
-          </div>
-          <div class="nafl-minimal-right">
-            <strong class="prohibited-time-pill nafl-minimal-time-pill waqt-time">${timeRangeText}</strong>
-            <button type="button" class="nafl-corner-info-btn waqt-info-micro-badge" data-waqt-info-btn="${w.id}" aria-label="${w.name} Info" title="${w.name} Info">i</button>
-          </div>
+        <div class="waqt-pill-card m3-interactive-waqt-pill ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""} ${isPopupSelected ? "waqt-popup-selected" : ""}" data-waqt-id="${w.id}" data-waqt-phase="${w.phase}" aria-expanded="${isPopupSelected ? "true" : "false"}" title="${w.name}">
+          <button type="button" class="waqt-info-micro-badge" data-waqt-info-btn="${w.id}" aria-label="${w.name} Info" title="${w.name} Info">i</button>
+          <div class="waqt-circle-logo">${w.icon}</div>
+          <span class="waqt-name">${w.name}</span>
+          <strong class="waqt-time">${formatShortWaqtClock(w.start, lang)}</strong>
         </div>
       `;
     })
@@ -7570,24 +7508,23 @@ let activeSelectedWaqtPopupId = null;
 
 function ensureWaqtPopupContainer() {
   let popupWrap = document.getElementById("waqt-range-popup-wrap");
-  const fardCard =
-    document.getElementById("fard-salah-card") ||
-    document.querySelector(".fard-salah-card") ||
-    document.querySelector(".waqt-strip-card");
-  if (popupWrap) {
-    if (fardCard && popupWrap.parentElement !== fardCard) {
-      fardCard.appendChild(popupWrap);
-    }
-    return popupWrap;
-  }
-  if (!fardCard) return null;
+  if (popupWrap) return popupWrap;
+
+
+
+
+  const stripCard = document.querySelector(".waqt-strip-card");
+  if (!stripCard) return null;
+
+
+
 
   popupWrap = document.createElement("div");
   popupWrap.id = "waqt-range-popup-wrap";
   popupWrap.className = "waqt-range-popup-wrap hidden";
   popupWrap.setAttribute("role", "region");
   popupWrap.setAttribute("aria-live", "polite");
-  fardCard.appendChild(popupWrap);
+  stripCard.appendChild(popupWrap);
   return popupWrap;
 }
 
@@ -7851,14 +7788,18 @@ function positionWaqtPopupArrow(waqtId) {
   const pillEl = document.querySelector(`.waqt-pill-card[data-waqt-id="${waqtId}"]`);
   if (!arrowEl || !wrapEl || !pillEl) return;
 
+
+
+
   const wrapRect = wrapEl.getBoundingClientRect();
-  const infoBtnEl =
-    pillEl.querySelector("[data-waqt-info-btn], .waqt-info-micro-badge") || pillEl;
-  const targetRect = infoBtnEl.getBoundingClientRect();
+  const pillRect = pillEl.getBoundingClientRect();
   if (wrapRect.width <= 0) return;
 
-  const centerOffset = targetRect.left + targetRect.width / 2 - wrapRect.left;
-  const clampedPx = Math.max(24, Math.min(wrapRect.width - 18, centerOffset));
+
+
+
+  const centerOffset = pillRect.left + pillRect.width / 2 - wrapRect.left;
+  const clampedPx = Math.max(24, Math.min(wrapRect.width - 24, centerOffset));
   arrowEl.style.left = `${Math.round(clampedPx)}px`;
 }
 
@@ -8108,12 +8049,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // Dismiss popup automatically when tapping outside the 5-Waqt Fard schedule card
-    if (
-      activeSelectedWaqtPopupId &&
-      !e.target.closest("#fard-salah-card") &&
-      !e.target.closest(".waqt-strip-card")
-    ) {
+    // Dismiss popup automatically when tapping outside the 5-Waqt card
+    if (activeSelectedWaqtPopupId && !e.target.closest(".waqt-strip-card")) {
       activeSelectedWaqtPopupId = null;
       renderWaqtTimeRangePopup(null);
     }
