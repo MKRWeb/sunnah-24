@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SUNNAH 24 — ENTERPRISE PROPHETIC 24-HOUR LIFESTYLE & HABIT TRACKER (v4.2)
  * SHA-256 Tamper-Proof Engine + Triple-Redundant Multi-Month Vault (LocalStorage + IndexedDB + Native Android)
  * Local Timezone Date Engine + Accurate Hijri Calendar + Full Bangla (Default), Arabic & English Localization
@@ -10630,17 +10630,18 @@ function syncBdLocationBannerText() {
   if (isDefaultDhaka) {
     summaryLabelEl.textContent =
       lang === "ar"
-        ? "دكا ▾"
+        ? "📍 دكا ▾"
         : lang === "en"
-        ? "Dhaka ▾"
-        : "ঢাকা ▾";
+        ? "📍 Dhaka ▾"
+        : "📍 ঢাকা ▾";
   } else {
     const distShort = getLocalizedBdDistrictName(distObj, lang);
     const upzShort = getLocalizedUpazilaName(activeLoc.upazilaName, lang);
+    // Keep header pill super clean and concise
     if (!upzShort || upzShort === distShort || upzShort.includes("সদর") || upzShort.toLowerCase().includes("sadar")) {
-      summaryLabelEl.textContent = `${distShort} ▾`;
+      summaryLabelEl.textContent = `📍 ${distShort} ▾`;
     } else {
-      summaryLabelEl.textContent = `${upzShort}, ${distShort} ▾`;
+      summaryLabelEl.textContent = `📍 ${upzShort}, ${distShort} ▾`;
     }
   }
 
@@ -11957,7 +11958,7 @@ function updateHeaderLocationPillUI() {
   const labelEl = document.getElementById("bd-loc-active-label");
   if (!labelEl) return;
   const shortName = getActiveLocationShortLabel();
-  labelEl.textContent = `${shortName} ▾`;
+  labelEl.textContent = `📍 ${shortName} ▾`;
 }
 
 
@@ -13028,13 +13029,6 @@ function closeMasterSectionToHome() {
 // Override Back-Button Navigation so Android APK Back Button & Browser Back
 // return smoothly from any Full-Screen Master Section to the Home Dashboard!
 window.handleSunnahBackNavigation = function () {
-  // 1.0 Close Settings & Preferences Modal if open
-  const settingsModalEl = document.getElementById("s24-settings-modal");
-  if (settingsModalEl && !settingsModalEl.classList.contains("hidden")) {
-    settingsModalEl.classList.add("hidden");
-    return true;
-  }
-
   // 1A. Close Custom Habit Added Confirmation Modal if open
   const customAddedModal = document.getElementById("custom-habit-added-modal");
   if (customAddedModal && !customAddedModal.classList.contains("hidden")) {
@@ -13621,321 +13615,213 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
 // ============================================================================
-// V7.5 GOOGLE DEEPMIND ULTIMATE 10/10 UI/UX ENGINE:
-// 1. Unified Custom 3D Vector SVG Iconography (Replaces System Emojis across
-//    Live Waqt Avatar, 5-Waqt Strip Pills, Fasting Banner, Time-Lock Pill,
-//    Madhab Selector, and Utility Corner Badges)
-// 2. Clean Settings & Preferences Modal Drawer Controller (Language & Madhab)
-// 3. Sticky 4-Tab Bottom Navigation Bar Controller (Home, Sunnah Grid, Tasbih, Stats)
-// 4. Active Time-Phase Highlighting on the 12-Card Grid
+// TARGETED 3-UPDATE CONTROLLER:
+// 1. Settings & Preferences Modal Drawer (Language & Asr Madhab)
+// 2. Sticky 4-Tab Bottom Navigation Bar (Home, Sunnah Grid, Tasbeeh, Stats)
+// 3. Moon 🌙 Removal from Date Card (handled cleanly in DOM)
+// All other sections, logic, and SHA-256 hashes remain 100% untouched.
 // ============================================================================
+function syncSettingsAndBottomNavLocalization() {
+  const lang = (appState && appState.locale) || "bn";
 
-const S24_VECTOR_ICONS = deepFreeze({
-  fajr: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><defs><linearGradient id="vFajrG" x1="4" y1="4" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient></defs><path d="M4 20h20M7 16a7 7 0 0 1 14 0" stroke="url(#vFajrG)" stroke-width="2.3" stroke-linecap="round"/><path d="M14 5v3M6.5 8.5l2 2M21.5 8.5l-2 2" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/></svg>`,
-  duha: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><circle cx="14" cy="14" r="5.5" fill="#facc15" stroke="#d97706" stroke-width="1.6"/><path d="M14 3v3M14 22v3M3 14h3M22 14h3M6.2 6.2l2.1 2.1M19.7 19.7l2.1 2.1M21.8 6.2l-2.1 2.1M8.3 19.7l-2.1 2.1" stroke="#ea580c" stroke-width="2" stroke-linecap="round"/></svg>`,
-  dhuhr: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><circle cx="14" cy="14" r="6.2" fill="#fde047" stroke="#ca8a04" stroke-width="1.8"/><path d="M14 2.5v3M14 22.5v3M2.5 14h3M22.5 14h3M5.8 5.8l2.2 2.2M20 20l2.2 2.2M22.2 5.8L20 8M8 20l-2.2 2.2" stroke="#d97706" stroke-width="2.1" stroke-linecap="round"/></svg>`,
-  jumuah: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><path d="M6 22V14c0-4.4 3.6-8 8-8s8 3.6 8 8v8H6z" fill="#10b981" stroke="#065f46" stroke-width="1.7"/><path d="M14 3v3" stroke="#d97706" stroke-width="2" stroke-linecap="round"/><rect x="11.5" y="15" width="5" height="7" rx="2.5" fill="#fef08a"/><path d="M3 22h22" stroke="#065f46" stroke-width="2" stroke-linecap="round"/></svg>`,
-  asr: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><circle cx="11.5" cy="11.5" r="5" fill="#fbbf24"/><path d="M11 19.5h9.5a3.5 3.5 0 0 0 .5-6.96A5 5 0 0 0 11.3 11a4 4 0 0 0-.3 8.5z" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
-  maghrib: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><path d="M3 20h22M6 23h16" stroke="#9a3412" stroke-width="2" stroke-linecap="round"/><path d="M7 20a7 7 0 0 1 14 0" fill="#fb923c" stroke="#dc2626" stroke-width="1.7"/><path d="M14 6v3M6.5 9.5l2 2M21.5 9.5l-2 2" stroke="#ea580c" stroke-width="1.9" stroke-linecap="round"/></svg>`,
-  isha: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><path d="M17.5 4.5c-4.5 1.1-7.3 5.7-6.2 10.2 1.1 4.5 5.7 7.3 10.2 6.2-3.4 2.5-8.2 2.1-11.2-.9-3-3-3.4-7.8-.9-11.2 1.9-2.6 5-4.1 8.1-4.3z" fill="#facc15" stroke="#ca8a04" stroke-width="1.4"/><circle cx="20" cy="8" r="1.3" fill="#fde047"/><circle cx="22.5" cy="13" r="1" fill="#fef08a"/></svg>`,
-  prohibited: `<svg viewBox="0 0 28 28" width="20" height="20" fill="none"><circle cx="14" cy="14" r="9.5" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/><path d="M8.5 8.5l11 11" stroke="#dc2626" stroke-width="2.2" stroke-linecap="round"/></svg>`,
-  clockLock: `<svg viewBox="0 0 20 20" width="13" height="13" fill="none" style="vertical-align:-2px;margin-right:3px;"><circle cx="10" cy="10" r="7.5" stroke="#065f46" stroke-width="1.8"/><path d="M10 6v4.2l2.8 1.6" stroke="#0d9467" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-  crescentInline: `<svg viewBox="0 0 20 20" width="14" height="14" fill="none" style="vertical-align:-2px;margin-right:4px;"><path d="M13.5 2.8c-3.5.9-5.6 4.4-4.7 7.9.9 3.5 4.4 5.6 7.9 4.7-2.6 1.9-6.3 1.6-8.6-.7-2.3-2.3-2.6-6-.7-8.6 1.4-2 3.8-3.1 6.1-3.3z" fill="#eab308" stroke="#ca8a04" stroke-width="1.1"/></svg>`,
-  mosqueInline: `<svg viewBox="0 0 20 20" width="14" height="14" fill="none" style="vertical-align:-2px;margin-right:3px;"><path d="M4 16v-5.5c0-3.3 2.7-6 6-6s6 2.7 6 6V16H4z" fill="#10b981"/><path d="M10 2v2.5M2.5 16h15" stroke="#fde047" stroke-width="1.6" stroke-linecap="round"/></svg>`,
-  sparkleInline: `<svg viewBox="0 0 20 20" width="14" height="14" fill="none" style="vertical-align:-2px;margin-right:3px;"><path d="M10 2l2.1 5.4L17.5 9.5l-5.4 2.1L10 17l-2.1-5.4L2.5 9.5l5.4-2.1L10 2z" fill="#facc15" stroke="#ca8a04" stroke-width="1"/></svg>`,
-  tasbihMini: `<svg viewBox="0 0 18 18" width="12" height="12" fill="none" style="vertical-align:-1.5px;margin-right:2px;"><circle cx="9" cy="8.5" r="5.2" stroke="#065f46" stroke-width="1.7" stroke-dasharray="2 2"/><path d="M9 14v2.5" stroke="#b45309" stroke-width="1.7" stroke-linecap="round"/></svg>`,
-  flameMini: `<svg viewBox="0 0 18 18" width="12" height="12" fill="none" style="vertical-align:-1.5px;margin-right:2px;"><path d="M9.3 2C9.3 2 14 6 14 10.6c0 3.3-2.3 5.6-5 5.6s-5-2.3-5-5.6c0-2.5 1.5-4.7 2.7-5.8 0 0-.3 2.1 1.1 2.7C7.3 5.2 9.3 2 9.3 2z" fill="#f97316"/></svg>`,
-  plusMini: `<svg viewBox="0 0 18 18" width="12" height="12" fill="none" style="vertical-align:-1.5px;margin-right:2px;"><circle cx="9" cy="9" r="6.8" fill="#10b981"/><path d="M9 5.8v6.4M5.8 9h6.4" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-  shieldMini: `<svg viewBox="0 0 18 18" width="12" height="12" fill="none" style="vertical-align:-1.5px;margin-right:2px;"><path d="M9 2l6 2.3v4.5c0 4-2.6 7.1-6 8.4-3.4-1.3-6-4.4-6-8.4V4.3L9 2z" fill="#10b981"/><path d="M6.8 9.2l1.6 1.6 3.2-3.2" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-});
+  // Settings Modal Labels
+  const modalTitle = document.getElementById("s24-settings-modal-title");
+  const langLbl = document.getElementById("s24-settings-lang-lbl");
+  const madhabLbl = document.getElementById("s24-settings-madhab-lbl");
+  const madhabSub = document.getElementById("s24-settings-madhab-sub");
+  const doneBtn = document.getElementById("s24-settings-done-btn");
 
-function upgradeEmojisToCustomVectors() {
-  // 1. Replace 5-Waqt Strip Pill emojis with custom vector SVGs
-  const now = new Date();
-  const isFri = isFridayJumuahDay(now);
-  document.querySelectorAll(".waqt-pill-card[data-waqt-id]").forEach((btn) => {
-    const wId = btn.getAttribute("data-waqt-id");
-    const logoBox = btn.querySelector(".waqt-circle-logo");
-    if (!logoBox) return;
-    if (wId === "fajr") logoBox.innerHTML = S24_VECTOR_ICONS.fajr;
-    else if (wId === "dhuhr") logoBox.innerHTML = isFri ? S24_VECTOR_ICONS.jumuah : S24_VECTOR_ICONS.dhuhr;
-    else if (wId === "asr") logoBox.innerHTML = S24_VECTOR_ICONS.asr;
-    else if (wId === "maghrib") logoBox.innerHTML = S24_VECTOR_ICONS.maghrib;
-    else if (wId === "isha") logoBox.innerHTML = S24_VECTOR_ICONS.isha;
-  });
-
-  // 2. Replace Live Ongoing Waqt Avatar emoji with custom vector SVG
-  const liveBox = document.getElementById("live-waqt-countdown-box");
-  if (liveBox) {
-    const avatarEl = liveBox.querySelector(".waqt-popup-avatar");
-    if (avatarEl) {
-      if (liveBox.classList.contains("waqt-prohibited-active")) {
-        avatarEl.innerHTML = S24_VECTOR_ICONS.prohibited;
-      } else {
-        const sched = computeSeasonalPrayerSchedule(now);
-        const nowMins = now.getHours() * 60 + now.getMinutes();
-        const pWin = sched.prohibitedWindows || {
-          sunrise: { start: sched.sunrise, end: sched.sunrise + 15 },
-          zawal: { start: sched.zawal, end: sched.dhuhr },
-          sunset: { start: sched.sunset - 15, end: sched.sunset }
-        };
-        if (nowMins >= sched.fajr && nowMins < pWin.sunrise.start) {
-          avatarEl.innerHTML = S24_VECTOR_ICONS.fajr;
-        } else if (nowMins >= pWin.sunrise.end && nowMins < pWin.zawal.start) {
-          avatarEl.innerHTML = S24_VECTOR_ICONS.duha;
-        } else if (nowMins >= pWin.zawal.end && nowMins < sched.asr) {
-          avatarEl.innerHTML = isFri ? S24_VECTOR_ICONS.jumuah : S24_VECTOR_ICONS.dhuhr;
-        } else if (nowMins >= sched.asr && nowMins < pWin.sunset.start) {
-          avatarEl.innerHTML = S24_VECTOR_ICONS.asr;
-        } else if (nowMins >= sched.maghrib && nowMins < sched.isha) {
-          avatarEl.innerHTML = S24_VECTOR_ICONS.maghrib;
-        } else {
-          avatarEl.innerHTML = S24_VECTOR_ICONS.isha;
-        }
-      }
-    }
-
-    // Replace emojis inside Prime Window, Countdown & Rakah Footer of Live Waqt Box
-    liveBox.querySelectorAll(".meta-row-label").forEach((lbl) => {
-      const rawTxt = lbl.textContent.replace(/^[✨⏱️⏭️]\s*/, "").trim();
-      if (lbl.closest(".countdown-single-line-row")) {
-        lbl.innerHTML = `${S24_VECTOR_ICONS.clockLock}<span>${rawTxt}</span>`;
-      } else {
-        lbl.innerHTML = `${S24_VECTOR_ICONS.sparkleInline}<span>${rawTxt}</span>`;
-      }
-    });
-
-    const rakahFooterSpan = liveBox.querySelector(".ongoing-rakah-footer span");
-    if (rakahFooterSpan) {
-      const cleanRakah = rakahFooterSpan.textContent.replace(/^[🕌📖]\s*/, "").trim();
-      rakahFooterSpan.innerHTML = `${S24_VECTOR_ICONS.mosqueInline}<span>${cleanRakah}</span>`;
-    }
+  if (modalTitle) {
+    modalTitle.textContent =
+      lang === "ar"
+        ? "الإعدادات والتفضيلات"
+        : lang === "en"
+        ? "Settings & Preferences"
+        : "সেটিংস ও পছন্দসমূহ";
+  }
+  if (langLbl) {
+    langLbl.textContent =
+      lang === "ar"
+        ? "🌐 لغة التطبيق (Language)"
+        : lang === "en"
+        ? "🌐 App Language"
+        : "🌐 অ্যাপের ভাষা (Language)";
+  }
+  if (madhabLbl) {
+    madhabLbl.textContent =
+      lang === "ar"
+        ? "🕌 مذهب وقت العصر (Asr Madhab)"
+        : lang === "en"
+        ? "🕌 Asr Prayer Calculation (Madhab)"
+        : "🕌 আসরের ওয়াক্ত মাযহাব (Asr Madhab)";
+  }
+  if (madhabSub) {
+    madhabSub.textContent =
+      lang === "ar"
+        ? "التبديل بين المذهب الحنفي (ظل مضاعف) ومذهب الجمهور/الشافعي (ظل مثل واحد)"
+        : lang === "en"
+        ? "Switch between Hanafi (2x shadow) and Standard Shafi'i/Jumhur (1x shadow)"
+        : "হানাফী (২ গুণ ছায়া) অথবা শাফিঈ/জমহুর (১ গুণ ছায়া) পরিবর্তন করুন";
+  }
+  if (doneBtn) {
+    doneBtn.textContent = t("popup_ok_btn");
   }
 
-  // 3. Replace Time-Lock Pill & Fasting Banner Emojis in Hero Card with Custom SVGs
-  const lockPill = document.getElementById("time-lock-summary");
-  if (lockPill) {
-    const cleanLock = lockPill.textContent.replace(/^[❄️☀️🌿⏱️]\s*/, "").trim();
-    lockPill.innerHTML = `${S24_VECTOR_ICONS.clockLock}<span>${cleanLock}</span>`;
+  // Bottom Navigation Bar Labels (Home, Sunnah Grid, Tasbeeh, Stats)
+  const bHome = document.getElementById("bnav-lbl-home");
+  const bGrid = document.getElementById("bnav-lbl-grid");
+  const bTasbih = document.getElementById("bnav-lbl-tasbih");
+  const bStats = document.getElementById("bnav-lbl-stats");
+
+  if (bHome) {
+    bHome.textContent =
+      lang === "ar" ? "الرئيسية" : lang === "en" ? "Home" : "হোম";
+  }
+  if (bGrid) {
+    bGrid.textContent =
+      lang === "ar" ? "شبكة السنن" : lang === "en" ? "Sunnah Grid" : "সুন্নাহ গ্রিড";
+  }
+  if (bTasbih) {
+    bTasbih.textContent =
+      lang === "ar" ? "السبحة" : lang === "en" ? "Tasbeeh" : "তাসবীহ";
+  }
+  if (bStats) {
+    bStats.textContent =
+      lang === "ar" ? "الإحصائيات" : lang === "en" ? "Stats" : "পরিসংখ্যান";
   }
 
-  const fastBanner = document.getElementById("fasting-banner");
-  if (fastBanner) {
-    const cleanFast = fastBanner.textContent.replace(/^[🌙🕌✨]\s*/, "").trim();
-    fastBanner.innerHTML = `${S24_VECTOR_ICONS.crescentInline}<span>${cleanFast}</span>`;
-  }
-
-  // 4. Replace Madhab Toggle Icon with Custom Mosque SVG
-  const madhabIcon = document.getElementById("madhab-toggle-icon");
-  if (madhabIcon) {
-    madhabIcon.innerHTML = S24_VECTOR_ICONS.mosqueInline;
-  }
-
-  // 5. Replace Utility Corner Badges on Cards 9–12 with Custom Vector Micro-SVGs + Active Phase Highlight
-  const lang = appState.locale || "bn";
-  const tasbihBadgeEl = document.getElementById("badge-count-tasbih");
-  if (tasbihBadgeEl) {
-    tasbihBadgeEl.innerHTML = `${S24_VECTOR_ICONS.tasbihMini}<span>${localizeDigits(appState.lifetimeDhikr || 0, lang)}</span>`;
-  }
-
-  const vaultBadgeEl = document.getElementById("badge-count-vault");
-  if (vaultBadgeEl) {
-    const activeDaysTotal = Object.keys(appState.completionsByDate || {}).filter(
-      (k) => (appState.completionsByDate[k] || []).length > 0
-    ).length;
-    const daysStr = localizeDigits(activeDaysTotal, lang);
-    const dayTxt = lang === "ar" ? `${daysStr} يوم` : lang === "en" ? `${daysStr}d` : `${daysStr} দিন`;
-    vaultBadgeEl.innerHTML = `${S24_VECTOR_ICONS.flameMini}<span>${dayTxt}</span>`;
-  }
-
-  const customHabitBadgeEl = document.getElementById("badge-count-custom_habit");
-  if (customHabitBadgeEl) {
-    const customCount = Array.isArray(appState.customHabits) ? appState.customHabits.length : 0;
-    const countStr = localizeDigits(customCount, lang);
-    const unitTxt = lang === "ar" ? countStr : lang === "en" ? countStr : `${countStr}টি`;
-    customHabitBadgeEl.innerHTML = `${S24_VECTOR_ICONS.plusMini}<span>${unitTxt}</span>`;
-  }
-
-  const cryptoVaultBadgeEl = document.getElementById("badge-count-crypto_vault");
-  if (cryptoVaultBadgeEl) {
-    const secTxt = lang === "ar" ? "آمن" : lang === "en" ? "Secured" : "সুরক্ষিত";
-    cryptoVaultBadgeEl.innerHTML = `${S24_VECTOR_ICONS.shieldMini}<span>${secTxt}</span>`;
-  }
-
-  // 6. Highlight Active Phase Card on the 12-Card Grid (.is-active-phase-now)
-  const schedNow = computeSeasonalPrayerSchedule(now);
-  const minsNow = now.getHours() * 60 + now.getMinutes();
-  let currentLivePhaseKey = "sleep_sunnah";
-  if (minsNow >= schedNow.lastThirdStart && minsNow < schedNow.sunrise + 20) {
-    currentLivePhaseKey = "tahajjud_fajr";
-  } else if (minsNow >= schedNow.sunrise + 20 && minsNow < schedNow.dhuhr) {
-    currentLivePhaseKey = "duha_work";
-  } else if (minsNow >= schedNow.dhuhr && minsNow < schedNow.maghrib) {
-    currentLivePhaseKey = "dhuhr_asr";
-  } else if (minsNow >= schedNow.maghrib && minsNow < Math.min(1380, schedNow.isha + 90)) {
-    currentLivePhaseKey = "maghrib_isha";
-  }
-  document.querySelectorAll(".section-launcher-card[data-phase-key]").forEach((cardEl) => {
-    const pKey = cardEl.getAttribute("data-phase-key");
-    cardEl.classList.toggle("is-active-phase-now", pKey === currentLivePhaseKey);
+  // Ensure any residual crescent badge inside the date card stays removed
+  document.querySelectorAll(".lunar-ponjika-card .crescent-badge").forEach((el) => {
+    el.remove();
   });
 }
 
-// Wrap renderFiveWaqtStrip, renderHeaderDatesAndPhase, and syncMasterSectionsLiveProgress so custom vectors always stay in sync
-const _origRenderFiveWaqtStrip = renderFiveWaqtStrip;
-renderFiveWaqtStrip = function (now = new Date()) {
-  _origRenderFiveWaqtStrip(now);
-  upgradeEmojisToCustomVectors();
-};
-
-const _origSyncMasterSectionsLiveProgress = syncMasterSectionsLiveProgress;
-syncMasterSectionsLiveProgress = function () {
-  _origSyncMasterSectionsLiveProgress();
-  upgradeEmojisToCustomVectors();
-};
-
-// Sync Bottom Navigation Bar active state
 function setBottomNavActiveTab(tabKey) {
   document.querySelectorAll("#s24-bottom-nav .s24-bnav-btn").forEach((btn) => {
     btn.classList.toggle("active", btn.getAttribute("data-bnav") === tabKey);
   });
 }
 
-const _origOpenMasterSection = openMasterSection;
-openMasterSection = function (sectionId, recordHistory = true) {
-  _origOpenMasterSection(sectionId, recordHistory);
-  if (sectionId === "sec-tasbih") {
+function syncBottomNavWithCurrentView() {
+  if (!activeMasterSectionId) {
+    const gridEl = document.querySelector(".sections-hub-wrapper");
+    if (gridEl) {
+      const rect = gridEl.getBoundingClientRect();
+      if (rect.top <= 180) {
+        setBottomNavActiveTab("grid");
+        return;
+      }
+    }
+    setBottomNavActiveTab("home");
+    return;
+  }
+  if (activeMasterSectionId === "sec-tasbih") {
     setBottomNavActiveTab("tasbih");
-  } else if (sectionId === "sec-vault") {
+  } else if (activeMasterSectionId === "sec-vault") {
     setBottomNavActiveTab("stats");
   } else {
     setBottomNavActiveTab("grid");
   }
-};
-
-const _origCloseMasterSectionToHome = closeMasterSectionToHome;
-closeMasterSectionToHome = function () {
-  _origCloseMasterSectionToHome();
-  setBottomNavActiveTab("home");
-};
-
-// Localize Settings Modal & Bottom Nav labels dynamically
-function syncSettingsAndBottomNavI18n() {
-  const lang = appState.locale || "bn";
-  const dict = {
-    bn: {
-      settings_modal_title: "সেটিংস ও পছন্দসমূহ",
-      settings_lang_label: "অ্যাপের ভাষা (Language)",
-      settings_madhab_label: "আসরের ওয়াক্ত গণনা পদ্ধতি (Asr Madhab)",
-      settings_madhab_sub: "হানাফী (২ গুণ ছায়া) অথবা শাফিঈ/জমহুর (১ গুণ ছায়া) পরিবর্তন করুন",
-      bnav_home: "হোম",
-      bnav_grid: "সুন্নাহ গ্রিড",
-      bnav_tasbih: "তাসবীহ",
-      bnav_stats: "পরিসংখ্যান"
-    },
-    ar: {
-      settings_modal_title: "الإعدادات والتفضيلات",
-      settings_lang_label: "لغة التطبيق (Language)",
-      settings_madhab_label: "مذهب حساب وقت العصر",
-      settings_madhab_sub: "التبديل بين المذهب الحنفي (ظل مضاعف) ومذهب الجمهور/الشافعي (ظل واحد)",
-      bnav_home: "الرئيسية",
-      bnav_grid: "الأقسام",
-      bnav_tasbih: "السبحة",
-      bnav_stats: "الإحصائيات"
-    },
-    en: {
-      settings_modal_title: "Settings & Preferences",
-      settings_lang_label: "App Language",
-      settings_madhab_label: "Asr Prayer Calculation (Madhab)",
-      settings_madhab_sub: "Switch between Hanafi (2x shadow) and Standard Shafi'i/Jumhur (1x shadow)",
-      bnav_home: "Home",
-      bnav_grid: "Sunnah Grid",
-      bnav_tasbih: "Tasbih",
-      bnav_stats: "Stats"
-    }
-  }[lang] || {};
-
-  Object.keys(dict).forEach((k) => {
-    document.querySelectorAll(`[data-i18n="${k}"]`).forEach((el) => {
-      el.textContent = dict[k];
-    });
-  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  upgradeEmojisToCustomVectors();
-  syncSettingsAndBottomNavI18n();
+  syncSettingsAndBottomNavLocalization();
 
-  // 1. Settings & Preferences Modal Drawer Events
+  // Re-sync localized labels whenever language switcher changes
+  const langSwitcherEl = document.getElementById("lang-switcher");
+  if (langSwitcherEl) {
+    langSwitcherEl.addEventListener("change", () => {
+      setTimeout(syncSettingsAndBottomNavLocalization, 20);
+    });
+  }
+
+  // 1. Settings & Preferences Modal Drawer Open / Close Logic
   const settingsOpenBtn = document.getElementById("s24-settings-open-btn");
   const settingsModal = document.getElementById("s24-settings-modal");
   const settingsCloseBtn = document.getElementById("s24-settings-close-btn");
   const settingsDoneBtn = document.getElementById("s24-settings-done-btn");
 
+  const openSettingsModal = () => {
+    if (!settingsModal) return;
+    // Close location popover if open
+    const locPanel = document.getElementById("bd-loc-cascading-panel");
+    if (locPanel && locPanel.classList.contains("is-open")) {
+      locPanel.classList.remove("is-open");
+    }
+    syncSettingsAndBottomNavLocalization();
+    if (typeof syncMadhabToggleUI === "function") syncMadhabToggleUI();
+    settingsModal.classList.remove("hidden");
+    if (settingsOpenBtn) settingsOpenBtn.setAttribute("aria-expanded", "true");
+    if (navigator.vibrate) navigator.vibrate(10);
+    if (typeof pushAppHistoryState === "function") pushAppHistoryState("settings-modal");
+  };
+
   const closeSettingsModal = () => {
-    if (settingsModal) settingsModal.classList.add("hidden");
+    if (!settingsModal) return;
+    settingsModal.classList.add("hidden");
     if (settingsOpenBtn) settingsOpenBtn.setAttribute("aria-expanded", "false");
   };
 
-  if (settingsOpenBtn && settingsModal) {
-    settingsOpenBtn.addEventListener("click", () => {
-      syncSettingsAndBottomNavI18n();
-      if (typeof syncMadhabToggleUI === "function") syncMadhabToggleUI();
-      upgradeEmojisToCustomVectors();
-      settingsModal.classList.remove("hidden");
-      settingsOpenBtn.setAttribute("aria-expanded", "true");
-      if (navigator.vibrate) navigator.vibrate(10);
-      if (typeof pushAppHistoryState === "function") pushAppHistoryState("settings-modal");
+  if (settingsOpenBtn) {
+    settingsOpenBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openSettingsModal();
     });
   }
-  if (settingsCloseBtn) settingsCloseBtn.addEventListener("click", closeSettingsModal);
-  if (settingsDoneBtn) settingsDoneBtn.addEventListener("click", closeSettingsModal);
+  if (settingsCloseBtn) {
+    settingsCloseBtn.addEventListener("click", closeSettingsModal);
+  }
+  if (settingsDoneBtn) {
+    settingsDoneBtn.addEventListener("click", closeSettingsModal);
+  }
   if (settingsModal) {
     settingsModal.addEventListener("click", (e) => {
-      if (e.target === settingsModal) closeSettingsModal();
+      if (e.target === settingsModal) {
+        closeSettingsModal();
+      }
     });
   }
 
-  const langSwitcher = document.getElementById("lang-switcher");
-  if (langSwitcher) {
-    langSwitcher.addEventListener("change", () => {
-      setTimeout(() => {
-        syncSettingsAndBottomNavI18n();
-        upgradeEmojisToCustomVectors();
-      }, 30);
-    });
-  }
-
-  // 2. Sticky 4-Tab Bottom Navigation Bar Events (Home, Sunnah Grid, Tasbih, Stats)
+  // 2. Sticky 4-Tab Bottom Navigation Bar Click & Scroll Sync
   const bottomNav = document.getElementById("s24-bottom-nav");
   if (bottomNav) {
     bottomNav.addEventListener("click", (e) => {
-      const btn = e.target.closest(".s24-bnav-btn[data-bnav]");
+      const btn = e.target.closest("[data-bnav]");
       if (!btn) return;
       const target = btn.getAttribute("data-bnav");
-      if (navigator.vibrate) navigator.vibrate(12);
+      if (navigator.vibrate) navigator.vibrate(10);
 
       if (target === "home") {
         if (activeMasterSectionId) {
           closeMasterSectionToHome();
         }
         setBottomNavActiveTab("home");
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
       } else if (target === "grid") {
-        if (activeMasterSectionId) {
-          closeMasterSectionToHome();
-        }
-        setBottomNavActiveTab("grid");
-        setTimeout(() => {
+        const scrollToGrid = () => {
           const hubEl = document.querySelector(".sections-hub-wrapper");
-          const headerEl = document.querySelector(".app-header");
+          const headerEl = document.getElementById("main-app-header");
+          const hOffset = headerEl ? headerEl.getBoundingClientRect().height + 8 : 64;
           if (hubEl) {
-            const hHeight = headerEl ? headerEl.getBoundingClientRect().height : 56;
-            const topPos = (window.scrollY || window.pageYOffset || 0) + hubEl.getBoundingClientRect().top - hHeight - 8;
+            const topPos =
+              (window.scrollY || window.pageYOffset || 0) +
+              hubEl.getBoundingClientRect().top -
+              hOffset;
             window.scrollTo({ top: Math.max(0, topPos), behavior: "smooth" });
           }
-        }, 40);
+        };
+
+        if (activeMasterSectionId) {
+          closeMasterSectionToHome();
+          setTimeout(scrollToGrid, 60);
+        } else {
+          scrollToGrid();
+        }
+        setBottomNavActiveTab("grid");
       } else if (target === "tasbih") {
         openMasterSection("sec-tasbih", true);
         setBottomNavActiveTab("tasbih");
@@ -13946,21 +13832,45 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Update Bottom Nav active tab when scrolling on Home Dashboard between Top Waqt & 12-Section Grid
+  // Wrap openMasterSection and closeMasterSectionToHome so Bottom Nav active tab stays in sync
+  const origOpenMasterSection = openMasterSection;
+  openMasterSection = function (sectionId, recordHistory = true) {
+    origOpenMasterSection(sectionId, recordHistory);
+    syncBottomNavWithCurrentView();
+  };
+  if (window.Sunnah24SectionEngine) {
+    window.Sunnah24SectionEngine.openSection = openMasterSection;
+  }
+
+  const origCloseMasterSectionToHome = closeMasterSectionToHome;
+  closeMasterSectionToHome = function () {
+    origCloseMasterSectionToHome();
+    setTimeout(syncBottomNavWithCurrentView, 40);
+  };
+  if (window.Sunnah24SectionEngine) {
+    window.Sunnah24SectionEngine.backToHome = closeMasterSectionToHome;
+  }
+
+  // Update Bottom Nav highlight between Home and Sunnah Grid when scrolling on Home Dashboard
   window.addEventListener(
     "scroll",
     () => {
-      if (activeMasterSectionId) return;
-      const hubEl = document.querySelector(".sections-hub-wrapper");
-      if (!hubEl) return;
-      const rect = hubEl.getBoundingClientRect();
-      if (rect.top <= 240) {
-        setBottomNavActiveTab("grid");
-      } else {
-        setBottomNavActiveTab("home");
+      if (!activeMasterSectionId) {
+        syncBottomNavWithCurrentView();
       }
     },
     { passive: true }
   );
+
+  // Extend Back-Button Navigation to close Settings Modal if open
+  const origHandleBack = window.handleSunnahBackNavigation;
+  window.handleSunnahBackNavigation = function () {
+    if (settingsModal && !settingsModal.classList.contains("hidden")) {
+      closeSettingsModal();
+      return true;
+    }
+    return origHandleBack ? origHandleBack() : false;
+  };
 });
+
 
