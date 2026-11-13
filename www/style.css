@@ -6781,5 +6781,68 @@ html[data-theme="dark"] .nafl-minimal-label {
   color: #f8fafc;
 }
 
-/* V8.3.1 Nafl Salah Waqt Period Label Polish */
+/* ==========================================================================
+   V8.3.2 STRICT `i`-BUTTON-ONLY CLICK SENSITIVITY & MODAL CHIP WRAP FIX
+   - Makes 5-Waqt cards & Nafl Salah rows non-clickable as whole cards/rows
+     so popups ONLY appear when the user explicitly clicks the `i` button
+   - Fixes #modal-category chip overflow so long Rakah/Waqt badges wrap
+     cleanly inside the popup modal without crossing the card border
+   ========================================================================== */
+.waqt-pill-card.m3-interactive-waqt-pill {
+  cursor: default !important;
+}
+
+.waqt-pill-card.m3-interactive-waqt-pill:active {
+  transform: none !important;
+}
+
+.waqt-info-micro-badge {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  width: 19px !important;
+  height: 19px !important;
+  top: 4px !important;
+  right: 4px !important;
+  padding: 0 !important;
+  font-size: 0.64rem !important;
+  z-index: 4 !important;
+  transition: transform 0.14s ease, background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease !important;
+}
+
+html[dir="rtl"] .waqt-info-micro-badge {
+  right: auto !important;
+  left: 4px !important;
+}
+
+.waqt-info-micro-badge:hover {
+  background: #e8f0fe !important;
+  border-color: #1a73e8 !important;
+  color: #174ea6 !important;
+}
+
+.waqt-info-micro-badge:active {
+  transform: scale(0.9) !important;
+}
+
+.nafl-minimal-row {
+  cursor: default !important;
+}
+
+.nafl-corner-info-btn {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Fix #modal-category Rakah/Waqt badge crossing the modal border on 5th Nafl Salah */
+.modal-card #modal-category {
+  max-width: 100% !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  line-height: 1.38 !important;
+  border-radius: 12px !important;
+  padding: 5px 11px !important;
+  display: inline-block !important;
+  box-sizing: border-box !important;
+}
 
