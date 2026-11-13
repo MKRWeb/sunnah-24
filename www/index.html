@@ -48,7 +48,7 @@
 
       <!-- Clean Single-Row Header Right: Location Pill + Settings Preferences Drawer Trigger -->
       <div class="header-madhab-loc-stack header-single-row-actions" id="bd-loc-selector-bar">
-        <button
+                <button
           type="button"
           id="bd-loc-toggle-btn"
           class="header-loc-pill-btn"
@@ -56,8 +56,13 @@
           aria-expanded="false"
           title="অবস্থান অনুসন্ধান করুন (Search Location)"
         >
-          <span id="bd-loc-active-label">📍 ঢাকা ▾</span>
+          <svg class="header-loc-pin-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span id="bd-loc-active-label">ঢাকা ▾</span>
         </button>
+
 
 
         <button
@@ -79,7 +84,7 @@
         <!-- Clean Anchored Popover Panel: Division -> District -> Upazila -->
         <div id="bd-loc-cascading-panel" class="bd-loc-Cascading-panel header-loc-popover" role="dialog" aria-label="Bangladesh Location Selector">
           <div class="bd-loc-popover-head">
-            <span id="bd-loc-popover-title" class="bd-loc-popover-title">📍 অবস্থান নির্বাচন (ঢাকা ডিফল্ট)</span>
+            <span id="bd-loc-popover-title" class="bd-loc-popover-title">  অবস্থান নির্বাচন (ঢাকা ডিফল্ট)</span>
             <span id="bd-loc-coords-pill" class="bd-loc-coords-pill">২৩.৮১°N, ৯০.৪১°E</span>
           </div>
           <div class="bd-loc-selects-grid">
