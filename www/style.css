@@ -6478,107 +6478,122 @@ body.home-popup-expanded .home-bottom-scroll-space {
 
 
 /* ==========================================================================
-   V8.2 MATERIAL 3 & DEEPMIND UI PRECISION: INTERACTIVE 5-WAQT PRAYER PILLS
-   (#five-waqt-grid) & COMPLETE নফল নামাজের ওয়াক্ত SECTION (#nafl-salah-card)
+   V8.3 GOOGLE MINIMAL 5-WAQT PRAYER PILLS (ONLY TOP-RIGHT `i` BADGE)
+   & ULTRA-CLEAN AT-A-GLANCE NAFL SALAH CARD (WITH CORNER `i` PROOF BUTTON)
    ========================================================================== */
 
-/* 1. Pulsing Tap-Hint Bar right above #five-waqt-grid */
-.five-waqt-tap-hint {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 6px 11px;
-  margin: 0 0 9px 0;
-  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 55%, #fefce8 100%);
-  border: 1.2px dashed rgba(16, 185, 129, 0.45);
-  border-radius: 12px;
-  font-size: 0.71rem;
-  font-weight: 800;
-  color: var(--accent-emerald-dark, #065f46);
-  text-align: center;
-  line-height: 1.3;
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8);
-}
-
-.tap-hint-pulse-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.24);
-  flex-shrink: 0;
-  animation: waqtPulse 1.8s infinite ease-in-out;
-}
-
-/* 2. Material 3 Elevated Interactive 5-Waqt Prayer Pills */
+/* 1. Google Minimal 5-Waqt Prayer Pills (#five-waqt-grid) */
 .waqt-pill-card.m3-interactive-waqt-pill {
   position: relative;
-  background: linear-gradient(165deg, #ffffff 0%, #f3faf6 65%, #e8f6ee 100%);
-  border: 2px solid rgba(16, 185, 129, 0.42);
-  border-radius: 18px;
-  padding: 10px 4px 8px;
-  gap: 3px;
-  box-shadow:
-    0 6px 15px -4px rgba(15, 45, 34, 0.1),
-    0 2px 5px -1px rgba(16, 185, 129, 0.08),
-    inset 0 1.5px 0 rgba(255, 255, 255, 0.95);
-  transition:
-    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.22s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.2s ease,
-    background 0.2s ease;
-  overflow: visible;
+  background: #ffffff;
+  border: 1px solid #dadce0;
+  border-radius: 14px;
+  padding: 12px 4px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-shadow: 0 1px 2px rgba(60, 64, 67, 0.06);
+  transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
 }
 
 .waqt-pill-card.m3-interactive-waqt-pill:hover {
-  transform: translateY(-3px);
-  border-color: #059669;
-  box-shadow:
-    0 12px 24px -5px rgba(16, 185, 129, 0.22),
-    0 4px 10px -2px rgba(15, 45, 34, 0.1);
+  background: #f8f9fa;
+  border-color: #bdc1c6;
+  box-shadow: 0 1px 3px rgba(60, 64, 67, 0.12);
 }
 
 .waqt-pill-card.m3-interactive-waqt-pill:active {
-  transform: translateY(0px) scale(0.95);
+  transform: scale(0.96);
+}
+
+.waqt-pill-card.m3-interactive-waqt-pill .waqt-circle-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f1f3f4;
+  border: 1px solid #e8eaed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.98rem;
+  box-shadow: none;
+}
+
+.waqt-pill-card.m3-interactive-waqt-pill .waqt-name {
+  font-size: 0.68rem;
+  color: #5f6368;
+  font-weight: 700;
+}
+
+.waqt-pill-card.m3-interactive-waqt-pill .waqt-time {
+  font-size: 0.74rem;
+  color: #202124;
+  font-weight: 800;
 }
 
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-passed {
-  opacity: 0.92;
-  background: linear-gradient(165deg, #ffffff 0%, #f5f8f6 100%);
-  border-color: rgba(16, 185, 129, 0.34);
+  opacity: 0.85;
+  background: #f8f9fa;
 }
 
+/* Google Minimal Active Waqt State */
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-active {
-  background: linear-gradient(155deg, #ecfdf5 0%, #d1fae5 55%, #ffffff 100%);
-  border: 2.2px solid #059669;
-  box-shadow:
-    0 10px 22px -4px rgba(16, 185, 129, 0.28),
-    0 0 0 2px rgba(16, 185, 129, 0.15);
-  transform: translateY(-2.5px);
+  background: #e6f4ea;
+  border: 1.5px solid #1e8e3e;
+  box-shadow: 0 1px 3px rgba(30, 142, 62, 0.14);
+  transform: none;
 }
 
+.waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-circle-logo {
+  background: #ffffff;
+  border-color: #ceead6;
+  box-shadow: none;
+}
+
+.waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-name {
+  color: #137333;
+  font-weight: 800;
+}
+
+.waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-time {
+  color: #0d652d;
+}
+
+/* Google Minimal Selected Popup State */
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-popup-selected {
-  background: linear-gradient(155deg, #fffbeb 0%, #fef3c7 60%, #ffffff 100%) !important;
-  border: 2.2px solid #d97706 !important;
-  box-shadow:
-    0 12px 24px -4px rgba(217, 119, 6, 0.26),
-    0 0 0 2px rgba(217, 119, 6, 0.16) !important;
-  transform: translateY(-3px);
+  background: #e8f0fe !important;
+  border: 1.5px solid #1a73e8 !important;
+  box-shadow: 0 1px 3px rgba(26, 115, 232, 0.16) !important;
+  transform: none !important;
 }
 
-/* Top-Right Info / Expand Micro-Badge (ⓘ) */
+.waqt-pill-card.m3-interactive-waqt-pill.waqt-popup-selected .waqt-circle-logo {
+  background: #ffffff !important;
+  border-color: #d2e3fc !important;
+}
+
+.waqt-pill-card.m3-interactive-waqt-pill.waqt-popup-selected .waqt-name,
+.waqt-pill-card.m3-interactive-waqt-pill.waqt-popup-selected .waqt-time {
+  color: #174ea6 !important;
+}
+
+/* Minimal Top-Right `i` Button on Every 5-Waqt Card */
 .waqt-info-micro-badge {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 5px;
+  right: 5px;
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: rgba(16, 185, 129, 0.14);
-  color: #047857;
+  background: #f1f3f4;
+  border: 1px solid #dadce0;
+  color: #5f6368;
   font-size: 0.56rem;
-  font-weight: 900;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 800;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -6588,383 +6603,181 @@ body.home-popup-expanded .home-bottom-scroll-space {
 
 html[dir="rtl"] .waqt-info-micro-badge {
   right: auto;
-  left: 4px;
+  left: 5px;
 }
 
 .waqt-pill-card.waqt-active .waqt-info-micro-badge {
-  background: #059669;
-  color: #ffffff;
+  background: #ceead6;
+  border-color: #1e8e3e;
+  color: #0d652d;
 }
 
 .waqt-pill-card.waqt-popup-selected .waqt-info-micro-badge {
-  background: #d97706;
-  color: #ffffff;
+  background: #d2e3fc;
+  border-color: #1a73e8;
+  color: #174ea6;
 }
 
-/* Tactile Bottom Interactive Chevron Pill (বিস্তারিত ▾) */
-.waqt-tactile-chevron-pill {
-  margin-top: 3px;
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: rgba(16, 185, 129, 0.13);
-  border: 1px solid rgba(16, 185, 129, 0.34);
-  color: #065f46;
-  font-size: 0.55rem;
-  font-weight: 800;
-  line-height: 1.15;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  white-space: nowrap;
-  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
-}
-
-.waqt-chevron-glyph {
-  font-size: 0.58rem;
-  line-height: 1;
-}
-
-.waqt-pill-card.waqt-active .waqt-tactile-chevron-pill {
-  background: #059669;
-  border-color: #047857;
-  color: #ffffff;
-}
-
-.waqt-pill-card.waqt-popup-selected .waqt-tactile-chevron-pill {
-  background: #d97706;
-  border-color: #b45309;
-  color: #ffffff;
-}
-
-@media (max-width: 365px) {
-  .waqt-tactile-chevron-pill {
-    font-size: 0.5rem;
-    padding: 1.5px 4.5px;
-  }
-  .waqt-info-micro-badge {
-    width: 13px;
-    height: 13px;
-    font-size: 0.5rem;
-  }
-}
-
-/* 3. Complete নফল নামাজের ওয়াক্ত (Nafl Prayer Waqt) Section (#nafl-salah-card) */
+/* 2. Minimal, At-a-Glance Nafl Salah Card (#nafl-salah-card) */
 .nafl-salah-card {
-  margin: 8px 14px 8px;
-  padding: 14px 13px;
-  background: linear-gradient(180deg, #ffffff 0%, #f6fbf8 100%);
+  margin: 0 14px 10px;
+  padding: 11px 13px;
+  background: #ffffff;
   border: 1.5px solid rgba(16, 185, 129, 0.28);
-  border-radius: 22px;
+  border-radius: 16px;
   box-shadow: var(--shadow-float);
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 
-.nafl-card-header {
+.nafl-minimal-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px dashed rgba(16, 185, 129, 0.28);
+  padding-bottom: 6px;
 }
 
-.nafl-header-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-  flex: 1;
-}
-
-.nafl-header-icon-orb {
-  width: 38px;
-  height: 38px;
-  border-radius: 13px;
-  background: linear-gradient(145deg, #ecfdf5, #d1fae5);
-  border: 1.5px solid rgba(16, 185, 129, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.15rem;
-  flex-shrink: 0;
-  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.14);
-}
-
-.nafl-header-titles {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.nafl-header-titles h4 {
-  font-size: 0.94rem;
+.nafl-minimal-header h4 {
+  font-size: 0.84rem;
   font-weight: 900;
-  color: var(--accent-emerald-dark, #065f46);
+  color: var(--text-primary, #202124);
+  letter-spacing: -0.01em;
   line-height: 1.25;
-}
-
-.nafl-header-titles small {
-  font-size: 0.69rem;
-  font-weight: 700;
-  color: var(--text-muted, #5b7268);
-  line-height: 1.3;
-}
-
-.nafl-active-summary-badge {
-  font-size: 0.66rem;
-  font-weight: 900;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: var(--accent-emerald-soft, #e6f6ef);
-  color: var(--accent-emerald-dark, #065f46);
-  border: 1.2px solid rgba(16, 185, 129, 0.38);
-  white-space: nowrap;
-  flex-shrink: 0;
 }
 
 .nafl-salah-list {
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 6px;
+  padding-top: 2px;
 }
 
-.nafl-salah-row {
-  background: #ffffff;
-  border: 1.5px solid rgba(16, 185, 129, 0.2);
-  border-radius: 16px;
-  padding: 11px 12px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  box-shadow: 0 4px 12px rgba(15, 45, 34, 0.05);
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, border-color 0.2s ease;
-}
-
-.nafl-salah-row:hover {
-  transform: translateY(-2px);
-  border-color: var(--accent-emerald, #10b981);
-  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.13);
-}
-
-.nafl-salah-row:active {
-  transform: scale(0.985);
-}
-
-.nafl-salah-row.nafl-row-active {
-  background: linear-gradient(145deg, #f2fbf7 0%, #ffffff 100%);
-  border-color: #10b981;
-  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.15);
-}
-
-.nafl-row-top {
+.nafl-minimal-row {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
+  padding: 4px 0;
+  cursor: pointer;
 }
 
-.nafl-row-title-group {
-  display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  min-width: 0;
-  flex: 1;
-}
-
-.nafl-avatar {
-  width: 38px !important;
-  height: 38px !important;
-  font-size: 1.05rem !important;
-}
-
-.nafl-row-headings {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-  flex: 1;
-}
-
-.nafl-title-line {
+.nafl-minimal-left {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
+  gap: 7px;
+  min-width: 0;
+  flex: 1;
 }
 
-.nafl-title-line h5 {
-  font-size: 0.85rem;
-  font-weight: 900;
-  color: var(--text-primary, #1e352b);
-  line-height: 1.25;
-  margin: 0;
-}
-
-.nafl-rakah-chip {
-  font-size: 0.62rem;
-  font-weight: 800;
-  padding: 1.5px 7px;
-  border-radius: 999px;
-  background: var(--accent-gold-soft, #fef3c7);
-  color: var(--accent-gold, #b45309);
-  border: 1px solid rgba(180, 83, 9, 0.3);
-  white-space: nowrap;
-}
-
-.nafl-hadith-caption {
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: #047857;
-  line-height: 1.3;
-}
-
-.nafl-row-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
+.nafl-minimal-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #dadce0;
   flex-shrink: 0;
 }
 
-html[dir="rtl"] .nafl-row-right {
-  align-items: flex-start;
+.nafl-minimal-dot.active {
+  background: #1e8e3e;
+  box-shadow: 0 0 0 3px rgba(30, 142, 62, 0.16);
 }
 
-.nafl-time-range-pill {
-  background: #f4fbf7;
-  color: var(--accent-emerald-dark, #065f46);
-  border: 1.3px solid rgba(16, 185, 129, 0.42);
-  border-radius: 8px;
-  padding: 3px 8px;
+.nafl-minimal-label {
   font-size: 0.74rem;
-  font-weight: 900;
-  white-space: nowrap;
-  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.08);
+  font-weight: 800;
+  color: var(--text-primary, #202124);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.nafl-live-status-pill {
-  font-size: 0.61rem;
-  font-weight: 900;
-  padding: 1.5px 7px;
-  border-radius: 999px;
-  white-space: nowrap;
+.nafl-minimal-row.is-active-nafl .nafl-minimal-label {
+  color: #137333;
 }
 
-.nafl-live-status-pill.is-open {
-  background: #d1fae5;
-  color: #065f46;
-  border: 1px solid rgba(16, 185, 129, 0.45);
-}
-
-.nafl-live-status-pill.is-forbidden {
-  background: #fee2e2;
-  color: #b91c1c;
-  border: 1px solid rgba(220, 38, 38, 0.38);
-}
-
-.nafl-row-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding-top: 6px;
-  border-top: 1px dashed rgba(16, 185, 129, 0.18);
-}
-
-.nafl-window-detail {
-  font-size: 0.69rem;
-  font-weight: 600;
-  color: var(--text-muted, #5b7268);
-  line-height: 1.35;
-  flex: 1;
-  min-width: 170px;
-}
-
-.nafl-row-actions {
+.nafl-minimal-right {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   flex-shrink: 0;
 }
 
-.nafl-action-chip {
-  background: #f8fbf9;
-  color: var(--accent-emerald-dark, #065f46);
-  border: 1px solid rgba(16, 185, 129, 0.32);
-  border-radius: 999px;
-  padding: 3px 9px;
-  font-size: 0.64rem;
+.nafl-minimal-time-pill {
+  min-width: 96px;
+  text-align: center;
+}
+
+/* Corner `i` Hadith Proof Button on Every Nafl Row */
+.nafl-corner-info-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #f1f3f4;
+  border: 1px solid #dadce0;
+  color: #5f6368;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 0.72rem;
   font-weight: 800;
-  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.15s ease;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
 
-.nafl-action-chip.phase-chip {
-  background: var(--accent-emerald-soft, #e6f6ef);
-  border-color: rgba(16, 185, 129, 0.42);
+.nafl-corner-info-btn:hover {
+  background: #e8f0fe;
+  border-color: #1a73e8;
+  color: #174ea6;
 }
 
-.nafl-action-chip:active {
-  transform: scale(0.94);
+.nafl-corner-info-btn:active {
+  transform: scale(0.92);
 }
 
-/* Dark Theme Support for Interactive 5-Waqt Pills & Nafl Card */
-html[data-theme="dark"] .five-waqt-tap-hint {
-  background: rgba(16, 185, 129, 0.1);
-  border-color: rgba(16, 185, 129, 0.38);
-  color: #6ee7b7;
-}
-
+/* Dark Theme Support */
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill {
-  background: linear-gradient(165deg, #0d281f 0%, #071913 100%);
-  border-color: rgba(16, 185, 129, 0.45);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  background: #0b221a;
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
-html[data-theme="dark"] .waqt-tactile-chevron-pill {
-  background: rgba(16, 185, 129, 0.18);
-  border-color: rgba(16, 185, 129, 0.4);
-  color: #6ee7b7;
+html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill .waqt-circle-logo {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
-html[data-theme="dark"] .nafl-salah-card {
-  background: linear-gradient(180deg, #0b221a 0%, #071913 100%);
-  border-color: rgba(16, 185, 129, 0.34);
+html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill .waqt-name {
+  color: #94a3b8;
 }
 
-html[data-theme="dark"] .nafl-header-titles h4,
-html[data-theme="dark"] .nafl-title-line h5 {
+html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill .waqt-time {
   color: #f8fafc;
 }
 
-html[data-theme="dark"] .nafl-hadith-caption {
+html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill.waqt-active {
+  background: rgba(30, 142, 62, 0.22);
+  border-color: #34d399;
+}
+
+html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-name,
+html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-time {
   color: #6ee7b7;
 }
 
-html[data-theme="dark"] .nafl-salah-row {
-  background: #071913;
-  border-color: rgba(16, 185, 129, 0.26);
+html[data-theme="dark"] .waqt-info-micro-badge,
+html[data-theme="dark"] .nafl-corner-info-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #cbd5e1;
 }
 
-html[data-theme="dark"] .nafl-salah-row.nafl-row-active {
-  background: linear-gradient(145deg, rgba(16, 185, 129, 0.16), #071913);
-  border-color: #10b981;
-}
-
-html[data-theme="dark"] .nafl-time-range-pill {
-  background: #05130e;
-  color: #34d399;
-  border-color: rgba(16, 185, 129, 0.45);
-}
-
-html[data-theme="dark"] .nafl-action-chip {
+html[data-theme="dark"] .nafl-salah-card {
   background: #0b221a;
-  color: #6ee7b7;
-  border-color: rgba(16, 185, 129, 0.35);
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+html[data-theme="dark"] .nafl-minimal-header h4,
+html[data-theme="dark"] .nafl-minimal-label {
+  color: #f8fafc;
 }
 
