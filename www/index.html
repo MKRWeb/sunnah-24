@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Sunnah 24 — নববী জীবনধারা ও রুটিন প্ল্যানার | Sunnah 24</title>
   <meta name="description" content="Sunnah 24: Enterprise-grade 24-Hour Islamic Routine Planner, Prophetic Habit Tracker, Digital Tasbih & Triple-Layer Tamper-Proof Vault." />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#f4f9f6" />
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="manifest" href="manifest.json" />
@@ -24,6 +24,10 @@
 
 
 
+
+
+
+
   <!-- Compact Commercial Top App Bar with Universal Asr Madhab Toggle & Header Location Pill -->
   <header class="app-header" id="main-app-header">
     <div class="header-left">
@@ -37,45 +41,24 @@
 
 
 
+
+
+
+
     <div class="header-right">
       <span id="integrity-badge" class="badge-verified" style="display:none;">🛡️ S24 যাচাইকৃত</span>
-      <div class="header-controls-stack">
-        <select id="lang-switcher" class="lang-select" aria-label="Select Language">
-          <option value="bn" selected>🌐 বাংলা</option>
-          <option value="ar">🌐 العربية</option>
-          <option value="en">🌐 EN</option>
-        </select>
-        <!-- Website-Only 1-Click APK Download Button -->
-        <a
-          id="web-apk-download-btn"
-          href="https://github.com/MKRWeb/sunnah-24/releases/latest/download/Sunnah-24-v4.2-Enterprise-Signed.apk"
-          class="apk-install-btn hidden"
-          download
-        >
-          📲 <span>Install App</span>
-        </a>
-      </div>
+      <!-- Website-Only 1-Click APK Download Button -->
+      <a
+        id="web-apk-download-btn"
+        href="https://github.com/MKRWeb/sunnah-24/releases/latest/download/Sunnah-24-v4.2-Enterprise-Signed.apk"
+        class="apk-install-btn hidden"
+        download
+      >
+        📲 <span>Install App</span>
+      </a>
 
-
-
-
-      <!-- Madhab Toggle + Direct Header Location Selector Stack -->
-      <div class="header-madhab-loc-stack" id="bd-loc-selector-bar">
-        <button
-          type="button"
-          id="madhab-toggle-btn"
-          class="madhab-toggle-btn"
-          data-madhab="hanafi"
-          aria-label="Toggle Asr Madhab (Hanafi vs Standard Shafi'i)"
-          title="আসরের ওয়াক্ত মাযহাব পরিবর্তন করুন (হানাফী ⇄ শাফিঈ/জমহুর)"
-        >
-          <span id="madhab-toggle-icon">🕌</span>
-          <span id="madhab-toggle-label" data-i18n="madhab_hanafi_btn">হানাফী</span>
-        </button>
-
-
-
-
+      <!-- Clean Single-Row Header Right: Location Pill + Settings Preferences Button -->
+      <div class="header-madhab-loc-stack header-single-row-actions" id="bd-loc-selector-bar">
         <button
           type="button"
           id="bd-loc-toggle-btn"
@@ -84,8 +67,33 @@
           aria-expanded="false"
           title="অবস্থান অনুসন্ধান করুন (Search Location)"
         >
-          <span id="bd-loc-active-label">📍 ঢাকা ▾</span>
+          <span class="s24-inline-svg-pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#0d9467"/>
+              <circle cx="12" cy="9" r="2.6" fill="#fef08a"/>
+            </svg>
+          </span>
+          <span id="bd-loc-active-label">ঢাকা ▾</span>
         </button>
+
+        <button
+          type="button"
+          id="s24-settings-open-btn"
+          class="header-settings-icon-btn"
+          aria-haspopup="dialog"
+          aria-expanded="false"
+          aria-label="Settings & Preferences (Language & Asr Madhab)"
+          title="সেটিংস ও মাযহাব (Settings: Language & Asr Madhab)"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+
+
+
+
 
 
 
@@ -122,6 +130,10 @@
 
 
 
+
+
+
+
   <!-- ========================================================================
        HOME DASHBOARD VIEW (#home-dashboard-view)
        When any section is clicked, this entire Home View hides and the clicked
@@ -132,10 +144,26 @@
     <section class="lunar-ponjika-card" aria-label="Lunar Hijri, Gregorian and Bangla Calendar">
       <div class="lunar-hijri-row">
         <strong id="lunar-hijri-headline">হিজরি তারিখ গণনা হচ্ছে...</strong>
-        <span class="crescent-badge" aria-hidden="true">🌙</span>
+        <span class="crescent-badge" aria-hidden="true">
+          <svg viewBox="0 0 28 28" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="s24CalMoonGrad" x1="4" y1="2" x2="24" y2="26" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#fef08a"/>
+                <stop offset="50%" stop-color="#facc15"/>
+                <stop offset="100%" stop-color="#ca8a04"/>
+              </linearGradient>
+            </defs>
+            <path d="M18.8 3.6C13.2 4.8 9.8 10.4 11 16C12.2 21.6 17.8 25 23.4 23.8C19.2 26.8 13.3 26.3 9.6 22.6C5.9 18.9 5.4 13 8.4 8.8C10.9 5.3 14.8 3.4 18.8 3.6Z" fill="url(#s24CalMoonGrad)"/>
+            <circle cx="20.5" cy="8.5" r="1.5" fill="#fde047"/>
+          </svg>
+        </span>
       </div>
       <p id="bangla-ponjika-subline" class="bangla-ponjika-sub">বাংলা ও ইংরেজি তারিখ সিঙ্ক হচ্ছে...</p>
     </section>
+
+
+
+
 
 
 
@@ -149,6 +177,10 @@
           <p id="completed-count-text">আজ ৩২টি নববী সুন্নাহর মধ্যে ০টি সম্পন্ন হয়েছে</p>
           <div id="time-lock-summary" class="time-lock-pill">⏱️ রিয়েল-টাইম ওয়াক্ত লক সক্রিয়</div>
         </div>
+
+
+
+
 
 
 
@@ -177,12 +209,32 @@
             />
           </svg>
           <div class="streak-circle-inner">
-            <span class="streak-flame">🔥</span>
+            <span class="streak-flame" aria-hidden="true">
+              <svg viewBox="0 0 28 28" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="s24FlameOuter" x1="14" y1="2" x2="14" y2="26" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#facc15"/>
+                    <stop offset="50%" stop-color="#f97316"/>
+                    <stop offset="100%" stop-color="#dc2626"/>
+                  </linearGradient>
+                  <linearGradient id="s24FlameInner" x1="14" y1="11" x2="14" y2="25" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#fef9c3"/>
+                    <stop offset="100%" stop-color="#facc15"/>
+                  </linearGradient>
+                </defs>
+                <path d="M14.5 2.5C14.5 2.5 22 8.8 22 16.2C22 21.6 18.2 25.5 14 25.5C9.8 25.5 6 21.6 6 16.2C6 12.1 8.5 8.6 10.3 6.8C10.3 6.8 9.8 10.2 12 11.2C11.2 7.6 14.5 2.5 14.5 2.5Z" fill="url(#s24FlameOuter)"/>
+                <path d="M14 12.5C14 12.5 18 15.8 18 19.5C18 22.3 16.2 24.2 14 24.2C11.8 24.2 10 22.3 10 19.5C10 16.8 12.1 14.4 14 12.5Z" fill="url(#s24FlameInner)"/>
+              </svg>
+            </span>
             <strong id="streak-count">০</strong>
             <small data-i18n="day_streak">দিনের ধারাবাহিকতা</small>
           </div>
         </div>
       </div>
+
+
+
+
 
 
 
@@ -194,11 +246,19 @@
 
 
 
+
+
+
+
       <div class="hero-meta">
         <span id="next-phase-banner" style="display:none;">🌌 চলমান ওয়াক্ত...</span>
         <span id="fasting-banner">🌙 সুন্নাহ রোজা যাচাই...</span>
       </div>
     </section>
+
+
+
+
 
 
 
@@ -225,8 +285,16 @@
 
 
 
+
+
+
+
       <div id="five-waqt-grid" class="five-waqt-grid"></div>
     </section>
+
+
+
+
 
 
 
@@ -256,9 +324,17 @@
 
 
 
+
+
+
+
       <div id="prohibited-collapsible-body" class="prohibited-collapsible-body">
         <div class="prohibited-static-inner">
           <div class="prohibited-dashed-divider" style="margin-top:0;"></div>
+
+
+
+
 
 
 
@@ -272,10 +348,18 @@
 
 
 
+
+
+
+
             <div class="prohibited-static-row">
               <span class="prohibited-row-label" data-i18n="prohibited_zawal">২. ঠিক দ্বিপ্রহর/দুপুরের সময় (Midday Zenith/Zawal):</span>
               <strong id="time-slot-zawal" class="prohibited-time-pill">--:-- - --:--</strong>
             </div>
+
+
+
+
 
 
 
@@ -289,7 +373,15 @@
 
 
 
+
+
+
+
           <div class="prohibited-dashed-divider"></div>
+
+
+
+
 
 
 
@@ -302,6 +394,10 @@
         </div>
       </div>
     </section>
+
+
+
+
 
 
 
@@ -322,8 +418,16 @@
 
 
 
+
+
+
+
       <!-- Extensible Grid of Independent Sections -->
       <div id="master-sections-grid" class="master-sections-grid" role="navigation" aria-label="Independent App Sections">
+
+
+
+
 
 
 
@@ -391,6 +495,10 @@
 
 
 
+
+
+
+
         <!-- SECTION 2: সকাল ও কর্মক্ষেত্র (Duha & Work) -->
         <button type="button" class="section-launcher-card theme-amber" data-open-section="sec-duha_work" data-phase-key="duha_work">
           <div class="section-card-top">
@@ -439,6 +547,10 @@
             
           </div>
         </button>
+
+
+
+
 
 
 
@@ -501,6 +613,10 @@
 
 
 
+
+
+
+
         <!-- SECTION 4: মাগরিব ও ইশা (Maghrib & Isha) -->
         <button type="button" class="section-launcher-card theme-purple" data-open-section="sec-maghrib_isha" data-phase-key="maghrib_isha">
           <div class="section-card-top">
@@ -554,6 +670,10 @@
 
 
 
+
+
+
+
         <!-- SECTION 5: সুন্নাহ সম্মত ঘুম (Prophetic Sleep) -->
         <button type="button" class="section-launcher-card theme-teal" data-open-section="sec-sleep_sunnah" data-phase-key="sleep_sunnah">
           <div class="section-card-top">
@@ -603,6 +723,10 @@
 
 
 
+
+
+
+
         <!-- SECTION 6: তিব্বে নববী ও ফিতরাত (Tibb Nabawi & Fitrah) -->
         <button type="button" class="section-launcher-card theme-gold" data-open-section="sec-diet_hygiene" data-phase-key="diet_hygiene">
           <div class="section-card-top">
@@ -646,6 +770,10 @@
             
           </div>
         </button>
+
+
+
+
 
 
 
@@ -703,6 +831,10 @@
 
 
 
+
+
+
+
         <!-- SECTION 8: মাসনূন আযকার ও দোয়া (Independent Adhkar Section — Separated from Tasbih!) -->
         <button type="button" class="section-launcher-card theme-emerald-deep" data-open-section="sec-adhkar">
           <div class="section-card-top">
@@ -745,6 +877,10 @@
             
           </div>
         </button>
+
+
+
+
 
 
 
@@ -801,6 +937,10 @@
 
 
 
+
+
+
+
         <!-- SECTION 10: ভল্ট ও তথ্য (Vault, Analytics & Custom Sunnah) -->
         <button type="button" class="section-launcher-card theme-slate" data-open-section="sec-vault">
           <div class="section-card-top">
@@ -846,6 +986,10 @@
             
           </div>
         </button>
+
+
+
+
 
 
 
@@ -901,6 +1045,10 @@
 
 
 
+
+
+
+
         <!-- SECTION 12: ডেটা ব্যাকআপ ও ভল্ট (Independent SHA-256 Tamper-Proof Triple-Layer Vault Section) -->
         <button type="button" class="section-launcher-card theme-gold" data-open-section="sec-crypto_vault">
           <div class="section-card-top">
@@ -951,11 +1099,19 @@
 
 
 
+
+
+
+
         <!-- EXTENSIBLE DYNAMIC SECTIONS SLOT (For future independent sections) -->
         <div id="custom-independent-sections-slot" class="extensible-grid-slot" style="display:contents;"></div>
       </div>
     </section>
   </div>
+
+
+
+
 
 
 
@@ -968,6 +1124,10 @@
   <div id="master-section-view" class="master-section-view hidden">
     <!-- Sticky Master App-Bar for Active Section with Back-to-Home Button & World-Class Emblem -->
     <div class="master-section-topbar" id="master-section-topbar">
+
+
+
+
 
 
 
@@ -1029,8 +1189,16 @@
 
 
 
+
+
+
+
       <div id="master-active-badge" class="master-topbar-badge">০/০</div>
     </div>
+
+
+
+
 
 
 
@@ -1058,8 +1226,16 @@
 
 
 
+
+
+
+
       <!-- Extensible Sub-Sections Slot for Future Phase Sub-Categories -->
       <div id="phase-subsections-slot" class="subsection-slot" data-extensible-slot="phase-subsections"></div>
+
+
+
+
 
 
 
@@ -1067,6 +1243,10 @@
       <!-- Habit Cards Container for the Active Individual Section -->
       <div id="habit-list-container" class="habit-list"></div>
     </main>
+
+
+
+
 
 
 
@@ -1107,8 +1287,16 @@
 
 
 
+
+
+
+
         <!-- Extensible Sub-Section Slot for Future Adhkar Categories -->
         <div id="adhkar-subsections-slot" class="subsection-slot" data-extensible-slot="adhkar-subsections"></div>
+
+
+
+
 
 
 
@@ -1116,6 +1304,10 @@
         <div id="duas-list-container" class="duas-list"></div>
       </div>
     </main>
+
+
+
+
 
 
 
@@ -1129,6 +1321,10 @@
         <h3 data-i18n="tasbih_title">📿 সুন্নাহ ২৪ ডিজিটাল তাসবীহ</h3>
         <p class="muted" data-i18n="tasbih_subtitle">একটি সহীহ যিকির নির্বাচন করুন এবং গণনা করতে সোনালী বৃত্তে ট্যাপ করুন।</p>
         <select id="tasbih-selector" class="input-select"></select>
+
+
+
+
 
 
 
@@ -1162,9 +1358,17 @@
 
 
 
+
+
+
+
         <div class="stats-mini">
           <span><span data-i18n="lifetime_dhikr">মোট যাচাইকৃত যিকির গণনা:</span> <strong id="lifetime-dhikr-count">০</strong></span>
         </div>
+
+
+
+
 
 
 
@@ -1178,6 +1382,10 @@
 
 
 
+
+
+
+
     <!-- ======================================================================
          MASTER PANEL D: TAMPER-PROOF VAULT, 7-DAY MATRIX & 12-MONTH ARCHIVE (#tab-vault / #sec-vault)
          ====================================================================== -->
@@ -1186,6 +1394,10 @@
         <h3 data-i18n="vault_matrix_title">📊 ৭-দিনের সুন্নাহ ধারাবাহিকতা ম্যাট্রিক্স</h3>
         <p class="muted" data-i18n="vault_matrix_sub">গত ৭ দিনে আপনার দৈনিক সুন্নাহ পালনের অগ্রগতি (দিনে ট্যাপ করে বিস্তারিত দেখুন)।</p>
         <div id="weekly-chart" class="weekly-grid"></div>
+
+
+
+
 
 
 
@@ -1204,12 +1416,20 @@
 
 
 
+
+
+
+
       <!-- MULTI-MONTH AUTOMATIC HISTORY ARCHIVE -->
       <div class="card">
         <div class="archive-header-row">
           <h3 data-i18n="vault_archive_title">🗓️ দীর্ঘমেয়াদী সুন্নাহ আর্কাইভ</h3>
         </div>
         <p class="muted" data-i18n="vault_archive_sub">আপনার বিগত কয়েক মাসের সকল দিনের রেকর্ড ডিভাইসে স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকে (অন্য মাসের কার্ডে ট্যাপ করে সেই মাসের বিস্তারিত দেখুন)।</p>
+
+
+
+
 
 
 
@@ -1224,7 +1444,15 @@
 
 
 
+
+
+
+
         <div id="monthly-summary-list" class="monthly-summary-grid"></div>
+
+
+
+
 
 
 
@@ -1241,11 +1469,19 @@
 
 
 
+
+
+
+
         <div class="selected-month-history-header">
           <span id="selected-month-records-label" class="muted-small">📅 নির্বাচিত মাসের দৈনিক আমল তালিকা</span>
         </div>
         <div id="longterm-history-list" class="longterm-history-list"></div>
       </div>
+
+
+
+
 
 
 
@@ -1262,6 +1498,10 @@
 
 
 
+
+
+
+
     <!-- ======================================================================
          MASTER PANEL E: INDEPENDENT PERSONAL SUNNAH HABIT CREATOR (#sec-custom_habit)
          ====================================================================== -->
@@ -1273,8 +1513,16 @@
 
 
 
+
+
+
+
         <label class="field-label" for="custom-title" data-i18n="custom_lbl_name">১. আমলের নাম</label>
         <input type="text" id="custom-title" class="input-text" data-i18n-placeholder="custom_title_ph" placeholder="আমলের নাম (যেমন: ফজরের পর ৫ আয়াত হিফজ)" />
+
+
+
+
 
 
 
@@ -1293,14 +1541,26 @@
 
 
 
+
+
+
+
         <label class="field-label" for="custom-fact" data-i18n="custom_lbl_fact">৩. দলিল বা ফযীলত (ঐচ্ছিক)</label>
         <input type="text" id="custom-fact" class="input-text" data-i18n-placeholder="custom_fact_ph" placeholder="হাদিস সূত্র / ব্যক্তিগত উপকারিতা" />
 
 
 
 
+
+
+
+
         <button id="add-custom-habit-btn" class="btn-primary" data-i18n="custom_add_btn">সুন্নাহ ২৪ রুটিনে যুক্ত করুন</button>
       </div>
+
+
+
+
 
 
 
@@ -1314,6 +1574,10 @@
         <div id="custom-habits-manage-list" class="habit-list"></div>
       </div>
     </main>
+
+
+
+
 
 
 
@@ -1351,6 +1615,10 @@
 
 
 
+
+
+
+
       <div class="card">
         <h3 data-i18n="vault_compliance_title">🏛️ কর্পোরেট ও গুগল প্লে কমপ্লায়েন্স</h3>
         <p class="muted" data-i18n="vault_compliance_sub">সুন্নাহ ২৪ সম্পূর্ণ অফলাইনে চলে—কোনো থার্ড-পার্টি ট্র্যাকার বা বিজ্ঞাপন নেই।</p>
@@ -1363,9 +1631,17 @@
 
 
 
+
+
+
+
     <!-- EXTENSIBLE CUSTOM MASTER PANELS CONTAINER (For Future Independent Sections) -->
     <div id="extensible-master-panels-slot"></div>
   </div>
+
+
+
+
 
 
 
@@ -1386,6 +1662,10 @@
       <button id="close-modal-btn" class="btn-primary" data-i18n="modal_close_btn">আলহামদুলিল্লাহ, বুঝেছি</button>
     </div>
   </div>
+
+
+
+
 
 
 
@@ -1412,6 +1692,10 @@
 
 
 
+
+
+
+
   <!-- LOCATION SEARCH MODAL ("অবস্থান অনুসন্ধান করুন" -> Country -> City / 64 Districts -> Upazila) -->
   <div id="s24-loc-modal-overlay" class="s24-loc-overlay hidden" role="dialog" aria-modal="true" aria-label="Location Selector">
     <div id="s24-loc-prompt-card" class="s24-loc-prompt-card">
@@ -1430,8 +1714,16 @@
 
 
 
+
+
+
+
     <div id="s24-loc-picker-card" class="s24-loc-picker-card hidden">
       <button type="button" id="s24-loc-close-btn" class="s24-loc-floating-close" aria-label="Close">✕</button>
+
+
+
+
 
 
 
@@ -1440,6 +1732,10 @@
         <button type="button" id="s24-loc-back-btn" class="s24-loc-back-btn hidden" aria-label="Back">‹</button>
         <h4 id="s24-loc-picker-title">দেশ শনাক্ত করুন</h4>
       </div>
+
+
+
+
 
 
 
@@ -1457,12 +1753,114 @@
 
 
 
+
+
+
+
       <div id="s24-loc-list-container" class="s24-loc-list-scroll"></div>
     </div>
   </div>
 
 
 
+
+
+
+
+
+  <!-- SETTINGS & PREFERENCES MODAL DRAWER (Language & Asr Madhab) -->
+  <div id="s24-settings-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="s24-settings-modal-title">
+    <div class="modal-card s24-settings-drawer-card">
+      <div class="s24-settings-drawer-head">
+        <div class="s24-settings-head-left">
+          <span class="s24-settings-head-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0d9467" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </span>
+          <h3 id="s24-settings-modal-title" data-i18n="settings_modal_title">সেটিংস ও পছন্দসমূহ</h3>
+        </div>
+        <button type="button" id="s24-settings-close-btn" class="waqt-popup-close-btn" aria-label="Close Settings">✕</button>
+      </div>
+
+      <div class="s24-settings-group">
+        <label for="lang-switcher" class="s24-settings-label" data-i18n="settings_lang_label">অ্যাপের ভাষা (Language)</label>
+        <select id="lang-switcher" class="lang-select s24-settings-select" aria-label="Select Language">
+          <option value="bn" selected>বাংলা (Bangla)</option>
+          <option value="ar">العربية (Arabic)</option>
+          <option value="en">English (EN)</option>
+        </select>
+      </div>
+
+      <div class="s24-settings-group">
+        <span class="s24-settings-label" data-i18n="settings_madhab_label">আসরের ওয়াক্ত গণনা পদ্ধতি (Asr Madhab)</span>
+        <p class="s24-settings-hint" data-i18n="settings_madhab_sub">হানাফী (২ গুণ ছায়া) অথবা শাফিঈ/জমহুর (১ গুণ ছায়া) পরিবর্তন করুন</p>
+        <button
+          type="button"
+          id="madhab-toggle-btn"
+          class="madhab-toggle-btn s24-settings-madhab-btn"
+          data-madhab="hanafi"
+          aria-label="Toggle Asr Madhab (Hanafi vs Standard Shafi'i)"
+        >
+          <span id="madhab-toggle-icon" class="s24-inline-svg-mosque" aria-hidden="true"></span>
+          <span id="madhab-toggle-label" data-i18n="madhab_hanafi_btn">হানাফী</span>
+        </button>
+      </div>
+
+      <button type="button" id="s24-settings-done-btn" class="btn-primary" style="margin-top:8px;" data-i18n="popup_ok_btn">✓ ঠিক আছে</button>
+    </div>
+  </div>
+
+  <!-- STICKY 4-TAB BOTTOM NAVIGATION BAR (Home, Sunnah Grid, Tasbih, Stats) -->
+  <nav id="s24-bottom-nav" class="s24-bottom-nav" aria-label="Primary Bottom Navigation">
+    <button type="button" class="s24-bnav-btn active" data-bnav="home">
+      <span class="s24-bnav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 3l9 6.5V20a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 20V9.5z"/>
+          <path d="M9 21.5V13h6v8.5"/>
+        </svg>
+      </span>
+      <span class="s24-bnav-label" data-i18n="bnav_home">হোম</span>
+    </button>
+
+    <button type="button" class="s24-bnav-btn" data-bnav="grid">
+      <span class="s24-bnav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7.5" height="7.5" rx="2"/>
+          <rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/>
+          <rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/>
+          <rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/>
+        </svg>
+      </span>
+      <span class="s24-bnav-label" data-i18n="bnav_grid">সুন্নাহ গ্রিড</span>
+    </button>
+
+    <button type="button" class="s24-bnav-btn" data-bnav="tasbih">
+      <span class="s24-bnav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="11" r="7"/>
+          <circle cx="12" cy="4" r="1.4" fill="currentColor"/>
+          <circle cx="18.2" cy="7.5" r="1.2" fill="currentColor"/>
+          <circle cx="5.8" cy="7.5" r="1.2" fill="currentColor"/>
+          <path d="M12 18v4M9.5 22h5"/>
+        </svg>
+      </span>
+      <span class="s24-bnav-label" data-i18n="bnav_tasbih">তাসবীহ</span>
+    </button>
+
+    <button type="button" class="s24-bnav-btn" data-bnav="stats">
+      <span class="s24-bnav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/>
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+          <line x1="3" y1="20" x2="21" y2="20"/>
+        </svg>
+      </span>
+      <span class="s24-bnav-label" data-i18n="bnav_stats">পরিসংখ্যান</span>
+    </button>
+  </nav>
 
   <script src="app.js"></script>
 </body>
