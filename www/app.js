@@ -7501,20 +7501,21 @@ function syncBdLocationBannerText() {
   if (isDefaultDhaka) {
     summaryLabelEl.textContent =
       lang === "ar"
-        ? "📍 دكا ▾"
+        ? "دكا ▾"
         : lang === "en"
-        ? "📍 Dhaka ▾"
-        : "📍 ঢাকা ▾";
+        ? "Dhaka ▾"
+        : "ঢাকা ▾";
   } else {
     const distShort = getLocalizedBdDistrictName(distObj, lang);
     const upzShort = getLocalizedUpazilaName(activeLoc.upazilaName, lang);
     // Keep header pill super clean and concise
     if (!upzShort || upzShort === distShort || upzShort.includes("সদর") || upzShort.toLowerCase().includes("sadar")) {
-      summaryLabelEl.textContent = `📍 ${distShort} ▾`;
+      summaryLabelEl.textContent = `${distShort} ▾`;
     } else {
-      summaryLabelEl.textContent = `📍 ${upzShort}, ${distShort} ▾`;
+      summaryLabelEl.textContent = `${upzShort}, ${distShort} ▾`;
     }
   }
+
 
 
   if (coordsPillEl) {
@@ -7523,10 +7524,10 @@ function syncBdLocationBannerText() {
   if (popTitleEl) {
     popTitleEl.textContent =
       lang === "ar"
-        ? "📍 اختر الموقع (دكا افتراضياً)"
+        ? " اختر الموقع (دكا افتراضياً)"
         : lang === "en"
-        ? "📍 Select Location (Dhaka Default)"
-        : "📍 অবস্থান নির্বাচন (ঢাকা ডিফল্ট)";
+        ? " Select Location (Dhaka Default)"
+        : " অবস্থান নির্বাচন (ঢাকা ডিফল্ট)";
   }
   if (lblDiv) {
     lblDiv.textContent =
@@ -8643,8 +8644,9 @@ function updateHeaderLocationPillUI() {
   const labelEl = document.getElementById("bd-loc-active-label");
   if (!labelEl) return;
   const shortName = getActiveLocationShortLabel();
-  labelEl.textContent = `📍 ${shortName} ▾`;
+  labelEl.textContent = `${shortName} ▾`;
 }
+
 
 
 function initMuslimBanglaSearchLocationModal() {
