@@ -201,12 +201,6 @@
       </div>
 
 
-      <!-- Interactive Tap-Hint Bar right above the 5-Waqt Prayer Pills -->
-      <div id="five-waqt-tap-hint" class="five-waqt-tap-hint" role="note">
-        <span class="tap-hint-pulse-dot" aria-hidden="true"></span>
-        <span id="five-waqt-tap-hint-text">👆 যেকোনো ওয়াক্তের কার্ডে ট্যাপ করে শুরু-শেষ সময় ও রাকাত দেখুন</span>
-      </div>
-
       <div id="five-waqt-grid" class="five-waqt-grid"></div>
     </section>
 
@@ -271,19 +265,12 @@
       </div>
     </section>
 
-    <!-- 5. COMPLETE নফল নামাজের ওয়াক্ত (NAFL PRAYER WAQT) SECTION — DIRECTLY BELOW PROHIBITED SALAH CARD -->
+    <!-- 5. MINIMAL NAFL SALAH WAQT CARD — DIRECTLY BELOW PROHIBITED SALAH CARD -->
     <section id="nafl-salah-card" class="nafl-salah-card" aria-label="Nafl Prayer Waqt Schedule">
-      <div class="nafl-card-header">
-        <div class="nafl-header-left">
-          <div class="nafl-header-icon-orb" aria-hidden="true">🕌</div>
-          <div class="nafl-header-titles">
-            <h4 id="nafl-card-title">নফল নামাজের ওয়াক্ত ও ফযীলত</h4>
-            <small id="nafl-card-subtitle">যেকোনো নফল নামাজে ট্যাপ করে সহীহ হাদিসের দলিল ও সুন্নাহ দেখুন</small>
-          </div>
-        </div>
-        <span id="nafl-active-summary-badge" class="nafl-active-summary-badge">✨ সুন্নাহ ও নফল</span>
+      <div class="nafl-minimal-header">
+        <h4 id="nafl-card-title">নফল নামাজের সময়সূচী</h4>
       </div>
-
+      <div class="prohibited-dashed-divider" style="margin-top:0;"></div>
       <div id="nafl-salah-list" class="nafl-salah-list" role="list">
         <!-- Dynamically populated by renderNaflPrayerTimes() in app.js -->
       </div>
