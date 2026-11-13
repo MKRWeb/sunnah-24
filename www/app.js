@@ -10436,16 +10436,10 @@ function getNaflPrayersScheduleList(now = new Date()) {
       timeRangeText: `${formatShortWaqtClock(ishraqStart, lang)} - ${formatShortWaqtClock(ishraqEnd, lang)}`,
       evidenceFull:
         lang === "bn"
-          ? `⏰ ওয়াক্ত: সূর্যোদয়ের ১৫ মিনিট পর থেকে ৪৫ মিনিট পর্যন্ত (${formatMinutesToLocalizedTime(ishraqStart, lang)} – ${formatMinutesToLocalizedTime(ishraqEnd, lang)})।
-
-📖 দলিল (জামে তিরমিযী ৫৮৬): রাসূলুল্লাহ ﷺ বলেছেন, 'যে ব্যক্তি জামাতে ফজরের সালাত আদায় করে সূর্যোদয় পর্যন্ত বসে আল্লাহর যিকির করে এবং এরপর দুই রাকাত সালাত (ইশরাক) আদায় করে, তার জন্য একটি পরিপূর্ণ হজ ও পরিপূর্ণ উমরার সওয়াব রয়েছে।'`
+          ? `⏰ ওয়াক্ত: সূর্যোদয়ের ১৫ মিনিট পর থেকে ৪৫ মিনিট পর্যন্ত (${formatMinutesToLocalizedTime(ishraqStart, lang)} – ${formatMinutesToLocalizedTime(ishraqEnd, lang)})।\n\n📖 দলিল (জামে তিরমিযী ৫৮৬): রাসূলুল্লাহ ﷺ বলেছেন, 'যে ব্যক্তি জামাতে ফজরের সালাত আদায় করে সূর্যোদয় পর্যন্ত বসে আল্লাহর যিকির করে এবং এরপর দুই রাকাত সালাত (ইশরাক) আদায় করে, তার জন্য একটি পরিপূর্ণ হজ ও পরিপূর্ণ উমরার সওয়াব রয়েছে।'`
           : lang === "ar"
-          ? `⏰ الوقت: بعد الشروق بـ ١٥ إلى ٤٥ دقيقة (${formatMinutesToLocalizedTime(ishraqStart, lang)} – ${formatMinutesToLocalizedTime(ishraqEnd, lang)}).
-
-📖 الدليل (جامع الترمذي ٥٨٦): «من صلى الغداة في جماعة ثم قعد يذكر الله حتى تطلع الشمس ثم صلى ركعتين كانت له كأجر حجة وعمرة تامة تامة تامة».`
-          : `⏰ Waqt: 15m to 45m after Sunrise (${formatMinutesToLocalizedTime(ishraqStart, lang)} – ${formatMinutesToLocalizedTime(ishraqEnd, lang)}).
-
-📖 Proof (Jami\` at-Tirmidhi 586): Whoever prays Fajr in congregation, sits remembering Allah until the sun rises, and then prays two Rak'ahs (Ishraq), receives the reward of a complete Hajj and Umrah.`,
+          ? `⏰ الوقت: بعد الشروق بـ ١٥ إلى ٤٥ دقيقة (${formatMinutesToLocalizedTime(ishraqStart, lang)} – ${formatMinutesToLocalizedTime(ishraqEnd, lang)}).\n\n📖 الدليل (جامع الترمذي ٥٨٦): «من صلى الغداة في جماعة ثم قعد يذكر الله حتى تطلع الشمس ثم صلى ركعتين كانت له كأجر حجة وعمرة تامة تامة تامة».`
+          : `⏰ Waqt: 15m to 45m after Sunrise (${formatMinutesToLocalizedTime(ishraqStart, lang)} – ${formatMinutesToLocalizedTime(ishraqEnd, lang)}).\n\n📖 Proof (Jami\` at-Tirmidhi 586): Whoever prays Fajr in congregation, sits remembering Allah until the sun rises, and then prays two Rak'ahs (Ishraq), receives the reward of a complete Hajj and Umrah.`,
       wisdomFull:
         lang === "bn"
           ? "ভোরের মৃদু সূর্যালোক ও একাগ্র যিকির মস্তিষ্কে সেরোটোনিন হরমোনের ভারসাম্য আনে এবং সারাদিন আত্মিক প্রশান্তি ও কর্মশক্তি বজায় রাখে।"
@@ -10468,16 +10462,10 @@ function getNaflPrayersScheduleList(now = new Date()) {
       timeRangeText: `${formatShortWaqtClock(duhaStart, lang)} - ${formatShortWaqtClock(duhaEnd, lang)}`,
       evidenceFull:
         lang === "bn"
-          ? `⏰ ওয়াক্ত: সূর্যোদয়ের ২০ মিনিট পর থেকে দ্বিপ্রহর (যাওয়াল)-এর ১ মিনিট পূর্ব পর্যন্ত (${formatMinutesToLocalizedTime(duhaStart, lang)} – ${formatMinutesToLocalizedTime(duhaEnd, lang)})।
-
-📖 দলিল (সহীহ মুসলিম ৭২০): প্রতিদিন সকালে মানুষের দেহের ৩৬০টি অস্থিসন্ধির (জোড়ার) ওপর সদকা ওয়াজিব হয়, আর চাশতের (দুহার) দুই রাকাত সালাত সেগুলোর সবগুলোর সদকা হিসেবে যথেষ্ট হয়ে যায়।`
+          ? `⏰ ওয়াক্ত: সূর্যোদয়ের ২০ মিনিট পর থেকে দ্বিপ্রহর (যাওয়াল)-এর ১ মিনিট পূর্ব পর্যন্ত (${formatMinutesToLocalizedTime(duhaStart, lang)} – ${formatMinutesToLocalizedTime(duhaEnd, lang)})।\n\n📖 দলিল (সহীহ মুসলিম ৭২০): প্রতিদিন সকালে মানুষের দেহের ৩৬০টি অস্থিসন্ধির (জোড়ার) ওপর সদকা ওয়াজিব হয়, আর চাশতের (দুহার) দুই রাকাত সালাত সেগুলোর সবগুলোর সদকা হিসেবে যথেষ্ট হয়ে যায়।`
           : lang === "ar"
-          ? `⏰ الوقت: من بعد الشروق بـ ٢٠ دقيقة إلى قبيل الزوال (${formatMinutesToLocalizedTime(duhaStart, lang)} – ${formatMinutesToLocalizedTime(duhaEnd, lang)}).
-
-📖 الدليل (صحيح مسلم ٧٢٠): «يصبح على كل سلامى من أحدكم صدقة... ويجزئ من ذلك ركعتان يركعهما من الضحى».`
-          : `⏰ Waqt: 20m post-Sunrise until 1m before Zawal (${formatMinutesToLocalizedTime(duhaStart, lang)} – ${formatMinutesToLocalizedTime(duhaEnd, lang)}).
-
-📖 Proof (Sahih Muslim 720): Charity is due upon every joint of your body every morning, and two Rak'ahs offered in the forenoon (Duha) suffice for all 360 joints.`,
+          ? `⏰ الوقت: من بعد الشروق بـ ٢٠ دقيقة إلى قبيل الزوال (${formatMinutesToLocalizedTime(duhaStart, lang)} – ${formatMinutesToLocalizedTime(duhaEnd, lang)}).\n\n📖 الدليل (صحيح مسلم ٧٢٠): «يصبح على كل سلامى من أحدكم صدقة... ويجزئ من ذلك ركعتان يركعهما من الضحى».`
+          : `⏰ Waqt: 20m post-Sunrise until 1m before Zawal (${formatMinutesToLocalizedTime(duhaStart, lang)} – ${formatMinutesToLocalizedTime(duhaEnd, lang)}).\n\n📖 Proof (Sahih Muslim 720): Charity is due upon every joint of your body every morning, and two Rak'ahs offered in the forenoon (Duha) suffice for all 360 joints.`,
       wisdomFull:
         lang === "bn"
           ? "সকালের ব্যস্ত কর্মঘণ্টার মাঝে চাশতের সালাত মেরুদণ্ড ও অস্থিসন্ধির জড়তা দূর করে এবং রিজিক ও কাজে বরকত আনে।"
@@ -10500,16 +10488,10 @@ function getNaflPrayersScheduleList(now = new Date()) {
       timeRangeText: `${formatShortWaqtClock(awwabinStart, lang)} - ${formatShortWaqtClock(awwabinEnd, lang)}`,
       evidenceFull:
         lang === "bn"
-          ? `⏰ ওয়াক্ত: মাগরিবের ফরজ ও সুন্নাতের পর থেকে ইশার ১ মিনিট পূর্ব পর্যন্ত (${formatMinutesToLocalizedTime(awwabinStart, lang)} – ${formatMinutesToLocalizedTime(awwabinEnd, lang)})।
-
-📖 দলিল (জামে তিরমিযী ৪৩৫ ও মুসনাদে আহমাদ ২৩৩৭৮): সাহাবী ও তাবেঈগণ মাগরিব ও ইশার মধ্যবর্তী সময়ে নফল সালাতে মাশগুল থাকতেন। হুযাইফা (রা.) বর্ণনা করেন, নবীজি ﷺ মাগরিবের পর ইশা পর্যন্ত নফল সালাত আদায় করেছেন।`
+          ? `⏰ ওয়াক্ত: মাগরিবের ফরজ ও সুন্নাতের পর থেকে ইশার ১ মিনিট পূর্ব পর্যন্ত (${formatMinutesToLocalizedTime(awwabinStart, lang)} – ${formatMinutesToLocalizedTime(awwabinEnd, lang)})।\n\n📖 দলিল (জামে তিরমিযী ৪৩৫ ও মুসনাদে আহমাদ ২৩৩৭৮): সাহাবী ও তাবেঈগণ মাগরিব ও ইশার মধ্যবর্তী সময়ে নফল সালাতে মাশগুল থাকতেন। হুযাইফা (রা.) বর্ণনা করেন, নবীজি ﷺ মাগরিবের পর ইশা পর্যন্ত নফল সালাত আদায় করেছেন।`
           : lang === "ar"
-          ? `⏰ الوقت: بعد المغرب بـ ١٠ دقائق حتى قبيل العشاء (${formatMinutesToLocalizedTime(awwabinStart, lang)} – ${formatMinutesToLocalizedTime(awwabinEnd, lang)}).
-
-📖 الدليل (جامع الترمذي ٤٣٥ ومسند أحمد ٢٣٣٧٨): استحباب التطوع بين المغرب والعشاء وإحياء ما بين العشاءين.`
-          : `⏰ Waqt: Maghrib + 10m until 1m before Isha (${formatMinutesToLocalizedTime(awwabinStart, lang)} – ${formatMinutesToLocalizedTime(awwabinEnd, lang)}).
-
-📖 Proof (Jami\` at-Tirmidhi 435 & Musnad Ahmad 23378): Praying voluntary Rak'ahs between Maghrib and Isha illuminates the evening with devotion.`,
+          ? `⏰ الوقت: بعد المغرب بـ ١٠ دقائق حتى قبيل العشاء (${formatMinutesToLocalizedTime(awwabinStart, lang)} – ${formatMinutesToLocalizedTime(awwabinEnd, lang)}).\n\n📖 الدليل (جامع الترمذي ٤٣٥ ومسند أحمد ٢٣٣٧٨): استحباب التطوع بين المغرب والعشاء وإحياء ما بين العشاءين.`
+          : `⏰ Waqt: Maghrib + 10m until 1m before Isha (${formatMinutesToLocalizedTime(awwabinStart, lang)} – ${formatMinutesToLocalizedTime(awwabinEnd, lang)}).\n\n📖 Proof (Jami\` at-Tirmidhi 435 & Musnad Ahmad 23378): Praying voluntary Rak'ahs between Maghrib and Isha illuminates the evening with devotion.`,
       wisdomFull:
         lang === "bn"
           ? "সন্ধ্যার পর অহেতুক আড্ডা ও স্ক্রিন আসক্তি থেকে মনকে ফিরিয়ে ঘরকে কুরআন ও সালাতের নূরে আলোকিত করে।"
@@ -10532,16 +10514,10 @@ function getNaflPrayersScheduleList(now = new Date()) {
       timeRangeText: `${formatShortWaqtClock(tahajjudStart, lang)} - ${formatShortWaqtClock(tahajjudEnd, lang)}`,
       evidenceFull:
         lang === "bn"
-          ? `⏰ শ্রেষ্ঠ সময় (শেষ ১/৩): ${formatMinutesToLocalizedTime(tahajjudStart, lang)} – ${formatMinutesToLocalizedTime(tahajjudEnd, lang)} (রাতের ১ম প্রহর ${firstThirdClock} শেষেও কিয়াম জায়েয)।
-
-📖 দলিল (সহীহ বুখারী ১১৪৫ ও মুসলিম ৭৫৮): প্রতি রাতের শেষ তৃতীয়াংশ অবশিষ্ট থাকতে আমাদের রব দুনিয়ার আকাশে অবতরণ করে বলেন: 'কে আছো আমাকে ডাকবে, আমি তার ডাকে সাড়া দেবো? কে আছো আমার কাছে চাইবে, আমি তাকে দান করব? কে আছো আমার কাছে ক্ষমা চাইবে, আমি তাকে ক্ষমা করব?'`
+          ? `⏰ শ্রেষ্ঠ সময় (শেষ ১/৩): ${formatMinutesToLocalizedTime(tahajjudStart, lang)} – ${formatMinutesToLocalizedTime(tahajjudEnd, lang)} (রাতের ১ম প্রহর ${firstThirdClock} শেষেও কিয়াম জায়েয)।\n\n📖 দলিল (সহীহ বুখারী ১১৪৫ ও মুসলিম ৭৫৮): প্রতি রাতের শেষ তৃতীয়াংশ অবশিষ্ট থাকতে আমাদের রব দুনিয়ার আকাশে অবতরণ করে বলেন: 'কে আছো আমাকে ডাকবে, আমি তার ডাকে সাড়া দেবো? কে আছো আমার কাছে চাইবে, আমি তাকে দান করব? কে আছো আমার কাছে ক্ষমা চাইবে, আমি তাকে ক্ষমা করব?'`
           : lang === "ar"
-          ? `⏰ أفضل وقته (الثلث الأخير): ${formatMinutesToLocalizedTime(tahajjudStart, lang)} – ${formatMinutesToLocalizedTime(tahajjudEnd, lang)} (ويصح القيام بعد الثلث الأول ${firstThirdClock}).
-
-📖 الدليل (صحيح البخاري ١١٤٥ ومسلم ٧٥٨): ينزل ربنا تبارك وتعالى كل ليلة إلى السماء الدنيا حين يبقى ثلث الليل الآخر فيقول: «من يدعوني فأستجيب له؟».`
-          : `⏰ Golden Last 1/3: ${formatMinutesToLocalizedTime(tahajjudStart, lang)} – ${formatMinutesToLocalizedTime(tahajjudEnd, lang)} (Early Qiyam valid after 1st Third ${firstThirdClock}).
-
-📖 Proof (Sahih Bukhari 1145 & Muslim 758): Our Lord descends every night during the last third of the night saying: 'Who is calling upon Me that I may answer him?'`,
+          ? `⏰ أفضل وقته (الثلث الأخير): ${formatMinutesToLocalizedTime(tahajjudStart, lang)} – ${formatMinutesToLocalizedTime(tahajjudEnd, lang)} (ويصح القيام بعد الثلث الأول ${firstThirdClock}).\n\n📖 الدليل (صحيح البخاري ١١٤٥ ومسلم ٧٥٨): ينزل ربنا تبارك وتعالى كل ليلة إلى السماء الدنيا حين يبقى ثلث الليل الآخر فيقول: «من يدعوني فأستجيب له؟».`
+          : `⏰ Golden Last 1/3: ${formatMinutesToLocalizedTime(tahajjudStart, lang)} – ${formatMinutesToLocalizedTime(tahajjudEnd, lang)} (Early Qiyam valid after 1st Third ${firstThirdClock}).\n\n📖 Proof (Sahih Bukhari 1145 & Muslim 758): Our Lord descends every night during the last third of the night saying: 'Who is calling upon Me that I may answer him?'`,
       wisdomFull:
         lang === "bn"
           ? "ফরজ সালাতের পর সর্বোত্তম সালাত হলো রাতের সালাত (সহীহ মুসলিম ১১৬৩)। ভোররাতের নির্জন সিজদা আত্মিক শক্তি ও একাগ্রতা বহুগুণ বৃদ্ধি করে।"
@@ -10569,16 +10545,10 @@ function getNaflPrayersScheduleList(now = new Date()) {
           : "Except 3 Forbidden Times",
       evidenceFull:
         lang === "bn"
-          ? "⏰ ওয়াক্ত: সূর্যোদয় (১৫ মি.), ঠিক দ্বিপ্রহর (যাওয়াল) ও সূর্যাস্ত (১৫ মি.) — এই ৩টি নিষিদ্ধ সময় ছাড়া দিন-রাতের যেকোনো সময় আদায় করা যায়।
-
-📖 দলিল (সহীহ মুসলিম ২৩৪ ও আবু দাউদ ১২৯৭): বেলাল (রা.) প্রতিবার অযুর পর ২ রাকাত তাহিয়্যাতুল অযু আদায় করতেন, যার ফলে নবীজি ﷺ জান্নাতে তাঁর পায়ের আওয়াজ শুনতে পেয়েছেন। আর সালাতুত তাসবীহ (৪ রাকাতে ৩০০ বার তাসবীহ) গুনাহ মাফের বিশেষ মাধ্যম।"
+          ? "⏰ ওয়াক্ত: সূর্যোদয় (১৫ মি.), ঠিক দ্বিপ্রহর (যাওয়াল) ও সূর্যাস্ত (১৫ মি.) — এই ৩টি নিষিদ্ধ সময় ছাড়া দিন-রাতের যেকোনো সময় আদায় করা যায়।\n\n📖 দলিল (সহীহ মুসলিম ২৩৪ ও আবু দাউদ ১২৯৭): বেলাল (রা.) প্রতিবার অযুর পর ২ রাকাত তাহিয়্যাতুল অযু আদায় করতেন, যার ফলে নবীজি ﷺ জান্নাতে তাঁর পায়ের আওয়াজ শুনতে পেয়েছেন। আর সালাতুত তাসবীহ (৪ রাকাতে ৩০০ বার তাসবীহ) গুনাহ মাফের বিশেষ মাধ্যম।"
           : lang === "ar"
-          ? "⏰ الوقت: تُصلى في أي وقت من الليل والنهار ما عدا أوقات النهي الثلاثة.
-
-📖 الدليل (صحيح مسلم ٢٣٤ وسنن أبي داود ١٢٩٧): محافظة بلال رضي الله عنه على ركعتي الوضوء، وصلاة التسبيح ٤ ركعات بـ ٣٠٠ تسبيحة."
-          : "⏰ Waqt: Permitted at any time of day or night outside the 3 prohibited windows (Sunrise, Zawal, Sunset).
-
-📖 Proof (Sahih Muslim 234 & Sunan Abi Dawud 1297): Bilal (RA) consistently prayed 2 Rak'ahs after every Wudu, and Salat al-Tasbih (4 Rak'ahs with 300 Tasbihat) expiates sins.",
+          ? "⏰ الوقت: تُصلى في أي وقت من الليل والنهار ما عدا أوقات النهي الثلاثة.\n\n📖 الدليل (صحيح مسلم ٢٣٤ وسنن أبي داود ١٢٩٧): محافظة بلال رضي الله عنه على ركعتي الوضوء، وصلاة التسبيح ٤ ركعات بـ ٣٠٠ تسبيحة."
+          : "⏰ Waqt: Permitted at any time of day or night outside the 3 prohibited windows (Sunrise, Zawal, Sunset).\n\n📖 Proof (Sahih Muslim 234 & Sunan Abi Dawud 1297): Bilal (RA) consistently prayed 2 Rak'ahs after every Wudu, and Salat al-Tasbih (4 Rak'ahs with 300 Tasbihat) expiates sins.",
       wisdomFull:
         lang === "bn"
           ? "প্রতিবার অযুর পর ২ রাকাত তাহিয়্যাতুল অযু মুমিনকে সারাদিন পবিত্রতা ও সালাতের সাথে যুক্ত রাখে।"
@@ -10674,5 +10644,3 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-
-      
