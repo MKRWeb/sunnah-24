@@ -4199,6 +4199,19 @@ function renderFiveWaqtStrip(now = new Date()) {
   }
 
 
+  const tapHintTextEl = document.getElementById("five-waqt-tap-hint-text");
+  if (tapHintTextEl) {
+    tapHintTextEl.textContent =
+      lang === "ar"
+        ? "👆 اضغط على أي صلاة لعرض وقت البداية والنهاية والركعات"
+        : lang === "en"
+        ? "👆 Tap any prayer card to inspect start–end time & Rak'ahs"
+        : "👆 যেকোনো ওয়াক্তের কার্ডে ট্যাপ করে শুরু-শেষ সময় ও রাকাত দেখুন";
+  }
+
+  const detailChipText =
+    lang === "ar" ? "التفاصيل" : lang === "en" ? "Details" : "বিস্তারিত";
+
   gridEl.innerHTML = waqts
     .map((w) => {
       // Ensure Asr pill ends at pWindows.sunset.start so it doesn't conflict with Sunset prohibited time
@@ -4211,10 +4224,15 @@ function renderFiveWaqtStrip(now = new Date()) {
       const isPopupSelected =
         typeof activeSelectedWaqtPopupId === "string" && activeSelectedWaqtPopupId === w.id;
       return `
-        <button type="button" class="waqt-pill-card ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""} ${isPopupSelected ? "waqt-popup-selected" : ""}" data-waqt-id="${w.id}" data-waqt-phase="${w.phase}" aria-expanded="${isPopupSelected ? "true" : "false"}">
+        <button type="button" class="waqt-pill-card m3-interactive-waqt-pill ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""} ${isPopupSelected ? "waqt-popup-selected" : ""}" data-waqt-id="${w.id}" data-waqt-phase="${w.phase}" aria-expanded="${isPopupSelected ? "true" : "false"}" title="${w.name} — ${detailChipText}">
+          <span class="waqt-info-micro-badge" aria-hidden="true">ⓘ</span>
           <div class="waqt-circle-logo">${w.icon}</div>
           <span class="waqt-name">${w.name}</span>
           <strong class="waqt-time">${formatShortWaqtClock(w.start, lang)}</strong>
+          <span class="waqt-tactile-chevron-pill" aria-hidden="true">
+            <span>${detailChipText}</span>
+            <span class="waqt-chevron-glyph">${isPopupSelected ? "▴" : "▾"}</span>
+          </span>
         </button>
       `;
     })
@@ -4785,6 +4803,9 @@ function renderHeaderDatesAndPhase() {
   }
   if (typeof renderProhibitedSalahTimes === "function") {
     renderProhibitedSalahTimes();
+  }
+  if (typeof renderNaflPrayerTimes === "function") {
+    renderNaflPrayerTimes(now);
   }
 }
 
@@ -10360,3 +10381,470 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   };
 });
+
+
+// ============================================================================
+// V8.2 COMPLETE নফল নামাজের ওয়াক্ত (NAFL PRAYER WAQT) ENGINE (#nafl-salah-card)
+// Dynamically computes and renders zero-conflict seasonal time windows using
+// computeSeasonalPrayerSchedule() for:
+// 1. ইশরাক (Ishraq): Sunrise + 15m ➔ Sunrise + 45m (Jami` at-Tirmidhi 586)
+// 2. চাশত / সালাতুদ দুহা (Chasht / Duha): Sunrise + 20m ➔ Zawal − 1m (Sahih Muslim 720)
+// 3. আওয়াবীন (Awwabin): Maghrib + 10m ➔ Isha − 1m (Jami` at-Tirmidhi 435)
+// 4. তাহাজ্জুদ — শেষ তৃতীয়াংশ (Tahajjud Last 1/3): Last Third Start ➔ Fajr − 1m,
+//    plus early-night Qiyam note from 1st third end (Sahih Bukhari 1145, Muslim 758)
+// 5. সালাতুত তাসবীহ ও তাহিয়্যাতুল অযু (Salat al-Tasbih & Tahiyyatul Wudu):
+//    Open all day except the 3 prohibited windows (Sunan Abi Dawud 1297, Sahih Muslim 234)
+// Includes live চলমান (Active) status pills and interactive Hadith proof modal + phase jump.
+// ============================================================================
+function getNaflPrayersScheduleList(now = new Date()) {
+  const sched = computeSeasonalPrayerSchedule(now);
+  const lang = (appState && appState.locale) || "bn";
+  const nowMins = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
+
+  const pWindows = sched.prohibitedWindows || {
+    sunrise: { start: sched.sunrise, end: sched.sunrise + 15 },
+    zawal: { start: sched.zawal, end: sched.dhuhr },
+    sunset: { start: sched.sunset - 15, end: sched.sunset }
+  };
+
+  // 1. Ishraq: Sunrise + 15m -> Sunrise + 45m
+  const ishraqStart = sched.sunrise + 15;
+  const ishraqEnd = sched.sunrise + 45;
+  const isIshraqActive = nowMins >= ishraqStart && nowMins <= ishraqEnd;
+
+  // 2. Chasht / Duha: Sunrise + 20m -> Zawal - 1m
+  const duhaStart = sched.sunrise + 20;
+  const duhaEnd = sched.zawal - 1;
+  const isDuhaActive = nowMins >= duhaStart && nowMins <= duhaEnd;
+
+  // 3. Awwabin: Maghrib + 10m -> Isha - 1m
+  const awwabinStart = sched.maghrib + 10;
+  const awwabinEnd = sched.isha - 1;
+  const isAwwabinActive = nowMins >= awwabinStart && nowMins <= awwabinEnd;
+
+  // 4. Tahajjud: Last Third Start -> Fajr - 1m (with early Qiyam note from 1st third end)
+  const tahajjudStart = sched.lastThirdStart;
+  const tahajjudEnd = (sched.fajr - 1 + 1440) % 1440;
+  const firstThirdClock = formatShortWaqtClock(sched.firstThirdEnd, lang);
+  const inLastThird =
+    tahajjudStart > tahajjudEnd
+      ? nowMins >= tahajjudStart || nowMins <= tahajjudEnd
+      : nowMins >= tahajjudStart && nowMins <= tahajjudEnd;
+  const inEarlyQiyam =
+    sched.firstThirdEnd > tahajjudEnd
+      ? nowMins >= sched.firstThirdEnd || nowMins <= tahajjudEnd
+      : nowMins >= sched.firstThirdEnd && nowMins <= tahajjudEnd;
+
+  // 5. Salat al-Tasbih & Tahiyyatul Wudu: Open all day except the 3 prohibited windows
+  const inProhibitedNow =
+    (nowMins >= pWindows.sunrise.start && nowMins < pWindows.sunrise.end) ||
+    (nowMins >= pWindows.zawal.start && nowMins < pWindows.zawal.end) ||
+    (nowMins >= pWindows.sunset.start && nowMins < pWindows.sunset.end);
+  const isTasbihWuduActive = !inProhibitedNow;
+
+  return [
+    {
+      id: "nafl_ishraq",
+      icon: "🌅",
+      theme: "amber",
+      phase: "tahajjud_fajr",
+      habitId: "s24_06_ishraq_reflection",
+      title:
+        lang === "bn"
+          ? "১. ইশরাক সালাত (Ishraq)"
+          : lang === "ar"
+          ? "١. صلاة الإشراق (Ishraq)"
+          : "1. Salat al-Ishraq (Post-Sunrise)",
+      rakahBadge:
+        lang === "bn" ? "২–৪ রাকাত" : lang === "ar" ? "٢–٤ ركعات" : "2–4 Rak'ah",
+      timeRangeText: `${formatShortWaqtClock(ishraqStart, lang)} ➔ ${formatShortWaqtClock(ishraqEnd, lang)}`,
+      fullTimeNote:
+        lang === "bn"
+          ? `সূর্যোদয়ের ১৫ মিনিট পর থেকে ৪৫ মিনিট পর্যন্ত (${formatMinutesToLocalizedTime(ishraqStart, lang)} – ${formatMinutesToLocalizedTime(ishraqEnd, lang)})`
+          : lang === "ar"
+          ? `بعد الشروق بـ ١٥ دقيقة حتى ٤٥ دقيقة (${formatMinutesToLocalizedTime(ishraqStart, lang)} – ${formatMinutesToLocalizedTime(ishraqEnd, lang)})`
+          : `15m to 45m after Sunrise (${formatMinutesToLocalizedTime(ishraqStart, lang)} – ${formatMinutesToLocalizedTime(ishraqEnd, lang)})`,
+      hadithRef:
+        lang === "bn"
+          ? "📖 জামে তিরমিযী ৫৮৬ — পরিপূর্ণ হজ ও উমরার সওয়াব"
+          : lang === "ar"
+          ? "📖 جامع الترمذي ٥٨٦ — أجر حجة وعمرة تامة"
+          : "📖 Jami` at-Tirmidhi 586 — Reward of a complete Hajj & Umrah",
+      evidenceFull:
+        lang === "bn"
+          ? "জামে তিরমিযী ৫৮৬: রাসূলুল্লাহ ﷺ বলেছেন, 'যে ব্যক্তি জামাতে ফজরের সালাত আদায় করে সূর্যোদয় পর্যন্ত বসে আল্লাহর যিকির করে এবং এরপর দুই রাকাত সালাত (ইশরাক) আদায় করে, তার জন্য একটি পরিপূর্ণ হজ ও পরিপূর্ণ উমরার সওয়াব রয়েছে।'"
+          : lang === "ar"
+          ? "جامع الترمذي ٥٨٦: «من صلى الغداة في جماعة ثم قعد يذكر الله حتى تطلع الشمس ثم صلى ركعتين كانت له كأجر حجة وعمرة تامة تامة تامة»."
+          : "Jami` at-Tirmidhi 586: Whoever prays Fajr in congregation, sits remembering Allah until the sun rises, and then prays two Rak'ahs (Ishraq), receives the reward of a complete Hajj and Umrah.",
+      wisdomFull:
+        lang === "bn"
+          ? "ভোরের মৃদু সূর্যালোক ও একাগ্র যিকির মস্তিষ্কে সেরোটোনিন হরমোনের ভারসাম্য আনে এবং সারাদিন আত্মিক প্রশান্তি ও কর্মশক্তি বজায় রাখে।"
+          : lang === "ar"
+          ? "التعرض لضوء الصباح الباكر مع الذكر ينظم الساعة البيولوجية ويمنح القلب طمأنينة ونشاطاً طوال اليوم."
+          : "Early morning light exposure after Fajr remembrance regulates circadian rhythms and anchors the mind in tranquility.",
+      isActive: isIshraqActive,
+      statusText: isIshraqActive
+        ? lang === "bn"
+          ? "🟢 চলমান"
+          : lang === "ar"
+          ? "🟢 جارٍ الآن"
+          : "🟢 Active"
+        : ""
+    },
+    {
+      id: "nafl_duha",
+      icon: "☀️",
+      theme: "gold",
+      phase: "duha_work",
+      habitId: "s24_08_salat_duha",
+      title:
+        lang === "bn"
+          ? "২. চাশত / সালাতুদ দুহা (Chasht / Duha)"
+          : lang === "ar"
+          ? "٢. صلاة الضحى / الأوابين (Duha)"
+          : "2. Chasht / Salat al-Duha (Forenoon)",
+      rakahBadge:
+        lang === "bn" ? "২–৮ রাকাত" : lang === "ar" ? "٢–٨ ركعات" : "2–8 Rak'ah",
+      timeRangeText: `${formatShortWaqtClock(duhaStart, lang)} ➔ ${formatShortWaqtClock(duhaEnd, lang)}`,
+      fullTimeNote:
+        lang === "bn"
+          ? `সূর্যোদয়ের ২০ মিনিট পর থেকে দ্বিপ্রহর (যাওয়াল)-এর ১ মিনিট পূর্ব পর্যন্ত (${formatMinutesToLocalizedTime(duhaStart, lang)} – ${formatMinutesToLocalizedTime(duhaEnd, lang)})`
+          : lang === "ar"
+          ? `من بعد الشروق بـ ٢٠ دقيقة إلى قبيل الزوال بدقيقة (${formatMinutesToLocalizedTime(duhaStart, lang)} – ${formatMinutesToLocalizedTime(duhaEnd, lang)})`
+          : `20m post-Sunrise until 1m before Zawal (${formatMinutesToLocalizedTime(duhaStart, lang)} – ${formatMinutesToLocalizedTime(duhaEnd, lang)})`,
+      hadithRef:
+        lang === "bn"
+          ? "📖 সহীহ মুসলিম ৭২০ — দেহের ৩৬০টি জোড়ার সদকা"
+          : lang === "ar"
+          ? "📖 صحيح مسلم ٧٢٠ — صدقة عن ٣٦٠ مفصلاً"
+          : "📖 Sahih Muslim 720 — Charity for all 360 body joints",
+      evidenceFull:
+        lang === "bn"
+          ? "সহীহ মুসলিম ৭২০: প্রতিদিন সকালে মানুষের দেহের ৩৬০টি অস্থিসন্ধির (জোড়ার) ওপর সদকা ওয়াজিব হয়, আর চাশতের (দুহার) দুই রাকাত সালাত সেগুলোর সবগুলোর সদকা হিসেবে যথেষ্ট হয়ে যায়।"
+          : lang === "ar"
+          ? "صحيح مسلم ٧٢٠: «يصبح على كل سلامى من أحدكم صدقة... ويجزئ من ذلك ركعتان يركعهما من الضحى»."
+          : "Sahih Muslim 720: Charity is due upon every joint of your body every morning, and two Rak'ahs offered in the forenoon (Duha) suffice for all 360 joints.",
+      wisdomFull:
+        lang === "bn"
+          ? "সকালের ব্যস্ত কর্মঘণ্টার মাঝে চাশতের সালাত মেরুদণ্ড ও অস্থিসন্ধির জড়তা দূর করে এবং রিজিক ও কাজে বরকত আনে।"
+          : lang === "ar"
+          ? "استراحة روحية وحركية في منتصف الصباح تجدد النشاط وتجلب البركة في الرزق والعمل."
+          : "Provides a mindful mid-morning spiritual pause that relieves physical tension and brings Barakah to daily work.",
+      isActive: isDuhaActive,
+      statusText: isDuhaActive
+        ? lang === "bn"
+          ? "🟢 চলমান"
+          : lang === "ar"
+          ? "🟢 جارٍ الآن"
+          : "🟢 Active"
+        : ""
+    },
+    {
+      id: "nafl_awwabin",
+      icon: "🌆",
+      theme: "purple",
+      phase: "maghrib_isha",
+      habitId: "s24_15_maghrib_sunnah",
+      title:
+        lang === "bn"
+          ? "৩. আওয়াবীন সালাত (Awwabin)"
+          : lang === "ar"
+          ? "٣. صلاة الأوابين بين المغرب والعشاء"
+          : "3. Salat al-Awwabin (Post-Maghrib)",
+      rakahBadge:
+        lang === "bn" ? "৬–২০ রাকাত" : lang === "ar" ? "٦–٢٠ ركعة" : "6–20 Rak'ah",
+      timeRangeText: `${formatShortWaqtClock(awwabinStart, lang)} ➔ ${formatShortWaqtClock(awwabinEnd, lang)}`,
+      fullTimeNote:
+        lang === "bn"
+          ? `মাগরিবের ফরজ ও সুন্নাতের পর থেকে ইশার ১ মিনিট পূর্ব পর্যন্ত (${formatMinutesToLocalizedTime(awwabinStart, lang)} – ${formatMinutesToLocalizedTime(awwabinEnd, lang)})`
+          : lang === "ar"
+          ? `بعد المغرب بـ ١٠ دقائق حتى قبيل العشاء بدقيقة (${formatMinutesToLocalizedTime(awwabinStart, lang)} – ${formatMinutesToLocalizedTime(awwabinEnd, lang)})`
+          : `Maghrib + 10m until 1m before Isha (${formatMinutesToLocalizedTime(awwabinStart, lang)} – ${formatMinutesToLocalizedTime(awwabinEnd, lang)})`,
+      hadithRef:
+        lang === "bn"
+          ? "📖 জামে তিরমিযী ৪৩৫ ও ইবনে মাজাহ ১৩৭৪ — মাগরিব ও ইশার মধ্যবর্তী নফল"
+          : lang === "ar"
+          ? "📖 جامع الترمذي ٤٣٥ — الصلاة بين المغرب والعشاء"
+          : "📖 Jami` at-Tirmidhi 435 — Nafl devotion between Maghrib & Isha",
+      evidenceFull:
+        lang === "bn"
+          ? "জামে তিরমিযী ৪৩৫ ও সূরা সাজদাহ ১৬: সাহাবী ও তাবেঈগণ মাগরিব ও ইশার মধ্যবর্তী সময়ে নফল সালাতে মাশগুল থাকতেন। হুযাইফা (রা.) বর্ণনা করেন, নবীজি ﷺ মাগরিবের পর ইশা পর্যন্ত নফল সালাত আদায় করেছেন (মুসনাদে আহমাদ ২৩৩৭৮)।"
+          : lang === "ar"
+          ? "جامع الترمذي ٤٣٥ ومسند أحمد ٢٣٣٧٨: استحباب التطوع بين المغرب والعشاء (صلاة الأوابين) وإحياء ما بين العشاءين."
+          : "Jami` at-Tirmidhi 435 & Musnad Ahmad 23378: Praying voluntary Rak'ahs between Maghrib and Isha illuminates the evening with tranquility and devotion.",
+      wisdomFull:
+        lang === "bn"
+          ? "সন্ধ্যার পর অহেতুক আড্ডা ও স্ক্রিন আসক্তি থেকে মনকে ফিরিয়ে ঘরকে কুরআন ও সালাতের নূরে আলোকিত করে।"
+          : lang === "ar"
+          ? "تحيي المساء بالسكينة والذكر في البيت بعيداً عن المشتتات."
+          : "Transforms the post-sunset transition into a peaceful sanctuary of remembrance at home.",
+      isActive: isAwwabinActive,
+      statusText: isAwwabinActive
+        ? lang === "bn"
+          ? "🟢 চলমান"
+          : lang === "ar"
+          ? "🟢 جارٍ الآن"
+          : "🟢 Active"
+        : ""
+    },
+    {
+      id: "nafl_tahajjud",
+      icon: "🌌",
+      theme: "indigo",
+      phase: "tahajjud_fajr",
+      habitId: "s24_03_tahajjud",
+      title:
+        lang === "bn"
+          ? "৪. তাহাজ্জুদ — শেষ তৃতীয়াংশ (Tahajjud Last 1/3)"
+          : lang === "ar"
+          ? "٤. صلاة التهجد — الثلث الأخير من الليل"
+          : "4. Tahajjud — Last Third of Night",
+      rakahBadge:
+        lang === "bn" ? "২–৮+ রাকাত" : lang === "ar" ? "٢–٨+ ركعات" : "2–8+ Rak'ah",
+      timeRangeText: `${formatShortWaqtClock(tahajjudStart, lang)} ➔ ${formatShortWaqtClock(tahajjudEnd, lang)}`,
+      fullTimeNote:
+        lang === "bn"
+          ? `শ্রেষ্ঠ সময়: শেষ ১/৩ (${formatMinutesToLocalizedTime(tahajjudStart, lang)} – ${formatMinutesToLocalizedTime(tahajjudEnd, lang)}) • রাতের ১ম প্রহর (${firstThirdClock}) শেষেও কিয়াম জায়েয`
+          : lang === "ar"
+          ? `أفضل وقته: الثلث الأخير (${formatMinutesToLocalizedTime(tahajjudStart, lang)} – ${formatMinutesToLocalizedTime(tahajjudEnd, lang)}) • ويصح القيام بعد الثلث الأول (${firstThirdClock})`
+          : `Golden Last 1/3: ${formatMinutesToLocalizedTime(tahajjudStart, lang)} – ${formatMinutesToLocalizedTime(tahajjudEnd, lang)} • Early Qiyam valid after 1st Third (${firstThirdClock})`,
+      hadithRef:
+        lang === "bn"
+          ? "📖 সহীহ বুখারী ১১৪৫ ও মুসলিম ৭৫৮ — দোয়া কবুলের শ্রেষ্ঠ প্রহর"
+          : lang === "ar"
+          ? "📖 صحيح البخاري ١١٤٥ ومسلم ٧٥٨ — وقت النزول الإلهي واستجابة الدعاء"
+          : "📖 Sahih Bukhari 1145 & Muslim 758 — Golden hour of answered Duas",
+      evidenceFull:
+        lang === "bn"
+          ? "সহীহ বুখারী ১১৪৫ ও মুসলিম ৭৫৮: প্রতি রাতের শেষ তৃতীয়াংশ অবশিষ্ট থাকতে আমাদের রব দুনিয়ার আকাশে অবতরণ করে বলেন: 'কে আছো আমাকে ডাকবে, আমি তার ডাকে সাড়া দেবো? কে আছো আমার কাছে চাইবে, আমি তাকে দান করব? কে আছো আমার কাছে ক্ষমা চাইবে, আমি তাকে ক্ষমা করব?'"
+          : lang === "ar"
+          ? "صحيح البخاري ١١٤٥ ومسلم ٧٥٨: ينزل ربنا تبارك وتعالى كل ليلة إلى السماء الدنيا حين يبقى ثلث الليل الآخر فيقول: «من يدعوني فأستجيب له؟ من يسألني فأعطيه؟ من يستغفرني فأغفر له؟»."
+          : "Sahih Bukhari 1145 & Muslim 758: Our Lord descends every night during the last third of the night saying: 'Who is calling upon Me that I may answer him? Who is asking of Me that I may give him? Who is seeking My forgiveness that I may forgive him?'",
+      wisdomFull:
+        lang === "bn"
+          ? "ফরজ সালাতের পর সর্বোত্তম সালাত হলো রাতের সালাত (সহীহ মুসলিম ১১৬৩)। ভোররাতের নির্জন সিজদা আত্মিক শক্তি ও একাগ্রতা বহুগুণ বৃদ্ধি করে।"
+          : lang === "ar"
+          ? "أفضل الصلاة بعد الفريضة صلاة الليل (مسلم ١١٦٣)، وهي شرف المؤمن ومصدر القوة الروحية."
+          : "The most virtuous prayer after the obligatory prayers is the night prayer (Sahih Muslim 1163), building unmatched spiritual resilience.",
+      isActive: inLastThird || inEarlyQiyam,
+      statusText: inLastThird
+        ? lang === "bn"
+          ? "🌟 শ্রেষ্ঠ প্রহর চলমান"
+          : lang === "ar"
+          ? "🌟 الثلث الأخير جارٍ"
+          : "🌟 Golden 1/3 Active"
+        : inEarlyQiyam
+        ? lang === "bn"
+          ? "🟢 কিয়াম উন্মুক্ত"
+          : lang === "ar"
+          ? "🟢 القيام متاح"
+          : "🟢 Qiyam Open"
+        : ""
+    },
+    {
+      id: "nafl_tasbih_wudu",
+      icon: "💧",
+      theme: "teal",
+      phase: "tahajjud_fajr",
+      habitId: "s24_02_miswak_wudu",
+      title:
+        lang === "bn"
+          ? "৫. সালাতুত তাসবীহ ও তাহিয়্যাতুল অযু"
+          : lang === "ar"
+          ? "٥. صلاة التسبيح وتحية الوضوء"
+          : "5. Salat al-Tasbih & Tahiyyatul Wudu",
+      rakahBadge:
+        lang === "bn" ? "৪ / ২ রাকাত" : lang === "ar" ? "٤ / ٢ ركعات" : "4 / 2 Rak'ah",
+      timeRangeText:
+        lang === "bn"
+          ? "নিষিদ্ধ ৩ সময় ব্যতীত সারাদিন"
+          : lang === "ar"
+          ? "طوال اليوم عدا أوقات النهي الـ ٣"
+          : "Open All Day (Except 3 Forbidden Windows)",
+      fullTimeNote:
+        lang === "bn"
+          ? "সূর্যোদয় (১৫ মি.), ঠিক দ্বিপ্রহর (যাওয়াল) ও সূর্যাস্ত (১৫ মি.) — এই ৩টি নিষিদ্ধ সময় ছাড়া দিন-রাতের যেকোনো সময় আদায় করা যায়"
+          : lang === "ar"
+          ? "تُصلى في أي وقت من الليل والنهار ما عدا أوقات النهي الثلاثة (الشروق، الزوال، الغروب)"
+          : "Permitted at any time of day or night outside the 3 prohibited windows (Sunrise, Zawal, Sunset)",
+      hadithRef:
+        lang === "bn"
+          ? "📖 সুনানে আবু দাউদ ১২৯৭ ও সহীহ মুসলিম ২৩৪ (বেলাল রা.-এর আমল)"
+          : lang === "ar"
+          ? "📖 سنن أبي داود ١٢٩٧ وصحيح مسلم ٢٣٤ (عمل بلال رضي الله عنه)"
+          : "📖 Sunan Abi Dawud 1297 & Sahih Muslim 234 (Bilal RA's Sunnah)",
+      evidenceFull:
+        lang === "bn"
+          ? "সহীহ মুসলিম ২৩৪: নবীজি ﷺ ফজরের সময় বেলাল (রা.)-কে বললেন, 'হে বেলাল! জান্নাতে আমি তোমার পায়ের আওয়াজ আমার সামনে শুনতে পেয়েছি, তোমার সর্বোত্তম আমল কোনটি?' তিনি বললেন, 'আমি যখনই অযু করি, তখনই সামর্থ্য অনুযায়ী দুই রাকাত সালাত (তাহিয়্যাতুল অযু) আদায় করি।' এবং সালাতুত তাসবীহ (৪ রাকাতে ৩০০ বার তাসবীহ) পূর্বাপর গুনাহ মাফের বিশেষ মাধ্যম (সুনানে আবু দাউদ ১২৯৭, ইবনে মাজাহ ১৩৮৭)।"
+          : lang === "ar"
+          ? "صحيح مسلم ٢٣٤: حرص بلال رضي الله عنه على صلاة ركعتين عقب كل وضوء فسمع النبي ﷺ دف نعليه في الجنة. وصلاة التسبيح ٤ ركعات بـ ٣٠٠ تسبيحة (أبو داود ١٢٩٧)."
+          : "Sahih Muslim 234: Bilal (RA) consistently prayed 2 Rak'ahs (Tahiyyatul Wudu) after every ablution, earning the glad tidings of his footsteps heard in Paradise. Salat al-Tasbih (4 Rak'ahs with 300 Tasbihat) expiates past and recent sins (Abu Dawud 1297).",
+      wisdomFull:
+        lang === "bn"
+          ? "প্রতিবার অযুর পর ২ রাকাত তাহিয়্যাতুল অযু মুমিনকে সারাদিন পবিত্রতা ও সালাতের সাথে যুক্ত রাখে।"
+          : lang === "ar"
+          ? "تربط المؤمن بالطهارة والصلاة على مدار اليوم والليلة."
+          : "Keeps the believer in a state of continuous spiritual purity and mindfulness throughout the 24-hour cycle.",
+      isActive: isTasbihWuduActive,
+      statusText: isTasbihWuduActive
+        ? lang === "bn"
+          ? "🟢 চলমান"
+          : lang === "ar"
+          ? "🟢 متاح الآن"
+          : "🟢 Open Now"
+        : lang === "bn"
+        ? "⛔ নিষিদ্ধ সময়"
+        : lang === "ar"
+        ? "⛔ وقت نهي"
+        : "⛔ Forbidden Now"
+    }
+  ];
+}
+
+function renderNaflPrayerTimes(now = new Date()) {
+  const listEl = document.getElementById("nafl-salah-list");
+  if (!listEl) return;
+
+  const lang = (appState && appState.locale) || "bn";
+  const titleEl = document.getElementById("nafl-card-title");
+  const subEl = document.getElementById("nafl-card-subtitle");
+  const badgeEl = document.getElementById("nafl-active-summary-badge");
+
+  if (titleEl) {
+    titleEl.textContent =
+      lang === "ar"
+        ? "أوقات صلاة النافلة وفضائلها"
+        : lang === "en"
+        ? "Nafl Prayer Waqt & Virtues"
+        : "নফল নামাজের ওয়াক্ত ও ফযীলত";
+  }
+  if (subEl) {
+    subEl.textContent =
+      lang === "ar"
+        ? "اضغط على أي صلاة نافلة لعرض الدليل الصحيح أو الانتقال إلى قسمها"
+        : lang === "en"
+        ? "Tap any Nafl prayer row to inspect authentic Hadith proof or open its section"
+        : "যেকোনো নফল নামাজে ট্যাপ করে সহীহ হাদিসের দলিল ও সুন্নাহ দেখুন";
+  }
+
+  const items = getNaflPrayersScheduleList(now);
+  const activeCount = items.filter((i) => i.isActive).length;
+
+  if (badgeEl) {
+    const actStr = localizeDigits(activeCount, lang);
+    badgeEl.textContent =
+      activeCount > 0
+        ? lang === "ar"
+          ? `🟢 ${actStr} متاح الآن`
+          : lang === "en"
+          ? `🟢 ${actStr} Active Now`
+          : `🟢 ${actStr}টি চলমান`
+        : lang === "ar"
+        ? "✨ سنن ونوافل"
+        : lang === "en"
+        ? "✨ Sunnah & Nafl"
+        : "✨ সুন্নাহ ও নফল";
+  }
+
+  const proofBtnLabel =
+    lang === "ar" ? "📖 الدليل" : lang === "en" ? "📖 Proof" : "📖 দলিল";
+  const openPhaseLabel =
+    lang === "ar" ? "📂 القسم ➔" : lang === "en" ? "📂 Section ➔" : "📂 সুন্নাহ ➔";
+
+  listEl.innerHTML = items
+    .map((item) => {
+      const statusBadgeHtml = item.statusText
+        ? `<span class="nafl-live-status-pill ${item.isActive ? "is-open" : "is-forbidden"}">${item.statusText}</span>`
+        : "";
+      return `
+        <div class="nafl-salah-row ${item.isActive ? "nafl-row-active" : ""}" data-nafl-id="${item.id}" data-nafl-phase="${item.phase}" role="button" tabindex="0">
+          <div class="nafl-row-top">
+            <div class="nafl-row-title-group">
+              <div class="item-circle-avatar theme-${item.theme} nafl-avatar">
+                <span>${item.icon}</span>
+              </div>
+              <div class="nafl-row-headings">
+                <div class="nafl-title-line">
+                  <h5>${item.title}</h5>
+                  <span class="nafl-rakah-chip">${item.rakahBadge}</span>
+                </div>
+                <small class="nafl-hadith-caption">${item.hadithRef}</small>
+              </div>
+            </div>
+            <div class="nafl-row-right">
+              <strong class="nafl-time-range-pill">${item.timeRangeText}</strong>
+              ${statusBadgeHtml}
+            </div>
+          </div>
+          <div class="nafl-row-bottom">
+            <span class="nafl-window-detail">${item.fullTimeNote}</span>
+            <div class="nafl-row-actions">
+              <button type="button" class="nafl-action-chip proof-chip" data-nafl-proof="${item.id}">${proofBtnLabel}</button>
+              <button type="button" class="nafl-action-chip phase-chip" data-nafl-open-phase="${item.phase}">${openPhaseLabel}</button>
+            </div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function openNaflHadithModal(naflId) {
+  const items = getNaflPrayersScheduleList(new Date());
+  const item = items.find((i) => i.id === naflId);
+  if (!item) return;
+
+  const evidenceEl = document.getElementById("modal-evidence");
+  const evidenceHeadingEl = evidenceEl?.parentElement?.querySelector("h4");
+  if (evidenceHeadingEl) {
+    evidenceHeadingEl.textContent = t("modal_evidence_heading");
+  }
+  const wisdomSection = document.getElementById("modal-wisdom")?.parentElement;
+  if (wisdomSection) wisdomSection.style.display = "block";
+
+  document.getElementById("modal-title").textContent = item.title;
+  document.getElementById("modal-category").textContent = `${item.timeRangeText} • ${item.rakahBadge}`;
+  if (evidenceEl) evidenceEl.textContent = item.evidenceFull;
+  const wisdomEl = document.getElementById("modal-wisdom");
+  if (wisdomEl) wisdomEl.textContent = item.wisdomFull;
+
+  document.getElementById("fact-modal").classList.remove("hidden");
+  if (typeof pushAppHistoryState === "function") pushAppHistoryState("modal");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderNaflPrayerTimes(new Date());
+
+  const naflCardEl = document.getElementById("nafl-salah-card");
+  if (naflCardEl) {
+    naflCardEl.addEventListener("click", (e) => {
+      const phaseBtn = e.target.closest("[data-nafl-open-phase]");
+      if (phaseBtn) {
+        e.stopPropagation();
+        const targetPhase = phaseBtn.getAttribute("data-nafl-open-phase");
+        if (targetPhase && typeof openMasterSection === "function") {
+          if (navigator.vibrate) navigator.vibrate(12);
+          openMasterSection("sec-" + targetPhase, true);
+        }
+        return;
+      }
+
+      const proofBtn = e.target.closest("[data-nafl-proof]");
+      if (proofBtn) {
+        e.stopPropagation();
+        const naflId = proofBtn.getAttribute("data-nafl-proof");
+        if (navigator.vibrate) navigator.vibrate(12);
+        openNaflHadithModal(naflId);
+        return;
+      }
+
+      const rowEl = e.target.closest(".nafl-salah-row[data-nafl-id]");
+      if (rowEl) {
+        const naflId = rowEl.getAttribute("data-nafl-id");
+        if (navigator.vibrate) navigator.vibrate(12);
+        openNaflHadithModal(naflId);
+      }
+    });
+  }
+});
+
