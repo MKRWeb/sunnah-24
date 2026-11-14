@@ -4347,7 +4347,6 @@ function renderFiveWaqtStrip(now = new Date()) {
           </div>
           <div class="fard-row-right">
             <strong class="waqt-time fard-time-range-pill">${startTimeStr} - ${endTimeStr}</strong>
-            <button type="button" class="waqt-info-micro-badge fard-row-info-btn ${isActive ? "active-info-btn" : ""}" data-waqt-info-btn="${w.id}" aria-label="${w.name} Info" title="${w.name} Info">i</button>
           </div>
         </div>
       `;
