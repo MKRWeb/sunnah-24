@@ -3515,27 +3515,23 @@ function getFardWaqtSvgIcon(waqtId) {
 }
 
 // ============================================================================
-// V11.0 GOOGLE DEEPMIND PIXEL-ACCURATE MASJID AN-NABAWI ARCHITECTURAL & CELESTIAL
-// VECTOR ENGINE + ONGOING PRAYER UI (100% MATCH TO PROVIDED REFERENCE IMAGES)
-// - Full-height architectural Masjid an-Nabawi composition (viewBox 0 0 400 390)
-//   where twin minarets with 2-tone 3D vertical shading extend to y=300 and
-//   frame the Green Dome (y=260) and translucent glassmorphic timeline pills.
-// - Scene-accurate celestial artwork:
-//   * Fajr: Golden sun rising behind the dome + 5 thick radial rays + green horizon band
-//   * Ishraq / Duha: Glowing radial sun with soft light cone onto the dome
-//   * Dhuhr: Crisp orange sun with 8 rounded rays + mint emerald underglow below dome
-//   * Jumu'ah: Ornate geometric mandala rosette + alternating green/orange rays + green horizon stripe
-//   * Asr: Sun with rays partially behind a multi-layered slate-white cloud
-//   * Maghrib: Terracotta sunset dome with 3 horizontal atmospheric bands + architectural base
-//   * Isha: Golden crescent moon + dark 4-point stars + dashed Tahajjud sub-card with hourglass
+// V11.2 GOOGLE DEEPMIND UNOBSTRUCTED MASJID AN-NABAWI ARCHITECTURAL & CELESTIAL
+// VECTOR ENGINE + ONGOING PRAYER UI
+// - Completely removes the Tahajjud prayer box (#live-tahajjud-subrow) and the
+//   bottom Rak'ah summary line from every ongoing prayer card.
+// - Positions the 3 time-based pills (Start -> End, Awwal Waqt, Remaining Time)
+//   strictly BELOW the Masjid an-Nabawi Green Dome & Twin Minarets (y > 236)
+//   so 100% of the Mosque architecture (Finial, Green Dome, 7 Arched Drum
+//   Windows, Stepped Plinth, and Twin 3-Balcony Minarets) is completely visible
+//   and never covered by the timeline pills.
 // ============================================================================
 function getJumuahMandalaPatternSvg() {
   let petals = "";
   for (let deg = 0; deg < 360; deg += 30) {
-    petals += `<g transform="rotate(${deg} 200 78)">
-      <path d="M200 28 C207.5 35 207.5 48 200 56 C192.5 48 192.5 35 200 28 Z" fill="none" stroke="#cbd5cdb8" stroke-width="1.25" />
-      <path d="M200 32 C204.2 37 204.2 45 200 51 C195.8 45 195.8 37 200 32 Z" fill="none" stroke="#cbd5cd88" stroke-width="0.95" />
-      <circle cx="200" cy="39" r="1.5" fill="#cbd5cd99" />
+    petals += `<g transform="rotate(${deg} 200 92)">
+      <path d="M200 38 C208 45.5 208 59.5 200 68 C192 59.5 192 45.5 200 38 Z" fill="none" stroke="#cbd5cdb8" stroke-width="1.3" />
+      <path d="M200 42.5 C204.5 48 204.5 56.5 200 62.5 C195.5 56.5 195.5 48 200 42.5 Z" fill="none" stroke="#cbd5cd88" stroke-width="1" />
+      <circle cx="200" cy="50" r="1.6" fill="#cbd5cd99" />
     </g>`;
   }
   let rays = "";
@@ -3543,17 +3539,17 @@ function getJumuahMandalaPatternSvg() {
     const deg = i * 22.5;
     const isGreen = i % 2 === 1;
     const color = isGreen ? "#15803d" : "#f59e0b";
-    const y1 = isGreen ? 39 : 37;
-    const y2 = isGreen ? 53 : 51;
-    rays += `<line x1="200" y1="${y1}" x2="200" y2="${y2}" stroke="${color}" stroke-width="4.6" stroke-linecap="round" transform="rotate(${deg} 200 78)" />`;
+    const y1 = isGreen ? 50 : 48;
+    const y2 = isGreen ? 65 : 63;
+    rays += `<line x1="200" y1="${y1}" x2="200" y2="${y2}" stroke="${color}" stroke-width="4.8" stroke-linecap="round" transform="rotate(${deg} 200 92)" />`;
   }
   return `
     <g class="s24-celestial-anim">
-      <circle cx="200" cy="78" r="46" fill="none" stroke="#cbd5cd80" stroke-width="1.1" stroke-dasharray="3 3" />
-      <circle cx="200" cy="78" r="38" fill="#e8f5ee" opacity="0.55" />
+      <circle cx="200" cy="92" r="50" fill="none" stroke="#cbd5cd80" stroke-width="1.15" stroke-dasharray="3 3" />
+      <circle cx="200" cy="92" r="41" fill="#e8f5ee" opacity="0.58" />
       ${petals}
       ${rays}
-      <circle cx="200" cy="78" r="23" fill="#f59e0b" stroke="#15803d" stroke-width="3.2" />
+      <circle cx="200" cy="92" r="25" fill="#f59e0b" stroke="#15803d" stroke-width="3.4" />
     </g>
   `;
 }
@@ -3566,17 +3562,17 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       bgBottom: "#fae9b8",
       celestial: `
         <g class="s24-celestial-anim">
-          <line x1="200" y1="74" x2="200" y2="88" stroke="#f59e0b" stroke-width="6" stroke-linecap="round" />
-          <line x1="165" y1="84" x2="173" y2="97" stroke="#f59e0b" stroke-width="6" stroke-linecap="round" />
-          <line x1="235" y1="84" x2="227" y2="97" stroke="#f59e0b" stroke-width="6" stroke-linecap="round" />
-          <line x1="141" y1="109" x2="155" y2="116" stroke="#f59e0b" stroke-width="6" stroke-linecap="round" />
-          <line x1="259" y1="109" x2="245" y2="116" stroke="#f59e0b" stroke-width="6" stroke-linecap="round" />
-          <circle cx="200" cy="140" r="38" fill="#fcd34d" />
+          <line x1="200" y1="88" x2="200" y2="103" stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round" />
+          <line x1="163" y1="98" x2="171" y2="112" stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round" />
+          <line x1="237" y1="98" x2="229" y2="112" stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round" />
+          <line x1="138" y1="125" x2="153" y2="133" stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round" />
+          <line x1="262" y1="125" x2="247" y2="133" stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round" />
+          <circle cx="200" cy="158" r="40" fill="#fcd34d" />
         </g>
       `,
       preMinaretLayer: `
-        <rect x="0" y="196" width="400" height="28" fill="#126e38" />
-        <rect x="0" y="224" width="400" height="48" fill="url(#s24FajrMintWash)" />
+        <rect x="0" y="218" width="400" height="26" fill="#126e38" />
+        <rect x="0" y="244" width="400" height="60" fill="url(#s24FajrMintWash)" />
       `,
       postDomeLayer: ""
     },
@@ -3586,24 +3582,24 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       bgBottom: "#faecc4",
       celestial: `
         <g class="s24-celestial-anim">
-          <polygon points="200,78 118,205 282,205" fill="url(#s24DuhaBeamGrad)" />
-          <circle cx="200" cy="78" r="29" fill="#fde68a" opacity="0.45" />
-          <g stroke="#fcd34d" stroke-width="4.6" stroke-linecap="round" opacity="0.85">
-            <line x1="200" y1="38" x2="200" y2="48" />
-            <line x1="200" y1="108" x2="200" y2="118" />
-            <line x1="160" y1="78" x2="170" y2="78" />
-            <line x1="230" y1="78" x2="240" y2="78" />
-            <line x1="172" y1="50" x2="179" y2="57" />
-            <line x1="221" y1="99" x2="228" y2="106" />
-            <line x1="228" y1="50" x2="221" y2="57" />
-            <line x1="179" y1="99" x2="172" y2="106" />
+          <polygon points="200,90 114,228 286,228" fill="url(#s24DuhaBeamGrad)" />
+          <circle cx="200" cy="90" r="31" fill="#fde68a" opacity="0.45" />
+          <g stroke="#fcd34d" stroke-width="4.8" stroke-linecap="round" opacity="0.85">
+            <line x1="200" y1="47" x2="200" y2="58" />
+            <line x1="200" y1="122" x2="200" y2="133" />
+            <line x1="157" y1="90" x2="168" y2="90" />
+            <line x1="232" y1="90" x2="243" y2="90" />
+            <line x1="170" y1="60" x2="178" y2="68" />
+            <line x1="222" y1="112" x2="230" y2="120" />
+            <line x1="230" y1="60" x2="222" y2="68" />
+            <line x1="178" y1="112" x2="170" y2="120" />
           </g>
-          <circle cx="200" cy="78" r="20.5" fill="url(#s24DuhaSunCore)" />
+          <circle cx="200" cy="90" r="22" fill="url(#s24DuhaSunCore)" />
         </g>
       `,
       preMinaretLayer: "",
       postDomeLayer: `
-        <ellipse cx="200" cy="208" rx="74" ry="18" fill="url(#s24DomeUnderGlow)" />
+        <ellipse cx="200" cy="230" rx="78" ry="18" fill="url(#s24DomeUnderGlow)" />
       `
     },
     dhuhr: {
@@ -3612,22 +3608,22 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       bgBottom: "#f7e2b8",
       celestial: `
         <g class="s24-celestial-anim">
-          <g stroke="#f59e0b" stroke-width="5.8" stroke-linecap="round">
-            <line x1="200" y1="32" x2="200" y2="45" />
-            <line x1="200" y1="107" x2="200" y2="120" />
-            <line x1="156" y1="76" x2="169" y2="76" />
-            <line x1="231" y1="76" x2="244" y2="76" />
-            <line x1="169" y1="45" x2="178" y2="54" />
-            <line x1="222" y1="98" x2="231" y2="107" />
-            <line x1="231" y1="45" x2="222" y2="54" />
-            <line x1="178" y1="98" x2="169" y2="107" />
+          <g stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round">
+            <line x1="200" y1="42" x2="200" y2="56" />
+            <line x1="200" y1="122" x2="200" y2="136" />
+            <line x1="153" y1="89" x2="167" y2="89" />
+            <line x1="233" y1="89" x2="247" y2="89" />
+            <line x1="167" y1="56" x2="177" y2="66" />
+            <line x1="223" y1="112" x2="233" y2="122" />
+            <line x1="233" y1="56" x2="223" y2="66" />
+            <line x1="177" y1="112" x2="167" y2="122" />
           </g>
-          <circle cx="200" cy="76" r="23" fill="#f59e0b" />
+          <circle cx="200" cy="89" r="25" fill="#f59e0b" />
         </g>
       `,
       preMinaretLayer: "",
       postDomeLayer: `
-        <ellipse cx="200" cy="208" rx="76" ry="18" fill="url(#s24DomeUnderGlow)" />
+        <ellipse cx="200" cy="230" rx="80" ry="18" fill="url(#s24DomeUnderGlow)" />
       `
     },
     jumuah: {
@@ -3637,8 +3633,8 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       celestial: getJumuahMandalaPatternSvg(),
       preMinaretLayer: "",
       postDomeLayer: `
-        <rect x="0" y="201" width="400" height="7" fill="#126e38" />
-        <rect x="0" y="208" width="400" height="112" fill="#ebf6ee" opacity="0.55" />
+        <rect x="0" y="223" width="400" height="7" fill="#126e38" />
+        <rect x="0" y="230" width="400" height="145" fill="#ebf6ee" opacity="0.55" />
       `
     },
     asr: {
@@ -3647,21 +3643,21 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       bgBottom: "#f5d7a9",
       celestial: `
         <g class="s24-celestial-anim">
-          <g stroke="#f59e0b" stroke-width="5.4" stroke-linecap="round">
-            <line x1="200" y1="32" x2="200" y2="43" />
-            <line x1="170" y1="44" x2="178" y2="52" />
-            <line x1="230" y1="44" x2="222" y2="52" />
-            <line x1="157" y1="74" x2="168" y2="74" />
-            <line x1="170" y1="104" x2="178" y2="96" />
+          <g stroke="#f59e0b" stroke-width="5.8" stroke-linecap="round">
+            <line x1="200" y1="42" x2="200" y2="54" />
+            <line x1="168" y1="55" x2="176" y2="63" />
+            <line x1="232" y1="55" x2="224" y2="63" />
+            <line x1="154" y1="87" x2="166" y2="87" />
+            <line x1="168" y1="119" x2="176" y2="111" />
           </g>
-          <circle cx="200" cy="74" r="21.5" fill="#f59e0b" />
-          <path d="M188 104 H248 C257 104 264 97 264 88 C264 80 258 73.2 250 72 C247.8 60.2 237.4 51.5 224.8 51.5 C213.6 51.5 204 58.5 200.4 68.4 C198.6 67.9 196.7 67.6 194.7 67.6 C183.8 67.6 175 76.4 175 87.2 C175 96.8 181.2 104 188 104 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2.1" stroke-linejoin="round" />
-          <path d="M190 100 H245 C252 100 257 95 257 88.5 C257 82 252 77 245.5 77 C243.8 66.5 234.8 59 224 59 C214 59 205.8 65.8 203.6 74.8 C194.5 74.8 187.2 81.6 187.2 90.2 C187.2 95.8 188.5 100 190 100 Z" fill="#f1f5f9" />
+          <circle cx="200" cy="87" r="23" fill="#f59e0b" />
+          <path d="M187 119 H250 C260 119 268 111.5 268 102 C268 93.2 261.5 85.8 252.8 84.5 C250.4 71.8 239.2 62.5 225.8 62.5 C213.8 62.5 203.6 70 199.8 80.6 C197.8 80 195.8 79.8 193.6 79.8 C182 79.8 172.5 89.2 172.5 100.8 C172.5 111.2 179.2 119 187 119 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2.2" stroke-linejoin="round" />
+          <path d="M189 114.5 H247 C254.5 114.5 260 109 260 102 C260 95 254.5 89.8 247.5 89.8 C245.6 78.5 236 70.5 224.5 70.5 C213.8 70.5 205 77.8 202.6 87.5 C192.8 87.5 185 94.8 185 104 C185 110 186.5 114.5 189 114.5 Z" fill="#f1f5f9" />
         </g>
       `,
       preMinaretLayer: "",
       postDomeLayer: `
-        <ellipse cx="200" cy="208" rx="74" ry="18" fill="url(#s24DomeUnderGlow)" />
+        <ellipse cx="200" cy="230" rx="78" ry="18" fill="url(#s24DomeUnderGlow)" />
       `
     },
     maghrib: {
@@ -3670,18 +3666,18 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       bgBottom: "#f5be96",
       celestial: `
         <g class="s24-celestial-anim">
-          <path d="M164 84 A36 36 0 0 1 236 84 Z" fill="#ea580c" />
-          <rect x="164" y="89" width="72" height="4.8" rx="2.4" fill="#ea580c" />
-          <rect x="173" y="97" width="54" height="4.8" rx="2.4" fill="#ea580c" />
-          <rect x="173" y="93.5" width="54" height="3.5" fill="#ea580c" />
-          <rect x="179" y="105" width="42" height="4.8" rx="2.4" fill="#ea580c" />
+          <path d="M161 98 A39 39 0 0 1 239 98 Z" fill="#ea580c" />
+          <rect x="161" y="103.5" width="78" height="5" rx="2.5" fill="#ea580c" />
+          <rect x="171" y="112" width="58" height="5" rx="2.5" fill="#ea580c" />
+          <rect x="171" y="108.5" width="58" height="3.5" fill="#ea580c" />
+          <rect x="178" y="120.5" width="44" height="5" rx="2.5" fill="#ea580c" />
         </g>
       `,
       preMinaretLayer: `
-        <rect x="0" y="201" width="400" height="119" fill="#f3c59e" opacity="0.65" />
-        <polygon points="108,236 142,194 258,194 292,236" fill="#edd3b2" />
-        <circle cx="200" cy="208" r="5.8" fill="#cbb084" />
-        <path d="M193 231 A7 7 0 0 1 207 231 Z" fill="#cbb084" />
+        <rect x="0" y="223" width="400" height="152" fill="#f3c59e" opacity="0.65" />
+        <polygon points="106,258 140,214 260,214 294,258" fill="#edd3b2" />
+        <circle cx="200" cy="232" r="6" fill="#cbb084" />
+        <path d="M192.5 256 A7.5 7.5 0 0 1 207.5 256 Z" fill="#cbb084" />
       `,
       postDomeLayer: ""
     },
@@ -3691,17 +3687,17 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       bgBottom: "#eef2f8",
       celestial: `
         <g class="s24-celestial-anim">
-          <path d="M205 46 C188 49.5 178.5 66.5 183.5 83.5 C188.5 100.5 206.5 109 223 102 C208.5 112.5 188 110 176.8 96.2 C165.6 82.4 166.5 62 179.4 49.2 C186.2 42.4 195.6 41.6 205 46 Z" fill="#facc15" stroke="#eab308" stroke-width="1.4" stroke-linejoin="round" />
-          <path d="M227 42 L229.4 49 L236.5 51.4 L229.4 53.8 L227 60.8 L224.6 53.8 L217.5 51.4 L224.6 49 Z" fill="#1e293b" />
-          <path d="M212 56 L213.7 61 L218.8 62.7 L213.7 64.4 L212 69.5 L210.3 64.4 L205.2 62.7 L210.3 61 Z" fill="#1e293b" />
-          <path d="M167 88 L169 93.8 L174.8 95.8 L169 97.8 L167 103.5 L165 97.8 L159.2 95.8 L165 93.8 Z" fill="#1e293b" />
-          <path d="M231 91 L232.7 95.7 L237.5 97.4 L232.7 99.1 L231 103.8 L229.3 99.1 L224.5 97.4 L229.3 95.7 Z" fill="#1e293b" />
-          <circle cx="157" cy="58" r="2" fill="#94a3b8" />
+          <path d="M206 56 C187.5 60 177.5 78.5 182.8 97 C188.2 115.5 207.5 124.5 225.5 117 C209.8 128.5 187.5 125.8 175.4 110.8 C163.2 95.8 164.2 73.5 178.2 59.5 C185.6 52.1 195.8 51.2 206 56 Z" fill="#facc15" stroke="#eab308" stroke-width="1.5" stroke-linejoin="round" />
+          <path d="M229 52 L231.6 59.6 L239.2 62.2 L231.6 64.8 L229 72.4 L226.4 64.8 L218.8 62.2 L226.4 59.6 Z" fill="#1e293b" />
+          <path d="M213 67 L214.8 72.4 L220.2 74.2 L214.8 76 L213 81.4 L211.2 76 L205.8 74.2 L211.2 72.4 Z" fill="#1e293b" />
+          <path d="M164 102 L166.2 108.2 L172.4 110.4 L166.2 112.6 L164 118.8 L161.8 112.6 L155.6 110.4 L161.8 108.2 Z" fill="#1e293b" />
+          <path d="M233 105 L234.8 110.1 L240 111.9 L234.8 113.7 L233 118.8 L231.2 113.7 L226 111.9 L231.2 110.1 Z" fill="#1e293b" />
+          <circle cx="154" cy="70" r="2.1" fill="#94a3b8" />
         </g>
       `,
       preMinaretLayer: "",
       postDomeLayer: `
-        <ellipse cx="200" cy="208" rx="76" ry="18" fill="url(#s24DomeUnderGlow)" />
+        <ellipse cx="200" cy="230" rx="80" ry="18" fill="url(#s24DomeUnderGlow)" />
       `
     },
     prohibited_sunrise: {
@@ -3710,9 +3706,9 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       bgBottom: "#fef2f2",
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="200" cy="78" r="29" fill="none" stroke="#dc2626" stroke-width="2.2" stroke-dasharray="5 4" />
-          <circle cx="200" cy="78" r="20" fill="#ef4444" stroke="#b91c1c" stroke-width="2.6" />
-          <line x1="185" y1="93" x2="215" y2="63" stroke="#ffffff" stroke-width="3.6" stroke-linecap="round" />
+          <circle cx="200" cy="90" r="31" fill="none" stroke="#dc2626" stroke-width="2.2" stroke-dasharray="5 4" />
+          <circle cx="200" cy="90" r="21.5" fill="#ef4444" stroke="#b91c1c" stroke-width="2.8" />
+          <line x1="184" y1="106" x2="216" y2="74" stroke="#ffffff" stroke-width="3.8" stroke-linecap="round" />
         </g>
       `,
       preMinaretLayer: "",
@@ -3724,9 +3720,9 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       bgBottom: "#fff1f2",
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="200" cy="76" r="27" fill="#ffffff" stroke="#b91c1c" stroke-width="3.5" />
-          <circle cx="200" cy="76" r="18.5" fill="#ef4444" />
-          <line x1="183" y1="93" x2="217" y2="59" stroke="#b91c1c" stroke-width="4" stroke-linecap="round" />
+          <circle cx="200" cy="88" r="29" fill="#ffffff" stroke="#b91c1c" stroke-width="3.6" />
+          <circle cx="200" cy="88" r="20" fill="#ef4444" />
+          <line x1="182" y1="106" x2="218" y2="70" stroke="#b91c1c" stroke-width="4.2" stroke-linecap="round" />
         </g>
       `,
       preMinaretLayer: "",
@@ -3738,10 +3734,10 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       bgBottom: "#ffedd5",
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="200" cy="80" r="29" fill="none" stroke="#dc2626" stroke-width="2.2" stroke-dasharray="5 4" />
-          <path d="M169 86 A31 31 0 0 1 231 86 Z" fill="#ef4444" />
-          <rect x="162" y="90" width="76" height="4.5" rx="2.2" fill="#b91b1b" />
-          <rect x="174" y="98" width="52" height="4.5" rx="2.2" fill="#dc2626" />
+          <circle cx="200" cy="92" r="31" fill="none" stroke="#dc2626" stroke-width="2.2" stroke-dasharray="5 4" />
+          <path d="M167 98 A33 33 0 0 1 233 98 Z" fill="#ef4444" />
+          <rect x="160" y="102.5" width="80" height="4.8" rx="2.4" fill="#b91b1b" />
+          <rect x="172" y="111" width="56" height="4.8" rx="2.4" fill="#dc2626" />
         </g>
       `,
       preMinaretLayer: "",
@@ -3753,33 +3749,41 @@ function getSymmetricNabawiCardSvg(sceneKey) {
 
   const renderMinaret = (cx) => `
     <g>
-      <path d="M${cx - 2} 66 L${cx} 45 L${cx + 2} 66 Z" fill="#b59461" />
-      <polygon points="${cx - 11},88 ${cx},66 ${cx},88" fill="#f1dfc0" />
-      <polygon points="${cx},88 ${cx},66 ${cx + 11},88" fill="#e2caa3" />
-      <rect x="${cx - 14}" y="88" width="14" height="5" rx="1.8" fill="#d4b98e" />
-      <rect x="${cx}" y="88" width="14" height="5" rx="1.8" fill="#bfa174" />
-      <rect x="${cx - 11}" y="93" width="11" height="25" fill="#f1dfc0" />
-      <rect x="${cx}" y="93" width="11" height="25" fill="#e2caa3" />
-      <rect x="${cx - 17.5}" y="118" width="17.5" height="5" rx="1.8" fill="#d4b98e" />
-      <rect x="${cx}" y="118" width="17.5" height="5" rx="1.8" fill="#bfa174" />
-      <polygon points="${cx - 17.5},123 ${cx},123 ${cx},130 ${cx - 13},130" fill="#cbb085" />
-      <polygon points="${cx},123 ${cx + 17.5},123 ${cx + 13},130 ${cx},130" fill="#b89b6f" />
-      <rect x="${cx - 13}" y="130" width="13" height="33" fill="#f1dfc0" />
-      <rect x="${cx}" y="130" width="13" height="33" fill="#e2caa3" />
-      <rect x="${cx - 20}" y="163" width="20" height="5" rx="1.8" fill="#d4b98e" />
-      <rect x="${cx}" y="163" width="20" height="5" rx="1.8" fill="#bfa174" />
-      <polygon points="${cx - 20},168 ${cx},168 ${cx},176 ${cx - 15.5},176" fill="#cbb085" />
-      <polygon points="${cx},168 ${cx + 20},168 ${cx + 15.5},176 ${cx},176" fill="#b89b6f" />
-      <rect x="${cx - 15.5}" y="176" width="15.5" height="65" fill="#f1dfc0" />
-      <rect x="${cx}" y="176" width="15.5" height="65" fill="#e2caa3" />
-      <path d="M${cx - 5} 198 V186 A5 5 0 0 1 ${cx + 5} 186 V198 Z" fill="#b49669" />
+      <!-- Finial Spire -->
+      <path d="M${cx - 2.1} 76 L${cx} 54 L${cx + 2.1} 76 Z" fill="#b59461" />
+      <!-- Conical Upper Cap (2-Tone) -->
+      <polygon points="${cx - 11.5},100 ${cx},76 ${cx},100" fill="#f1dfc0" />
+      <polygon points="${cx},100 ${cx},76 ${cx + 11.5},100" fill="#e2caa3" />
+      <!-- 1st Balcony -->
+      <rect x="${cx - 14.5}" y="100" width="14.5" height="5.5" rx="1.8" fill="#d4b98e" />
+      <rect x="${cx}" y="100" width="14.5" height="5.5" rx="1.8" fill="#bfa174" />
+      <!-- Upper Shaft -->
+      <rect x="${cx - 11.5}" y="105.5" width="11.5" height="27" fill="#f1dfc0" />
+      <rect x="${cx}" y="105.5" width="11.5" height="27" fill="#e2caa3" />
+      <!-- 2nd Balcony with Trapezoid Corbel -->
+      <rect x="${cx - 18}" y="132.5" width="18" height="5.5" rx="1.8" fill="#d4b98e" />
+      <rect x="${cx}" y="132.5" width="18" height="5.5" rx="1.8" fill="#bfa174" />
+      <polygon points="${cx - 18},138 ${cx},138 ${cx},145.5 ${cx - 13.5},145.5" fill="#cbb085" />
+      <polygon points="${cx},138 ${cx + 18},138 ${cx + 13.5},145.5 ${cx},145.5" fill="#b89b6f" />
+      <!-- Middle Shaft -->
+      <rect x="${cx - 13.5}" y="145.5" width="13.5" height="36" fill="#f1dfc0" />
+      <rect x="${cx}" y="145.5" width="13.5" height="36" fill="#e2caa3" />
+      <!-- 3rd Balcony with Trapezoid Corbel -->
+      <rect x="${cx - 21}" y="181.5" width="21" height="5.5" rx="1.8" fill="#d4b98e" />
+      <rect x="${cx}" y="181.5" width="21" height="5.5" rx="1.8" fill="#bfa174" />
+      <polygon points="${cx - 21},187 ${cx},187 ${cx},195.5 ${cx - 16},195.5" fill="#cbb085" />
+      <polygon points="${cx},187 ${cx + 21},187 ${cx + 16},195.5 ${cx},195.5" fill="#b89b6f" />
+      <!-- Lower Main Shaft with Arched Window Completely Visible Above the Pills (y=195.5..223) -->
+      <rect x="${cx - 16}" y="195.5" width="16" height="72" fill="#f1dfc0" />
+      <rect x="${cx}" y="195.5" width="16" height="72" fill="#e2caa3" />
+      <path d="M${cx - 5.2} 222 V207 A5.2 5.2 0 0 1 ${cx + 5.2} 207 V222 Z" fill="#b49669" />
     </g>
   `;
 
   return `
-    <svg class="s24-sym-nabawi-svg" viewBox="0 0 400 320" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
+    <svg class="s24-sym-nabawi-svg" viewBox="0 0 400 375" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="s24SymSky_${sceneKey}" x1="0" y1="0" x2="0" y2="320" gradientUnits="userSpaceOnUse">
+        <linearGradient id="s24SymSky_${sceneKey}" x1="0" y1="0" x2="0" y2="375" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stop-color="${c.bgTop}" />
           <stop offset="52%" stop-color="${c.bgMid}" />
           <stop offset="100%" stop-color="${c.bgBottom}" />
@@ -3788,11 +3792,11 @@ function getSymmetricNabawiCardSvg(sceneKey) {
           <stop offset="0%" stop-color="#15803d" stop-opacity="0.34" />
           <stop offset="100%" stop-color="#15803d" stop-opacity="0" />
         </radialGradient>
-        <linearGradient id="s24FajrMintWash" x1="0" y1="224" x2="0" y2="272" gradientUnits="userSpaceOnUse">
+        <linearGradient id="s24FajrMintWash" x1="0" y1="244" x2="0" y2="304" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stop-color="#6ee7b7" stop-opacity="0.45" />
           <stop offset="100%" stop-color="#6ee7b7" stop-opacity="0" />
         </linearGradient>
-        <linearGradient id="s24DuhaBeamGrad" x1="200" y1="78" x2="200" y2="205" gradientUnits="userSpaceOnUse">
+        <linearGradient id="s24DuhaBeamGrad" x1="200" y1="90" x2="200" y2="228" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55" />
           <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
         </linearGradient>
@@ -3802,31 +3806,44 @@ function getSymmetricNabawiCardSvg(sceneKey) {
         </radialGradient>
       </defs>
 
-      <rect width="400" height="320" fill="url(#s24SymSky_${sceneKey})" />
-      ${c.celestial}
-      ${c.preMinaretLayer || ""}
-      ${renderMinaret(86)}
-      ${renderMinaret(314)}
+      <!-- 1. Full Card Sky Backdrop -->
+      <rect width="400" height="375" fill="url(#s24SymSky_${sceneKey})" />
 
+      <!-- 2. Celestial Body (Sun / Moon / Jumu'ah Mandala / Asr Cloud) -->
+      ${c.celestial}
+
+      <!-- 3. Scene Pre-Minaret Horizon or Courtyard Wall Layer -->
+      ${c.preMinaretLayer || ""}
+
+      <!-- 4. Twin Symmetrical Masjid an-Nabawi Minarets (Left cx=84, Right cx=316) -->
+      ${renderMinaret(84)}
+      ${renderMinaret(316)}
+
+      <!-- 5. Iconic Central Masjid an-Nabawi Green Dome (Qubbat al-Khadra — 100% Unobstructed at y=114..229) -->
       <g>
-        <path d="M198.3 122 L200 100 L201.7 122 Z" fill="#b48a3e" />
-        <ellipse cx="200" cy="117" rx="3.8" ry="1.6" fill="#c6923a" />
-        <polygon points="193.5,123 200,117.5 206.5,123" fill="#c6923a" />
-        <path d="M142 182 C142 148 166 129 200 122 L200 182 Z" fill="#15803d" />
-        <path d="M200 122 C234 129 258 148 258 182 L200 182 Z" fill="#116932" />
-        <rect x="139" y="181" width="122" height="15" rx="2.2" fill="#126e35" />
-        <rect x="200" y="181" width="61" height="15" rx="1.5" fill="#0f5c2c" />
-        <path d="M148 196 V189 A4.2 4.2 0 0 1 156.4 189 V196 Z
-                 M164 196 V189 A4.2 4.2 0 0 1 172.4 189 V196 Z
-                 M180 196 V189 A4.2 4.2 0 0 1 188.4 189 V196 Z
-                 M195.8 196 V189 A4.2 4.2 0 0 1 204.2 189 V196 Z
-                 M211.6 196 V189 A4.2 4.2 0 0 1 220 189 V196 Z
-                 M227.6 196 V189 A4.2 4.2 0 0 1 236 189 V196 Z
-                 M243.6 196 V189 A4.2 4.2 0 0 1 252 189 V196 Z" fill="#16803c" opacity="0.85" />
-        <rect x="132" y="196" width="136" height="7" rx="1.8" fill="#0f5c2c" />
-        <rect x="126" y="202" width="148" height="4.5" rx="1.4" fill="#0b4620" />
+        <!-- Golden Finial Spire (Hilal Rod & Globes) -->
+        <path d="M198.2 138 L200 114 L201.8 138 Z" fill="#b48a3e" />
+        <ellipse cx="200" cy="132.5" rx="4" ry="1.7" fill="#c6923a" />
+        <polygon points="193,139 200,133 207,139" fill="#c6923a" />
+        <!-- Pointed Green Dome Left & Right Halves (2-Tone 3D Shading) -->
+        <path d="M139 202 C139 166 164 146 200 138 L200 202 Z" fill="#15803d" />
+        <path d="M200 138 C236 146 261 166 261 202 L200 202 Z" fill="#116932" />
+        <!-- Drum Band & 7 Arched Windows -->
+        <rect x="136" y="201" width="128" height="16" rx="2.4" fill="#126e35" />
+        <rect x="200" y="201" width="64" height="16" rx="1.5" fill="#0f5c2c" />
+        <path d="M145 217 V209.5 A4.4 4.4 0 0 1 153.8 209.5 V217 Z
+                 M162 217 V209.5 A4.4 4.4 0 0 1 170.8 209.5 V217 Z
+                 M179 217 V209.5 A4.4 4.4 0 0 1 187.8 209.5 V217 Z
+                 M195.6 217 V209.5 A4.4 4.4 0 0 1 204.4 209.5 V217 Z
+                 M212.2 217 V209.5 A4.4 4.4 0 0 1 221 209.5 V217 Z
+                 M229.2 217 V209.5 A4.4 4.4 0 0 1 238 209.5 V217 Z
+                 M246.2 217 V209.5 A4.4 4.4 0 0 1 255 209.5 V217 Z" fill="#16803c" opacity="0.88" />
+        <!-- Stepped Plinth Base Resting at y=229 Above the 3 Time Pills -->
+        <rect x="129" y="217" width="142" height="7.5" rx="2" fill="#0f5c2c" />
+        <rect x="123" y="224" width="154" height="5" rx="1.5" fill="#0b4620" />
       </g>
 
+      <!-- 6. Post-Dome Underglow or Jumu'ah Horizon Stripe -->
       ${c.postDomeLayer || ""}
     </svg>
   `;
@@ -3848,37 +3865,6 @@ function getInlineStopwatchSvg(isDanger = false) {
     <line x1="18.5" y1="5.5" x2="20" y2="4" stroke="${strokeCol}" stroke-width="2" stroke-linecap="round" />
     <circle cx="12" cy="13.5" r="8" fill="#f8fafc" stroke="${strokeCol}" stroke-width="2" />
     <path d="M12 9.5 V13.5 L14.5 15" stroke="${strokeCol}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-  </svg>`;
-}
-
-function getInlineGoldenMosqueSvg() {
-  return `<svg class="s24-inline-rakah-mosque-svg" viewBox="0 0 24 24" width="19" height="19" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <rect x="3" y="8" width="2.6" height="13" fill="#e6cfa8" stroke="#b48a4e" stroke-width="0.6" />
-    <polygon points="2.7,8 4.3,4.5 5.9,8" fill="#d97706" />
-    <rect x="18.4" y="8" width="2.6" height="13" fill="#e6cfa8" stroke="#b48a4e" stroke-width="0.6" />
-    <polygon points="18.1,8 19.7,4.5 21.3,8" fill="#d97706" />
-    <path d="M7 15 C7 10.5 9.2 8.2 12 7.5 C14.8 8.2 17 10.5 17 15 Z" fill="#f59e0b" />
-    <line x1="12" y1="5" x2="12" y2="7.8" stroke="#b45309" stroke-width="1.3" stroke-linecap="round" />
-    <rect x="6" y="15" width="12" height="6" rx="1" fill="#fcd34d" stroke="#d97706" stroke-width="0.7" />
-    <path d="M10.5 21 V17.5 A1.5 1.5 0 0 1 13.5 17.5 V21 Z" fill="#92400e" />
-  </svg>`;
-}
-
-function getInlineTahajjudNightBoxSvg() {
-  return `<svg class="s24-tahajjud-night-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <rect x="1" y="1" width="22" height="22" rx="5" fill="#1e293b" />
-    <path d="M14.5 6.5 L15.5 9.2 L18.2 10.2 L15.5 11.2 L14.5 13.9 L13.5 11.2 L10.8 10.2 L13.5 9.2 Z" fill="#fde047" />
-    <circle cx="7.5" cy="7.5" r="1.2" fill="#fef08a" />
-    <circle cx="8.5" cy="16" r="1" fill="#cbd5e1" />
-    <circle cx="17" cy="16.5" r="1.2" fill="#fde047" />
-  </svg>`;
-}
-
-function getInlineHourglassSvg() {
-  return `<svg class="s24-hourglass-svg" viewBox="0 0 20 20" width="13" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M4.5 2.5 H15.5 M4.5 17.5 H15.5" stroke="#92400e" stroke-width="1.8" stroke-linecap="round" />
-    <path d="M6 2.5 V6.2 L10 10 L6 13.8 V17.5 H14 V13.8 L10 10 L14 6.2 V2.5 Z" fill="#fde68a" stroke="#b45309" stroke-width="1.3" stroke-linejoin="round" />
-    <polygon points="7.2,16.5 10,12.8 12.8,16.5" fill="#d97706" />
   </svg>`;
 }
 
@@ -3963,11 +3949,13 @@ function renderFiveWaqtStrip(now = new Date()) {
   ];
 
   // ==========================================================================
-  // MASJID AN-NABAWI ONGOING WAQT DASHBOARD CARD (EXACT MATCH TO PROVIDED IMAGES)
+  // MASJID AN-NABAWI ONGOING WAQT DASHBOARD CARD (UNOBSTRUCTED DOME & 3 TIME PILLS)
+  // - No Tahajjud sub-card inside ongoing prayers
+  // - No Rak'ah summary line at the bottom of ongoing prayers
+  // - All 3 time-based rows sit cleanly below the Green Dome & Twin Minarets
   // ==========================================================================
   const boxEl = document.getElementById("live-waqt-countdown-box");
   if (boxEl) {
-    let activeIcon = "🕌";
     let activeWaqtTitle = "";
     let activeSubLabel = "";
     let winStart = 0;
@@ -3982,15 +3970,12 @@ function renderFiveWaqtStrip(now = new Date()) {
         ? "الوقت المختار (أول الوقت):"
         : "Prime Window (Awwal Waqt):";
     let primeValueHtml = "";
-    let rakahTextOnly = "";
-    let tahajjudSubCardHtml = "";
 
     const startLbl = lang === "bn" ? "শুরু (START)" : lang === "ar" ? "بداية الوقت" : "STARTS AT";
     const endLbl = lang === "bn" ? "শেষ (END)" : lang === "ar" ? "نهاية الوقت" : "ENDS AT";
 
     if (nowMins >= sched.fajr && nowMins < pWindows.sunrise.start) {
       // 1. Fajr Fard Waqt
-      activeIcon = "🌅";
       activeWaqtTitle = lang === "bn" ? "ফজর" : lang === "ar" ? "الفجر" : "Fajr";
       activeSubLabel =
         lang === "bn"
@@ -4006,15 +3991,8 @@ function renderFiveWaqtStrip(now = new Date()) {
       const fajrPrimeClock = formatShortWaqtClock(fajrPrimeEnd, lang);
 
       primeValueHtml = `${fajrStartClock} – ${fajrPrimeClock}`;
-      rakahTextOnly =
-        lang === "bn"
-          ? "২ সুন্নাত + ২ ফরজ"
-          : lang === "ar"
-          ? "ركعتا سنة + ركعتان فرض"
-          : "2 Sunnah + 2 Fard";
     } else if (nowMins >= pWindows.sunrise.start && nowMins < pWindows.sunrise.end) {
       // 2. Prohibited Window 1: Sunrise (15 mins)
-      activeIcon = "⛔";
       activeWaqtTitle =
         lang === "bn"
           ? "নিষিদ্ধ সময় (সূর্যোদয়)"
@@ -4045,15 +4023,8 @@ function renderFiveWaqtStrip(now = new Date()) {
           : lang === "ar"
           ? `الإشراق (${ishraqStartClock})`
           : `Ishraq (${ishraqStartClock})`;
-      rakahTextOnly =
-        lang === "bn"
-          ? "সহীহ মুসলিম ৮৩১"
-          : lang === "ar"
-          ? "صحيح مسلم ٨٣١"
-          : "Sahih Muslim 831";
     } else if (nowMins >= pWindows.sunrise.end && nowMins < pWindows.zawal.start) {
       // 3. Ishraq & Duha Forenoon Window
-      activeIcon = "☀️";
       activeWaqtTitle =
         lang === "bn"
           ? "চাশত / ইশরাক"
@@ -4074,15 +4045,8 @@ function renderFiveWaqtStrip(now = new Date()) {
       const ishraqPrimeClock = formatShortWaqtClock(ishraqPrimeEnd, lang);
 
       primeValueHtml = `${ishraqStartClock} – ${ishraqPrimeClock}`;
-      rakahTextOnly =
-        lang === "bn"
-          ? "২ রাকাত ইশরাক + ২–৮ রাকাত চাশত"
-          : lang === "ar"
-          ? "ركعتا الإشراق + ٢–٨ الضحى"
-          : "2 Ishraq + 2–8 Duha";
     } else if (nowMins >= pWindows.zawal.start && nowMins < pWindows.zawal.end) {
       // 4. Prohibited Window 2: Zawal / Solar Zenith
-      activeIcon = "⛔";
       activeWaqtTitle =
         lang === "bn"
           ? "নিষিদ্ধ সময় (দ্বিপ্রহর)"
@@ -4108,15 +4072,8 @@ function renderFiveWaqtStrip(now = new Date()) {
           ? "الصلاة القادمة:"
           : "Next Waqt:";
       primeValueHtml = middayMeta.zawalNextWaqtLabel(dhuhrStartClock);
-      rakahTextOnly =
-        lang === "bn"
-          ? "সহীহ মুসলিম ৮৩১"
-          : lang === "ar"
-          ? "صحيح مسلم ٨٣١"
-          : "Sahih Muslim 831";
     } else if (nowMins >= pWindows.zawal.end && nowMins < sched.asr) {
       // 5. Midday Fard Waqt — "যোহর" (or "জুমু'আ" on Friday)
-      activeIcon = middayMeta.pillIcon;
       activeWaqtTitle = middayMeta.isJumuah
         ? lang === "bn"
           ? "জুমু'আ"
@@ -4142,20 +4099,8 @@ function renderFiveWaqtStrip(now = new Date()) {
       const dhuhrPrimeClock = formatShortWaqtClock(dhuhrPrimeEnd, lang);
 
       primeValueHtml = `${dhuhrStartClock} – ${dhuhrPrimeClock}`;
-      rakahTextOnly = middayMeta.isJumuah
-        ? lang === "bn"
-          ? "৪ সুন্নাত + ২ ফরজ + ৪/২ সুন্নাত"
-          : lang === "ar"
-          ? "٤ سنة + ٢ فرض + ٤/٢ سنة"
-          : "4 Sunnah + 2 Fard + 4/2 Sunnah"
-        : lang === "bn"
-        ? "৪ সুন্নাত + ৪ ফরজ + ২ সুন্নাত"
-        : lang === "ar"
-        ? "٤ سنة + ٤ فرض + ٢ سنة"
-        : "4 Sunnah + 4 Fard + 2 Sunnah";
     } else if (nowMins >= sched.asr && nowMins < pWindows.sunset.start) {
       // 6. Asr Fard Waqt
-      activeIcon = "🌤️";
       activeWaqtTitle = lang === "bn" ? "আসর" : lang === "ar" ? "العصر" : "Asr";
       activeSubLabel =
         lang === "bn"
@@ -4171,15 +4116,8 @@ function renderFiveWaqtStrip(now = new Date()) {
       const asrPrimeClock = formatShortWaqtClock(asrPrimeEnd, lang);
 
       primeValueHtml = `${asrStartClock} – ${asrPrimeClock}`;
-      rakahTextOnly =
-        lang === "bn"
-          ? "৪ রাকাত ফরজ"
-          : lang === "ar"
-          ? "٤ ركعات فرض"
-          : "4 Rak'ah Fard";
     } else if (nowMins >= pWindows.sunset.start && nowMins < sched.maghrib) {
       // 7. Prohibited Window 3: Sunset / Ghurub
-      activeIcon = "⛔";
       activeWaqtTitle =
         lang === "bn"
           ? "নিষিদ্ধ সময় (সূর্যাস্ত)"
@@ -4210,15 +4148,8 @@ function renderFiveWaqtStrip(now = new Date()) {
           : lang === "ar"
           ? `المغرب (${maghribStartClock})`
           : `Maghrib (${maghribStartClock})`;
-      rakahTextOnly =
-        lang === "bn"
-          ? "সহীহ মুসলিম ৮৩১"
-          : lang === "ar"
-          ? "صحيح مسلم ٨٣١"
-          : "Sahih Muslim 831";
     } else if (nowMins >= sched.maghrib && nowMins < sched.isha) {
       // 8. Maghrib Fard Waqt
-      activeIcon = "🌇";
       activeWaqtTitle = lang === "bn" ? "মাগরিব" : lang === "ar" ? "المغرب" : "Maghrib";
       activeSubLabel =
         lang === "bn"
@@ -4234,30 +4165,15 @@ function renderFiveWaqtStrip(now = new Date()) {
       const maghribPrimeClock = formatShortWaqtClock(maghribPrimeEnd, lang);
 
       primeValueHtml = `${maghribStartClock} – ${maghribPrimeClock}`;
-      rakahTextOnly =
-        lang === "bn"
-          ? "৩ ফরজ + ২ সুন্নাত"
-          : lang === "ar"
-          ? "٣ فرض + ٢ سنة"
-          : "3 Fard + 2 Sunnah";
     } else {
-      // 9. Night Isha (Includes Dashed Tahajjud Sub-Card Matching Reference Image 5)
-      activeIcon = "🌙";
+      // 9. Night Isha
       winStart = sched.isha;
       winEnd = sched.fajr + 1440;
       currentPos = nowMins < sched.fajr ? nowMins + 1440 : nowMins;
 
-      const normFirstThirdEnd =
-        sched.firstThirdEnd < sched.isha ? sched.firstThirdEnd + 1440 : sched.firstThirdEnd;
-      const normLastThirdStart =
-        sched.lastThirdStart < sched.isha ? sched.lastThirdStart + 1440 : sched.lastThirdStart;
-      const fajrEndMinusOne = (sched.fajr - 1 + 1440) % 1440;
       const firstThirdEndMinusOne = (sched.firstThirdEnd - 1 + 1440) % 1440;
-
       const ishaStartClock = formatShortWaqtClock(sched.isha, lang);
-      const fajrEndClock = formatShortWaqtClock(fajrEndMinusOne, lang);
       const firstThirdClock = formatShortWaqtClock(firstThirdEndMinusOne, lang);
-      const lastThirdClock = formatShortWaqtClock(sched.lastThirdStart, lang);
 
       activeWaqtTitle = lang === "bn" ? "ইশা" : lang === "ar" ? "العشاء" : "Isha";
       activeSubLabel =
@@ -4268,50 +4184,6 @@ function renderFiveWaqtStrip(now = new Date()) {
           : "Valid until before Fajr";
 
       primeValueHtml = `${ishaStartClock} – ${firstThirdClock}`;
-      rakahTextOnly =
-        lang === "bn"
-          ? "৪ ফরজ + ২ সুন্নাত + বিতর"
-          : lang === "ar"
-          ? "٤ فرض + ٢ سنة + الوتر"
-          : "4 Fard + 2 Sunnah + Witr";
-
-      const tahajjudTopCap =
-        lang === "bn" ? "তাহাজ্জুদ" : lang === "ar" ? "التهجد" : "Tahajjud";
-      let tahajjudPillText = "";
-      let isGoldenThird = false;
-
-      if (currentPos < normLastThirdStart) {
-        tahajjudPillText = formatRemainingDurationText(normLastThirdStart - currentPos, lang, true);
-      } else {
-        isGoldenThird = true;
-        tahajjudPillText = formatRemainingDurationText(winEnd - currentPos, lang, true);
-      }
-
-      const tahajjudMiniTitle =
-        lang === "bn"
-          ? "তাহাজ্জুদ (শেষ ১/৩):"
-          : lang === "ar"
-          ? "التهجد (الثلث الأخير):"
-          : "Tahajjud (Last 1/3):";
-
-      tahajjudSubCardHtml = `
-        <div id="live-tahajjud-subrow" class="s24-isha-tahajjud-dashed-box ${isGoldenThird ? "golden-state" : ""}">
-          <div class="s24-tahajjud-box-left">
-            ${getInlineTahajjudNightBoxSvg()}
-            <div class="s24-tahajjud-text-stack">
-              <span class="s24-tahajjud-lbl">${tahajjudMiniTitle}</span>
-              <strong class="s24-tahajjud-range">${lastThirdClock} – ${fajrEndClock}</strong>
-            </div>
-          </div>
-          <div class="s24-tahajjud-box-right">
-            <span class="s24-tahajjud-cap-lbl">${tahajjudTopCap}</span>
-            <span class="s24-tahajjud-amber-pill">
-              ${getInlineHourglassSvg()}
-              <span>${tahajjudPillText}</span>
-            </span>
-          </div>
-        </div>
-      `;
     }
 
     const totalDuration = Math.max(1, winEnd - winStart);
@@ -4410,10 +4282,10 @@ function renderFiveWaqtStrip(now = new Date()) {
             </div>
           </div>
 
-          <!-- Central Clear Stage for Sun/Moon, Twin Minarets & Green Dome -->
+          <!-- Dedicated Unobstructed Architectural Stage for Sun/Moon, Twin Minarets & Full Green Dome -->
           <div class="s24-nabawi-dome-clearance"></div>
 
-          <!-- Bottom Stacked Translucent Pills Over the Mosque Plinth -->
+          <!-- 3 Time-Based Pills Positioned Below the Green Dome & Minaret Windows -->
           <div class="s24-nabawi-bottom-stack">
             <div class="waqt-popup-time-grid ongoing-static-time-grid s24-nabawi-glass-time">
               <div class="waqt-popup-time-box start-box">
@@ -4442,17 +4314,6 @@ function renderFiveWaqtStrip(now = new Date()) {
                 <strong id="live-waqt-remaining" class="meta-row-value">${remainingTextStr}</strong>
               </div>
             </div>
-
-            ${tahajjudSubCardHtml}
-
-            ${
-              rakahTextOnly
-                ? `<div class="waqt-popup-sunnah-note ongoing-rakah-footer s24-nabawi-rakah-line">
-                    ${getInlineGoldenMosqueSvg()}
-                    <span>${rakahTextOnly}</span>
-                  </div>`
-                : ""
-            }
           </div>
         </div>
       </div>
