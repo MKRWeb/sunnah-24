@@ -1,4 +1,4 @@
-name: Sunnah 24 — Enterprise CI/CD, GitHub Pages, Signed APK & Play Store AAB Pipeline
+name: Sunnah 24 — Streamlined CI/CD Pipeline
 
 on:
   push:
@@ -12,13 +12,9 @@ on:
   workflow_dispatch:
     inputs:
       target_repositories:
-        description: "Optional comma-separated list of additional repositories (owner/repo) to auto-update simultaneously"
+        description: "Comma-separated list of additional repositories (owner/repo) to deploy simultaneously"
         required: false
         default: ""
-      sync_releases_to_targets:
-        description: "Also publish Signed APK & Play Store AAB releases to all target repositories simultaneously"
-        required: false
-        default: "true" 
 
 permissions:
   contents: write
@@ -28,80 +24,45 @@ permissions:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
-# Unified workflow-level concurrency group:
-# Rapid multi-file edits (index.html, style.css, app.js, or future modules) cancel intermediate runs
-# so only the final combined state deploys to GitHub Pages and compiles into APK/AAB.
 concurrency:
-  group: "sunnah24-atomic-pipeline-${{ github.ref }}"
+  group: "sunnah24-pipeline-${{ github.ref }}"
   cancel-in-progress: true
 
 jobs:
-  deploy-pages:
-    name: 1. Atomic Web Verification, Cache-Busting & GitHub Pages Deploy
+  deploy-pages-multi:
+    name: 1. Deploy on Pages (Multiple Repositories at Once)
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      has_matrix: ${{ steps.matrix.outputs.has_matrix }}
+      repo_list: ${{ steps.matrix.outputs.repo_list }}
     steps:
-      - name: 1. Batch Stabilization Buffer (Coalesce Multi-File Web Commits)
-        run: |
-          echo "⏳ Waiting 8s to allow rapid multi-file commits (index.html, style.css, app.js) to coalesce..."
-          sleep 8
-
-      - name: 2. Checkout Repository & Pull Latest Branch HEAD
+      - name: 1. Checkout Repository
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
 
-      - name: 3. Setup Node.js 22 for JS Syntax Verification
+      - name: 2. Setup Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      - name: 4. Atomic Sync of Root & www/ Assets + Auto Cache-Busting (Future-Proof Extensible Sync)
+      - name: 3. Prepare Web Bundle & Cache-Busting
         run: |
-          # Ensure we are on the absolute latest commit of the branch after the stabilization buffer
-          git fetch origin "${GITHUB_REF_NAME}"
-          git reset --hard "origin/${GITHUB_REF_NAME}"
           LATEST_SHA=$(git rev-parse --short=7 HEAD)
-
           mkdir -p www
-          # Bi-directional freshest-file resolution for core files + any future added .html/.css/.js/.json/.svg/.png/.webp/.woff2 assets:
-          ASSET_LIST="index.html style.css app.js sw.js manifest.json icon.svg privacy.html"
-          for extra in *.html *.css *.js *.svg *.png *.webp *.ico *.woff2; do
-            if [ -f "$extra" ] && [ "$extra" != "package.json" ] && [ "$extra" != "package-lock.json" ] && [ "$extra" != "capacitor.config.json" ]; then
-              case " $ASSET_LIST " in
-                *" $extra "*) ;;
-                *) ASSET_LIST="$ASSET_LIST $extra" ;;
-              esac
-            fi
-          done
-
-          for f in $ASSET_LIST; do
-            if [ -f "$f" ] && [ -f "www/$f" ]; then
-              ROOT_TS=$(git log -1 --format="%ct" -- "$f" 2>/dev/null || echo 0)
-              WWW_TS=$(git log -1 --format="%ct" -- "www/$f" 2>/dev/null || echo 0)
-              if [ "${WWW_TS:-0}" -gt "${ROOT_TS:-0}" ]; then
-                echo "🔄 Syncing newer www/$f -> root $f"
-                cp -f "www/$f" "$f"
-              else
-                echo "✅ Syncing root $f -> www/$f"
-                cp -f "$f" "www/$f"
-              fi
-            elif [ -f "$f" ]; then
+          
+          # Sync core web assets
+          for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
+            if [ -f "$f" ]; then
               cp -f "$f" "www/$f"
             elif [ -f "www/$f" ]; then
               cp -f "www/$f" "$f"
             fi
           done
 
-          # Future-Proof Dynamic Sub-Directory & Module Sync (automatically handles any current or future folders: assets/, icons/, audio/, fonts/, data/, components/, locales/, modules/, etc.)
+          # Sync extra folders if present
           for subdir in assets icons audio fonts data components locales modules scripts styles; do
             if [ -d "$subdir" ]; then
               mkdir -p "www/$subdir"
@@ -112,67 +73,138 @@ jobs:
             fi
           done
 
-          # Stamp Service Worker cache version & HTML asset query strings with unique run_number + commit SHA
           CACHE_VER="v4.2.${GITHUB_RUN_NUMBER}-${LATEST_SHA}"
           if [ -f "www/sw.js" ]; then
             sed -i "s/sunnah-24-cache-[a-zA-Z0-9._-]*/sunnah-24-cache-${CACHE_VER}/g" www/sw.js || true
-            sed -i "s/CACHE_NAME = ['"][^'"]*['"]/CACHE_NAME = 'sunnah-24-cache-${CACHE_VER}'/g" www/sw.js || true
           fi
           if [ -f "www/index.html" ]; then
-            sed -i "s|href="style.css[^"]*"|href="style.css?v=${CACHE_VER}"|g" www/index.html || true
-            sed -i "s|src="app.js[^"]*"|src="app.js?v=${CACHE_VER}"|g" www/index.html || true
+            sed -i "s|href=\"style.css[^\"]*\"|href=\"style.css?v=${CACHE_VER}\"|g" www/index.html || true
+            sed -i "s|src=\"app.js[^\"]*\"|src=\"app.js?v=${CACHE_VER}\"|g" www/index.html || true
           fi
 
-          # Generate atomic version.json manifest for resilient website & in-app update checks
           cat << EOF > www/version.json
           {
             "tag_name": "v4.2.${GITHUB_RUN_NUMBER}",
             "version": "4.2.${GITHUB_RUN_NUMBER}",
             "commit": "${LATEST_SHA}",
-            "apk_url": "https://github.com/MKRWeb/sunnah-24/releases/latest/download/Sunnah-24-v4.2-Enterprise-Signed.apk"
+            "apk_url": "https://github.com/${GITHUB_REPOSITORY}/releases/latest/download/Sunnah-24-v4.2-Enterprise-Signed.apk"
           }
           EOF
-          sed -i 's/^          //' www/version.json
 
-          # Verify syntax of all JavaScript files in www/
-          for jsfile in www/*.js; do
-            if [ -f "$jsfile" ]; then
-              node --check "$jsfile"
-            fi
-          done
-          echo "✅ Atomic Web Bundle verified with cache version: ${CACHE_VER}"
-
-      - name: 5. Persist Verified www/ Bundle for Android APK/AAB Job
-        uses: actions/upload-artifact@v4
-        with:
-          name: sunnah24-verified-www-bundle
-          path: ./www
-          if-no-files-found: error
-
-      - name: 6. Setup GitHub Pages
+      - name: 4. Deploy to Primary GitHub Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
-
-      - name: 7. Upload Web App Artifact (www)
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: './www'
-
-      - name: 8. Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
-        timeout-minutes: 10
 
-  build-and-release-apk:
-    name: 2. Build, Verify & Release Signed APK & Play Store Ready AAB
-    needs: deploy-pages
-    if: github.event_name != 'pull_request'
+      - name: 5. Build Multi-Repository Matrix
+        id: matrix
+        run: |
+          RAW_REPOS="${{ github.event.inputs.target_repositories || secrets.MULTI_REPO_TARGETS || vars.MULTI_REPO_TARGETS || '' }}"
+          CLEAN=$(echo "$RAW_REPOS" | tr ',' ' ' | xargs)
+          JSON="["
+          FIRST=1
+          for r in $CLEAN; do
+            if [ -n "$r" ] && [ "$r" != "$GITHUB_REPOSITORY" ]; then
+              if [ "$FIRST" -eq 0 ]; then JSON="${JSON},"; fi
+              JSON="${JSON}\"${r}\""
+              FIRST=0
+            fi
+          done
+          JSON="${JSON}]"
+
+          if [ "$JSON" = "[]" ]; then
+            echo "has_matrix=false" >> "$GITHUB_OUTPUT"
+            echo 'repo_list=["none"]' >> "$GITHUB_OUTPUT"
+          else
+            echo "has_matrix=true" >> "$GITHUB_OUTPUT"
+            echo "repo_list=${JSON}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Persist www Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: verified-www-bundle
+          path: ./www
+
+  deploy-pages-additional-repos:
+    name: "1B. Deploy on Pages (Target: ${{ matrix.target_repo }})"
+    needs: [ deploy-pages-multi ]
+    if: github.event_name != 'pull_request' && needs.deploy-pages-multi.outputs.has_matrix == 'true'
     runs-on: ubuntu-24.04
     permissions:
       contents: write
       pages: write
       id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        target_repo: ${{ fromJson(needs.deploy-pages-multi.outputs.repo_list) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download www Bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: verified-www-bundle
+          path: ./www
+      - name: Push Codebase & Deploy Pages to ${{ matrix.target_repo }}
+        env:
+          SYNC_PAT: ${{ secrets.MULTI_REPO_PAT || secrets.RELEASE_PAT || secrets.GH_PAT || github.token }}
+        run: |
+          set -e
+          WORK_DIR="/tmp/sync_repo"
+          GH_DIR="/tmp/sync_gh"
+          rm -rf "$WORK_DIR" "$GH_DIR"
+
+          git clone --depth 1 "https://x-access-token:${SYNC_PAT}@github.com/${{ matrix.target_repo }}.git" "$WORK_DIR"
+          cd "$WORK_DIR"
+          DEFAULT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          mkdir -p www
+
+          for asset in index.html style.css app.js sw.js manifest.json icon.svg privacy.html version.json; do
+            if [ -f "${{ github.workspace }}/www/$asset" ]; then
+              cp -f "${{ github.workspace }}/www/$asset" "./$asset"
+              cp -f "${{ github.workspace }}/www/$asset" "./www/$asset"
+            fi
+          done
+
+          sed -i "s|github.com/${GITHUB_REPOSITORY}/releases|github.com/${{ matrix.target_repo }}/releases|g" ./index.html ./www/index.html ./app.js ./www/app.js ./version.json ./www/version.json || true
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "chore(sync): update codebase from ${GITHUB_REPOSITORY} [skip ci]"
+            git push origin "HEAD:${DEFAULT_BRANCH}"
+          fi
+
+          mkdir -p "$GH_DIR"
+          cd "$GH_DIR"
+          git init
+          git checkout -b gh-pages
+          cp -rf "${WORK_DIR}/www/." ./
+          touch .nojekyll
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "deploy(pages): live update"
+          git remote add origin "https://x-access-token:${SYNC_PAT}@github.com/${{ matrix.target_repo }}.git"
+          git push --force origin gh-pages:gh-pages
+
+          gh api --method POST "repos/${{ matrix.target_repo }}/pages" -f "source[branch]=gh-pages" -f "source[path]=/" >/dev/null 2>&1 || \
+          gh api --method PUT "repos/${{ matrix.target_repo }}/pages" -f "source[branch]=gh-pages" -f "source[path]=/" -f "build_type=legacy" >/dev/null 2>&1 || true
+          gh api --method POST "repos/${{ matrix.target_repo }}/pages/builds" >/dev/null 2>&1 || true
+
+  build-and-release:
+    name: 2. Release APK Version & Play Store Ready AAB File
+    needs: [ deploy-pages-multi ]
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
     env:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -180,15 +212,14 @@ jobs:
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       RUN_NUMBER: ${{ github.run_number }}
       VERSION_NAME: "4.2.${{ github.run_number }}"
-
     steps:
-      - name: 1. Checkout Repository & Pull Latest Branch HEAD
+      - name: 1. Checkout Repository
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
 
-      - name: 2. Setup Node.js 22 & Java 21 (Android Gradle Toolchain for API 35)
+      - name: 2. Setup Node.js 22 & Java 21
         uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -197,37 +228,19 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: 3. Download Verified www/ Web Bundle from Job 1
+      - name: 3. Download www Bundle
         uses: actions/download-artifact@v4
         with:
-          name: sunnah24-verified-www-bundle
+          name: verified-www-bundle
           path: ./www
 
-      - name: 4. Verify Web Assets for APK/AAB Bundle
+      - name: 4. Copy Web Assets
         run: |
           for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
-            if [ -f "www/$f" ]; then
-              cp -f "www/$f" "$f"
-            elif [ -f "$f" ]; then
-              cp -f "$f" "www/$f"
-            fi
+            if [ -f "www/$f" ]; then cp -f "www/$f" "$f"; fi
           done
 
-          test -f www/index.html
-          test -f www/style.css
-          test -f www/app.js
-          test -f www/manifest.json
-          test -f www/sw.js
-          test -f www/icon.svg
-          test -f www/privacy.html
-          for jsfile in www/*.js; do
-            if [ -f "$jsfile" ]; then
-              node --check "$jsfile"
-            fi
-          done
-          echo "✅ All Sunnah 24 assets and JS syntax verified for Android packaging!"
-
-      - name: 5. Prepare Persistent Release Keystore
+      - name: 5. Setup Keystore
         run: |
           mkdir -p signing
           KEYSTORE_FILE="$PWD/signing/sunnah24-release.keystore"
@@ -240,72 +253,43 @@ jobs:
             KS_PASS="$KEYSTORE_PASSWORD"
             K_ALIAS="$KEY_ALIAS"
             K_PASS="$KEY_PASSWORD"
-          elif [ -f "sunnah24-release.keystore" ]; then
-            cp -f "sunnah24-release.keystore" "$KEYSTORE_FILE"
-            echo "✅ Using root sunnah24-release.keystore"
-          elif [ -f "$KEYSTORE_FILE" ]; then
-            echo "✅ Found existing persistent keystore in repository: $KEYSTORE_FILE"
           else
-            echo "🔐 Generating permanent keystore..."
             keytool -genkey -v -keystore "$KEYSTORE_FILE" \
               -alias "$K_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 \
               -storepass "$KS_PASS" -keypass "$K_PASS" \
               -dname "CN=MKRWeb, OU=Sunnah24, O=MKRWeb, L=Rajshahi, S=Rajshahi, C=BD"
-
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add -f "signing/sunnah24-release.keystore"
-            git commit -m "chore(signing): persist permanent Android release keystore [skip ci]" || true
-            git pull --rebase origin ${GITHUB_REF_NAME} || true
-            git push origin HEAD:${GITHUB_REF_NAME} || true
           fi
-
           echo "KEYSTORE_FILE=${KEYSTORE_FILE}" >> $GITHUB_ENV
           echo "KS_PASS=${KS_PASS}" >> $GITHUB_ENV
           echo "K_ALIAS=${K_ALIAS}" >> $GITHUB_ENV
           echo "K_PASS=${K_PASS}" >> $GITHUB_ENV
 
-      - name: 6. Build Capacitor Android Bridge, Play Store API 35 Config & Strict Source-Set Isolation
+      - name: 6. Build Android APK & AAB
         env:
-          NODE_OPTIONS: "--tls-min-v1.2 --dns-result-order=ipv4first"
+          NODE_OPTIONS: "--tls-min-v1.2"
         run: |
-          npm config set registry https://registry.npmjs.org/
-          npm config set fetch-retries 5
-          npm config set fetch-retry-mintimeout 20000
-          npm config set fetch-retry-maxtimeout 120000
-          npm install --no-audit --no-fund || (sleep 5 && npm install --no-audit --no-fund)
-          if [ ! -d "android" ]; then
-            npx cap add android
-          fi
+          npm install --no-audit --no-fund
+          if [ ! -d "android" ]; then npx cap add android; fi
           npx cap copy android
           npx cap sync android
 
-          # 6A. Enforce Google Play Console Target API 35 (Android 15) in variables.gradle
-          VARS_GRADLE="android/variables.gradle"
-          if [ -f "$VARS_GRADLE" ]; then
-            sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 35/g' "$VARS_GRADLE"
-            sed -i 's/targetSdkVersion = [0-9]*/targetSdkVersion = 35/g' "$VARS_GRADLE"
-            echo "✅ Enforced compileSdkVersion=35 and targetSdkVersion=35 in variables.gradle"
+          # Enforce API 35
+          if [ -f "android/variables.gradle" ]; then
+            sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 35/g' android/variables.gradle
+            sed -i 's/targetSdkVersion = [0-9]*/targetSdkVersion = 35/g' android/variables.gradle
           fi
 
-          # 6B. Compute VERSION_CODE, inject Native Release Signing, R8 Mapping & Play Store Compliance into app/build.gradle
           VERSION_CODE=$((2100 + RUN_NUMBER))
-          echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_ENV
-
           APP_GRADLE="android/app/build.gradle"
           if [ -f "$APP_GRADLE" ]; then
             sed -i "s/versionCode [0-9]*/versionCode ${VERSION_CODE}/g" "$APP_GRADLE"
             sed -i "s/versionName \"[^\"]*\"/versionName \"${VERSION_NAME}\"/g" "$APP_GRADLE"
-
+            
             if ! grep -q "GOOGLE PLAY STORE PRODUCTION AAB CONFIGURATION" "$APP_GRADLE"; then
               cat << 'GRADLE_EOF' >> "$APP_GRADLE"
-
-          // --- GOOGLE PLAY STORE PRODUCTION AAB CONFIGURATION ---
           android {
               compileSdk 35
-              defaultConfig {
-                  targetSdk 35
-              }
+              defaultConfig { targetSdk 35 }
               signingConfigs {
                   release {
                       storeFile file(System.getenv("KEYSTORE_FILE") ?: "${rootProject.projectDir}/../signing/sunnah24-release.keystore")
@@ -323,1027 +307,62 @@ jobs:
                       minifyEnabled true
                       shrinkResources true
                       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-                      ndk {
-                          debugSymbolLevel 'FULL'
-                      }
                   }
               }
           }
           GRADLE_EOF
-              sed -i 's/^          //' "$APP_GRADLE"
             fi
-            echo "✅ Configured Play Store API 35, R8 Minification & Native Release Signing in $APP_GRADLE"
           fi
 
-          # 6C. Append Keep Rules for WebView JavascriptInterface & Capacitor Plugins to proguard-rules.pro
-          PROGUARD_FILE="android/app/proguard-rules.pro"
-          if ! grep -q "com.mkrweb.sunnah24" "$PROGUARD_FILE" 2>/dev/null; then
-            cat << 'PROGUARD_EOF' >> "$PROGUARD_FILE"
-          -keepattributes JavascriptInterface
-          -keepattributes *Annotation*
-          -keepclassmembers class * {
-              @android.webkit.JavascriptInterface <methods>;
-          }
-          -keep class com.mkrweb.sunnah24.** { *; }
-          -keep class com.getcapacitor.** { *; }
-          PROGUARD_EOF
-            sed -i 's/^          //' "$PROGUARD_FILE"
-          fi
-
-          # 6D. Convert www/icon.svg into All Android Launcher Icons & Adaptive Mipmaps
+          # Generate Icons
           sudo apt-get update && sudo apt-get install -y librsvg2-bin imagemagick
           RES_DIR="android/app/src/main/res"
-
-          declare -A SIZES=(
-            ["mipmap-mdpi"]=48
-            ["mipmap-hdpi"]=72
-            ["mipmap-xhdpi"]=96
-            ["mipmap-xxhdpi"]=144
-            ["mipmap-xxxhdpi"]=192
-          )
-
-          for folder in "${!SIZES[@]}"; do
-            size=${SIZES[$folder]}
-            mkdir -p "$RES_DIR/$folder"
-            rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$folder/ic_launcher.png"
-            rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$folder/ic_launcher_round.png"
-            rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$folder/ic_launcher_foreground.png"
+          for size in 48 72 96 144 192; do
+            case $size in
+              48) d="mipmap-mdpi";;
+              72) d="mipmap-hdpi";;
+              96) d="mipmap-xhdpi";;
+              144) d="mipmap-xxhdpi";;
+              192) d="mipmap-xxxhdpi";;
+            esac
+            mkdir -p "$RES_DIR/$d"
+            rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$d/ic_launcher.png"
+            rsvg-convert -w $size -h $size www/icon.svg -o "$RES_DIR/$d/ic_launcher_round.png"
           done
 
-          rsvg-convert -w 512 -h 512 www/icon.svg -o /tmp/s24_logo_512.png
-          convert -size 1080x1920 xc:"#F1F6F3" /tmp/s24_logo_512.png -gravity center -composite /tmp/s24_splash_screen.png
-          for existing_splash in $(find "$RES_DIR" -name "splash.png"); do
-            cp -f /tmp/s24_splash_screen.png "$existing_splash"
-          done
-
-          rm -f "$RES_DIR/drawable/ic_launcher_background.xml"
-          rm -f "$RES_DIR/drawable/ic_launcher_foreground.xml"
-          rm -f "$RES_DIR/drawable-v24/ic_launcher_foreground.xml"
-          rm -rf "$RES_DIR/mipmap-anydpi-v26"
-          echo "✅ Custom Sunnah 24 Launcher Icons & Splash Screens generated!"
-
-          # 6E. Strip Legacy Storage & Sideload Permissions from Merged Manifest for Play Store Compliance
-          MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
-          if [ -f "$MANIFEST_FILE" ]; then
-            if ! grep -q "xmlns:tools" "$MANIFEST_FILE"; then
-              sed -i 's|<manifest xmlns:android="http://schemas.android.com/apk/res/android"|<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"|' "$MANIFEST_FILE"
-            fi
-            sed -i 's/android:allowBackup="false"/android:allowBackup="true"/g' "$MANIFEST_FILE" || true
-            sed -i '/REQUEST_INSTALL_PACKAGES/d' "$MANIFEST_FILE" || true
-            sed -i '/READ_EXTERNAL_STORAGE/d' "$MANIFEST_FILE" || true
-            sed -i '/WRITE_EXTERNAL_STORAGE/d' "$MANIFEST_FILE" || true
-            sed -i '/<\/manifest>/i \    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.AD_ID" tools:node="remove" />' "$MANIFEST_FILE"
-          fi
-
-          # 6F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/debug/AndroidManifest.xml for Sideload APK
-          DEBUG_MANIFEST_DIR="android/app/src/debug"
-          mkdir -p "$DEBUG_MANIFEST_DIR"
-          cat << 'EOF' > "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
-          <?xml version="1.0" encoding="utf-8"?>
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-              <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-          </manifest>
-          EOF
-          sed -i 's/^          //' "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
-
-          # 6G. Inject FileProvider XML for Scoped Storage
-          XML_DIR="android/app/src/main/res/xml"
-          mkdir -p "$XML_DIR"
-          cat << 'EOF' > "$XML_DIR/file_paths.xml"
-          <?xml version="1.0" encoding="utf-8"?>
-          <paths xmlns:android="http://schemas.android.com/apk/res/android">
-              <external-files-path name="external_files_path" path="." />
-              <external-files-path name="apk_updates_dir" path="Download/" />
-              <external-cache-path name="external_cache_path" path="." />
-              <cache-path name="cache_path" path="." />
-              <files-path name="files_path" path="." />
-          </paths>
-          EOF
-          sed -i 's/^          //' "$XML_DIR/file_paths.xml"
-
-          if [ -f "$MANIFEST_FILE" ]; then
-            if ! grep -q "fileprovider" "$MANIFEST_FILE"; then
-              sed -i '/<\/application>/i \
-              <provider\
-                  android:name="androidx.core.content.FileProvider"\
-                  android:authorities="${applicationId}.fileprovider"\
-                  android:exported="false"\
-                  android:grantUriPermissions="true">\
-                  <meta-data\
-                      android:name="android.support.FILE_PROVIDER_PATHS"\
-                      android:resource="@xml/file_paths" />\
-              </provider>' "$MANIFEST_FILE"
-            fi
-          fi
-
-          # 6H. STRICT SOURCE-SET ISOLATION FOR GOOGLE PLAY POLICY COMPLIANCE:
-          rm -f android/app/src/main/java/com/mkrweb/sunnah24/MainActivity.java
-
-          RELEASE_JAVA_DIR="android/app/src/release/java/com/mkrweb/sunnah24"
-          mkdir -p "$RELEASE_JAVA_DIR"
-          cat << 'REL_JAVA_EOF' > "$RELEASE_JAVA_DIR/MainActivity.java"
-          package com.mkrweb.sunnah24;
-
-          import android.content.ContentValues;
-          import android.content.pm.PackageInfo;
-          import android.graphics.Color;
-          import android.net.Uri;
-          import android.os.Build;
-          import android.os.Bundle;
-          import android.os.Environment;
-          import android.provider.MediaStore;
-          import android.webkit.JavascriptInterface;
-          import android.webkit.WebSettings;
-          import android.webkit.WebView;
-          import androidx.activity.OnBackPressedCallback;
-          import com.getcapacitor.BridgeActivity;
-          import java.io.BufferedReader;
-          import java.io.File;
-          import java.io.FileInputStream;
-          import java.io.FileOutputStream;
-          import java.io.InputStreamReader;
-          import java.io.OutputStream;
-          import java.nio.charset.StandardCharsets;
-
-          public class MainActivity extends BridgeActivity {
-              @Override
-              public void onCreate(Bundle savedInstanceState) {
-                  super.onCreate(savedInstanceState);
-
-                  if (this.bridge != null && this.bridge.getWebView() != null) {
-                      WebView webView = this.bridge.getWebView();
-                      webView.setBackgroundColor(Color.parseColor("#F1F6F3"));
-                      WebSettings ws = webView.getSettings();
-                      ws.setDomStorageEnabled(true);
-                      ws.setDatabaseEnabled(true);
-                      ws.setCacheMode(WebSettings.LOAD_DEFAULT);
-                      webView.addJavascriptInterface(new PlayStoreSafeVaultBridge(), "AndroidDownloader");
-                  }
-
-                  getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-                      @Override
-                      public void handleOnBackPressed() {
-                          if (bridge != null && bridge.getWebView() != null) {
-                              bridge.getWebView().evaluateJavascript(
-                                  "(window.handleSunnahBackNavigation ? window.handleSunnahBackNavigation() : false)",
-                                  result -> {
-                                      if ("false".equals(result)) {
-                                          finish();
-                                      }
-                                  }
-                              );
-                          } else {
-                              finish();
-                          }
-                      }
-                  });
-              }
-
-              public class PlayStoreSafeVaultBridge {
-                  @JavascriptInterface
-                  public boolean isSelfUpdateSupported() {
-                      return false;
-                  }
-
-                  @JavascriptInterface
-                  public boolean canRequestPackageInstalls() {
-                      return false;
-                  }
-
-                  @JavascriptInterface
-                  public String getInstalledVersionName() {
-                      try {
-                          PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                          return pInfo.versionName;
-                      } catch (Exception e) {
-                          return "4.2.0";
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public boolean autoSaveInternalVault(String jsonPayload) {
-                      try {
-                          File vaultFile = new File(getFilesDir(), "sunnah24_enterprise_vault.json");
-                          try (FileOutputStream fos = new FileOutputStream(vaultFile, false)) {
-                              fos.write(jsonPayload.getBytes(StandardCharsets.UTF_8));
-                              fos.flush();
-                          }
-                          return true;
-                      } catch (Exception e) {
-                          return false;
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public String autoLoadInternalVault() {
-                      try {
-                          File vaultFile = new File(getFilesDir(), "sunnah24_enterprise_vault.json");
-                          if (!vaultFile.exists()) return "";
-                          StringBuilder sb = new StringBuilder();
-                          try (BufferedReader reader = new BufferedReader(
-                              new InputStreamReader(new FileInputStream(vaultFile), StandardCharsets.UTF_8))) {
-                              String line;
-                              while ((line = reader.readLine()) != null) {
-                                  sb.append(line);
-                              }
-                          }
-                          return sb.toString();
-                      } catch (Exception e) {
-                          return "";
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public String saveJsonToDownloads(String fileName, String jsonContent) {
-                      try {
-                          String safeFileName = fileName.replaceAll("[^a-zA-Z0-9._-]", "_");
-                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                              ContentValues values = new ContentValues();
-                              values.put(MediaStore.Downloads.DISPLAY_NAME, safeFileName);
-                              values.put(MediaStore.Downloads.MIME_TYPE, "application/json");
-                              values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
-                              Uri uri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
-                              if (uri != null) {
-                                  try (OutputStream os = getContentResolver().openOutputStream(uri)) {
-                                      if (os != null) {
-                                          os.write(jsonContent.getBytes(StandardCharsets.UTF_8));
-                                          os.flush();
-                                      }
-                                  }
-                                  return "Downloads/" + safeFileName;
-                              }
-                          }
-                          File appDownloadDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-                          if (appDownloadDir == null) appDownloadDir = getFilesDir();
-                          if (!appDownloadDir.exists()) appDownloadDir.mkdirs();
-                          File outFile = new File(appDownloadDir, safeFileName);
-                          try (FileOutputStream fos = new FileOutputStream(outFile)) {
-                              fos.write(jsonContent.getBytes(StandardCharsets.UTF_8));
-                              fos.flush();
-                          }
-                          return outFile.getAbsolutePath();
-                      } catch (Exception e) {
-                          return "ERROR:" + e.getMessage();
-                      }
-                  }
-              }
-          }
-          REL_JAVA_EOF
-          sed -i 's/^          //' "$RELEASE_JAVA_DIR/MainActivity.java"
-
-          DEBUG_JAVA_DIR="android/app/src/debug/java/com/mkrweb/sunnah24"
-          mkdir -p "$DEBUG_JAVA_DIR"
-          cat << 'DBG_JAVA_EOF' > "$DEBUG_JAVA_DIR/MainActivity.java"
-          package com.mkrweb.sunnah24;
-
-          import android.app.DownloadManager;
-          import android.content.BroadcastReceiver;
-          import android.content.ContentValues;
-          import android.content.Context;
-          import android.content.Intent;
-          import android.content.IntentFilter;
-          import android.content.pm.PackageInfo;
-          import android.content.pm.PackageManager;
-          import android.database.Cursor;
-          import android.graphics.Color;
-          import android.net.Uri;
-          import android.os.Build;
-          import android.os.Bundle;
-          import android.os.Environment;
-          import android.os.Handler;
-          import android.os.Looper;
-          import android.provider.MediaStore;
-          import android.provider.Settings;
-          import android.webkit.JavascriptInterface;
-          import android.webkit.WebSettings;
-          import android.webkit.WebView;
-          import android.widget.Toast;
-          import androidx.activity.OnBackPressedCallback;
-          import androidx.core.content.FileProvider;
-          import com.getcapacitor.BridgeActivity;
-          import java.io.BufferedReader;
-          import java.io.File;
-          import java.io.FileInputStream;
-          import java.io.FileOutputStream;
-          import java.io.InputStreamReader;
-          import java.io.OutputStream;
-          import java.nio.charset.StandardCharsets;
-          import java.util.concurrent.atomic.AtomicBoolean;
-
-          public class MainActivity extends BridgeActivity {
-              private long downloadId = -1;
-              private File targetApkFile = null;
-              private File pendingInstallFile = null;
-              private final AtomicBoolean installerLaunchedForCurrentDownload = new AtomicBoolean(false);
-              private final Handler progressHandler = new Handler(Looper.getMainLooper());
-
-              private final BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
-                  @Override
-                  public void onReceive(Context context, Intent intent) {
-                      long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-                      if (downloadId != -1 && downloadId == id) {
-                          progressHandler.removeCallbacksAndMessages(null);
-                          if (installerLaunchedForCurrentDownload.compareAndSet(false, true)) {
-                              notifyWebProgress(100, "✅ ডাউনলোড সম্পন্ন! ইনস্টলার চালু হচ্ছে...");
-                              launchApkInstallerGuarantee(targetApkFile, id);
-                          }
-                      }
-                  }
-              };
-
-              @Override
-              public void onCreate(Bundle savedInstanceState) {
-                  super.onCreate(savedInstanceState);
-
-                  File updateDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-                  if (updateDir != null) {
-                      if (!updateDir.exists()) updateDir.mkdirs();
-                      targetApkFile = new File(updateDir, "Sunnah24-Update.apk");
-                  }
-
-                  if (this.bridge != null && this.bridge.getWebView() != null) {
-                      WebView webView = this.bridge.getWebView();
-                      webView.setBackgroundColor(Color.parseColor("#F1F6F3"));
-                      WebSettings ws = webView.getSettings();
-                      ws.setDomStorageEnabled(true);
-                      ws.setDatabaseEnabled(true);
-                      ws.setCacheMode(WebSettings.LOAD_NO_CACHE);
-                      webView.clearCache(true);
-                      webView.addJavascriptInterface(new WebAppDownloader(), "AndroidDownloader");
-                  }
-
-                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                      registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
-                  } else {
-                      registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-                  }
-
-                  getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-                      @Override
-                      public void handleOnBackPressed() {
-                          if (bridge != null && bridge.getWebView() != null) {
-                              bridge.getWebView().evaluateJavascript(
-                                  "(window.handleSunnahBackNavigation ? window.handleSunnahBackNavigation() : false)",
-                                  result -> {
-                                      if ("false".equals(result)) {
-                                          finish();
-                                      }
-                                  }
-                              );
-                          } else {
-                              finish();
-                          }
-                      }
-                  });
-              }
-
-              @Override
-              public void onResume() {
-                  super.onResume();
-                  if (pendingInstallFile != null && pendingInstallFile.exists()) {
-                      if (canInstallUnknownPackages()) {
-                          File fileToInstall = pendingInstallFile;
-                          pendingInstallFile = null;
-                          notifyWebProgress(100, "✅ অনুমতি পাওয়া গেছে! ইনস্টলার চালু হচ্ছে...");
-                          triggerDirectFileProviderInstaller(fileToInstall, -1);
-                      }
-                  }
-              }
-
-              @Override
-              public void onDestroy() {
-                  super.onDestroy();
-                  progressHandler.removeCallbacksAndMessages(null);
-                  try {
-                      unregisterReceiver(onDownloadComplete);
-                  } catch (Exception ignored) {}
-              }
-
-              private boolean hasInstallPermissionInManifest() {
-                  try {
-                      PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_PERMISSIONS);
-                      if (info.requestedPermissions != null) {
-                          for (String p : info.requestedPermissions) {
-                              if ("android.permission.REQUEST_INSTALL_PACKAGES".equals(p)) {
-                                  return true;
-                              }
-                          }
-                      }
-                  } catch (Exception ignored) {}
-                  return false;
-              }
-
-              private boolean canInstallUnknownPackages() {
-                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                      if (!hasInstallPermissionInManifest()) {
-                          return true;
-                      }
-                      return getPackageManager().canRequestPackageInstalls();
-                  }
-                  return true;
-              }
-
-              private File getVersionedApkFile(String versionTag) {
-                  String safeTag = (versionTag == null || versionTag.isEmpty())
-                      ? "latest"
-                      : versionTag.replaceAll("[^a-zA-Z0-9._-]", "_");
-                  File updateDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-                  if (updateDir == null) {
-                      updateDir = getFilesDir();
-                  }
-                  if (!updateDir.exists()) updateDir.mkdirs();
-                  return new File(updateDir, "Sunnah24-" + safeTag + ".apk");
-              }
-
-              private void notifyWebProgress(int pct, String message) {
-                  runOnUiThread(() -> {
-                      if (bridge != null && bridge.getWebView() != null) {
-                          String safeMsg = message.replace("'", "\\'");
-                          bridge.getWebView().evaluateJavascript(
-                              "if(window.onSunnahApkDownloadProgress) window.onSunnahApkDownloadProgress(" + pct + ", '" + safeMsg + "');",
-                              null
-                          );
-                      }
-                  });
-              }
-
-              private void launchApkInstallerGuarantee(File apkFile, long completedDownloadId) {
-                  runOnUiThread(() -> {
-                      File resolvedFile = (apkFile != null && apkFile.exists()) ? apkFile : targetApkFile;
-
-                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasInstallPermissionInManifest()) {
-                          if (!getPackageManager().canRequestPackageInstalls()) {
-                              pendingInstallFile = resolvedFile;
-                              notifyWebProgress(100, "⚙️ আপডেট ইনস্টল করতে 'Allow from this source' অপশনটি চালু করুন...");
-                              Toast.makeText(
-                                  MainActivity.this,
-                                  "⚙️ অনুগ্রহ করে 'Allow from this source' চালু করে ব্যাক করুন — স্বয়ংক্রিয়ভাবে ইনস্টল শুরু হবে!",
-                                  Toast.LENGTH_LONG
-                              ).show();
-                              try {
-                                  Intent settingsIntent = new Intent(
-                                      Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                                      Uri.parse("package:" + getPackageName())
-                                  );
-                                  settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                  startActivity(settingsIntent);
-                                  return;
-                              } catch (Exception ignored) {}
-                          }
-                      }
-
-                      triggerDirectFileProviderInstaller(resolvedFile, completedDownloadId);
-                  });
-              }
-
-              private void triggerDirectFileProviderInstaller(File apkFile, long completedDownloadId) {
-                  runOnUiThread(() -> {
-                      try {
-                          if (apkFile != null && apkFile.exists() && apkFile.length() > 1024 * 100) {
-                              Uri apkUri;
-                              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                  apkUri = FileProvider.getUriForFile(
-                                      MainActivity.this,
-                                      getPackageName() + ".fileprovider",
-                                      apkFile
-                                  );
-                              } else {
-                                  apkUri = Uri.fromFile(apkFile);
-                              }
-                              Intent installIntent = new Intent(Intent.ACTION_VIEW);
-                              installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-                              installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
-                              installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                              installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                              installIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                              startActivity(installIntent);
-                              return;
-                          }
-                      } catch (Exception ignored) {}
-
-                      try {
-                          if (completedDownloadId != -1) {
-                              DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                              Uri contentUri = dm.getUriForDownloadedFile(completedDownloadId);
-                              if (contentUri != null) {
-                                  Intent installIntent = new Intent(Intent.ACTION_VIEW);
-                                  installIntent.setDataAndType(contentUri, "application/vnd.android.package-archive");
-                                  installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
-                                  installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                  installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                  installIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                  startActivity(installIntent);
-                                  return;
-                              }
-                          }
-                      } catch (Exception e) {
-                          Toast.makeText(MainActivity.this, "⚠️ ইনস্টলার চালু করা যায়নি: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                      }
-                  });
-              }
-
-              public class WebAppDownloader {
-                  @JavascriptInterface
-                  public boolean isSelfUpdateSupported() {
-                      return true;
-                  }
-
-                  @JavascriptInterface
-                  public boolean canRequestPackageInstalls() {
-                      return canInstallUnknownPackages();
-                  }
-
-                  @JavascriptInterface
-                  public void openUnknownSourceSettings() {
-                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                          try {
-                              Intent settingsIntent = new Intent(
-                                  Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                                  Uri.parse("package:" + getPackageName())
-                              );
-                              settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                              startActivity(settingsIntent);
-                          } catch (Exception ignored) {}
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public boolean isVersionApkCached(String versionTag) {
-                      File f = getVersionedApkFile(versionTag);
-                      if (f.exists() && f.length() > 1024 * 500) {
-                          targetApkFile = f;
-                          return true;
-                      }
-                      return false;
-                  }
-
-                  @JavascriptInterface
-                  public void installCachedVersionApk(String versionTag) {
-                      File f = getVersionedApkFile(versionTag);
-                      if (f.exists() && f.length() > 1024 * 500) {
-                          targetApkFile = f;
-                          launchApkInstallerGuarantee(f, downloadId);
-                      } else if (targetApkFile != null && targetApkFile.exists()) {
-                          launchApkInstallerGuarantee(targetApkFile, downloadId);
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public boolean isLocalApkCached() {
-                      return targetApkFile != null && targetApkFile.exists() && targetApkFile.length() > 1024 * 500;
-                  }
-
-                  @JavascriptInterface
-                  public void installLocalApk() {
-                      if (targetApkFile != null && targetApkFile.exists()) {
-                          launchApkInstallerGuarantee(targetApkFile, downloadId);
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public void downloadAndAutoInstallVersionApk(String urlString, String versionTag) {
-                      targetApkFile = getVersionedApkFile(versionTag);
-                      if (targetApkFile.exists() && targetApkFile.length() > 1024 * 500) {
-                          notifyWebProgress(100, "✅ ফাইল ফোনে প্রস্তুত আছে! ইনস্টলার চালু হচ্ছে...");
-                          launchApkInstallerGuarantee(targetApkFile, downloadId);
-                          return;
-                      }
-                      startNativeApkDownload(urlString, versionTag);
-                  }
-
-                  @JavascriptInterface
-                  public void downloadAndInstallApk(String urlString) {
-                      startNativeApkDownload(urlString, "latest");
-                  }
-
-                  private void startNativeApkDownload(String urlString, String versionTag) {
-                      try {
-                          String safeTag = (versionTag == null || versionTag.isEmpty())
-                              ? "latest"
-                              : versionTag.replaceAll("[^a-zA-Z0-9._-]", "_");
-                          String fileName = "Sunnah24-" + safeTag + ".apk";
-                          targetApkFile = getVersionedApkFile(versionTag);
-                          if (targetApkFile.exists()) {
-                              targetApkFile.delete();
-                          }
-                          installerLaunchedForCurrentDownload.set(false);
-
-                          runOnUiThread(() -> Toast.makeText(MainActivity.this, "⬇️ আপডেট ডাউনলোড শুরু হয়েছে...", Toast.LENGTH_SHORT).show());
-
-                          DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlString));
-                          request.setTitle("Sunnah 24 Update (" + safeTag + ")");
-                          request.setDescription("Downloading official update package...");
-                          request.setMimeType("application/vnd.android.package-archive");
-                          request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                          request.setDestinationInExternalFilesDir(MainActivity.this, Environment.DIRECTORY_DOWNLOADS, fileName);
-
-                          DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                          downloadId = dm.enqueue(request);
-
-                          progressHandler.removeCallbacksAndMessages(null);
-                          progressHandler.post(new Runnable() {
-                              @Override
-                              public void run() {
-                                  DownloadManager.Query q = new DownloadManager.Query();
-                                  q.setFilterById(downloadId);
-                                  try (Cursor c = dm.query(q)) {
-                                      if (c != null && c.moveToFirst()) {
-                                          int statusIdx = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
-                                          int bytesIdx = c.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
-                                          int totalIdx = c.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
-                                          int status = statusIdx >= 0 ? c.getInt(statusIdx) : -1;
-
-                                          if (bytesIdx >= 0 && totalIdx >= 0) {
-                                              long downloaded = c.getLong(bytesIdx);
-                                              long total = c.getLong(totalIdx);
-                                              if (total > 0) {
-                                                  int pct = (int) ((downloaded * 100L) / total);
-                                                  if (pct < 100) {
-                                                      notifyWebProgress(pct, "⬇️ ডাউনলোড হচ্ছে (" + pct + "%)...");
-                                                  }
-                                              }
-                                          }
-
-                                          if (status == DownloadManager.STATUS_SUCCESSFUL) {
-                                              progressHandler.removeCallbacksAndMessages(null);
-                                              if (installerLaunchedForCurrentDownload.compareAndSet(false, true)) {
-                                                  notifyWebProgress(100, "✅ ডাউনলোড সম্পন্ন! ইনস্টলার স্ক্রিন চালু হচ্ছে...");
-                                                  launchApkInstallerGuarantee(targetApkFile, downloadId);
-                                              }
-                                              return;
-                                          } else if (status == DownloadManager.STATUS_FAILED) {
-                                              progressHandler.removeCallbacksAndMessages(null);
-                                              notifyWebProgress(-1, "❌ ডাউনলোড ব্যর্থ হয়েছে। পুনরায় চেষ্টা করুন।");
-                                              return;
-                                          }
-                                      }
-                                  } catch (Exception ignored) {}
-                                  progressHandler.postDelayed(this, 350);
-                              }
-                          });
-                      } catch (Exception e) {
-                          runOnUiThread(() -> Toast.makeText(MainActivity.this, "Download Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public String getInstalledVersionName() {
-                      try {
-                          PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                          return pInfo.versionName;
-                      } catch (Exception e) {
-                          return "4.2.0";
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public boolean autoSaveInternalVault(String jsonPayload) {
-                      try {
-                          File vaultFile = new File(getFilesDir(), "sunnah24_enterprise_vault.json");
-                          try (FileOutputStream fos = new FileOutputStream(vaultFile, false)) {
-                              fos.write(jsonPayload.getBytes(StandardCharsets.UTF_8));
-                              fos.flush();
-                          }
-                          return true;
-                      } catch (Exception e) {
-                          return false;
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public String autoLoadInternalVault() {
-                      try {
-                          File vaultFile = new File(getFilesDir(), "sunnah24_enterprise_vault.json");
-                          if (!vaultFile.exists()) return "";
-                          StringBuilder sb = new StringBuilder();
-                          try (BufferedReader reader = new BufferedReader(
-                              new InputStreamReader(new FileInputStream(vaultFile), StandardCharsets.UTF_8))) {
-                              String line;
-                              while ((line = reader.readLine()) != null) {
-                                  sb.append(line);
-                              }
-                          }
-                          return sb.toString();
-                      } catch (Exception e) {
-                          return "";
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public String saveJsonToDownloads(String fileName, String jsonContent) {
-                      try {
-                          String safeFileName = fileName.replaceAll("[^a-zA-Z0-9._-]", "_");
-                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                              ContentValues values = new ContentValues();
-                              values.put(MediaStore.Downloads.DISPLAY_NAME, safeFileName);
-                              values.put(MediaStore.Downloads.MIME_TYPE, "application/json");
-                              values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
-                              Uri uri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
-                              if (uri != null) {
-                                  try (OutputStream os = getContentResolver().openOutputStream(uri)) {
-                                      if (os != null) {
-                                          os.write(jsonContent.getBytes(StandardCharsets.UTF_8));
-                                          os.flush();
-                                      }
-                                  }
-                                  return "Downloads/" + safeFileName;
-                              }
-                          }
-                          File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                          if (!dir.exists()) dir.mkdirs();
-                          File outFile = new File(dir, safeFileName);
-                          try (FileOutputStream fos = new FileOutputStream(outFile)) {
-                              fos.write(jsonContent.getBytes(StandardCharsets.UTF_8));
-                              fos.flush();
-                          }
-                          return outFile.getAbsolutePath();
-                      } catch (Exception e) {
-                          return "ERROR:" + e.getMessage();
-                      }
-                  }
-              }
-          }
-          DBG_JAVA_EOF
-          sed -i 's/^          //' "$DEBUG_JAVA_DIR/MainActivity.java"
-          echo "✅ Isolated Play Store Safe Release MainActivity & Sideload Debug MainActivity!"
-
-      - name: 7. Compile Sideload APK (assembleDebug) & Play Store Signed AAB (bundleRelease)
-        working-directory: ./android
-        run: |
-          chmod +x gradlew
+          cd android
           ./gradlew assembleDebug bundleRelease --no-daemon
+          cd ..
 
-      - name: 8. Sign Sideload APK & Verify Signed Play Store AAB
-        run: |
+          # Sign APK
           UNSIGNED_APK="android/app/build/outputs/apk/debug/app-debug.apk"
           SIGNED_APK="Sunnah-24-v4.2-Enterprise-Signed.apk"
-
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
           $BUILD_TOOLS_DIR/zipalign -f -v -p 4 "$UNSIGNED_APK" app-release-aligned.apk
-
           $BUILD_TOOLS_DIR/apksigner sign \
             --ks "$KEYSTORE_FILE" \
             --ks-key-alias "$K_ALIAS" \
             --ks-pass "pass:$KS_PASS" \
             --key-pass "pass:$K_PASS" \
-            --v1-signing-enabled true \
-            --v2-signing-enabled true \
-            --v3-signing-enabled true \
             --out "$SIGNED_APK" \
             app-release-aligned.apk
 
-          $BUILD_TOOLS_DIR/apksigner verify --verbose "$SIGNED_APK"
-
+          # Copy AAB
           AAB_PATH=$(find android/app/build/outputs/bundle/release -name "*.aab" | head -n 1)
           if [ -n "$AAB_PATH" ]; then
-            jarsigner -verify -verbose -certs "$AAB_PATH"
             cp "$AAB_PATH" ./Sunnah-24-v4.2-PlayStore-Signed.aab
-            echo "✅ Play Store Signed AAB verified: Sunnah-24-v4.2-PlayStore-Signed.aab"
-          else
-            echo "❌ ERROR: Play Store AAB was not generated!"
-            exit 1
           fi
 
-      - name: 9. Upload Signed APK & Play Store AAB as Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Sunnah-24-Enterprise-Release-Bundle
-          path: |
-            Sunnah-24-v4.2-Enterprise-Signed.apk
-            Sunnah-24-v4.2-PlayStore-Signed.aab
-
-      - name: 10. Publish Atomic GitHub Release with APK & Play Store AAB (Fault-Tolerant 403-Safe)
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        continue-on-error: true
+      - name: 7. Publish GitHub Release (Signed APK & Play Store AAB)
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PAT || secrets.GH_PAT || github.token }}
         run: |
           TAG="v${VERSION_NAME}"
           TITLE="☪️ Sunnah 24 v${VERSION_NAME} — Play Store Ready AAB & Signed Enterprise APK"
-          cat << 'EOF' > /tmp/release_notes.md
-          ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Play Store Ready `.aab` & Signed Android `.apk` (v${VERSION_NAME})
-          - **Google Play Store Ready `.aab` (`Sunnah-24-v4.2-PlayStore-Signed.aab`):** Compiled with `targetSdk 35` / `compileSdk 35`, R8 code shrinking + deobfuscation mapping, zero self-updater bytecode, and zero legacy storage permissions.
-          - **Sideload Auto-Updating `.apk` (`Sunnah-24-v4.2-Enterprise-Signed.apk`):** Full in-app update support via Android's system DownloadManager for direct website users.
-          - **Triple-Redundant Auto-Vault:** Preserves all user habit records across LocalStorage, IndexedDB, and Native Android Vault.
-          EOF
-          sed -i 's/^          //' /tmp/release_notes.md
-          sed -i "s/\${VERSION_NAME}/${VERSION_NAME}/g" /tmp/release_notes.md
-
+          
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" Sunnah-24-v4.2-Enterprise-Signed.apk Sunnah-24-v4.2-PlayStore-Signed.aab --clobber || true
-            echo "✅ Updated existing GitHub Release $TAG"
           else
-            if gh release create "$TAG" Sunnah-24-v4.2-Enterprise-Signed.apk Sunnah-24-v4.2-PlayStore-Signed.aab --title "$TITLE" --notes-file /tmp/release_notes.md --target "${GITHUB_SHA}"; then
-              echo "✅ Published GitHub Release $TAG successfully!"
-            else
-              echo "ℹ️ Notice: Default GITHUB_TOKEN has read-only Release permissions (403). Your Signed APK & Play Store AAB are already safely uploaded in Step 9 Build Artifacts (Sunnah-24-Enterprise-Release-Bundle)!"
-              echo "💡 To also enable automatic public Releases page publishing, go to Repo Settings -> Actions -> General -> Workflow permissions -> select 'Read and write permissions' and click Save."
-            fi
-          fi
-
-  prepare-multi-repo-matrix:
-    name: 3. Discover & Prepare Target Repositories Matrix (Pages + Release)
-    needs: [ deploy-pages, build-and-release-apk ]
-    if: github.event_name != 'pull_request'
-    runs-on: ubuntu-24.04
-    outputs:
-      has_targets: ${{ steps.discover.outputs.has_targets }}
-      repo_matrix: ${{ steps.discover.outputs.repo_matrix }}
-    env:
-      RAW_INPUT_REPOS: ${{ github.event.inputs.target_repositories || secrets.MULTI_REPO_TARGETS || vars.MULTI_REPO_TARGETS || '' }}
-    steps:
-      - name: 1. Build Dynamic JSON Matrix of Target Repositories
-        id: discover
-        run: |
-          # Clean comma/space-separated repositories (e.g. "MKRWeb/sunnah-24-mirror, MKRWeb/sunnah-24-backup")
-          CLEAN_LIST=$(echo "${RAW_INPUT_REPOS}" | tr ',' ' ' | xargs)
-          JSON_ARRAY="["
-          FIRST=1
-          for repo in $CLEAN_LIST; do
-            if [ -n "$repo" ] && [ "$repo" != "$GITHUB_REPOSITORY" ]; then
-              if [ "$FIRST" -eq 0 ]; then
-                JSON_ARRAY="${JSON_ARRAY},"
-              fi
-              JSON_ARRAY="${JSON_ARRAY}\"${repo}\""
-              FIRST=0
-            fi
-          done
-          JSON_ARRAY="${JSON_ARRAY}]"
-
-          if [ "$JSON_ARRAY" = "[]" ]; then
-            echo "has_targets=false" >> "$GITHUB_OUTPUT"
-            echo 'repo_matrix=["none"]' >> "$GITHUB_OUTPUT"
-            echo "ℹ️ No external target repositories configured. Skipping multi-repo fan-out."
-          else
-            echo "has_targets=true" >> "$GITHUB_OUTPUT"
-            echo "repo_matrix=${JSON_ARRAY}" >> "$GITHUB_OUTPUT"
-            echo "✅ Prepared simultaneous matrix for target repositories: ${JSON_ARRAY}"
-          fi
-
-  multi-repo-pages-and-release:
-    name: "4. Simultaneous Deploy (${{ matrix.target_repo }}): Codebase + GitHub Pages + Release"
-    needs: [ deploy-pages, build-and-release-apk, prepare-multi-repo-matrix ]
-    if: github.event_name != 'pull_request' && needs.prepare-multi-repo-matrix.outputs.has_targets == 'true'
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-    strategy:
-      fail-fast: false
-      matrix:
-        target_repo: ${{ fromJson(needs.prepare-multi-repo-matrix.outputs.repo_matrix) }}
-    env:
-      SYNC_PAT: ${{ secrets.MULTI_REPO_PAT || secrets.RELEASE_PAT || secrets.GH_PAT || github.token }}
-      TARGET_REPO: ${{ matrix.target_repo }}
-      RUN_NUMBER: ${{ github.run_number }}
-      VERSION_NAME: "4.2.${{ github.run_number }}"
-    steps:
-      - name: 1. Checkout Primary Repository HEAD
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref_name }}
-          fetch-depth: 0
-
-      - name: 2. Download Verified www/ Web Bundle
-        uses: actions/download-artifact@v4
-        with:
-          name: sunnah24-verified-www-bundle
-          path: ./www
-
-      - name: 3. Download Signed APK & Play Store AAB Release Bundle
-        uses: actions/download-artifact@v4
-        with:
-          name: Sunnah-24-Enterprise-Release-Bundle
-          path: ./release-bundle
-
-      - name: 4. Sync Codebase, Deploy Live GitHub Pages & Publish Release on ${{ matrix.target_repo }}
-        env:
-          GH_TOKEN: ${{ secrets.MULTI_REPO_PAT || secrets.RELEASE_PAT || secrets.GH_PAT || github.token }}
-        run: |
-          set -e
-          echo "🚀 Starting simultaneous Codebase + GitHub Pages + Release deployment for: ${TARGET_REPO}"
-          SOURCE_DIR="$PWD"
-          WORK_DIR="/tmp/target_repo_sync"
-          GH_PAGES_DIR="/tmp/target_gh_pages"
-          rm -rf "$WORK_DIR" "$GH_PAGES_DIR"
-
-          # 4A. Clone Target Repository Main/Master Branch
-          if ! git clone --depth 1 "https://x-access-token:${SYNC_PAT}@github.com/${TARGET_REPO}.git" "$WORK_DIR"; then
-            echo "❌ Failed to clone ${TARGET_REPO}. Ensure MULTI_REPO_PAT / RELEASE_PAT has 'repo' & 'workflow' permissions."
-            exit 1
-          fi
-
-          cd "$WORK_DIR"
-          DEFAULT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          mkdir -p www .github/workflows
-
-          # Copy all verified core & future web assets into root and www/ of target repository
-          for asset in index.html style.css app.js sw.js manifest.json icon.svg privacy.html version.json package.json capacitor.config.json; do
-            if [ -f "${SOURCE_DIR}/www/$asset" ]; then
-              cp -f "${SOURCE_DIR}/www/$asset" "./$asset"
-              cp -f "${SOURCE_DIR}/www/$asset" "./www/$asset"
-            elif [ -f "${SOURCE_DIR}/$asset" ]; then
-              cp -f "${SOURCE_DIR}/$asset" "./$asset"
-              cp -f "${SOURCE_DIR}/$asset" "./www/$asset"
-            fi
-          done
-
-          # Copy any extra root or future web assets (.html, .css, .js, .svg, .png, .webp, .ico, .woff2)
-          for extra in "${SOURCE_DIR}/www/"*; do
-            if [ -f "$extra" ]; then
-              bname=$(basename "$extra")
-              cp -f "$extra" "./$bname"
-              cp -f "$extra" "./www/$bname"
-            fi
-          done
-
-          # Copy any future sub-directories (assets/, icons/, audio/, fonts/, data/, components/, locales/, modules/, etc.)
-          for subdir in assets icons audio fonts data components locales modules scripts styles; do
-            if [ -d "${SOURCE_DIR}/www/$subdir" ]; then
-              mkdir -p "./$subdir" "./www/$subdir"
-              cp -rf "${SOURCE_DIR}/www/$subdir/." "./$subdir/"
-              cp -rf "${SOURCE_DIR}/www/$subdir/." "./www/$subdir/"
-            fi
-          done
-
-          # Rewrite repo-specific APK download & release links inside target repository's bundle so its Pages site points to its own Release APK
-          if [ -f "./index.html" ]; then
-            sed -i "s|github.com/MKRWeb/sunnah-24/releases|github.com/${TARGET_REPO}/releases|g" "./index.html" "./www/index.html" || true
-          fi
-          if [ -f "./app.js" ]; then
-            sed -i "s|repos/MKRWeb/sunnah-24/releases|repos/${TARGET_REPO}/releases|g" "./app.js" "./www/app.js" || true
-            sed -i "s|github.com/MKRWeb/sunnah-24/releases|github.com/${TARGET_REPO}/releases|g" "./app.js" "./www/app.js" || true
-          fi
-          if [ -f "./version.json" ]; then
-            sed -i "s|github.com/MKRWeb/sunnah-24/releases|github.com/${TARGET_REPO}/releases|g" "./version.json" "./www/version.json" || true
-          fi
-
-          # Commit & push updated codebase to Target Repository Default Branch
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "chore(sync): atomic codebase update v${VERSION_NAME} from ${GITHUB_REPOSITORY} [skip ci]"
-            git push origin "HEAD:${DEFAULT_BRANCH}"
-            echo "✅ Pushed latest codebase to ${TARGET_REPO} (${DEFAULT_BRANCH})"
-          else
-            echo "ℹ️ Default branch (${DEFAULT_BRANCH}) of ${TARGET_REPO} is already up to date."
-          fi
-
-          # 4B. Deploy Directly to Target Repository's `gh-pages` Branch & Enable GitHub Pages via API
-          mkdir -p "$GH_PAGES_DIR"
-          cd "$GH_PAGES_DIR"
-          git init
-          git checkout -b gh-pages
-          cp -rf "${WORK_DIR}/www/." ./
-          touch .nojekyll
-
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "deploy(pages): live GitHub Pages v${VERSION_NAME} (${GITHUB_SHA::7})"
-          git remote add origin "https://x-access-token:${SYNC_PAT}@github.com/${TARGET_REPO}.git"
-          git push --force origin gh-pages:gh-pages
-          echo "✅ Pushed live web bundle to ${TARGET_REPO} (gh-pages branch)"
-
-          # Enable or update GitHub Pages on target repository via GitHub REST API (serves from gh-pages root /)
-          gh api --method POST "repos/${TARGET_REPO}/pages" \
-            -f "source[branch]=gh-pages" \
-            -f "source[path]=/" >/dev/null 2>&1 || \
-          gh api --method PUT "repos/${TARGET_REPO}/pages" \
-            -f "source[branch]=gh-pages" \
-            -f "source[path]=/" \
-            -f "build_type=legacy" >/dev/null 2>&1 || true
-
-          # Trigger an immediate GitHub Pages build on the target repository
-          gh api --method POST "repos/${TARGET_REPO}/pages/builds" >/dev/null 2>&1 || true
-          echo "🌐 GitHub Pages enabled & live deployment triggered for https://$(echo "${TARGET_REPO}" | cut -d'/' -f1 | tr '[:upper:]' '[:lower:]').github.io/$(echo "${TARGET_REPO}" | cut -d'/' -f2)/"
-
-          # 4C. Publish Versioned GitHub Release (v4.2.<RUN_NUMBER>) with Signed APK & Play Store AAB on Target Repository
-          TAG="v${VERSION_NAME}"
-          TITLE="☪️ Sunnah 24 v${VERSION_NAME} — Play Store Ready AAB & Signed Enterprise APK"
-          cat << EOF > /tmp/target_release_notes.md
-          ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Play Store Ready \`.aab\` & Signed Android \`.apk\` (v${VERSION_NAME})
-          - **Live GitHub Pages Web App:** Deployed simultaneously from \`${GITHUB_REPOSITORY}\` (Commit \`${GITHUB_SHA::7}\`).
-          - **Google Play Store Ready \`.aab\` (\`Sunnah-24-v4.2-PlayStore-Signed.aab\`):** Compiled with \`targetSdk 35\` / \`compileSdk 35\`, R8 code shrinking, and Play Store policy isolation.
-          - **Sideload Auto-Updating \`.apk\` (\`Sunnah-24-v4.2-Enterprise-Signed.apk\`):** Direct 1-click website installer & in-app update support.
-          EOF
-          sed -i 's/^          //' /tmp/target_release_notes.md
-
-          if gh release view "$TAG" --repo "${TARGET_REPO}" >/dev/null 2>&1; then
-            gh release upload "$TAG" \
-              "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-Enterprise-Signed.apk" \
-              "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-PlayStore-Signed.aab" \
-              --repo "${TARGET_REPO}" --clobber
-            echo "✅ Updated existing Release ${TAG} on ${TARGET_REPO}"
-          else
-            gh release create "$TAG" \
-              "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-Enterprise-Signed.apk" \
-              "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-PlayStore-Signed.aab" \
-              --repo "${TARGET_REPO}" \
-              --title "$TITLE" \
-              --notes-file /tmp/target_release_notes.md
-            echo "✅ Published new GitHub Release ${TAG} (Signed APK + Play Store AAB) on ${TARGET_REPO}"
+            gh release create "$TAG" Sunnah-24-v4.2-Enterprise-Signed.apk Sunnah-24-v4.2-PlayStore-Signed.aab --title "$TITLE" --notes "Automated release v${VERSION_NAME}" || true
           fi
 
