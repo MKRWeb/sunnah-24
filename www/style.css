@@ -9643,9 +9643,12 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 
 
 /* ==========================================================================
-   V10.6 SYMMETRICAL MASJID AN-NABAWI FULL-CARD SVG SCENE UI
-   Covers फজর, যোহর, আসর, মাগরিব, ইশা, জুমু'আ, ইশরাক/চাশত ও ৩ নিষিদ্ধ সময়
-   while preserving all prior V10.1 updates & dark mode compatibility
+   V10.7 COMPACT NON-OVERLAPPING SYMMETRICAL MASJID AN-NABAWI SCENE UI
+   - Shrunk Masjid an-Nabawi SVG sits in a dedicated upper visual stage
+     (102px clearance) so the twin minarets, Green Dome & sun/moon are 100%
+     visible at a glance without any timeline pills covering them.
+   - The 3 timeline rows (Start-End, Awwal Waqt, Left Time) are bound to a
+     fixed lower section right below the Green Dome base.
    ========================================================================== */
 #home-dashboard-view .waqt-card-embedded-box {
   padding: 0 !important;
@@ -9656,7 +9659,7 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 .s24-nabawi-scenic-card {
   position: relative;
   width: 100%;
-  min-height: 264px;
+  min-height: 246px;
 }
 
 .s24-nabawi-scenic-bg {
@@ -9670,6 +9673,7 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   display: block;
 }
 
@@ -9678,9 +9682,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   z-index: 2;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 264px;
-  padding: 14px 14px 11px;
+  justify-content: flex-start;
+  padding: 13px 14px 11px;
 }
 
 .s24-nabawi-top-row {
@@ -9688,10 +9691,11 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   justify-content: space-between;
   align-items: flex-start;
   gap: 8px;
+  min-height: 42px;
 }
 
 .s24-nabawi-title-block h4 {
-  font-size: 1.18rem !important;
+  font-size: 1.15rem !important;
   font-weight: 700 !important;
   color: #1e2923 !important;
   line-height: 1.2 !important;
@@ -9699,7 +9703,7 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 
 .s24-nabawi-title-block small {
   display: block;
-  font-size: 0.78rem !important;
+  font-size: 0.76rem !important;
   color: #334139 !important;
   margin-top: 2px;
 }
@@ -9712,30 +9716,34 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   color: #991b1b !important;
 }
 
-/* Open middle space so the sun/moon, twin minarets & green dome sit right above the time bar */
+/* Dedicated 96px upper visual stage so Masjid an-Nabawi Dome, Twin Minarets & Sun/Moon are 100% unobstructed at a glance */
 .s24-nabawi-dome-clearance {
-  height: 92px;
+  height: 96px;
+  flex-shrink: 0;
   pointer-events: none;
 }
 
+/* Fixed Lower Section for the 3 Timeline Rows + Rakah Footer (Never overlaps into the Mosque) */
 .s24-nabawi-bottom-stack {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-top: 0;
+  flex-shrink: 0;
 }
 
 .s24-nabawi-glass-time {
-  background: rgba(255, 255, 255, 0.78) !important;
+  background: rgba(255, 255, 255, 0.84) !important;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border: 1px solid rgba(22, 163, 74, 0.24) !important;
   border-radius: 14px !important;
   margin-bottom: 0 !important;
-  padding: 8px 13px !important;
+  padding: 7px 13px !important;
 }
 
 .s24-nabawi-glass-rows .waqt-popup-meta-item {
-  background: rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.86) !important;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border: 1px solid rgba(22, 163, 74, 0.22) !important;
@@ -9745,24 +9753,20 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 
 .live-waqt-countdown-box.waqt-prohibited-active .s24-nabawi-glass-time,
 .live-waqt-countdown-box.waqt-prohibited-active .s24-nabawi-glass-rows .waqt-popup-meta-item {
-  background: rgba(255, 250, 250, 0.82) !important;
+  background: rgba(255, 250, 250, 0.86) !important;
   border-color: rgba(220, 38, 38, 0.28) !important;
 }
 
-.s24-nabawi-bottom-stack .ongoing-tahajjud-mini-bar {
-  background: rgba(255, 255, 255, 0.82) !important;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1.2px dashed rgba(30, 41, 59, 0.35) !important;
-  border-radius: 13px !important;
-  margin-top: 2px !important;
+/* Ensure Tahajjud sub-bar is hidden inside Ongoing Prayer card (handled by Nafl Salah schedule) */
+#home-dashboard-view .s24-nabawi-bottom-stack #live-tahajjud-subrow {
+  display: none !important;
 }
 
 .s24-nabawi-rakah-line {
   margin-top: 2px !important;
-  padding: 3px 6px 0 !important;
+  padding: 2px 6px 0 !important;
   border-top: none !important;
-  font-size: 0.82rem !important;
+  font-size: 0.81rem !important;
   font-weight: 600 !important;
   color: #1e2923 !important;
   justify-content: center !important;
@@ -9779,9 +9783,8 @@ html[data-theme="dark"] .s24-nabawi-rakah-line {
 }
 
 html[data-theme="dark"] .s24-nabawi-glass-time,
-html[data-theme="dark"] .s24-nabawi-glass-rows .waqt-popup-meta-item,
-html[data-theme="dark"] .s24-nabawi-bottom-stack .ongoing-tahajjud-mini-bar {
-  background: rgba(7, 25, 19, 0.84) !important;
+html[data-theme="dark"] .s24-nabawi-glass-rows .waqt-popup-meta-item {
+  background: rgba(7, 25, 19, 0.86) !important;
   border-color: rgba(52, 211, 153, 0.32) !important;
 }
 
