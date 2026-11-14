@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg-main: #f1f6f3;
   --bg-card: #ffffff;
   --bg-card-elevated: #f8fbf9;
@@ -16,6 +16,7 @@
   --shadow-pill: 0 4px 12px rgba(15, 45, 34, 0.06);
 }
 
+
 @keyframes gentleFloat {
   0%, 100% {
     transform: translateY(0px);
@@ -25,12 +26,14 @@
   }
 }
 
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
 }
+
 
 body {
   font-family: "Noto Sans Bengali", "Hind Siliguri", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, sans-serif;
@@ -43,6 +46,7 @@ body {
   line-height: 1.55;
   user-select: none;
 }
+
 
 /* ==========================================================================
    FLOATING COMMERCIAL WHITE TOP HEADER BAR
@@ -67,16 +71,19 @@ body {
   transition: background-color 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
+
 .header-left {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
+
 .header-left img {
   box-shadow: 0 4px 10px rgba(16, 185, 129, 0.18);
   border: 1.5px solid var(--accent-emerald) !important;
 }
+
 
 .header-right {
   display: flex;
@@ -84,12 +91,14 @@ body {
   gap: 8px;
 }
 
+
 .header-controls-stack {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 5px;
 }
+
 
 .lang-select {
   background: var(--bg-card-elevated);
@@ -105,14 +114,17 @@ body {
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
+
 .lang-select:active {
   transform: scale(0.96);
 }
+
 
 .lang-select option {
   background: #ffffff;
   color: var(--text-primary);
 }
+
 
 .brand-badge {
   background: var(--accent-emerald-soft);
@@ -125,6 +137,7 @@ body {
   box-shadow: var(--shadow-pill);
 }
 
+
 .app-header h1 {
   font-size: 1.18rem;
   font-weight: 800;
@@ -132,11 +145,13 @@ body {
   letter-spacing: 0.01em;
 }
 
+
 .app-header p {
   font-size: 0.72rem;
   color: var(--text-muted);
   font-weight: 600;
 }
+
 
 .badge-verified {
   background: var(--accent-emerald-soft);
@@ -149,11 +164,13 @@ body {
   box-shadow: var(--shadow-pill);
 }
 
+
 .badge-tampered {
   background: #fee2e2;
   color: #b91c1c;
   border: 1px solid var(--danger);
 }
+
 
 /* ==========================================================================
    FLOATING COMMERCIAL WHITE HERO CARD (MOSQUE DOME SILHOUETTE AESTHETIC)
@@ -172,10 +189,12 @@ body {
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
 }
 
+
 .hero-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float-hover);
 }
+
 
 .hero-stats {
   display: flex;
@@ -185,12 +204,14 @@ body {
   z-index: 2;
 }
 
+
 .label {
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   color: var(--accent-emerald-dark);
   font-weight: 800;
 }
+
 
 .hero-stats h2 {
   font-size: 2.15rem;
@@ -199,11 +220,13 @@ body {
   margin: 2px 0;
 }
 
+
 .hero-left-info p {
   color: var(--text-muted);
   font-size: 0.8rem;
   font-weight: 600;
 }
+
 
 .progress-track {
   height: 11px;
@@ -214,12 +237,14 @@ body {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
+
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #10b981, #22c55e);
   border-radius: 999px;
   transition: width 0.35s ease;
 }
+
 
 .hero-meta {
   display: flex;
@@ -233,6 +258,7 @@ body {
   border-top: 1px dashed rgba(16, 185, 129, 0.22);
 }
 
+
 /* ==========================================================================
    FLOATING NAVIGATION TABS & CHIPS
    ========================================================================== */
@@ -242,6 +268,7 @@ body {
   gap: 8px;
   margin: 0 14px 14px;
 }
+
 
 .tab-btn {
   background: var(--bg-card);
@@ -261,14 +288,17 @@ body {
   transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, background 0.22s ease, border-color 0.22s ease;
 }
 
+
 .tab-btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float-hover);
 }
 
+
 .tab-btn:active {
   transform: translateY(0px) scale(0.96);
 }
+
 
 .tab-circle-icon {
   width: 34px;
@@ -284,6 +314,7 @@ body {
   transition: transform 0.2s ease, background 0.2s ease;
 }
 
+
 .tab-btn.active {
   background: #ffffff;
   color: var(--accent-emerald-dark);
@@ -292,6 +323,7 @@ body {
   transform: translateY(-2px);
 }
 
+
 .tab-btn.active .tab-circle-icon {
   background: linear-gradient(135deg, #10b981, #059669);
   color: #ffffff;
@@ -299,14 +331,17 @@ body {
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
 }
 
+
 .tab-content {
   display: none;
   padding: 0 14px;
 }
 
+
 .tab-content.active {
   display: block;
 }
+
 
 .filter-bar {
   display: flex;
@@ -316,6 +351,7 @@ body {
   margin-bottom: 6px;
   scrollbar-width: none;
 }
+
 
 .chip {
   white-space: nowrap;
@@ -334,13 +370,16 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
+
 .chip:hover {
   transform: translateY(-1.5px);
 }
 
+
 .chip:active {
   transform: scale(0.96);
 }
+
 
 .chip-circle-avatar {
   width: 25px;
@@ -355,6 +394,7 @@ body {
   flex-shrink: 0;
 }
 
+
 .chip.active {
   background: var(--accent-emerald-soft);
   color: var(--accent-emerald-dark);
@@ -363,10 +403,12 @@ body {
   box-shadow: 0 6px 14px rgba(16, 185, 129, 0.18);
 }
 
+
 .chip.active .chip-circle-avatar {
   background: #ffffff;
   border-color: var(--accent-emerald);
 }
+
 
 .quick-actions-bar {
   display: flex;
@@ -376,12 +418,14 @@ body {
   padding: 0 4px;
 }
 
+
 .muted-small {
   font-size: 0.78rem;
   color: var(--text-muted);
   line-height: 1.5;
   font-weight: 600;
 }
+
 
 .link-btn {
   background: #ffffff;
@@ -396,6 +440,7 @@ body {
   box-shadow: var(--shadow-pill);
 }
 
+
 /* ==========================================================================
    FLOATING HABIT ITEMS, DUA CARDS & GENERAL CARDS
    ========================================================================== */
@@ -405,6 +450,7 @@ body {
   flex-direction: column;
   gap: 12px;
 }
+
 
 .habit-item {
   display: flex;
@@ -418,20 +464,24 @@ body {
   transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
+
 .habit-item:hover {
   transform: translateY(-2.5px);
   box-shadow: var(--shadow-float-hover);
 }
 
+
 .habit-item:active {
   transform: translateY(-1px) scale(0.99);
 }
+
 
 .habit-item.completed {
   background: linear-gradient(145deg, #f2fbf7, #ffffff);
   border-color: var(--accent-emerald);
   box-shadow: 0 8px 22px -4px rgba(16, 185, 129, 0.16);
 }
+
 
 .habit-left {
   display: flex;
@@ -440,6 +490,7 @@ body {
   flex: 1;
 }
 
+
 .habit-info h4 {
   font-size: 0.94rem;
   color: var(--text-primary);
@@ -447,10 +498,12 @@ body {
   margin-bottom: 2px;
 }
 
+
 .habit-item.completed .habit-info h4 {
   text-decoration: line-through;
   color: var(--text-muted);
 }
+
 
 .habit-time {
   font-size: 0.71rem;
@@ -459,11 +512,13 @@ body {
   display: block;
 }
 
+
 .habit-snippet {
   font-size: 0.76rem;
   color: var(--text-muted);
   margin-top: 3px;
 }
+
 
 .info-btn {
   background: var(--bg-card-elevated);
@@ -479,10 +534,12 @@ body {
   transition: transform 0.15s ease, background 0.15s ease;
 }
 
+
 .info-btn:active {
   transform: scale(0.94);
   background: var(--accent-emerald-soft);
 }
+
 
 .card {
   background: #ffffff;
@@ -494,10 +551,12 @@ body {
   transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.24s ease;
 }
 
+
 .card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float-hover);
 }
+
 
 .card h3 {
   font-size: 1.05rem;
@@ -506,11 +565,13 @@ body {
   margin-bottom: 6px;
 }
 
+
 .muted {
   color: var(--text-muted);
   font-size: 0.8rem;
   margin-bottom: 12px;
 }
+
 
 .dua-card {
   background: #ffffff;
@@ -524,10 +585,12 @@ body {
   transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease;
 }
 
+
 .dua-card:hover {
   transform: translateY(-2.5px);
   box-shadow: var(--shadow-float-hover);
 }
+
 
 .dua-header {
   display: flex;
@@ -537,6 +600,7 @@ body {
   margin-bottom: 10px;
 }
 
+
 .dua-card h4 {
   font-size: 0.92rem;
   color: var(--text-primary);
@@ -545,6 +609,7 @@ body {
   flex: 1;
   min-width: 0;
 }
+
 
 .dua-badge {
   background: var(--accent-gold-soft);
@@ -565,6 +630,7 @@ body {
   box-shadow: 0 2px 6px rgba(180, 83, 9, 0.08);
 }
 
+
 .dua-arabic {
   font-size: 1.22rem;
   line-height: 1.95;
@@ -580,6 +646,7 @@ body {
   box-shadow: inset 0 2px 5px rgba(15, 45, 34, 0.03);
 }
 
+
 .translit {
   font-size: 0.84rem;
   margin-bottom: 6px;
@@ -587,6 +654,7 @@ body {
   font-weight: 700;
   line-height: 1.55;
 }
+
 
 .dua-virtue {
   margin-top: 8px;
@@ -596,6 +664,7 @@ body {
   color: #92400e;
   font-weight: 700;
 }
+
 
 .input-select,
 .input-text,
@@ -614,6 +683,7 @@ body {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+
 .input-select:focus,
 .input-text:focus,
 .input-textarea:focus {
@@ -621,6 +691,7 @@ body {
   background: #ffffff;
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14);
 }
+
 
 /* ==========================================================================
    FLOATING DIGITAL TASBIH WHEEL
@@ -644,9 +715,11 @@ body {
   transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
 
+
 .tasbih-wheel:active {
   transform: scale(0.95);
 }
+
 
 #tasbih-current {
   font-size: 3rem;
@@ -655,10 +728,12 @@ body {
   line-height: 1.05;
 }
 
+
 #tasbih-target {
   color: var(--text-muted);
   font-weight: 700;
 }
+
 
 #tasbih-label {
   font-size: 0.67rem;
@@ -670,6 +745,7 @@ body {
   max-width: 185px;
 }
 
+
 .stats-mini {
   text-align: center;
   font-size: 0.82rem;
@@ -678,10 +754,12 @@ body {
   margin-bottom: 12px;
 }
 
+
 .stats-mini strong {
   color: var(--accent-emerald-dark);
   font-weight: 800;
 }
+
 
 /* ==========================================================================
    FLOATING 7-DAY MATRIX & 12-MONTH ARCHIVE CARDS
@@ -693,6 +771,7 @@ body {
   margin-top: 8px;
 }
 
+
 .day-col {
   background: #f8fbf9;
   border: 1px solid rgba(16, 185, 129, 0.2);
@@ -703,19 +782,23 @@ body {
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
+
 .day-col:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float);
 }
+
 
 .day-col.today-active {
   border: 2px solid var(--accent-emerald);
   background: var(--accent-emerald-soft);
 }
 
+
 .day-col.has-progress {
   border-color: rgba(16, 185, 129, 0.45);
 }
+
 
 .day-col strong {
   display: block;
@@ -724,6 +807,7 @@ body {
   font-weight: 800;
 }
 
+
 .day-col small {
   display: block;
   font-size: 0.65rem;
@@ -731,12 +815,14 @@ body {
   font-weight: 700;
 }
 
+
 .day-col .day-date-num {
   font-size: 0.62rem;
   color: var(--accent-gold);
   font-weight: 800;
   margin-top: 2px;
 }
+
 
 .archive-header-row {
   display: flex;
@@ -746,12 +832,14 @@ body {
   margin-bottom: 6px;
 }
 
+
 .monthly-summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
   gap: 10px;
   margin-bottom: 12px;
 }
+
 
 .month-summary-card {
   background: #f8fbf9;
@@ -761,6 +849,7 @@ body {
   box-shadow: var(--shadow-pill);
 }
 
+
 .month-summary-card h4 {
   font-size: 0.8rem;
   color: var(--accent-emerald-dark);
@@ -768,10 +857,12 @@ body {
   margin-bottom: 3px;
 }
 
+
 .month-summary-card p {
   font-size: 0.74rem;
   color: var(--text-primary);
 }
+
 
 .longterm-history-list {
   max-height: 270px;
@@ -781,6 +872,7 @@ body {
   gap: 7px;
   padding-right: 4px;
 }
+
 
 .history-day-row {
   display: flex;
@@ -795,10 +887,12 @@ body {
   box-shadow: 0 2px 6px rgba(15, 45, 34, 0.04);
 }
 
+
 .history-day-row strong {
   color: var(--accent-emerald-dark);
   font-weight: 800;
 }
+
 
 .btn-primary,
 .btn-secondary {
@@ -812,16 +906,19 @@ body {
   transition: transform 0.16s ease, box-shadow 0.2s ease;
 }
 
+
 .btn-primary {
   background: linear-gradient(135deg, #10b981, #059669);
   color: #ffffff;
   box-shadow: 0 6px 18px rgba(16, 185, 129, 0.28);
 }
 
+
 .btn-primary:active,
 .btn-secondary:active {
   transform: scale(0.98);
 }
+
 
 .btn-secondary {
   background: #f3f8f5;
@@ -830,11 +927,13 @@ body {
   box-shadow: var(--shadow-pill);
 }
 
+
 .btn-row {
   display: flex;
   gap: 10px;
   margin-top: 8px;
 }
+
 
 .mood-selector {
   display: grid;
@@ -842,6 +941,7 @@ body {
   gap: 8px;
   margin-bottom: 12px;
 }
+
 
 .mood-btn {
   padding: 10px;
@@ -855,12 +955,14 @@ body {
   transition: all 0.18s ease;
 }
 
+
 .mood-btn.active {
   border-color: var(--accent-emerald);
   color: var(--accent-emerald-dark);
   background: var(--accent-emerald-soft);
   font-weight: 800;
 }
+
 
 .field-label {
   display: block;
@@ -869,6 +971,7 @@ body {
   margin-bottom: 5px;
   color: var(--text-primary);
 }
+
 
 .quote-box {
   font-size: 0.79rem;
@@ -880,6 +983,7 @@ body {
   margin-bottom: 12px;
 }
 
+
 .hash-box {
   background: #f4faf7;
   padding: 11px;
@@ -889,10 +993,12 @@ body {
   word-break: break-all;
 }
 
+
 .hash-box small {
   color: var(--text-muted);
   font-weight: 700;
 }
+
 
 .hash-box code {
   display: block;
@@ -901,6 +1007,7 @@ body {
   font-weight: 700;
   margin-top: 4px;
 }
+
 
 /* ==========================================================================
    FLOATING MODAL & DAY HISTORY OVERLAY
@@ -918,9 +1025,11 @@ body {
   z-index: 100;
 }
 
+
 .modal-overlay.hidden {
   display: none;
 }
+
 
 .modal-card {
   background: #ffffff;
@@ -936,6 +1045,7 @@ body {
   box-shadow: 0 24px 48px rgba(15, 45, 34, 0.22);
 }
 
+
 .modal-card h3 {
   font-size: 0.98rem;
   color: var(--accent-emerald-dark);
@@ -945,11 +1055,13 @@ body {
   flex-shrink: 0;
 }
 
+
 .modal-card #modal-category {
   align-self: flex-start;
   margin-bottom: 6px;
   flex-shrink: 0;
 }
+
 
 .modal-section {
   margin: 6px 0;
@@ -962,6 +1074,7 @@ body {
   scrollbar-width: thin;
 }
 
+
 .modal-section h4 {
   font-size: 0.82rem;
   color: var(--accent-emerald-dark);
@@ -969,16 +1082,19 @@ body {
   margin-bottom: 4px;
 }
 
+
 .modal-section p {
   font-size: 0.82rem;
   color: var(--text-primary);
 }
+
 
 #modal-evidence {
   white-space: pre-line;
   font-size: 0.79rem;
   line-height: 1.55;
 }
+
 
 .compact-history-grid {
   display: flex;
@@ -988,6 +1104,7 @@ body {
   overflow-y: auto;
   padding-right: 4px;
 }
+
 
 .compact-history-item {
   font-size: 0.78rem;
@@ -1002,35 +1119,42 @@ body {
   box-shadow: 0 2px 5px rgba(15, 45, 34, 0.05);
 }
 
+
 html[dir="rtl"] .compact-history-item {
   border-left: 1px solid rgba(16, 185, 129, 0.22);
   border-right: 3.5px solid var(--accent-emerald);
 }
+
 
 .modal-card #close-modal-btn {
   margin-top: 10px;
   flex-shrink: 0;
 }
 
+
 .file-label {
   text-align: center;
   display: inline-block;
 }
+
 
 html[dir="rtl"] .dua-card {
   border-left: 1px solid rgba(16, 185, 129, 0.16);
   border-right: 4px solid var(--accent-emerald);
 }
 
+
 html[dir="rtl"] .quote-box {
   border-left: none;
   border-right: 4px solid var(--accent-emerald);
 }
 
+
 html[dir="rtl"] .info-btn {
   margin-left: 0;
   margin-right: 8px;
 }
+
 
 /* Back-Button Exit Toast Notification */
 .exit-toast {
@@ -1050,6 +1174,7 @@ html[dir="rtl"] .info-btn {
   pointer-events: none;
   transition: opacity 0.25s ease;
 }
+
 
 /* ==========================================================================
    WEBSITE-ONLY 1-CLICK APK INSTALL BUTTON & IN-APP UPDATE BANNER
@@ -1072,13 +1197,16 @@ html[dir="rtl"] .info-btn {
   transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
 
+
 .apk-install-btn:active {
   transform: scale(0.95);
 }
 
+
 .apk-install-btn.hidden {
   display: none !important;
 }
+
 
 .update-banner-card {
   position: fixed;
@@ -1094,10 +1222,12 @@ html[dir="rtl"] .info-btn {
   animation: slideUpFade 0.35s ease;
 }
 
+
 @keyframes slideUpFade {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 
 .update-banner-content {
   display: flex;
@@ -1106,9 +1236,11 @@ html[dir="rtl"] .info-btn {
   margin-bottom: 10px;
 }
 
+
 .update-banner-content span {
   font-size: 1.6rem;
 }
+
 
 .update-banner-content strong {
   display: block;
@@ -1117,15 +1249,18 @@ html[dir="rtl"] .info-btn {
   line-height: 1.3;
 }
 
+
 .update-banner-content small {
   font-size: 0.72rem;
   color: var(--text-muted);
 }
 
+
 .update-banner-actions {
   display: flex;
   gap: 8px;
 }
+
 
 .btn-update-action {
   flex: 2;
@@ -1141,6 +1276,7 @@ html[dir="rtl"] .info-btn {
   cursor: pointer;
 }
 
+
 .btn-update-dismiss {
   flex: 1;
   background: #f1f6f3;
@@ -1152,6 +1288,7 @@ html[dir="rtl"] .info-btn {
   font-size: 0.82rem;
   cursor: pointer;
 }
+
 
 /* ==========================================================================
    WORLD-STANDARD CIRCULAR PROGRESS RINGS & STRICT TIME-WINDOW LOCK ENGINE
@@ -1167,16 +1304,19 @@ html[dir="rtl"] .info-btn {
   transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
+
 .startup-splash.splash-hidden {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
 
+
 .splash-inner {
   text-align: center;
   padding: 24px;
 }
+
 
 .splash-logo {
   width: 78px;
@@ -1187,6 +1327,7 @@ html[dir="rtl"] .info-btn {
   margin-bottom: 12px;
 }
 
+
 .splash-inner h2 {
   font-size: 1.25rem;
   color: var(--accent-emerald-dark);
@@ -1194,16 +1335,19 @@ html[dir="rtl"] .info-btn {
   margin-bottom: 4px;
 }
 
+
 .splash-inner p {
   font-size: 0.78rem;
   color: var(--text-muted);
   font-weight: 600;
 }
 
+
 .hero-left-info {
   flex: 1;
   padding-right: 10px;
 }
+
 
 .time-lock-pill {
   display: inline-flex;
@@ -1220,6 +1364,7 @@ html[dir="rtl"] .info-btn {
   box-shadow: 0 2px 6px rgba(16, 185, 129, 0.1);
 }
 
+
 .streak-circle-wrapper {
   position: relative;
   width: 108px;
@@ -1234,20 +1379,24 @@ html[dir="rtl"] .info-btn {
   animation: gentleFloat 4.5s ease-in-out infinite;
 }
 
+
 .progress-ring-svg {
   position: absolute;
   inset: 0;
   transform: rotate(-90deg);
 }
 
+
 .progress-ring-bg {
   stroke: #e2ece7;
 }
+
 
 .progress-ring-meter {
   transition: stroke-dashoffset 0.55s cubic-bezier(0.4, 0, 0.2, 1);
   filter: drop-shadow(0 2px 5px rgba(16, 185, 129, 0.3));
 }
+
 
 .streak-circle-inner {
   position: relative;
@@ -1260,10 +1409,12 @@ html[dir="rtl"] .info-btn {
   padding: 6px;
 }
 
+
 .streak-circle-inner .streak-flame {
   font-size: 1.15rem;
   line-height: 1;
 }
+
 
 .streak-circle-inner strong {
   font-size: 1.2rem;
@@ -1273,6 +1424,7 @@ html[dir="rtl"] .info-btn {
   margin-top: 2px;
 }
 
+
 .streak-circle-inner small {
   font-size: 0.58rem;
   color: var(--text-muted);
@@ -1280,6 +1432,7 @@ html[dir="rtl"] .info-btn {
   max-width: 76px;
   line-height: 1.15;
 }
+
 
 /* Digital Tasbih Circular Progress Ring */
 .tasbih-ring-container {
@@ -1293,6 +1446,7 @@ html[dir="rtl"] .info-btn {
   cursor: pointer;
 }
 
+
 .tasbih-ring-svg {
   position: absolute;
   inset: 0;
@@ -1300,14 +1454,17 @@ html[dir="rtl"] .info-btn {
   pointer-events: none;
 }
 
+
 .tasbih-ring-bg {
   stroke: #e2ece7;
 }
+
 
 .tasbih-ring-meter {
   transition: stroke-dashoffset 0.22s ease-out;
   filter: drop-shadow(0 3px 8px rgba(16, 185, 129, 0.35));
 }
+
 
 .tasbih-cycle-pill {
   margin-top: 6px;
@@ -1321,6 +1478,7 @@ html[dir="rtl"] .info-btn {
   box-shadow: 0 2px 6px rgba(16, 185, 129, 0.12);
 }
 
+
 /* Daily Masnoon Duas Circular Ring & Completion Check */
 .duas-header-top {
   display: flex;
@@ -1329,6 +1487,7 @@ html[dir="rtl"] .info-btn {
   gap: 12px;
   margin-bottom: 10px;
 }
+
 
 .dua-mastery-ring-box {
   position: relative;
@@ -1343,9 +1502,11 @@ html[dir="rtl"] .info-btn {
   box-shadow: var(--shadow-pill);
 }
 
+
 #dua-progress-ring-circle {
   transition: stroke-dashoffset 0.45s ease;
 }
+
 
 .dua-ring-label {
   position: absolute;
@@ -1354,14 +1515,17 @@ html[dir="rtl"] .info-btn {
   color: var(--accent-emerald-dark);
 }
 
+
 .dua-card.completed {
   border-left-color: var(--accent-emerald);
   background: linear-gradient(145deg, #f2fbf7, #ffffff);
 }
 
+
 .dua-card.time-locked {
   opacity: 0.78;
 }
+
 
 .dua-action-footer {
   display: flex;
@@ -1372,6 +1536,7 @@ html[dir="rtl"] .info-btn {
   border-top: 1px solid rgba(16, 185, 129, 0.16);
   gap: 8px;
 }
+
 
 .dua-check-btn {
   background: var(--accent-emerald-soft);
@@ -1386,10 +1551,12 @@ html[dir="rtl"] .info-btn {
   transition: all 0.15s ease;
 }
 
+
 .dua-check-btn.done {
   background: var(--accent-emerald);
   color: #ffffff;
 }
+
 
 .dua-check-btn.locked {
   background: #fef2f2;
@@ -1398,16 +1565,19 @@ html[dir="rtl"] .info-btn {
   cursor: not-allowed;
 }
 
+
 /* Strict Time-Window Habit Lock Styles */
 .habit-item.time-expired {
   border-color: rgba(220, 38, 38, 0.25);
   background: #fffafa;
 }
 
+
 .habit-item.time-upcoming {
   border-color: rgba(217, 119, 6, 0.25);
   background: #fffdf9;
 }
+
 
 .habit-check.locked-expired {
   border-color: rgba(220, 38, 38, 0.45);
@@ -1417,6 +1587,7 @@ html[dir="rtl"] .info-btn {
   font-size: 0.78rem;
 }
 
+
 .habit-check.locked-upcoming {
   border-color: rgba(217, 119, 6, 0.45);
   background: #fef3c7;
@@ -1425,6 +1596,7 @@ html[dir="rtl"] .info-btn {
   font-size: 0.78rem;
 }
 
+
 .habit-time-row {
   display: flex;
   align-items: center;
@@ -1432,6 +1604,7 @@ html[dir="rtl"] .info-btn {
   gap: 6px;
   margin-bottom: 4px;
 }
+
 
 .time-status-badge {
   font-size: 0.64rem;
@@ -1443,11 +1616,13 @@ html[dir="rtl"] .info-btn {
   gap: 3px;
 }
 
+
 .time-status-badge.status-open {
   background: #d1fae5;
   color: #065f46;
   border: 1px solid rgba(16, 185, 129, 0.4);
 }
+
 
 .time-status-badge.status-expired {
   background: #fee2e2;
@@ -1455,17 +1630,20 @@ html[dir="rtl"] .info-btn {
   border: 1px solid rgba(220, 38, 38, 0.35);
 }
 
+
 .time-status-badge.status-upcoming {
   background: #fef3c7;
   color: #92400e;
   border: 1px solid rgba(217, 119, 6, 0.35);
 }
 
+
 .time-status-badge.status-done {
   background: #10b981;
   color: #ffffff;
   border: 1px solid #059669;
 }
+
 
 /* ==========================================================================
    COMPACT COLLAPSIBLE PROHIBITED TIME FOR SALAH NOTE CARD (MINIATURE UI STYLE 2)
@@ -1480,6 +1658,7 @@ html[dir="rtl"] .info-btn {
   box-shadow: var(--shadow-float);
   overflow: hidden;
 }
+
 
 .prohibited-header-btn {
   width: 100%;
@@ -1497,9 +1676,11 @@ html[dir="rtl"] .info-btn {
   border-radius: 0;
 }
 
+
 html[dir="rtl"] .prohibited-header-btn {
   text-align: right;
 }
+
 
 .prohibited-static-header {
   display: flex;
@@ -1509,6 +1690,7 @@ html[dir="rtl"] .prohibited-header-btn {
   min-width: 0;
 }
 
+
 .prohibited-warning-triangle {
   display: inline-flex;
   align-items: center;
@@ -1517,6 +1699,7 @@ html[dir="rtl"] .prohibited-header-btn {
   filter: drop-shadow(0 1px 2px rgba(16, 185, 129, 0.18));
 }
 
+
 .prohibited-static-header h4 {
   font-size: 0.82rem;
   font-weight: 900;
@@ -1524,6 +1707,7 @@ html[dir="rtl"] .prohibited-header-btn {
   letter-spacing: -0.01em;
   line-height: 1.2;
 }
+
 
 .prohibited-chevron {
   width: 22px;
@@ -1540,11 +1724,13 @@ html[dir="rtl"] .prohibited-header-btn {
   flex-shrink: 0;
 }
 
+
 .prohibited-static-card:not(.is-collapsed) .prohibited-chevron {
   transform: rotate(180deg);
   background: var(--accent-emerald);
   color: #ffffff;
 }
+
 
 .prohibited-collapsible-body {
   display: grid;
@@ -1553,10 +1739,12 @@ html[dir="rtl"] .prohibited-header-btn {
   opacity: 1;
 }
 
+
 .prohibited-static-card.is-collapsed .prohibited-collapsible-body {
   grid-template-rows: 0fr;
   opacity: 0;
 }
+
 
 .prohibited-static-inner {
   overflow: hidden;
@@ -1566,14 +1754,17 @@ html[dir="rtl"] .prohibited-header-btn {
   padding: 0 12px 10px;
 }
 
+
 .prohibited-static-card.is-collapsed .prohibited-static-inner {
   padding-bottom: 0;
 }
+
 
 .prohibited-dashed-divider {
   border-top: 1px dashed rgba(16, 185, 129, 0.32);
   margin: 5px 0;
 }
+
 
 .prohibited-static-list {
   display: flex;
@@ -1582,12 +1773,14 @@ html[dir="rtl"] .prohibited-header-btn {
   padding: 1px 0;
 }
 
+
 .prohibited-static-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
 }
+
 
 .prohibited-row-label {
   font-size: 0.72rem;
@@ -1596,6 +1789,7 @@ html[dir="rtl"] .prohibited-header-btn {
   line-height: 1.25;
   flex: 1;
 }
+
 
 .prohibited-time-pill {
   background: var(--bg-card-elevated, #f8fbf9);
@@ -1613,6 +1807,7 @@ html[dir="rtl"] .prohibited-header-btn {
   box-shadow: 0 1px 2px rgba(16, 185, 129, 0.08);
 }
 
+
 .prohibited-amber-alert-box {
   background: #fde69e;
   border: 1px solid rgba(180, 83, 9, 0.28);
@@ -1620,6 +1815,7 @@ html[dir="rtl"] .prohibited-header-btn {
   padding: 5px 8px;
   margin-top: 2px;
 }
+
 
 .prohibited-hadith-proof {
   display: block;
@@ -1632,6 +1828,7 @@ html[dir="rtl"] .prohibited-header-btn {
   line-height: 1.35;
 }
 
+
 @media (max-width: 370px) {
   .prohibited-row-label {
     font-size: 0.68rem;
@@ -1642,6 +1839,7 @@ html[dir="rtl"] .prohibited-header-btn {
     min-width: 88px;
   }
 }
+
 
 /* ==========================================================================
    FLOATING 5-WAQT STRIP & CIRCULAR ICON AVATAR SYSTEM
@@ -1655,11 +1853,13 @@ html[dir="rtl"] .prohibited-header-btn {
   box-shadow: var(--shadow-float);
 }
 
+
 .five-waqt-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 7px;
 }
+
 
 .waqt-pill-card {
   background: #f8fbf9;
@@ -1678,14 +1878,17 @@ html[dir="rtl"] .prohibited-header-btn {
   transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
+
 .waqt-pill-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-pill);
 }
 
+
 .waqt-pill-card:active {
   transform: scale(0.95);
 }
+
 
 .waqt-circle-logo {
   width: 35px;
@@ -1700,6 +1903,7 @@ html[dir="rtl"] .prohibited-header-btn {
   box-shadow: 0 3px 8px rgba(16, 185, 129, 0.12);
 }
 
+
 .waqt-pill-card.waqt-active {
   background: linear-gradient(145deg, #e6f7ef, #ffffff);
   border: 2px solid var(--accent-emerald);
@@ -1707,15 +1911,18 @@ html[dir="rtl"] .prohibited-header-btn {
   transform: translateY(-2px);
 }
 
+
 .waqt-pill-card.waqt-active .waqt-circle-logo {
   background: linear-gradient(135deg, #10b981, #059669);
   border-color: #047857;
   box-shadow: 0 4px 10px rgba(16, 185, 129, 0.35);
 }
 
+
 .waqt-pill-card.waqt-passed {
   opacity: 0.72;
 }
+
 
 .waqt-name {
   font-size: 0.65rem;
@@ -1723,15 +1930,18 @@ html[dir="rtl"] .prohibited-header-btn {
   font-weight: 800;
 }
 
+
 .waqt-pill-card.waqt-active .waqt-name {
   color: var(--accent-emerald-dark);
 }
+
 
 .waqt-time {
   font-size: 0.7rem;
   color: var(--text-primary);
   font-weight: 900;
 }
+
 
 /* Individual Habit & Dua Floating Circular Logo Avatars */
 .item-circle-avatar {
@@ -1751,10 +1961,12 @@ html[dir="rtl"] .prohibited-header-btn {
   transition: transform 0.2s ease;
 }
 
+
 .habit-item:hover .item-circle-avatar,
 .dua-card:hover .item-circle-avatar {
   transform: scale(1.05);
 }
+
 
 .item-circle-avatar.theme-gold,
 .item-circle-avatar.theme-amber {
@@ -1763,12 +1975,14 @@ html[dir="rtl"] .prohibited-header-btn {
   box-shadow: 0 6px 14px rgba(217, 119, 6, 0.14), inset 0 2px 3px rgba(255, 255, 255, 0.9);
 }
 
+
 .item-circle-avatar.theme-indigo,
 .item-circle-avatar.theme-purple {
   background: linear-gradient(145deg, #f3e8ff, #e9d5ff);
   border-color: rgba(147, 51, 234, 0.35);
   box-shadow: 0 6px 14px rgba(147, 51, 234, 0.12), inset 0 2px 3px rgba(255, 255, 255, 0.9);
 }
+
 
 .item-circle-avatar.theme-teal,
 .item-circle-avatar.theme-cyan {
@@ -1777,11 +1991,13 @@ html[dir="rtl"] .prohibited-header-btn {
   box-shadow: 0 6px 14px rgba(2, 132, 199, 0.12), inset 0 2px 3px rgba(255, 255, 255, 0.9);
 }
 
+
 .item-circle-avatar.theme-rose {
   background: linear-gradient(145deg, #ffe4e6, #fecdd3);
   border-color: rgba(225, 29, 72, 0.35);
   box-shadow: 0 6px 14px rgba(225, 29, 72, 0.12), inset 0 2px 3px rgba(255, 255, 255, 0.9);
 }
+
 
 .avatar-done-dot {
   position: absolute;
@@ -1801,6 +2017,7 @@ html[dir="rtl"] .prohibited-header-btn {
   box-shadow: 0 2px 5px rgba(16, 185, 129, 0.3);
 }
 
+
 .habit-right-actions {
   display: flex;
   flex-direction: column;
@@ -1810,10 +2027,12 @@ html[dir="rtl"] .prohibited-header-btn {
   flex-shrink: 0;
 }
 
+
 html[dir="rtl"] .habit-right-actions {
   margin-left: 0;
   margin-right: 8px;
 }
+
 
 /* Circular Check Button on Habit Cards */
 .habit-check {
@@ -1833,14 +2052,17 @@ html[dir="rtl"] .habit-right-actions {
   transition: transform 0.15s ease, background 0.2s ease;
 }
 
+
 .habit-item.completed .habit-check {
   background: var(--accent-emerald);
   color: #ffffff;
 }
 
+
 .habit-check:active {
   transform: scale(0.9);
 }
+
 
 .habit-right-actions .info-btn {
   margin-left: 0;
@@ -1848,6 +2070,7 @@ html[dir="rtl"] .habit-right-actions {
   padding: 4px 9px;
   font-size: 0.66rem;
 }
+
 
 .dua-title-with-avatar {
   display: flex;
@@ -1857,11 +2080,13 @@ html[dir="rtl"] .habit-right-actions {
   min-width: 0;
 }
 
+
 .dua-title-with-avatar .item-circle-avatar {
   width: 42px;
   height: 42px;
   font-size: 1.12rem;
 }
+
 
 /* ==========================================================================
    COMMERCIAL WHITE & FLOATING CATEGORY BREAKDOWN GRAPH (বিভাগভিত্তিক গড়)
@@ -1876,14 +2101,17 @@ html[dir="rtl"] .habit-right-actions {
   box-shadow: var(--shadow-float);
 }
 
+
 .monthly-breakdown-panel {
   margin-top: 10px;
   margin-bottom: 14px;
 }
 
+
 .category-breakdown-header {
   margin-bottom: 14px;
 }
+
 
 .category-breakdown-header h4 {
   font-size: 1.08rem;
@@ -1892,17 +2120,20 @@ html[dir="rtl"] .habit-right-actions {
   margin-bottom: 2px;
 }
 
+
 .category-breakdown-header p {
   font-size: 0.78rem;
   color: #6b726e;
   font-weight: 600;
 }
 
+
 .category-bars-list {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
+
 
 .cat-graph-row {
   display: flex;
@@ -1911,6 +2142,7 @@ html[dir="rtl"] .habit-right-actions {
   cursor: default;
   pointer-events: none;
 }
+
 
 .cat-icon-squircle {
   width: 48px;
@@ -1923,10 +2155,12 @@ html[dir="rtl"] .habit-right-actions {
   box-shadow: 0 4px 10px rgba(15, 45, 34, 0.06);
 }
 
+
 .cat-bar-content {
   flex: 1;
   min-width: 0;
 }
+
 
 .cat-bar-top-row {
   display: flex;
@@ -1936,17 +2170,20 @@ html[dir="rtl"] .habit-right-actions {
   gap: 8px;
 }
 
+
 .cat-bar-title {
   font-size: 0.92rem;
   font-weight: 800;
   color: #1f2421;
 }
 
+
 .cat-bar-pct {
   font-size: 0.88rem;
   font-weight: 900;
   color: #2c3531;
 }
+
 
 .cat-bar-track {
   width: 100%;
@@ -1956,11 +2193,13 @@ html[dir="rtl"] .habit-right-actions {
   overflow: hidden;
 }
 
+
 .cat-bar-fill {
   height: 100%;
   border-radius: 999px;
   transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
 
 .category-advice-comment {
   margin-top: 15px;
@@ -1971,17 +2210,20 @@ html[dir="rtl"] .habit-right-actions {
   line-height: 1.5;
 }
 
+
 .category-advice-comment.needs-focus {
   background: #fffbeb;
   border: 1px solid rgba(217, 119, 6, 0.35);
   color: #92400e;
 }
 
+
 .category-advice-comment.all-perfect {
   background: #ecfdf5;
   border: 1px solid rgba(16, 185, 129, 0.38);
   color: #065f46;
 }
+
 
 /* Interactive 30D (Default) / 90D / 180D / 365D Range Pills */
 .archive-range-pills {
@@ -1990,6 +2232,7 @@ html[dir="rtl"] .habit-right-actions {
   gap: 6px;
   margin-bottom: 12px;
 }
+
 
 .range-pill-btn {
   background: #f4f8f5;
@@ -2005,9 +2248,11 @@ html[dir="rtl"] .habit-right-actions {
   transition: all 0.2s ease;
 }
 
+
 .range-pill-btn:hover {
   transform: translateY(-1.5px);
 }
+
 
 .range-pill-btn.active {
   background: linear-gradient(135deg, #10b981, #059669);
@@ -2015,6 +2260,7 @@ html[dir="rtl"] .habit-right-actions {
   border-color: #047857;
   box-shadow: 0 6px 14px rgba(16, 185, 129, 0.25);
 }
+
 
 /* Interactive Clickable Month Cards */
 .month-summary-card {
@@ -2026,20 +2272,24 @@ html[dir="rtl"] .habit-right-actions {
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
+
 html[dir="rtl"] .month-summary-card {
   text-align: right;
 }
+
 
 .month-summary-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float);
 }
 
+
 .month-summary-card.selected-month-card {
   background: linear-gradient(145deg, #e8f8f0, #ffffff);
   border: 2px solid var(--accent-emerald);
   box-shadow: 0 8px 20px rgba(16, 185, 129, 0.18);
 }
+
 
 .month-card-top {
   display: flex;
@@ -2049,10 +2299,12 @@ html[dir="rtl"] .month-summary-card {
   margin-bottom: 3px;
 }
 
+
 .month-selected-dot {
   color: var(--accent-emerald);
   font-size: 0.85rem;
 }
+
 
 .month-tap-hint {
   display: block;
@@ -2062,9 +2314,11 @@ html[dir="rtl"] .month-summary-card {
   font-weight: 700;
 }
 
+
 .selected-month-history-header {
   margin: 6px 2px 8px;
 }
+
 
 /* ==========================================================================
    SHRINKED COMPACT COMMERCIAL HEADER & OPPOSITE THEME TOGGLE BUTTON
@@ -2077,11 +2331,13 @@ html[dir="rtl"] .month-summary-card {
   gap: 8px;
 }
 
+
 .header-left {
   gap: 9px;
   min-width: 0;
   flex: 1;
 }
+
 
 .header-brand-logo {
   width: 34px !important;
@@ -2091,15 +2347,18 @@ html[dir="rtl"] .month-summary-card {
   flex-shrink: 0;
 }
 
+
 .header-title-wrap {
   min-width: 0;
   flex: 1;
 }
 
+
 .app-header h1 {
   font-size: 1.02rem;
   line-height: 1.2;
 }
+
 
 .app-header p {
   font-size: 0.67rem;
@@ -2109,15 +2368,18 @@ html[dir="rtl"] .month-summary-card {
   text-overflow: ellipsis;
 }
 
+
 .header-right {
   gap: 6px;
   flex-shrink: 0;
 }
 
+
 .lang-select {
   padding: 4px 8px;
   font-size: 0.68rem;
 }
+
 
 /* Universal Asr Madhab Toggle Button (Hanafi <-> Standard/Shafi'i) */
 .madhab-toggle-btn {
@@ -2138,6 +2400,7 @@ html[dir="rtl"] .month-summary-card {
   white-space: nowrap;
 }
 
+
 .madhab-toggle-btn[data-madhab="standard"] {
   background: linear-gradient(135deg, #065f46, #047857);
   color: #ffffff;
@@ -2145,13 +2408,16 @@ html[dir="rtl"] .month-summary-card {
   box-shadow: 0 4px 12px rgba(6, 95, 70, 0.28);
 }
 
+
 .madhab-toggle-btn:hover {
   transform: translateY(-1.5px);
 }
 
+
 .madhab-toggle-btn:active {
   transform: scale(0.94);
 }
+
 
 /* ==========================================================================
    FULL OPPOSITE THEME SYSTEM (DARK EMERALD MODE WHEN TOGGLED)
@@ -2174,17 +2440,20 @@ html[data-theme="dark"] {
   --shadow-pill: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
+
 html[data-theme="dark"] body {
   background-color: #05130e;
   background-image: radial-gradient(circle at 50% 0%, #092c20 0%, #05130e 65%);
   color: var(--text-primary);
 }
 
+
 html[data-theme="dark"] .app-header {
   background: #0b221a;
   border-bottom: 1.5px solid rgba(16, 185, 129, 0.32);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
+
 
 /* In Dark mode, the button displays the opposite Crisp White background */
 html[data-theme="dark"] .theme-toggle-btn {
@@ -2194,24 +2463,29 @@ html[data-theme="dark"] .theme-toggle-btn {
   box-shadow: 0 4px 14px rgba(234, 179, 8, 0.28);
 }
 
+
 html[data-theme="dark"] .hero-card {
   background: linear-gradient(145deg, #0f382a, #071913);
   border-color: rgba(16, 185, 129, 0.28);
 }
+
 
 html[data-theme="dark"] .streak-circle-wrapper {
   background: #071913;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
 }
 
+
 html[data-theme="dark"] .progress-ring-bg,
 html[data-theme="dark"] .tasbih-ring-bg {
   stroke: rgba(255, 255, 255, 0.1);
 }
 
+
 html[data-theme="dark"] .progress-track {
   background: rgba(255, 255, 255, 0.09);
 }
+
 
 html[data-theme="dark"] .waqt-strip-card,
 html[data-theme="dark"] .card,
@@ -2223,13 +2497,16 @@ html[data-theme="dark"] .modal-card {
   border-color: rgba(16, 185, 129, 0.24);
 }
 
+
 html[data-theme="dark"] .prohibited-card.status-safe {
   background: linear-gradient(145deg, rgba(16, 185, 129, 0.1), #0b221a);
 }
 
+
 html[data-theme="dark"] .prohibited-card.status-danger {
   background: linear-gradient(145deg, rgba(239, 68, 68, 0.2), #161116);
 }
+
 
 html[data-theme="dark"] .waqt-pill-card,
 html[data-theme="dark"] .tab-btn,
@@ -2246,6 +2523,7 @@ html[data-theme="dark"] .modal-section {
   border-color: rgba(16, 185, 129, 0.22);
 }
 
+
 html[data-theme="dark"] .waqt-pill-card.waqt-active,
 html[data-theme="dark"] .tab-btn.active,
 html[data-theme="dark"] .month-summary-card.selected-month-card {
@@ -2253,21 +2531,25 @@ html[data-theme="dark"] .month-summary-card.selected-month-card {
   border-color: var(--accent-gold);
 }
 
+
 html[data-theme="dark"] .habit-item.completed,
 html[data-theme="dark"] .dua-card.completed {
   background: rgba(16, 185, 129, 0.14);
   border-color: var(--accent-emerald);
 }
 
+
 html[data-theme="dark"] .habit-item.time-expired {
   background: rgba(15, 23, 42, 0.65);
   border-color: rgba(239, 68, 68, 0.35);
 }
 
+
 html[data-theme="dark"] .habit-item.time-upcoming {
   background: rgba(11, 34, 26, 0.85);
   border-color: rgba(234, 179, 8, 0.3);
 }
+
 
 html[data-theme="dark"] .input-select,
 html[data-theme="dark"] .input-text,
@@ -2277,28 +2559,34 @@ html[data-theme="dark"] .input-textarea {
   border-color: rgba(16, 185, 129, 0.28) !important;
 }
 
+
 html[data-theme="dark"] .dua-arabic {
   background: rgba(6, 78, 59, 0.32);
   color: #f8fafc;
 }
 
+
 html[data-theme="dark"] .translit {
   color: #a7f3d0;
 }
 
+
 html[data-theme="dark"] .dua-virtue {
   color: #fde047;
 }
+
 
 html[data-theme="dark"] .tasbih-wheel {
   background: radial-gradient(circle, #134e3a, #071f17);
   border-color: var(--accent-gold);
 }
 
+
 html[data-theme="dark"] .category-breakdown-panel {
   background: #071913;
   border-color: rgba(16, 185, 129, 0.25);
 }
+
 
 html[data-theme="dark"] .category-breakdown-header h4,
 html[data-theme="dark"] .cat-bar-title,
@@ -2306,13 +2594,16 @@ html[data-theme="dark"] .cat-bar-pct {
   color: #f8fafc;
 }
 
+
 html[data-theme="dark"] .category-breakdown-header p {
   color: #94a3b8;
 }
 
+
 html[data-theme="dark"] .cat-bar-track {
   background: rgba(255, 255, 255, 0.1);
 }
+
 
 html[data-theme="dark"] .category-advice-comment.needs-focus {
   background: rgba(234, 179, 8, 0.12);
@@ -2320,27 +2611,32 @@ html[data-theme="dark"] .category-advice-comment.needs-focus {
   color: #fde047;
 }
 
+
 html[data-theme="dark"] .category-advice-comment.all-perfect {
   background: rgba(16, 185, 129, 0.15);
   border-color: rgba(16, 185, 129, 0.4);
   color: #6ee7b7;
 }
 
+
 html[data-theme="dark"] .habit-check {
   background: rgba(16, 185, 129, 0.1);
   color: #34d399;
 }
+
 
 html[data-theme="dark"] .quote-box,
 html[data-theme="dark"] .hash-box {
   background: #071913;
 }
 
+
 html[data-theme="dark"] .exit-toast,
 html[data-theme="dark"] .update-banner-card {
   background: #0b221a;
   color: #f8fafc;
 }
+
 
 /* ==========================================================================
    MOON-SIGHTING HIJRI (MAGHRIB ROLLOVER) & BANGLA PONJIKA CARD
@@ -2357,10 +2653,12 @@ html[data-theme="dark"] .update-banner-card {
   transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 
+
 .lunar-ponjika-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float-hover);
 }
+
 
 .lunar-hijri-row {
   display: flex;
@@ -2370,12 +2668,14 @@ html[data-theme="dark"] .update-banner-card {
   flex-wrap: wrap;
 }
 
+
 #lunar-hijri-headline {
   font-size: 1.02rem;
   font-weight: 900;
   color: #163a2c;
   letter-spacing: 0.01em;
 }
+
 
 #lunar-hijri-headline .prev-hijri-day {
   color: #7c9087;
@@ -2385,11 +2685,13 @@ html[data-theme="dark"] .update-banner-card {
   font-weight: 800;
 }
 
+
 .crescent-badge {
   font-size: 1.05rem;
   line-height: 1;
   filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.25));
 }
+
 
 .bangla-ponjika-sub {
   margin-top: 3px;
@@ -2398,12 +2700,14 @@ html[data-theme="dark"] .update-banner-card {
   color: #556b61;
 }
 
+
 /* Live Ongoing Waqt Progress & Countdown Box inside .waqt-strip-card */
 .live-waqt-countdown-box {
   padding: 6px 6px 12px;
   margin-bottom: 10px;
   border-bottom: 1px dashed rgba(16, 185, 129, 0.22);
 }
+
 
 .live-waqt-top-row {
   display: flex;
@@ -2413,17 +2717,20 @@ html[data-theme="dark"] .update-banner-card {
   gap: 8px;
 }
 
+
 #live-waqt-title {
   font-size: 1.02rem;
   font-weight: 900;
   color: #163a2c;
 }
 
+
 .live-waqt-range {
   font-size: 0.94rem;
   font-weight: 800;
   color: #1e352b;
 }
+
 
 .live-waqt-track {
   width: 100%;
@@ -2435,6 +2742,7 @@ html[data-theme="dark"] .update-banner-card {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
+
 .live-waqt-fill {
   height: 100%;
   border-radius: 999px;
@@ -2442,12 +2750,14 @@ html[data-theme="dark"] .update-banner-card {
   transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+
 .live-waqt-bottom-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
 }
+
 
 .live-waqt-running {
   display: inline-flex;
@@ -2458,6 +2768,7 @@ html[data-theme="dark"] .update-banner-card {
   color: #15803d;
 }
 
+
 .live-waqt-dot {
   width: 10px;
   height: 10px;
@@ -2466,6 +2777,7 @@ html[data-theme="dark"] .update-banner-card {
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
   animation: waqtPulse 1.8s infinite ease-in-out;
 }
+
 
 @keyframes waqtPulse {
   0%, 100% {
@@ -2478,11 +2790,13 @@ html[data-theme="dark"] .update-banner-card {
   }
 }
 
+
 #live-waqt-remaining {
   font-size: 0.88rem;
   font-weight: 900;
   color: #1e4635;
 }
+
 
 /* Dark Theme Support for Lunar Ponjika Card & Live Waqt Countdown Box */
 html[data-theme="dark"] .lunar-ponjika-card {
@@ -2490,34 +2804,42 @@ html[data-theme="dark"] .lunar-ponjika-card {
   border-color: rgba(16, 185, 129, 0.26);
 }
 
+
 html[data-theme="dark"] #lunar-hijri-headline {
   color: #f8fafc;
 }
+
 
 html[data-theme="dark"] #lunar-hijri-headline .prev-hijri-day {
   color: #64748b;
 }
 
+
 html[data-theme="dark"] .bangla-ponjika-sub {
   color: #94a3b8;
 }
+
 
 html[data-theme="dark"] #live-waqt-title,
 html[data-theme="dark"] .live-waqt-range {
   color: #f8fafc;
 }
 
+
 html[data-theme="dark"] .live-waqt-track {
   background: rgba(255, 255, 255, 0.1);
 }
+
 
 html[data-theme="dark"] .live-waqt-running {
   color: #34d399;
 }
 
+
 html[data-theme="dark"] #live-waqt-remaining {
   color: #fde047;
 }
+
 
 /* ==========================================================================
    HERO-EMBEDDED LIVE ONGOING PRAYER PROGRESS BAR (UNDER HABIT TRACKER)
@@ -2532,11 +2854,13 @@ html[data-theme="dark"] #live-waqt-remaining {
   box-shadow: 0 4px 14px rgba(15, 45, 34, 0.05);
 }
 
+
 html[data-theme="dark"] .hero-embedded-waqt-box {
   background: rgba(7, 25, 19, 0.88);
   border-color: rgba(16, 185, 129, 0.28);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
+
 
 /* ==========================================================================
    DARK THEME FIX FOR DAY HISTORY MODAL ITEMS & EMPTY ARCHIVE NOTICE
@@ -2549,10 +2873,12 @@ html[data-theme="dark"] .compact-history-item {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
 }
 
+
 html[data-theme="dark"][dir="rtl"] .compact-history-item {
   border-left: 1px solid rgba(16, 185, 129, 0.32);
   border-right: 3.5px solid var(--accent-emerald);
 }
+
 
 .category-advice-comment.empty-archive-notice {
   background: #f1f5f9;
@@ -2561,11 +2887,13 @@ html[data-theme="dark"][dir="rtl"] .compact-history-item {
   text-align: center;
 }
 
+
 html[data-theme="dark"] .category-advice-comment.empty-archive-notice {
   background: rgba(15, 23, 42, 0.55);
   border: 1px dashed rgba(148, 163, 184, 0.35);
   color: #94a3b8;
 }
+
 
 /* ==========================================================================
    PROHIBITED SALAH ALERT STATE FOR LIVE WAQT PROGRESS BAR
@@ -2577,29 +2905,35 @@ html[data-theme="dark"] .category-advice-comment.empty-archive-notice {
   box-shadow: 0 6px 18px rgba(220, 38, 38, 0.12);
 }
 
+
 .live-waqt-countdown-box.waqt-prohibited-active #live-waqt-title,
 .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-range,
 .live-waqt-countdown-box.waqt-prohibited-active #live-waqt-remaining {
   color: #b91c1c;
 }
 
+
 .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-fill {
   background: linear-gradient(90deg, #ef4444, #dc2626);
 }
 
+
 .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-running {
   color: #dc2626;
 }
+
 
 .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-dot {
   background: #dc2626;
   box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.25);
 }
 
+
 html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active {
   background: linear-gradient(145deg, rgba(239, 68, 68, 0.18), #1a0f12);
   border-color: rgba(239, 68, 68, 0.5);
 }
+
 
 html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-waqt-title,
 html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-range,
@@ -2607,6 +2941,7 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-wa
 html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-running {
   color: #fca5a5;
 }
+
 
 /* ==========================================================================
    SLEEK COMPACT DAILY HABIT HERO CARD & UNIFIED 5-WAQT LIVE PROGRESS SECTION
@@ -2617,9 +2952,11 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-wa
   border-radius: 20px;
 }
 
+
 .hero-card.hero-card-compact .label {
   font-size: 0.66rem;
 }
+
 
 .hero-card.hero-card-compact .hero-stats h2 {
   font-size: 1.72rem;
@@ -2627,10 +2964,12 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-wa
   margin: 1px 0 2px;
 }
 
+
 .hero-card.hero-card-compact .hero-left-info p {
   font-size: 0.75rem;
   line-height: 1.35;
 }
+
 
 .hero-card.hero-card-compact .time-lock-pill {
   margin-top: 5px;
@@ -2638,24 +2977,29 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-wa
   font-size: 0.64rem;
 }
 
+
 .hero-card.hero-card-compact .streak-circle-wrapper {
   width: 92px;
   height: 92px;
 }
 
+
 .hero-card.hero-card-compact .streak-circle-inner .streak-flame {
   font-size: 1rem;
 }
+
 
 .hero-card.hero-card-compact .streak-circle-inner strong {
   font-size: 1.08rem;
   margin-top: 1px;
 }
 
+
 .hero-card.hero-card-compact .streak-circle-inner small {
   font-size: 0.54rem;
   max-width: 68px;
 }
+
 
 .hero-card.hero-card-compact .hero-meta {
   margin-top: 9px;
@@ -2663,12 +3007,14 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-wa
   font-size: 0.71rem;
 }
 
+
 /* Unified 5-Waqt Card with Live Ongoing Prayer Progress Header */
 .waqt-strip-card {
   margin: 0 14px 12px;
   padding: 12px;
   border-radius: 22px;
 }
+
 
 .waqt-card-embedded-box {
   padding: 10px 12px;
@@ -2679,11 +3025,13 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-wa
   box-shadow: 0 4px 12px rgba(15, 45, 34, 0.04);
 }
 
+
 html[data-theme="dark"] .waqt-card-embedded-box {
   background: linear-gradient(145deg, rgba(16, 185, 129, 0.12), #071913);
   border-color: rgba(16, 185, 129, 0.28);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
+
 
 /* ==========================================================================
    FULL-BLEED TOP MARGIN-BAR HEADER (ZERO SCROLL OVER-CROSSING GUARANTEE)
@@ -2710,10 +3058,12 @@ html[data-theme="dark"] .waqt-card-embedded-box {
   box-shadow: 0 4px 14px -4px rgba(15, 45, 34, 0.08);
 }
 
+
 .app-header.is-scrolled {
   box-shadow: 0 8px 22px -4px rgba(15, 45, 34, 0.15) !important;
   border-bottom-color: rgba(16, 185, 129, 0.36) !important;
 }
+
 
 html[data-theme="dark"] .app-header {
   background: #0b221a !important;
@@ -2721,14 +3071,17 @@ html[data-theme="dark"] .app-header {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.48);
 }
 
+
 html[data-theme="dark"] .app-header.is-scrolled {
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.68) !important;
   border-bottom-color: rgba(16, 185, 129, 0.45) !important;
 }
 
+
 .lunar-ponjika-card {
   margin-top: 2px;
 }
+
 
 /* ==========================================================================
    WORLD-CLASS CARD-IN-CARD ONGOING PRAYER & PROHIBITED SALAH ALERT UI
@@ -2740,23 +3093,28 @@ html[data-theme="dark"] .app-header.is-scrolled {
   transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
+
 #live-waqt-remaining {
   color: #dc2626 !important;
   font-weight: 900;
   letter-spacing: -0.01em;
 }
 
+
 html[data-theme="dark"] #live-waqt-remaining {
   color: #f87171 !important;
 }
+
 
 #live-tahajjud-subrow {
   transition: all 0.25s ease;
 }
 
+
 html[data-theme="dark"] #live-tahajjud-subrow {
   border-color: rgba(16, 185, 129, 0.28) !important;
 }
+
 
 .live-waqt-countdown-box.waqt-prohibited-active #live-tahajjud-subrow {
   background: linear-gradient(145deg, rgba(254, 242, 242, 0.96), rgba(254, 226, 226, 0.88)) !important;
@@ -2764,10 +3122,12 @@ html[data-theme="dark"] #live-tahajjud-subrow {
   box-shadow: 0 3px 10px rgba(220, 38, 38, 0.08);
 }
 
+
 html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-tahajjud-subrow {
   background: linear-gradient(145deg, rgba(127, 29, 29, 0.36), rgba(69, 10, 10, 0.42)) !important;
   border-color: rgba(248, 113, 113, 0.45) !important;
 }
+
 
 /* ==========================================================================
    HEADER MADHAB + LOCATION PILL STACK & ANCHORED POPOVER CSS
@@ -2780,6 +3140,7 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-ta
   align-items: stretch;
   gap: 4px;
 }
+
 
 .header-loc-pill-btn {
   background: #f4fbf7;
@@ -2803,14 +3164,17 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-ta
   text-overflow: ellipsis;
 }
 
+
 .header-loc-pill-btn:hover {
   background: #e6f7ef;
   border-color: var(--accent-emerald, #10b981);
 }
 
+
 .header-loc-pill-btn:active {
   transform: scale(0.95);
 }
+
 
 .header-loc-popover,
 .bd-loc-Cascading-panel {
@@ -2830,11 +3194,13 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-ta
   animation: locPopIn 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+
 html[dir="rtl"] .header-loc-popover,
 html[dir="rtl"] .bd-loc-Cascading-panel {
   right: auto;
   left: 0;
 }
+
 
 @keyframes locPopIn {
   from {
@@ -2847,10 +3213,12 @@ html[dir="rtl"] .bd-loc-Cascading-panel {
   }
 }
 
+
 .header-loc-popover.is-open,
 .bd-loc-Cascading-panel.is-open {
   display: flex;
 }
+
 
 .bd-loc-popover-head {
   display: flex;
@@ -2861,11 +3229,13 @@ html[dir="rtl"] .bd-loc-Cascading-panel {
   border-bottom: 1px dashed rgba(16, 185, 129, 0.25);
 }
 
+
 .bd-loc-popover-title {
   font-size: 0.74rem;
   font-weight: 900;
   color: var(--accent-emerald-dark, #065f46);
 }
+
 
 .bd-loc-coords-pill {
   font-size: 0.63rem;
@@ -2878,11 +3248,13 @@ html[dir="rtl"] .bd-loc-Cascading-panel {
   white-space: nowrap;
 }
 
+
 .bd-loc-selects-grid {
   display: flex;
   flex-direction: column;
   gap: 7px;
 }
+
 
 .bd-loc-field {
   display: flex;
@@ -2891,9 +3263,11 @@ html[dir="rtl"] .bd-loc-Cascading-panel {
   text-align: left;
 }
 
+
 html[dir="rtl"] .bd-loc-field {
   text-align: right;
 }
+
 
 .bd-loc-field label {
   font-size: 0.65rem;
@@ -2901,6 +3275,7 @@ html[dir="rtl"] .bd-loc-field {
   color: var(--text-muted, #5b7268);
   padding-left: 2px;
 }
+
 
 .bd-loc-select {
   width: 100%;
@@ -2916,10 +3291,12 @@ html[dir="rtl"] .bd-loc-field {
   cursor: pointer;
 }
 
+
 .bd-loc-select:focus {
   border-color: var(--accent-emerald, #10b981);
   background: #ffffff;
 }
+
 
 .bd-loc-actions-row {
   display: flex;
@@ -2928,6 +3305,7 @@ html[dir="rtl"] .bd-loc-field {
   gap: 8px;
   padding-top: 4px;
 }
+
 
 .bd-loc-auto-btn {
   background: #f3f8f5;
@@ -2940,6 +3318,7 @@ html[dir="rtl"] .bd-loc-field {
   cursor: pointer;
   font-family: inherit;
 }
+
 
 .bd-loc-done-btn {
   background: linear-gradient(135deg, #10b981, #059669);
@@ -2954,11 +3333,13 @@ html[dir="rtl"] .bd-loc-field {
   box-shadow: 0 3px 10px rgba(16, 185, 129, 0.25);
 }
 
+
 html[data-theme="dark"] .header-loc-pill-btn {
   background: #071913;
   color: #34d399;
   border-color: rgba(16, 185, 129, 0.45);
 }
+
 
 html[data-theme="dark"] .header-loc-popover,
 html[data-theme="dark"] .bd-loc-Cascading-panel {
@@ -2967,17 +3348,20 @@ html[data-theme="dark"] .bd-loc-Cascading-panel {
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.65);
 }
 
+
 html[data-theme="dark"] .bd-loc-select {
   background: #05130e;
   color: #f8fafc;
   border-color: rgba(16, 185, 129, 0.35);
 }
 
+
 html[data-theme="dark"] .bd-loc-auto-btn {
   background: #071913;
   color: #94a3b8;
   border-color: rgba(16, 185, 129, 0.25);
 }
+
 
 /* ==========================================================================
    "অবস্থান অনুসন্ধান করুন" SEARCHABLE LOCATION MODAL & DRILL-DOWN UI
@@ -2996,14 +3380,17 @@ html[data-theme="dark"] .bd-loc-auto-btn {
   animation: s24FadeIn 0.18s ease;
 }
 
+
 .s24-loc-overlay.hidden {
   display: none !important;
 }
+
 
 @keyframes s24FadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
 
 .s24-loc-prompt-card {
   width: min(365px, 92vw);
@@ -3016,13 +3403,16 @@ html[data-theme="dark"] .bd-loc-auto-btn {
   text-align: left;
 }
 
+
 html[dir="rtl"] .s24-loc-prompt-card {
   text-align: right;
 }
 
+
 .s24-loc-prompt-card.hidden {
   display: none !important;
 }
+
 
 @keyframes s24TriggerBorderPulse {
   0%, 100% {
@@ -3032,6 +3422,7 @@ html[dir="rtl"] .s24-loc-prompt-card {
     box-shadow: 0 18px 40px rgba(16, 185, 129, 0.3);
   }
 }
+
 
 .s24-loc-search-trigger {
   width: 100%;
@@ -3053,16 +3444,19 @@ html[dir="rtl"] .s24-loc-prompt-card {
   transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
+
 .s24-loc-search-trigger:hover {
   background: linear-gradient(145deg, #e6f7ef 0%, #d1fae5 100%);
   border-color: #059669;
   transform: translateY(-1.5px);
 }
 
+
 .s24-loc-search-trigger:active {
   transform: scale(0.97);
   background: #d1fae5;
 }
+
 
 .s24-loc-trigger-left {
   display: flex;
@@ -3071,6 +3465,7 @@ html[dir="rtl"] .s24-loc-prompt-card {
   min-width: 0;
   flex: 1;
 }
+
 
 .s24-loc-trigger-icon {
   width: 38px;
@@ -3086,6 +3481,7 @@ html[dir="rtl"] .s24-loc-prompt-card {
   box-shadow: 0 3px 10px rgba(16, 185, 129, 0.18);
 }
 
+
 .s24-loc-trigger-text-wrap {
   display: flex;
   flex-direction: column;
@@ -3095,10 +3491,12 @@ html[dir="rtl"] .s24-loc-prompt-card {
   text-align: left;
 }
 
+
 html[dir="rtl"] .s24-loc-trigger-text-wrap {
   align-items: flex-end;
   text-align: right;
 }
+
 
 .s24-loc-trigger-title {
   font-size: 0.96rem;
@@ -3107,12 +3505,14 @@ html[dir="rtl"] .s24-loc-trigger-text-wrap {
   line-height: 1.25;
 }
 
+
 .s24-loc-trigger-hint {
   font-size: 0.71rem;
   font-weight: 700;
   color: var(--text-muted, #5b7268);
   line-height: 1.3;
 }
+
 
 .s24-loc-trigger-arrow {
   width: 30px;
@@ -3129,9 +3529,11 @@ html[dir="rtl"] .s24-loc-trigger-text-wrap {
   box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
 }
 
+
 html[dir="rtl"] .s24-loc-trigger-arrow {
   transform: scaleX(-1);
 }
+
 
 .s24-loc-picker-card {
   position: relative;
@@ -3145,9 +3547,11 @@ html[dir="rtl"] .s24-loc-trigger-arrow {
   overflow: visible;
 }
 
+
 .s24-loc-picker-card.hidden {
   display: none !important;
 }
+
 
 .s24-loc-floating-close {
   position: absolute;
@@ -3169,10 +3573,12 @@ html[dir="rtl"] .s24-loc-trigger-arrow {
   z-index: 10;
 }
 
+
 html[dir="rtl"] .s24-loc-floating-close {
   right: auto;
   left: -12px;
 }
+
 
 .s24-loc-picker-header {
   background: #2e5c46;
@@ -3186,6 +3592,7 @@ html[dir="rtl"] .s24-loc-floating-close {
   min-height: 52px;
 }
 
+
 .s24-loc-back-btn {
   position: absolute;
   left: 12px;
@@ -3198,15 +3605,18 @@ html[dir="rtl"] .s24-loc-floating-close {
   cursor: pointer;
 }
 
+
 html[dir="rtl"] .s24-loc-back-btn {
   left: auto;
   right: 12px;
   transform: scaleX(-1);
 }
 
+
 .s24-loc-back-btn.hidden {
   display: none !important;
 }
+
 
 #s24-loc-picker-title {
   font-size: 1.02rem;
@@ -3219,10 +3629,12 @@ html[dir="rtl"] .s24-loc-back-btn {
   text-overflow: ellipsis;
 }
 
+
 .s24-loc-search-wrap {
   padding: 10px 14px 6px;
   background: #ffffff;
 }
+
 
 .s24-loc-search-input {
   width: 100%;
@@ -3236,9 +3648,11 @@ html[dir="rtl"] .s24-loc-back-btn {
   outline: none;
 }
 
+
 .s24-loc-search-input::placeholder {
   color: #9ca3af;
 }
+
 
 .s24-loc-list-scroll {
   flex: 1;
@@ -3248,6 +3662,7 @@ html[dir="rtl"] .s24-loc-back-btn {
   scrollbar-width: thin;
   scrollbar-color: #2e5c46 transparent;
 }
+
 
 .s24-loc-item-btn {
   width: 100%;
@@ -3266,9 +3681,11 @@ html[dir="rtl"] .s24-loc-back-btn {
   transition: background 0.14s ease;
 }
 
+
 html[dir="rtl"] .s24-loc-item-btn {
   text-align: right;
 }
+
 
 .s24-loc-item-btn:hover,
 .s24-loc-item-btn:active {
@@ -3276,11 +3693,13 @@ html[dir="rtl"] .s24-loc-item-btn {
   color: #065f46;
 }
 
+
 .s24-loc-item-btn.is-active-loc {
   color: #047857;
   font-weight: 800;
   background: rgba(16, 185, 129, 0.08);
 }
+
 
 html[data-theme="dark"] .s24-loc-picker-card,
 html[data-theme="dark"] .s24-loc-search-wrap {
@@ -3288,9 +3707,11 @@ html[data-theme="dark"] .s24-loc-search-wrap {
   color: #f8fafc;
 }
 
+
 html[data-theme="dark"] .s24-loc-prompt-card {
   background: transparent;
 }
+
 
 html[data-theme="dark"] .s24-loc-search-trigger {
   background: linear-gradient(145deg, #0f3528 0%, #09251b 100%);
@@ -3298,29 +3719,35 @@ html[data-theme="dark"] .s24-loc-search-trigger {
   color: #f8fafc;
 }
 
+
 html[data-theme="dark"] .s24-loc-trigger-title {
   color: #34d399;
 }
 
+
 html[data-theme="dark"] .s24-loc-trigger-hint {
   color: #94a3b8;
 }
+
 
 html[data-theme="dark"] .s24-loc-trigger-icon {
   background: #071913;
   border-color: #10b981;
 }
 
+
 html[data-theme="dark"] .s24-loc-search-input,
 html[data-theme="dark"] .s24-loc-item-btn {
   color: #f8fafc;
 }
+
 
 html[data-theme="dark"] .s24-loc-floating-close {
   background: #123528;
   color: #ffffff;
   border-color: rgba(16, 185, 129, 0.4);
 }
+
 
 /* ==========================================================================
    5-WAQT INTERACTIVE SMART POPUP WINDOW (MATERIAL 3 CARD-IN-CARD CONTRAST)
@@ -3331,10 +3758,12 @@ html[data-theme="dark"] .s24-loc-floating-close {
   position: relative;
 }
 
+
 .waqt-pill-card {
   position: relative;
   outline: none;
 }
+
 
 .waqt-pill-card.waqt-popup-selected {
   border: 2px solid var(--accent-gold, #b45309) !important;
@@ -3343,11 +3772,13 @@ html[data-theme="dark"] .s24-loc-floating-close {
   transform: translateY(-2.5px);
 }
 
+
 html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   background: linear-gradient(145deg, rgba(234, 179, 8, 0.2), #0b221a) !important;
   border-color: #eab308 !important;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55) !important;
 }
+
 
 .waqt-range-popup-wrap {
   position: relative;
@@ -3356,9 +3787,11 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   animation: waqtPopupReveal 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+
 .waqt-range-popup-wrap.hidden {
   display: none !important;
 }
+
 
 @keyframes waqtPopupReveal {
   from {
@@ -3370,6 +3803,7 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
     transform: translateY(0) scale(1);
   }
 }
+
 
 .waqt-popup-arrow {
   position: absolute;
@@ -3385,6 +3819,7 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   transition: left 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+
 .waqt-range-popup-card {
   position: relative;
   z-index: 2;
@@ -3394,6 +3829,7 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   padding: 13px 14px;
   box-shadow: 0 14px 32px -6px rgba(15, 45, 34, 0.16), 0 4px 12px -2px rgba(16, 185, 129, 0.1);
 }
+
 
 .waqt-popup-head {
   display: flex;
@@ -3405,12 +3841,14 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   border-bottom: 1px dashed rgba(16, 185, 129, 0.28);
 }
 
+
 .waqt-popup-title-group {
   display: flex;
   align-items: center;
   gap: 9px;
   min-width: 0;
 }
+
 
 .waqt-popup-avatar {
   width: 34px;
@@ -3426,11 +3864,13 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   box-shadow: 0 3px 8px rgba(16, 185, 129, 0.14);
 }
 
+
 .waqt-popup-title-text {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
+
 
 .waqt-popup-title-text h4 {
   font-size: 0.92rem;
@@ -3439,11 +3879,13 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   line-height: 1.25;
 }
 
+
 .waqt-popup-title-text small {
   font-size: 0.68rem;
   font-weight: 700;
   color: var(--text-muted, #5b7268);
 }
+
 
 .waqt-popup-head-right {
   display: flex;
@@ -3451,6 +3893,7 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   gap: 6px;
   flex-shrink: 0;
 }
+
 
 .waqt-popup-status-pill {
   font-size: 0.65rem;
@@ -3460,11 +3903,13 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   white-space: nowrap;
 }
 
+
 .waqt-popup-status-pill.status-active {
   background: #d1fae5;
   color: #065f46;
   border: 1px solid rgba(16, 185, 129, 0.45);
 }
+
 
 .waqt-popup-status-pill.status-passed {
   background: #f1f5f9;
@@ -3472,11 +3917,13 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   border: 1px solid rgba(100, 116, 139, 0.3);
 }
 
+
 .waqt-popup-status-pill.status-upcoming {
   background: #fef3c7;
   color: #92400e;
   border: 1px solid rgba(217, 119, 6, 0.38);
 }
+
 
 .waqt-popup-close-btn {
   width: 26px;
@@ -3494,9 +3941,11 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   transition: transform 0.15s ease, background 0.15s ease;
 }
 
+
 .waqt-popup-close-btn:active {
   transform: scale(0.9);
 }
+
 
 /* Structured High-Contrast Start & End Time Field Grid */
 .waqt-popup-time-grid {
@@ -3512,19 +3961,23 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   box-shadow: inset 0 1px 3px rgba(15, 45, 34, 0.03);
 }
 
+
 .waqt-popup-time-box {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
+
 .waqt-popup-time-box.end-box {
   text-align: right;
 }
 
+
 html[dir="rtl"] .waqt-popup-time-box.end-box {
   text-align: left;
 }
+
 
 .waqt-popup-time-lbl {
   font-size: 0.65rem;
@@ -3534,6 +3987,7 @@ html[dir="rtl"] .waqt-popup-time-box.end-box {
   letter-spacing: 0.02em;
 }
 
+
 .waqt-popup-time-val {
   font-size: 0.96rem;
   font-weight: 900;
@@ -3541,9 +3995,11 @@ html[dir="rtl"] .waqt-popup-time-box.end-box {
   line-height: 1.25;
 }
 
+
 .waqt-popup-time-box.end-box .waqt-popup-time-val {
   color: #b45309;
 }
+
 
 .waqt-popup-time-divider {
   font-size: 0.9rem;
@@ -3558,15 +4014,18 @@ html[dir="rtl"] .waqt-popup-time-box.end-box {
   justify-content: center;
 }
 
+
 html[dir="rtl"] .waqt-popup-time-divider {
   transform: scaleX(-1);
 }
+
 
 .waqt-popup-meta-rows {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
+
 
 .waqt-popup-meta-item {
   display: flex;
@@ -3581,15 +4040,18 @@ html[dir="rtl"] .waqt-popup-time-divider {
   font-size: 0.75rem;
 }
 
+
 .waqt-popup-meta-item span {
   font-weight: 700;
   color: var(--text-muted, #5b7268);
 }
 
+
 .waqt-popup-meta-item strong {
   font-weight: 800;
   color: var(--text-primary, #1e352b);
 }
+
 
 .waqt-popup-sunnah-note {
   margin-top: 7px;
@@ -3604,6 +4066,7 @@ html[dir="rtl"] .waqt-popup-time-divider {
   padding: 4px 2px 0;
 }
 
+
 .waqt-popup-filter-btn {
   background: var(--accent-emerald-soft, #e6f6ef);
   color: var(--accent-emerald-dark, #065f46);
@@ -3617,9 +4080,11 @@ html[dir="rtl"] .waqt-popup-time-divider {
   transition: transform 0.15s ease, background 0.15s ease;
 }
 
+
 .waqt-popup-filter-btn:active {
   transform: scale(0.95);
 }
+
 
 /* Dark Mode Overrides for 5-Waqt Popup */
 html[data-theme="dark"] .waqt-popup-arrow {
@@ -3627,16 +4092,19 @@ html[data-theme="dark"] .waqt-popup-arrow {
   border-color: rgba(16, 185, 129, 0.55);
 }
 
+
 html[data-theme="dark"] .waqt-range-popup-card {
   background: linear-gradient(180deg, #0b221a 0%, #071913 100%);
   border-color: rgba(16, 185, 129, 0.5);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
 }
 
+
 html[data-theme="dark"] .waqt-popup-title-text h4,
 html[data-theme="dark"] .waqt-popup-meta-item strong {
   color: #f8fafc;
 }
+
 
 html[data-theme="dark"] .waqt-popup-close-btn {
   background: #123528;
@@ -3644,38 +4112,46 @@ html[data-theme="dark"] .waqt-popup-close-btn {
   border-color: rgba(16, 185, 129, 0.35);
 }
 
+
 html[data-theme="dark"] .waqt-popup-time-grid {
   background: #05130e;
   border-color: rgba(16, 185, 129, 0.3);
 }
 
+
 html[data-theme="dark"] .waqt-popup-time-val {
   color: #34d399;
 }
 
+
 html[data-theme="dark"] .waqt-popup-time-box.end-box .waqt-popup-time-val {
   color: #fde047;
 }
+
 
 html[data-theme="dark"] .waqt-popup-meta-item {
   background: rgba(16, 185, 129, 0.1);
   border-color: rgba(16, 185, 129, 0.24);
 }
 
+
 html[data-theme="dark"] .waqt-popup-status-pill.status-active {
   background: rgba(16, 185, 129, 0.22);
   color: #6ee7b7;
 }
+
 
 html[data-theme="dark"] .waqt-popup-status-pill.status-passed {
   background: rgba(148, 163, 184, 0.15);
   color: #cbd5e1;
 }
 
+
 html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
   background: rgba(234, 179, 8, 0.18);
   color: #fde047;
 }
+
 
 /* ==========================================================================
    STATIC POPUP-STYLE ONGOING PRAYER DASHBOARD CARD (MATERIAL 3 CARD-IN-CARD)
@@ -3690,15 +4166,18 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
   box-shadow: 0 10px 24px -6px rgba(15, 45, 34, 0.09), 0 3px 10px -2px rgba(16, 185, 129, 0.06) !important;
 }
 
+
 .ongoing-static-head {
   margin-bottom: 10px;
   padding-bottom: 9px;
 }
 
+
 .waqt-popup-avatar.prohibited-avatar {
   background: #fee2e2;
   border-color: rgba(220, 38, 38, 0.45);
 }
+
 
 .waqt-popup-status-pill.status-prohibited {
   background: #fee2e2;
@@ -3706,9 +4185,11 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
   border: 1px solid rgba(220, 38, 38, 0.42);
 }
 
+
 .ongoing-static-time-grid {
   margin-bottom: 10px;
 }
+
 
 .ongoing-progress-strip {
   background: #ffffff;
@@ -3718,6 +4199,7 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
   margin-bottom: 9px;
   box-shadow: inset 0 1px 2px rgba(15, 45, 34, 0.03);
 }
+
 
 .ongoing-countdown-pill {
   background: rgba(220, 38, 38, 0.09);
@@ -3729,9 +4211,11 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
   font-weight: 900;
 }
 
+
 .ongoing-static-meta-rows {
   margin-top: 2px;
 }
+
 
 .ongoing-prime-badge {
   display: inline-flex;
@@ -3743,17 +4227,20 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
   margin-left: 4px;
 }
 
+
 .ongoing-prime-badge.active {
   background: rgba(220, 38, 38, 0.1);
   color: #dc2626;
   border: 1px solid rgba(220, 38, 38, 0.28);
 }
 
+
 .ongoing-prime-badge.ended {
   background: rgba(220, 38, 38, 0.09);
   color: #b91c1c;
   border: 1px solid rgba(220, 38, 38, 0.25);
 }
+
 
 .ongoing-prime-subnote {
   font-size: 0.74rem;
@@ -3766,11 +4253,13 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
   line-height: 1.4;
 }
 
+
 html[dir="rtl"] .ongoing-prime-subnote {
   border-left: none;
   border-right: 3px solid var(--accent-emerald, #10b981);
   border-radius: 9px 0 0 9px;
 }
+
 
 .ongoing-prime-subnote.note-alert {
   color: #b91c1c;
@@ -3778,9 +4267,11 @@ html[dir="rtl"] .ongoing-prime-subnote {
   border-left-color: #dc2626;
 }
 
+
 html[dir="rtl"] .ongoing-prime-subnote.note-alert {
   border-right-color: #dc2626;
 }
+
 
 /* Tahajjud / Qiyam al-Layl Static Inner Card inside Ongoing Isha */
 .ongoing-tahajjud-subcard {
@@ -3792,10 +4283,12 @@ html[dir="rtl"] .ongoing-prime-subnote.note-alert {
   box-shadow: 0 4px 12px rgba(15, 45, 34, 0.05);
 }
 
+
 .ongoing-tahajjud-subcard.golden-state {
   background: linear-gradient(145deg, #fffbeb, #f4fbf7);
   border-color: rgba(217, 119, 6, 0.42);
 }
+
 
 .ongoing-rakah-footer {
   margin-top: 8px;
@@ -3804,6 +4297,7 @@ html[dir="rtl"] .ongoing-prime-subnote.note-alert {
   font-size: 0.73rem;
 }
 
+
 /* Dark Theme Support for Static Ongoing Waqt Card */
 html[data-theme="dark"] .waqt-card-embedded-box {
   background: linear-gradient(180deg, #0b221a 0%, #071913 100%) !important;
@@ -3811,16 +4305,19 @@ html[data-theme="dark"] .waqt-card-embedded-box {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5) !important;
 }
 
+
 html[data-theme="dark"] .ongoing-progress-strip {
   background: #05130e;
   border-color: rgba(16, 185, 129, 0.25);
 }
+
 
 html[data-theme="dark"] .ongoing-countdown-pill {
   background: rgba(239, 68, 68, 0.16);
   color: #fca5a5 !important;
   border-color: rgba(239, 68, 68, 0.35);
 }
+
 
 html[data-theme="dark"] .ongoing-prime-badge.active,
 html[data-theme="dark"] .ongoing-prime-badge.ended {
@@ -3829,25 +4326,30 @@ html[data-theme="dark"] .ongoing-prime-badge.ended {
   border-color: rgba(239, 68, 68, 0.35);
 }
 
+
 html[data-theme="dark"] .ongoing-prime-subnote {
   background: rgba(16, 185, 129, 0.08);
   color: #cbd5e1;
 }
+
 
 html[data-theme="dark"] .ongoing-prime-subnote.note-alert {
   background: rgba(239, 68, 68, 0.14);
   color: #fca5a5;
 }
 
+
 html[data-theme="dark"] .ongoing-tahajjud-subcard {
   background: linear-gradient(145deg, #0b221a, #05130e);
   border-color: rgba(16, 185, 129, 0.36);
 }
 
+
 html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
   background: linear-gradient(145deg, rgba(234, 179, 8, 0.12), #071913);
   border-color: rgba(234, 179, 8, 0.45);
 }
+
 
 /* ==========================================================================
    COMPACT SHRUNK TAHAJJUD SECONDARY STRIP & 3-PART ONGOING WAQT REFINEMENT
@@ -3857,12 +4359,14 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
   margin-bottom: 9px !important;
 }
 
+
 .ongoing-static-meta-rows {
   display: flex;
   flex-direction: column;
   gap: 6px;
   margin-top: 0;
 }
+
 
 .ongoing-tahajjud-mini-bar {
   margin-top: 8px;
@@ -3878,10 +4382,12 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
   font-size: 0.7rem;
 }
 
+
 .ongoing-tahajjud-mini-bar.golden-state {
   background: rgba(234, 179, 8, 0.08);
   border-color: rgba(217, 119, 6, 0.42);
 }
+
 
 .tahajjud-mini-left {
   display: inline-flex;
@@ -3891,26 +4397,31 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
   min-width: 0;
 }
 
+
 .tahajjud-mini-icon {
   font-size: 0.8rem;
   line-height: 1;
 }
+
 
 .tahajjud-mini-title {
   color: var(--text-muted, #5b7268);
   font-weight: 700;
 }
 
+
 .tahajjud-mini-time {
   color: var(--text-primary, #1e352b);
   font-weight: 800;
 }
+
 
 .tahajjud-mini-right {
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
 }
+
 
 .tahajjud-mini-badge {
   font-size: 0.63rem;
@@ -3920,11 +4431,13 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
   white-space: nowrap;
 }
 
+
 .tahajjud-mini-badge.upcoming {
   background: #fef3c7;
   color: #92400e;
   border: 1px solid rgba(217, 119, 6, 0.32);
 }
+
 
 .tahajjud-mini-badge.active {
   background: #d1fae5;
@@ -3932,50 +4445,60 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
   border: 1px solid rgba(16, 185, 129, 0.38);
 }
 
+
 .tahajjud-mini-badge.golden {
   background: #fef08a;
   color: #854d0e;
   border: 1px solid rgba(202, 138, 4, 0.42);
 }
 
+
 html[data-theme="dark"] .ongoing-tahajjud-mini-bar {
   background: rgba(16, 185, 129, 0.08);
   border-color: rgba(16, 185, 129, 0.28);
 }
+
 
 html[data-theme="dark"] .ongoing-tahajjud-mini-bar.golden-state {
   background: rgba(234, 179, 8, 0.12);
   border-color: rgba(234, 179, 8, 0.38);
 }
 
+
 html[data-theme="dark"] .tahajjud-mini-title {
   color: #94a3b8;
 }
 
+
 html[data-theme="dark"] .tahajjud-mini-time {
   color: #f8fafc;
 }
+
 
 html[data-theme="dark"] .tahajjud-mini-badge.upcoming {
   background: rgba(234, 179, 8, 0.18);
   color: #fde047;
 }
 
+
 html[data-theme="dark"] .tahajjud-mini-badge.active {
   background: rgba(16, 185, 129, 0.22);
   color: #6ee7b7;
 }
+
 
 html[data-theme="dark"] .tahajjud-mini-badge.golden {
   background: rgba(234, 179, 8, 0.24);
   color: #fef08a;
 }
 
+
 /* ==========================================================================
    STRICT SINGLE-LINE WAQT COUNTDOWN & PRIME TIME META ROW LOCK (v4.3)
    1. Keeps "✨ উত্তম সময় (আউয়াল ওয়াক্ত):" at its original compact size.
    2. Increases ONLY "⏱️ ওয়াক্ত শেষ হতে বাকি:" to the larger standard size.
    ========================================================================== */
+
 
 /* --- 1. ORIGINAL STYLE FOR "✨ উত্তম সময় (আউয়াল ওয়াক্ত):" --- */
 .waqt-popup-meta-item,
@@ -3991,6 +4514,7 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
   overflow: hidden;
 }
 
+
 .waqt-popup-meta-item > span,
 .waqt-popup-meta-item .meta-row-label {
   white-space: nowrap !important;
@@ -4002,6 +4526,7 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
   line-height: 1.35 !important;
 }
 
+
 .waqt-popup-meta-item > strong,
 .waqt-popup-meta-item .meta-row-value {
   white-space: nowrap !important;
@@ -4011,11 +4536,13 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
   margin-left: auto;
 }
 
+
 /* --- 2. LARGER STANDARD SIZE ONLY FOR "⏱️ ওয়াক্ত শেষ হতে বাকি:" --- */
 .waqt-popup-meta-item.countdown-single-line-row {
   gap: 10px !important;
   padding: 9px 13px !important;
 }
+
 
 .waqt-popup-meta-item.countdown-single-line-row > span,
 .waqt-popup-meta-item.countdown-single-line-row .meta-row-label {
@@ -4023,6 +4550,7 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
   font-weight: 800 !important;
   line-height: 1.4 !important;
 }
+
 
 .waqt-popup-meta-item.countdown-single-line-row > strong,
 .waqt-popup-meta-item.countdown-single-line-row .meta-row-value,
@@ -4033,12 +4561,14 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
   margin-left: auto;
 }
 
+
 html[dir="rtl"] .waqt-popup-meta-item > strong,
 html[dir="rtl"] .waqt-popup-meta-item .meta-row-value,
 html[dir="rtl"] #live-waqt-remaining {
   margin-left: 0;
   margin-right: auto;
 }
+
 
 /* --- 3. SMALL SCREEN SAFEGUARD (360px and below) --- */
 @media (max-width: 360px) {
@@ -4057,6 +4587,7 @@ html[dir="rtl"] #live-waqt-remaining {
     font-size: 0.71rem !important;
   }
 
+
   /* Larger standard small-screen values ONLY for "⏱️ ওয়াক্ত শেষ হতে বাকি:" */
   .waqt-popup-meta-item.countdown-single-line-row {
     padding: 8px 10px !important;
@@ -4073,6 +4604,7 @@ html[dir="rtl"] #live-waqt-remaining {
   }
 }
 
+
 /* ==========================================================================
    GOOGLE MATERIAL 3 FULL-SCREEN MASTER SECTION & LAUNCHER HUB ARCHITECTURE (v5.0)
    - Removes combined 24H Routine & Muhasabah Diary
@@ -4083,15 +4615,18 @@ html[dir="rtl"] #live-waqt-remaining {
      opens the clicked section as the 100% full-screen Master View!
    ========================================================================== */
 
+
 /* 1. Screen Visibility & Smooth Native App Transitions */
 .home-dashboard-view {
   display: block;
   animation: m3ScreenFadeIn 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+
 .home-dashboard-view.hidden {
   display: none !important;
 }
+
 
 .master-section-view {
   display: block;
@@ -4100,9 +4635,11 @@ html[dir="rtl"] #live-waqt-remaining {
   animation: m3MasterSlideIn 0.26s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+
 .master-section-view.hidden {
   display: none !important;
 }
+
 
 .master-screen-panel {
   display: block;
@@ -4110,9 +4647,11 @@ html[dir="rtl"] #live-waqt-remaining {
   animation: m3ScreenFadeIn 0.22s ease;
 }
 
+
 .master-screen-panel.hidden {
   display: none !important;
 }
+
 
 @keyframes m3ScreenFadeIn {
   from {
@@ -4125,6 +4664,7 @@ html[dir="rtl"] #live-waqt-remaining {
   }
 }
 
+
 @keyframes m3MasterSlideIn {
   from {
     opacity: 0;
@@ -4136,6 +4676,7 @@ html[dir="rtl"] #live-waqt-remaining {
   }
 }
 
+
 /* 2. Prohibited Salah Card Positioned Directly Below 5 Daily Prayers on Home */
 .home-prohibited-card {
   margin: 0 14px 14px !important;
@@ -4146,20 +4687,24 @@ html[dir="rtl"] #live-waqt-remaining {
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
+
 .home-prohibited-card:hover {
   transform: translateY(-1.5px);
   box-shadow: 0 12px 26px -6px rgba(220, 38, 38, 0.15) !important;
 }
+
 
 html[data-theme="dark"] .home-prohibited-card {
   background: linear-gradient(180deg, #161114 0%, #0b221a 100%) !important;
   border-color: rgba(239, 68, 68, 0.45) !important;
 }
 
+
 /* 3. Home Master Section Launcher Hub & 2-Column Material 3 Card Grid */
 .sections-hub-wrapper {
   margin: 4px 14px 20px;
 }
+
 
 .sections-hub-header {
   display: flex;
@@ -4169,11 +4714,13 @@ html[data-theme="dark"] .home-prohibited-card {
   padding: 0 4px;
 }
 
+
 .sections-hub-title-row {
   display: flex;
   align-items: center;
   gap: 8px;
 }
+
 
 .hub-sparkle-dot {
   width: 10px;
@@ -4184,12 +4731,14 @@ html[data-theme="dark"] .home-prohibited-card {
   flex-shrink: 0;
 }
 
+
 #sections-hub-heading {
   font-size: 1.02rem;
   font-weight: 900;
   color: var(--accent-emerald-dark, #065f46);
   letter-spacing: -0.01em;
 }
+
 
 .sections-hub-subtitle {
   font-size: 0.74rem;
@@ -4198,10 +4747,12 @@ html[data-theme="dark"] .home-prohibited-card {
   padding-left: 18px;
 }
 
+
 html[dir="rtl"] .sections-hub-subtitle {
   padding-left: 0;
   padding-right: 18px;
 }
+
 
 .master-sections-grid {
   display: grid;
@@ -4209,11 +4760,13 @@ html[dir="rtl"] .sections-hub-subtitle {
   gap: 11px;
 }
 
+
 @media (max-width: 350px) {
   .master-sections-grid {
     grid-template-columns: 1fr;
   }
 }
+
 
 /* 4. Individual Section Launcher Card with High-Contrast Material 3 Styling */
 .section-launcher-card {
@@ -4235,9 +4788,11 @@ html[dir="rtl"] .sections-hub-subtitle {
   overflow: hidden;
 }
 
+
 html[dir="rtl"] .section-launcher-card {
   text-align: right;
 }
+
 
 .section-launcher-card:hover {
   transform: translateY(-3px);
@@ -4245,9 +4800,11 @@ html[dir="rtl"] .section-launcher-card {
   border-color: var(--accent-emerald, #10b981);
 }
 
+
 .section-launcher-card:active {
   transform: scale(0.97);
 }
+
 
 .section-card-top {
   display: flex;
@@ -4256,6 +4813,7 @@ html[dir="rtl"] .section-launcher-card {
   gap: 6px;
   width: 100%;
 }
+
 
 /* World-Class Vector Logo Squircle on Every Section */
 .section-world-logo {
@@ -4272,9 +4830,11 @@ html[dir="rtl"] .section-launcher-card {
   transition: transform 0.22s ease;
 }
 
+
 .section-launcher-card:hover .section-world-logo {
   transform: scale(1.06) rotate(-2deg);
 }
+
 
 .section-world-logo.logo-indigo {
   background: linear-gradient(145deg, #eef2ff, #e0e7ff);
@@ -4282,11 +4842,13 @@ html[dir="rtl"] .section-launcher-card {
   box-shadow: 0 6px 14px -3px rgba(79, 70, 229, 0.18);
 }
 
+
 .section-world-logo.logo-amber {
   background: linear-gradient(145deg, #fffbeb, #fef3c7);
   border-color: rgba(217, 119, 6, 0.35);
   box-shadow: 0 6px 14px -3px rgba(217, 119, 6, 0.18);
 }
+
 
 .section-world-logo.logo-emerald,
 .section-world-logo.logo-emerald-deep {
@@ -4295,11 +4857,13 @@ html[dir="rtl"] .section-launcher-card {
   box-shadow: 0 6px 14px -3px rgba(16, 185, 129, 0.18);
 }
 
+
 .section-world-logo.logo-purple {
   background: linear-gradient(145deg, #faf5ff, #f3e8ff);
   border-color: rgba(147, 51, 234, 0.32);
   box-shadow: 0 6px 14px -3px rgba(147, 51, 234, 0.16);
 }
+
 
 .section-world-logo.logo-teal {
   background: linear-gradient(145deg, #f0fdfa, #ccfbf1);
@@ -4307,11 +4871,13 @@ html[dir="rtl"] .section-launcher-card {
   box-shadow: 0 6px 14px -3px rgba(13, 148, 136, 0.16);
 }
 
+
 .section-world-logo.logo-gold {
   background: linear-gradient(145deg, #fefce8, #fef08a);
   border-color: rgba(180, 83, 9, 0.36);
   box-shadow: 0 6px 14px -3px rgba(180, 83, 9, 0.16);
 }
+
 
 .section-world-logo.logo-rose {
   background: linear-gradient(145deg, #fff1f2, #ffe4e6);
@@ -4319,17 +4885,20 @@ html[dir="rtl"] .section-launcher-card {
   box-shadow: 0 6px 14px -3px rgba(225, 29, 72, 0.16);
 }
 
+
 .section-world-logo.logo-cyan {
   background: linear-gradient(145deg, #f0f9ff, #e0f2fe);
   border-color: rgba(2, 132, 199, 0.34);
   box-shadow: 0 6px 14px -3px rgba(2, 132, 199, 0.16);
 }
 
+
 .section-world-logo.logo-slate {
   background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
   border-color: rgba(15, 118, 110, 0.32);
   box-shadow: 0 6px 14px -3px rgba(15, 45, 34, 0.12);
 }
+
 
 .section-live-pill {
   font-size: 0.63rem;
@@ -4342,6 +4911,7 @@ html[dir="rtl"] .section-launcher-card {
   white-space: nowrap;
 }
 
+
 .section-card-body {
   display: flex;
   flex-direction: column;
@@ -4349,12 +4919,14 @@ html[dir="rtl"] .section-launcher-card {
   width: 100%;
 }
 
+
 .section-card-title {
   font-size: 0.9rem;
   font-weight: 900;
   color: var(--text-primary, #1e352b);
   line-height: 1.28;
 }
+
 
 .section-card-desc {
   font-size: 0.7rem;
@@ -4367,6 +4939,7 @@ html[dir="rtl"] .section-launcher-card {
   overflow: hidden;
 }
 
+
 .section-card-footer {
   display: flex;
   align-items: center;
@@ -4376,6 +4949,7 @@ html[dir="rtl"] .section-launcher-card {
   padding-top: 4px;
 }
 
+
 .section-mini-track {
   flex: 1;
   height: 6px;
@@ -4384,12 +4958,14 @@ html[dir="rtl"] .section-launcher-card {
   overflow: hidden;
 }
 
+
 .section-mini-fill {
   height: 100%;
   background: linear-gradient(90deg, #10b981, #059669);
   border-radius: 999px;
   transition: width 0.4s ease;
 }
+
 
 .section-enter-arrow {
   width: 24px;
@@ -4407,14 +4983,17 @@ html[dir="rtl"] .section-launcher-card {
   transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
+
 html[dir="rtl"] .section-enter-arrow {
   transform: scaleX(-1);
 }
+
 
 .section-launcher-card:hover .section-enter-arrow {
   background: var(--accent-emerald, #10b981);
   color: #ffffff;
 }
+
 
 /* 5. Master Section Full-Screen Top Navigation Bar (#master-section-topbar) */
 .master-section-topbar {
@@ -4429,6 +5008,7 @@ html[dir="rtl"] .section-enter-arrow {
   border-radius: 20px;
   box-shadow: 0 10px 24px -6px rgba(15, 45, 34, 0.1);
 }
+
 
 .master-back-home-btn {
   background: var(--accent-emerald-soft, #e6f6ef);
@@ -4448,18 +5028,22 @@ html[dir="rtl"] .section-enter-arrow {
   transition: transform 0.16s ease, background 0.18s ease;
 }
 
+
 .master-back-home-btn:hover {
   background: #d1fae5;
 }
+
 
 .master-back-home-btn:active {
   transform: scale(0.94);
 }
 
+
 html[dir="rtl"] .back-arrow-icon {
   transform: scaleX(-1);
   display: inline-block;
 }
+
 
 .master-topbar-center {
   display: flex;
@@ -4468,6 +5052,7 @@ html[dir="rtl"] .back-arrow-icon {
   min-width: 0;
   flex: 1;
 }
+
 
 .master-topbar-logo {
   width: 38px;
@@ -4483,11 +5068,13 @@ html[dir="rtl"] .back-arrow-icon {
   box-shadow: 0 3px 8px rgba(16, 185, 129, 0.14);
 }
 
+
 .master-topbar-titles {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
+
 
 .master-topbar-titles h2 {
   font-size: 0.95rem;
@@ -4499,6 +5086,7 @@ html[dir="rtl"] .back-arrow-icon {
   text-overflow: ellipsis;
 }
 
+
 .master-topbar-titles small {
   font-size: 0.67rem;
   font-weight: 700;
@@ -4507,6 +5095,7 @@ html[dir="rtl"] .back-arrow-icon {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 
 .master-topbar-badge {
   background: linear-gradient(135deg, #10b981, #059669);
@@ -4518,6 +5107,7 @@ html[dir="rtl"] .back-arrow-icon {
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
 }
+
 
 /* 6. Dedicated Master Phase Hero Banner inside Individual Habit Section */
 .master-phase-banner-card {
@@ -4535,6 +5125,7 @@ html[dir="rtl"] .back-arrow-icon {
   box-shadow: var(--shadow-float);
 }
 
+
 .master-phase-banner-left {
   display: flex;
   flex-direction: column;
@@ -4542,6 +5133,7 @@ html[dir="rtl"] .back-arrow-icon {
   min-width: 0;
   flex: 1;
 }
+
 
 .master-phase-tag {
   display: inline-flex;
@@ -4556,12 +5148,14 @@ html[dir="rtl"] .back-arrow-icon {
   border-radius: 999px;
 }
 
+
 .master-phase-banner-left h3 {
   font-size: 1.08rem;
   font-weight: 900;
   color: var(--text-primary, #1e352b);
   line-height: 1.25;
 }
+
 
 .master-phase-banner-right {
   display: flex;
@@ -4570,6 +5164,7 @@ html[dir="rtl"] .back-arrow-icon {
   gap: 7px;
   flex-shrink: 0;
 }
+
 
 .master-phase-score-pill {
   font-size: 1.25rem;
@@ -4582,9 +5177,11 @@ html[dir="rtl"] .back-arrow-icon {
   box-shadow: 0 4px 10px rgba(16, 185, 129, 0.12);
 }
 
+
 .master-phase-switcher {
   margin-bottom: 12px;
 }
+
 
 /* 7. Dark Mode Support for Master Section Views & Section Launcher Grid */
 html[data-theme="dark"] .section-launcher-card {
@@ -4593,9 +5190,11 @@ html[data-theme="dark"] .section-launcher-card {
   color: #f8fafc;
 }
 
+
 html[data-theme="dark"] .section-launcher-card:hover {
   border-color: #10b981;
 }
+
 
 html[data-theme="dark"] .section-card-title,
 html[data-theme="dark"] #sections-hub-heading,
@@ -4604,15 +5203,18 @@ html[data-theme="dark"] .master-phase-banner-left h3 {
   color: #f8fafc;
 }
 
+
 html[data-theme="dark"] .section-card-desc,
 html[data-theme="dark"] .sections-hub-subtitle,
 html[data-theme="dark"] .master-topbar-titles small {
   color: #94a3b8;
 }
 
+
 html[data-theme="dark"] .section-mini-track {
   background: rgba(255, 255, 255, 0.1);
 }
+
 
 html[data-theme="dark"] .section-enter-arrow {
   background: #123528;
@@ -4620,11 +5222,13 @@ html[data-theme="dark"] .section-enter-arrow {
   border-color: rgba(16, 185, 129, 0.35);
 }
 
+
 html[data-theme="dark"] .master-section-topbar,
 html[data-theme="dark"] .master-phase-banner-card {
   background: linear-gradient(160deg, #0b221a 0%, #071913 100%);
   border-color: rgba(16, 185, 129, 0.35);
 }
+
 
 html[data-theme="dark"] .master-back-home-btn {
   background: #123528;
@@ -4632,11 +5236,13 @@ html[data-theme="dark"] .master-back-home-btn {
   border-color: rgba(16, 185, 129, 0.45);
 }
 
+
 html[data-theme="dark"] .master-phase-score-pill {
   background: #071913;
   color: #34d399;
   border-color: rgba(16, 185, 129, 0.45);
 }
+
 
 /* ==========================================================================
    SECTION LAUNCHER CARDS: CENTERED LOGO WITH GREEN CIRCLE & NO DESC (v5.1)
@@ -4647,9 +5253,11 @@ html[data-theme="dark"] .master-phase-score-pill {
   padding: 16px 12px 14px !important;
 }
 
+
 html[dir="rtl"] .section-launcher-card {
   text-align: center !important;
 }
+
 
 .section-card-top {
   flex-direction: column !important;
@@ -4658,6 +5266,7 @@ html[dir="rtl"] .section-launcher-card {
   gap: 8px !important;
   width: 100% !important;
 }
+
 
 .section-world-logo {
   width: 56px !important;
@@ -4669,6 +5278,7 @@ html[dir="rtl"] .section-launcher-card {
   margin: 2px auto 4px auto !important;
 }
 
+
 .section-live-pill {
   position: absolute;
   top: 10px;
@@ -4677,10 +5287,12 @@ html[dir="rtl"] .section-launcher-card {
   padding: 2px 7px !important;
 }
 
+
 html[dir="rtl"] .section-live-pill {
   right: auto;
   left: 10px;
 }
+
 
 .section-card-body {
   align-items: center !important;
@@ -4688,15 +5300,18 @@ html[dir="rtl"] .section-live-pill {
   margin-top: 2px;
 }
 
+
 .section-card-title {
   font-size: 0.94rem !important;
   font-weight: 900 !important;
   color: var(--text-primary, #1e352b);
 }
 
+
 .section-card-footer {
   margin-top: 4px;
 }
+
 
 /* ==========================================================================
    V5.3 MODERN ILLUSTRATED LOGOS, CENTERED GREEN CIRCLES & NO TOP HOME BUTTON
@@ -4706,15 +5321,18 @@ html[dir="rtl"] .section-live-pill {
   display: none !important;
 }
 
+
 .section-launcher-card {
   align-items: center !important;
   text-align: center !important;
   padding: 20px 12px 14px !important;
 }
 
+
 html[dir="rtl"] .section-launcher-card {
   text-align: center !important;
 }
+
 
 .section-card-top {
   flex-direction: column !important;
@@ -4724,6 +5342,7 @@ html[dir="rtl"] .section-launcher-card {
   width: 100% !important;
   margin-bottom: 4px !important;
 }
+
 
 .section-world-logo {
   width: 64px !important;
@@ -4738,11 +5357,13 @@ html[dir="rtl"] .section-launcher-card {
   justify-content: center !important;
 }
 
+
 .section-world-logo svg {
   width: 38px !important;
   height: 38px !important;
   display: block;
 }
+
 
 .master-topbar-logo {
   width: 46px !important;
@@ -4757,11 +5378,13 @@ html[dir="rtl"] .section-launcher-card {
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2) !important;
 }
 
+
 .master-topbar-logo svg {
   width: 28px !important;
   height: 28px !important;
   display: block;
 }
+
 
 /* ==========================================================================
    V5.4 BORDERLESS 3D REAL-IMAGE-STYLE SECTION ARTWORK LOGOS & PROPORTIONAL SIZING
@@ -4776,9 +5399,11 @@ html[dir="rtl"] .section-launcher-card {
   gap: 8px !important;
 }
 
+
 html[dir="rtl"] .section-launcher-card {
   text-align: center !important;
 }
+
 
 .section-card-top {
   flex-direction: column !important;
@@ -4787,6 +5412,7 @@ html[dir="rtl"] .section-launcher-card {
   width: 100% !important;
   margin-bottom: 2px !important;
 }
+
 
 .section-world-logo,
 .section-world-logo.logo-indigo,
@@ -4812,6 +5438,7 @@ html[dir="rtl"] .section-launcher-card {
   transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
+
 .section-world-logo svg {
   width: 76px !important;
   height: 76px !important;
@@ -4819,13 +5446,16 @@ html[dir="rtl"] .section-launcher-card {
   overflow: visible;
 }
 
+
 .section-launcher-card:hover .section-world-logo {
   transform: translateY(-4px) scale(1.07) !important;
 }
 
+
 .section-launcher-card:active .section-world-logo {
   transform: scale(0.95) !important;
 }
+
 
 .section-card-title {
   font-size: 0.96rem !important;
@@ -4833,6 +5463,7 @@ html[dir="rtl"] .section-launcher-card {
   line-height: 1.3 !important;
   margin-top: 2px !important;
 }
+
 
 .master-topbar-logo {
   width: 48px !important;
@@ -4847,12 +5478,14 @@ html[dir="rtl"] .section-launcher-card {
   flex-shrink: 0;
 }
 
+
 .master-topbar-logo svg {
   width: 46px !important;
   height: 46px !important;
   display: block;
   overflow: visible;
 }
+
 
 /* ==========================================================================
    V5.5 MASTER SECTION TOPBAR 3D LOGO VISIBILITY & PROPORTIONAL SIZING FIX
@@ -4862,6 +5495,7 @@ html[dir="rtl"] .section-launcher-card {
   align-items: center !important;
   gap: 12px !important;
 }
+
 
 #master-active-logo,
 .master-topbar-logo {
@@ -4881,6 +5515,7 @@ html[dir="rtl"] .section-launcher-card {
   opacity: 1 !important;
 }
 
+
 #master-active-logo svg,
 .master-topbar-logo svg {
   width: 52px !important;
@@ -4888,6 +5523,7 @@ html[dir="rtl"] .section-launcher-card {
   display: block !important;
   overflow: visible !important;
 }
+
 
 /* ==========================================================================
    V5.6 3-SECTIONS-IN-A-ROW HOME LAUNCHER GRID ALIGNMENT
@@ -4902,12 +5538,14 @@ html[dir="rtl"] .section-launcher-card {
   margin: 4px 10px 20px !important;
 }
 
+
 .master-sections-grid {
   display: grid !important;
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   gap: 8px !important;
   align-items: stretch !important;
 }
+
 
 .section-launcher-card {
   position: relative !important;
@@ -4923,11 +5561,13 @@ html[dir="rtl"] .section-launcher-card {
   text-align: center !important;
 }
 
+
 .section-card-top {
   width: 100% !important;
   margin-bottom: 0 !important;
   gap: 4px !important;
 }
+
 
 .section-live-pill {
   position: absolute !important;
@@ -4943,10 +5583,12 @@ html[dir="rtl"] .section-launcher-card {
   z-index: 2 !important;
 }
 
+
 html[dir="rtl"] .section-live-pill {
   right: auto !important;
   left: 6px !important;
 }
+
 
 .section-world-logo,
 .section-world-logo.logo-indigo,
@@ -4964,10 +5606,12 @@ html[dir="rtl"] .section-live-pill {
   margin: 2px auto 0 auto !important;
 }
 
+
 .section-world-logo svg {
   width: 52px !important;
   height: 52px !important;
 }
+
 
 .section-card-body {
   width: 100% !important;
@@ -4978,6 +5622,7 @@ html[dir="rtl"] .section-live-pill {
   justify-content: center !important;
   padding: 0 2px !important;
 }
+
 
 .section-card-title {
   font-size: 0.76rem !important;
@@ -4992,6 +5637,7 @@ html[dir="rtl"] .section-live-pill {
   overflow: hidden !important;
 }
 
+
 .section-card-footer {
   width: 100% !important;
   gap: 5px !important;
@@ -4999,15 +5645,18 @@ html[dir="rtl"] .section-live-pill {
   margin-top: 2px !important;
 }
 
+
 .section-mini-track {
   height: 5px !important;
 }
+
 
 .section-enter-arrow {
   width: 20px !important;
   height: 20px !important;
   font-size: 0.6rem !important;
 }
+
 
 @media (max-width: 360px) {
   .sections-hub-wrapper {
@@ -5047,6 +5696,7 @@ html[dir="rtl"] .section-live-pill {
   }
 }
 
+
 /* ==========================================================================
    V5.7 REMOVE ARROW SIGN FROM ALL 10 HOME PAGE SECTION CARDS
    - Hides .section-enter-arrow completely and lets the progress track span 100%
@@ -5056,15 +5706,18 @@ html[dir="rtl"] .section-live-pill {
   display: none !important;
 }
 
+
 .section-card-footer {
   justify-content: center !important;
   gap: 0 !important;
 }
 
+
 .section-mini-track {
   width: 100% !important;
   flex: 1 1 100% !important;
 }
+
 
 /* ==========================================================================
    V5.8 INDEPENDENT PERSONAL HABIT CREATOR & SHA-256 DATA VAULT SECTIONS
@@ -5078,12 +5731,14 @@ html[dir="rtl"] .section-live-pill {
   animation: waqtPopupReveal 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+
 .custom-added-popup-icon-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
 }
+
 
 .custom-added-popup-orb {
   width: 58px;
@@ -5100,11 +5755,13 @@ html[dir="rtl"] .section-live-pill {
   box-shadow: 0 10px 24px rgba(16, 185, 129, 0.32);
 }
 
+
 .custom-added-popup-card h3 {
   text-align: center;
   font-size: 1.04rem;
   margin-bottom: 4px;
 }
+
 
 .custom-added-summary-box {
   width: 100%;
@@ -5113,11 +5770,13 @@ html[dir="rtl"] .section-live-pill {
   background: linear-gradient(145deg, #f2fbf7, #ffffff);
 }
 
+
 .custom-added-summary-box h4 {
   font-size: 0.94rem;
   color: var(--accent-emerald-dark, #065f46);
   margin-bottom: 5px;
 }
+
 
 .custom-added-summary-box p {
   font-size: 0.81rem;
@@ -5126,15 +5785,18 @@ html[dir="rtl"] .section-live-pill {
   font-weight: 600;
 }
 
+
 html[data-theme="dark"] .custom-added-summary-box {
   background: linear-gradient(145deg, rgba(16, 185, 129, 0.14), #071913);
   border-color: rgba(16, 185, 129, 0.35);
   border-left: 4px solid var(--accent-emerald, #10b981);
 }
 
+
 html[data-theme="dark"] .custom-added-summary-box h4 {
   color: #34d399;
 }
+
 
 html[data-theme="dark"] .custom-added-summary-box p {
   color: #f8fafc;
@@ -5171,12 +5833,14 @@ html[data-theme="dark"] .custom-added-summary-box p {
   width: 100% !important;
 }
 
+
 .sections-hub-title-left {
   display: inline-flex !important;
   align-items: center !important;
   gap: 8px !important;
   min-width: 0 !important;
 }
+
 
 .sections-hub-summary-pill {
   display: inline-flex !important;
@@ -5196,6 +5860,7 @@ html[data-theme="dark"] .custom-added-summary-box p {
   flex-shrink: 0 !important;
 }
 
+
 .sections-hub-summary-pill.all-completed {
   background: linear-gradient(135deg, #10b981, #059669) !important;
   color: #ffffff !important;
@@ -5203,11 +5868,13 @@ html[data-theme="dark"] .custom-added-summary-box p {
   box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3) !important;
 }
 
+
 .section-launcher-card {
   padding: 32px 6px 13px !important;
   border-radius: 20px !important;
   gap: 7px !important;
 }
+
 
 /* Ergonomic At-A-Glance Corner Badge Sizing */
 .section-live-pill {
@@ -5232,10 +5899,12 @@ html[data-theme="dark"] .custom-added-summary-box p {
   transition: transform 0.2s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
 }
 
+
 html[dir="rtl"] .section-live-pill {
   right: auto !important;
   left: 7px !important;
 }
+
 
 /* State 1: 0 Completed (Quiet Neutral Slate-Mint) */
 .section-live-pill.pill-state-zero {
@@ -5245,6 +5914,7 @@ html[dir="rtl"] .section-live-pill {
   box-shadow: none !important;
 }
 
+
 /* State 2: Partially Completed / In Progress (Warm Amber-Gold Highlight) */
 .section-live-pill.pill-state-progress {
   background: linear-gradient(135deg, #fef3c7, #fde68a) !important;
@@ -5252,6 +5922,7 @@ html[dir="rtl"] .section-live-pill {
   border: 1.5px solid rgba(217, 119, 6, 0.48) !important;
   box-shadow: 0 3px 8px rgba(217, 119, 6, 0.16) !important;
 }
+
 
 /* State 3: 100% Completed (Rewarding Solid Emerald Pill with White Text) */
 .section-live-pill.pill-state-complete {
@@ -5261,6 +5932,7 @@ html[dir="rtl"] .section-live-pill {
   box-shadow: 0 4px 11px rgba(16, 185, 129, 0.32) !important;
 }
 
+
 /* State 4: Utility Cards 9–12 (Crisp Tinted Utility Badge) */
 .section-live-pill.pill-state-utility {
   background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important;
@@ -5268,6 +5940,7 @@ html[dir="rtl"] .section-live-pill {
   border: 1.3px solid rgba(16, 185, 129, 0.38) !important;
   box-shadow: 0 2px 6px rgba(16, 185, 129, 0.1) !important;
 }
+
 
 /* Enlarged 3D Centerpiece Artwork & Card Title for Effortless Scanning */
 .section-world-logo,
@@ -5286,15 +5959,18 @@ html[dir="rtl"] .section-live-pill {
   margin: 2px auto 0 auto !important;
 }
 
+
 .section-world-logo svg {
   width: 60px !important;
   height: 60px !important;
 }
 
+
 .section-card-body {
   min-height: 2.45em !important;
   padding: 0 3px !important;
 }
+
 
 .section-card-title {
   font-size: 0.85rem !important;
@@ -5303,11 +5979,13 @@ html[dir="rtl"] .section-live-pill {
   letter-spacing: -0.01em !important;
 }
 
+
 /* Subtle Emerald Card Border Accent When Section is 100% Completed */
 .section-launcher-card.card-state-complete {
   border-color: rgba(16, 185, 129, 0.55) !important;
   background: linear-gradient(165deg, #ffffff 0%, #f0fdf6 100%) !important;
 }
+
 
 /* Dark Theme Support for 3-State Badges & Hub Summary Pill */
 html[data-theme="dark"] .sections-hub-summary-pill {
@@ -5316,10 +5994,12 @@ html[data-theme="dark"] .sections-hub-summary-pill {
   border-color: rgba(16, 185, 129, 0.45) !important;
 }
 
+
 html[data-theme="dark"] .sections-hub-summary-pill.all-completed {
   background: linear-gradient(135deg, #10b981, #059669) !important;
   color: #ffffff !important;
 }
+
 
 html[data-theme="dark"] .section-live-pill.pill-state-zero {
   background: rgba(255, 255, 255, 0.08) !important;
@@ -5327,11 +6007,13 @@ html[data-theme="dark"] .section-live-pill.pill-state-zero {
   border-color: rgba(148, 163, 184, 0.25) !important;
 }
 
+
 html[data-theme="dark"] .section-live-pill.pill-state-progress {
   background: rgba(234, 179, 8, 0.22) !important;
   color: #fde047 !important;
   border-color: rgba(234, 179, 8, 0.5) !important;
 }
+
 
 html[data-theme="dark"] .section-live-pill.pill-state-complete {
   background: linear-gradient(135deg, #10b981, #059669) !important;
@@ -5339,16 +6021,19 @@ html[data-theme="dark"] .section-live-pill.pill-state-complete {
   border-color: #34d399 !important;
 }
 
+
 html[data-theme="dark"] .section-live-pill.pill-state-utility {
   background: rgba(16, 185, 129, 0.16) !important;
   color: #6ee7b7 !important;
   border-color: rgba(16, 185, 129, 0.4) !important;
 }
 
+
 html[data-theme="dark"] .section-launcher-card.card-state-complete {
   background: linear-gradient(165deg, #0d2b20 0%, #071913 100%) !important;
   border-color: rgba(16, 185, 129, 0.55) !important;
 }
+
 
 /* Small Screen Safeguard (<=360px) keeping text crisp and readable */
 @media (max-width: 360px) {
@@ -5393,11 +6078,13 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   }
 }
 
+
 /* ==========================================================================
    TARGETED 3-UPDATE PATCH (TOP BAR DECLUTTER + SETTINGS MODAL + STICKY 4-TAB
    BOTTOM NAVIGATION BAR + MOON REMOVAL FROM DATE CARD)
    All other cards, borders, colors, and sections remain 100% unchanged!
    ========================================================================== */
+
 
 /* 1. Decluttered Top App Bar & Settings Preferences Modal Drawer */
 .header-right {
@@ -5406,6 +6093,7 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   gap: 8px !important;
 }
 
+
 .header-madhab-loc-stack.header-single-row-actions {
   display: flex !important;
   flex-direction: row !important;
@@ -5413,11 +6101,13 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   gap: 7px !important;
 }
 
+
 .header-loc-pill-btn {
   padding: 5px 11px !important;
   font-size: 0.72rem !important;
   max-width: 165px !important;
 }
+
 
 .header-settings-icon-btn {
   width: 34px;
@@ -5435,20 +6125,24 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   transition: transform 0.16s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
+
 .header-settings-icon-btn:hover {
   background: #e6f7ef;
   border-color: var(--accent-emerald, #10b981);
 }
 
+
 .header-settings-icon-btn:active {
   transform: scale(0.93);
 }
+
 
 .s24-settings-drawer-card {
   max-width: 375px;
   width: 100%;
   gap: 14px;
 }
+
 
 .s24-settings-drawer-head {
   display: flex;
@@ -5459,11 +6153,13 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   border-bottom: 1px dashed rgba(16, 185, 129, 0.28);
 }
 
+
 .s24-settings-head-left {
   display: flex;
   align-items: center;
   gap: 8px;
 }
+
 
 .s24-settings-head-icon {
   width: 34px;
@@ -5477,12 +6173,14 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   font-size: 1.05rem;
 }
 
+
 .s24-settings-drawer-head h3 {
   margin: 0 !important;
   font-size: 0.98rem;
   font-weight: 900;
   color: var(--accent-emerald-dark, #065f46);
 }
+
 
 .s24-settings-group {
   background: #f6fbf8;
@@ -5494,11 +6192,13 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   gap: 6px;
 }
 
+
 .s24-settings-label {
   font-size: 0.8rem;
   font-weight: 800;
   color: var(--text-primary, #1e352b);
 }
+
 
 .s24-settings-hint {
   font-size: 0.71rem;
@@ -5506,6 +6206,7 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   color: var(--text-muted, #5b7268);
   line-height: 1.38;
 }
+
 
 .s24-settings-select {
   width: 100% !important;
@@ -5515,6 +6216,7 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   background: #ffffff !important;
 }
 
+
 .s24-settings-madhab-btn {
   width: 100%;
   justify-content: center;
@@ -5523,6 +6225,7 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   border-radius: 11px !important;
   margin-top: 2px;
 }
+
 
 /* 2. Sticky 4-Tab Bottom Navigation Bar (Home, Sunnah Grid, Tasbeeh, Stats) */
 .s24-bottom-nav {
@@ -5544,6 +6247,7 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   z-index: 95;
 }
 
+
 .s24-bnav-btn {
   background: transparent;
   border: none;
@@ -5560,9 +6264,11 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   transition: color 0.18s ease, transform 0.15s ease;
 }
 
+
 .s24-bnav-btn:active {
   transform: scale(0.93);
 }
+
 
 .s24-bnav-icon {
   width: 44px;
@@ -5574,6 +6280,7 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   transition: background 0.2s ease, color 0.2s ease;
 }
 
+
 .s24-bnav-label {
   font-size: 0.68rem;
   font-weight: 800;
@@ -5581,19 +6288,23 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   white-space: nowrap;
 }
 
+
 .s24-bnav-btn.active {
   color: var(--accent-emerald-dark, #065f46);
 }
+
 
 .s24-bnav-btn.active .s24-bnav-icon {
   background: var(--accent-emerald-soft, #e6f6ef);
   color: var(--accent-emerald-dark, #065f46);
 }
 
+
 /* 3. Remove Moon 🌙 from Arabic, Bangla, English Date Section */
 .lunar-ponjika-card .crescent-badge {
   display: none !important;
 }
+
 
 /* Dark Theme Support for Settings Drawer & Bottom Navigation Bar */
 html[data-theme="dark"] .header-settings-icon-btn {
@@ -5602,19 +6313,23 @@ html[data-theme="dark"] .header-settings-icon-btn {
   border-color: rgba(16, 185, 129, 0.45);
 }
 
+
 html[data-theme="dark"] .s24-settings-group {
   background: #071913;
   border-color: rgba(16, 185, 129, 0.25);
 }
+
 
 html[data-theme="dark"] .s24-settings-label,
 html[data-theme="dark"] .s24-settings-drawer-head h3 {
   color: #f8fafc;
 }
 
+
 html[data-theme="dark"] .s24-settings-hint {
   color: #94a3b8;
 }
+
 
 html[data-theme="dark"] .s24-bottom-nav {
   background: rgba(11, 34, 26, 0.97);
@@ -5622,18 +6337,22 @@ html[data-theme="dark"] .s24-bottom-nav {
   box-shadow: 0 -6px 22px rgba(0, 0, 0, 0.5);
 }
 
+
 html[data-theme="dark"] .s24-bnav-btn {
   color: #94a3b8;
 }
+
 
 html[data-theme="dark"] .s24-bnav-btn.active {
   color: #34d399;
 }
 
+
 html[data-theme="dark"] .s24-bnav-btn.active .s24-bnav-icon {
   background: rgba(16, 185, 129, 0.22);
   color: #34d399;
 }
+
 
 /* ==========================================================================
    V7.0 INDEPENDENT SUNNAH GRID PAGE (#sunnah-grid-view) & HOME PAGE
@@ -5652,19 +6371,23 @@ html[data-theme="dark"] .s24-bnav-btn.active .s24-bnav-icon {
   animation: m3ScreenFadeIn 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+
 .sunnah-grid-view.hidden {
   display: none !important;
 }
 
+
 .sunnah-grid-view .sections-hub-wrapper {
   margin: 8px 12px 16px !important;
 }
+
 
 /* Home Page Smooth Expansion & Bottom Breathing Space */
 #home-dashboard-view {
   padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
   transition: padding-bottom 0.28s ease;
 }
+
 
 #home-waqt-section,
 #prohibited-salah-card {
@@ -5674,9 +6397,11 @@ html[data-theme="dark"] .s24-bnav-btn.active .s24-bnav-icon {
   scroll-margin-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
 }
 
+
 #waqt-range-popup-wrap {
   scroll-margin-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
 }
+
 
 /* Extra bottom empty space on Home Page & Sunnah Grid Page so scrolling down feels easy and uncramped */
 .home-bottom-scroll-space {
@@ -5686,15 +6411,18 @@ html[data-theme="dark"] .s24-bnav-btn.active .s24-bnav-icon {
   transition: height 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+
 body.home-popup-expanded .home-bottom-scroll-space {
   height: 76px;
 }
+
 
 .grid-bottom-scroll-space {
   width: 100%;
   height: 32px;
   pointer-events: none;
 }
+
 
 /* ==========================================================================
    V7.1 TIGHTENED & BALANCED BOTTOM GAP ACROSS ALL TABS & VIEWS
@@ -5706,29 +6434,35 @@ body {
   padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
+
 #home-dashboard-view,
 .home-dashboard-view {
   padding-bottom: 4px !important;
 }
+
 
 .home-prohibited-card,
 #prohibited-salah-card {
   margin-bottom: 6px !important;
 }
 
+
 .sunnah-grid-view {
   min-height: auto !important;
   padding-bottom: 4px !important;
 }
 
+
 .sunnah-grid-view .sections-hub-wrapper {
   margin: 8px 12px 6px !important;
 }
+
 
 .master-section-view {
   min-height: auto !important;
   padding-bottom: 4px !important;
 }
+
 
 .master-screen-panel > .card:last-child,
 .master-screen-panel > .habit-list:last-child,
@@ -5737,22 +6471,27 @@ body {
   margin-bottom: 4px !important;
 }
 
+
 .home-bottom-scroll-space {
   height: 4px !important;
 }
+
 
 body.home-popup-expanded .home-bottom-scroll-space {
   height: 14px !important;
 }
 
+
 .grid-bottom-scroll-space {
   height: 4px !important;
 }
+
 
 /* ==========================================================================
    V8.3 GOOGLE MINIMAL 5-WAQT PRAYER PILLS (ONLY TOP-RIGHT `i` BADGE)
    & ULTRA-CLEAN AT-A-GLANCE NAFL SALAH CARD (WITH CORNER `i` PROOF BUTTON)
    ========================================================================== */
+
 
 /* 1. Google Minimal 5-Waqt Prayer Pills (#five-waqt-grid) */
 .waqt-pill-card.m3-interactive-waqt-pill {
@@ -5770,15 +6509,18 @@ body.home-popup-expanded .home-bottom-scroll-space {
   transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
 }
 
+
 .waqt-pill-card.m3-interactive-waqt-pill:hover {
   background: #f8f9fa;
   border-color: #bdc1c6;
   box-shadow: 0 1px 3px rgba(60, 64, 67, 0.12);
 }
 
+
 .waqt-pill-card.m3-interactive-waqt-pill:active {
   transform: scale(0.96);
 }
+
 
 .waqt-pill-card.m3-interactive-waqt-pill .waqt-circle-logo {
   width: 34px;
@@ -5793,11 +6535,13 @@ body.home-popup-expanded .home-bottom-scroll-space {
   box-shadow: none;
 }
 
+
 .waqt-pill-card.m3-interactive-waqt-pill .waqt-name {
   font-size: 0.68rem;
   color: #5f6368;
   font-weight: 700;
 }
+
 
 .waqt-pill-card.m3-interactive-waqt-pill .waqt-time {
   font-size: 0.74rem;
@@ -5805,10 +6549,12 @@ body.home-popup-expanded .home-bottom-scroll-space {
   font-weight: 800;
 }
 
+
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-passed {
   opacity: 0.85;
   background: #f8f9fa;
 }
+
 
 /* Google Minimal Active Waqt State */
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-active {
@@ -5818,20 +6564,24 @@ body.home-popup-expanded .home-bottom-scroll-space {
   transform: none;
 }
 
+
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-circle-logo {
   background: #ffffff;
   border-color: #ceead6;
   box-shadow: none;
 }
 
+
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-name {
   color: #137333;
   font-weight: 800;
 }
 
+
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-time {
   color: #0d652d;
 }
+
 
 /* Google Minimal Selected Popup State */
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-popup-selected {
@@ -5841,15 +6591,18 @@ body.home-popup-expanded .home-bottom-scroll-space {
   transform: none !important;
 }
 
+
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-popup-selected .waqt-circle-logo {
   background: #ffffff !important;
   border-color: #d2e3fc !important;
 }
 
+
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-popup-selected .waqt-name,
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-popup-selected .waqt-time {
   color: #174ea6 !important;
 }
+
 
 /* Minimal Top-Right `i` Button on Every 5-Waqt Card */
 .waqt-info-micro-badge {
@@ -5873,10 +6626,12 @@ body.home-popup-expanded .home-bottom-scroll-space {
   pointer-events: none;
 }
 
+
 html[dir="rtl"] .waqt-info-micro-badge {
   right: auto;
   left: 5px;
 }
+
 
 .waqt-pill-card.waqt-active .waqt-info-micro-badge {
   background: #ceead6;
@@ -5884,11 +6639,13 @@ html[dir="rtl"] .waqt-info-micro-badge {
   color: #0d652d;
 }
 
+
 .waqt-pill-card.waqt-popup-selected .waqt-info-micro-badge {
   background: #d2e3fc;
   border-color: #1a73e8;
   color: #174ea6;
 }
+
 
 /* 2. Minimal, At-a-Glance Nafl Salah Card (#nafl-salah-card) */
 .nafl-salah-card {
@@ -5900,12 +6657,14 @@ html[dir="rtl"] .waqt-info-micro-badge {
   box-shadow: var(--shadow-float);
 }
 
+
 .nafl-minimal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-bottom: 6px;
 }
+
 
 .nafl-minimal-header h4 {
   font-size: 0.84rem;
@@ -5915,12 +6674,14 @@ html[dir="rtl"] .waqt-info-micro-badge {
   line-height: 1.25;
 }
 
+
 .nafl-salah-list {
   display: flex;
   flex-direction: column;
   gap: 6px;
   padding-top: 2px;
 }
+
 
 .nafl-minimal-row {
   display: flex;
@@ -5931,6 +6692,7 @@ html[dir="rtl"] .waqt-info-micro-badge {
   cursor: pointer;
 }
 
+
 .nafl-minimal-left {
   display: flex;
   align-items: center;
@@ -5938,6 +6700,7 @@ html[dir="rtl"] .waqt-info-micro-badge {
   min-width: 0;
   flex: 1;
 }
+
 
 .nafl-minimal-dot {
   width: 7px;
@@ -5947,10 +6710,12 @@ html[dir="rtl"] .waqt-info-micro-badge {
   flex-shrink: 0;
 }
 
+
 .nafl-minimal-dot.active {
   background: #1e8e3e;
   box-shadow: 0 0 0 3px rgba(30, 142, 62, 0.16);
 }
+
 
 .nafl-minimal-label {
   font-size: 0.74rem;
@@ -5961,9 +6726,11 @@ html[dir="rtl"] .waqt-info-micro-badge {
   text-overflow: ellipsis;
 }
 
+
 .nafl-minimal-row.is-active-nafl .nafl-minimal-label {
   color: #137333;
 }
+
 
 .nafl-minimal-right {
   display: inline-flex;
@@ -5972,10 +6739,12 @@ html[dir="rtl"] .waqt-info-micro-badge {
   flex-shrink: 0;
 }
 
+
 .nafl-minimal-time-pill {
   min-width: 96px;
   text-align: center;
 }
+
 
 /* Corner `i` Hadith Proof Button on Every Nafl Row */
 .nafl-corner-info-btn {
@@ -5997,15 +6766,18 @@ html[dir="rtl"] .waqt-info-micro-badge {
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
 
+
 .nafl-corner-info-btn:hover {
   background: #e8f0fe;
   border-color: #1a73e8;
   color: #174ea6;
 }
 
+
 .nafl-corner-info-btn:active {
   transform: scale(0.92);
 }
+
 
 /* Dark Theme Support */
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill {
@@ -6013,28 +6785,34 @@ html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill {
   border-color: rgba(255, 255, 255, 0.14);
 }
 
+
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill .waqt-circle-logo {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.12);
 }
 
+
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill .waqt-name {
   color: #94a3b8;
 }
 
+
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill .waqt-time {
   color: #f8fafc;
 }
+
 
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill.waqt-active {
   background: rgba(30, 142, 62, 0.22);
   border-color: #34d399;
 }
 
+
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-name,
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-time {
   color: #6ee7b7;
 }
+
 
 html[data-theme="dark"] .waqt-info-micro-badge,
 html[data-theme="dark"] .nafl-corner-info-btn {
@@ -6043,15 +6821,18 @@ html[data-theme="dark"] .nafl-corner-info-btn {
   color: #cbd5e1;
 }
 
+
 html[data-theme="dark"] .nafl-salah-card {
   background: #0b221a;
   border-color: rgba(16, 185, 129, 0.28);
 }
 
+
 html[data-theme="dark"] .nafl-minimal-header h4,
 html[data-theme="dark"] .nafl-minimal-label {
   color: #f8fafc;
 }
+
 
 /* ==========================================================================
    V8.3.2 STRICT `i`-BUTTON-ONLY CLICK SENSITIVITY & MODAL CHIP WRAP FIX
@@ -6064,9 +6845,11 @@ html[data-theme="dark"] .nafl-minimal-label {
   cursor: default !important;
 }
 
+
 .waqt-pill-card.m3-interactive-waqt-pill:active {
   transform: none !important;
 }
+
 
 .waqt-info-micro-badge {
   pointer-events: auto !important;
@@ -6081,10 +6864,12 @@ html[data-theme="dark"] .nafl-minimal-label {
   transition: transform 0.14s ease, background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease !important;
 }
 
+
 html[dir="rtl"] .waqt-info-micro-badge {
   right: auto !important;
   left: 4px !important;
 }
+
 
 .waqt-info-micro-badge:hover {
   background: #e8f0fe !important;
@@ -6092,18 +6877,22 @@ html[dir="rtl"] .waqt-info-micro-badge {
   color: #174ea6 !important;
 }
 
+
 .waqt-info-micro-badge:active {
   transform: scale(0.9) !important;
 }
+
 
 .nafl-minimal-row {
   cursor: default !important;
 }
 
+
 .nafl-corner-info-btn {
   pointer-events: auto !important;
   cursor: pointer !important;
 }
+
 
 /* Fix #modal-category Rakah/Waqt badge crossing the modal border on 5th Nafl Salah */
 .modal-card #modal-category {
@@ -6118,6 +6907,7 @@ html[dir="rtl"] .waqt-info-micro-badge {
   box-sizing: border-box !important;
 }
 
+
 /* ==========================================================================
    V10.0 GOOGLE DEEPMIND MATERIAL YOU (M3) EYE-RELIEF, BALANCED TYPOGRAPHY
    & STANDARD BREATHING GAPS DESIGN SYSTEM
@@ -6127,6 +6917,7 @@ html[dir="rtl"] .waqt-info-micro-badge {
      (#f4f7f5 background, #ffffff pure cards, soft borders & whisper shadows)
    - Features the emerald left accent bar inspired by modern Islamic UI
    ========================================================================== */
+
 
 :root {
   --font-sans: "Plus Jakarta Sans", "Inter", "Noto Sans Bengali", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -6145,6 +6936,7 @@ html[dir="rtl"] .waqt-info-micro-badge {
   --shadow-m3-pill: 0 1px 3px rgba(15, 35, 25, 0.04);
 }
 
+
 body,
 button,
 input,
@@ -6157,12 +6949,14 @@ textarea {
   text-rendering: optimizeLegibility;
 }
 
+
 body {
   background-color: var(--bg-main) !important;
   background-image: linear-gradient(180deg, #ebf3ee 0%, #f4f7f5 260px, #f4f7f5 100%) !important;
   color: var(--text-primary) !important;
   line-height: 1.55 !important;
 }
+
 
 /* Tabular numerals with calm, non-heavy weight */
 .waqt-time,
@@ -6176,6 +6970,7 @@ body {
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
 }
+
 
 /* ==========================================================================
    1. GLOBAL TYPOGRAPHY DE-BOLDING (EYE-RELIEF WEIGHT HIERARCHY: 400 / 500 / 600)
@@ -6197,6 +6992,7 @@ h1, h2, h3, h4,
   letter-spacing: -0.01em !important;
 }
 
+
 p, small, span, label,
 .muted, .muted-small,
 .habit-snippet,
@@ -6206,6 +7002,7 @@ p, small, span, label,
 .prohibited-hadith-proof {
   font-weight: 400 !important;
 }
+
 
 /* ==========================================================================
    2. STANDARD GOOGLE M3 SECTION GAPS (12px–14px BREATHING SPACE)
@@ -6220,11 +7017,13 @@ p, small, span, label,
   box-shadow: 0 1px 6px rgba(15, 35, 25, 0.04) !important;
 }
 
+
 .app-header h1 {
   font-size: 1.05rem !important;
   font-weight: 600 !important;
   color: #14532d !important;
 }
+
 
 .header-loc-pill-btn {
   background: #f4f7f5 !important;
@@ -6236,12 +7035,14 @@ p, small, span, label,
   box-shadow: none !important;
 }
 
+
 .header-settings-icon-btn {
   background: #f4f7f5 !important;
   color: #334139 !important;
   border: 1px solid #d5e0da !important;
   box-shadow: none !important;
 }
+
 
 /* Date Bar Card — Calm & Airy like Reference Image */
 .lunar-ponjika-card {
@@ -6253,12 +7054,14 @@ p, small, span, label,
   box-shadow: var(--shadow-m3-card) !important;
 }
 
+
 #lunar-hijri-headline {
   font-size: 0.95rem !important;
   font-weight: 600 !important;
   color: #1e2923 !important;
   line-height: 1.35 !important;
 }
+
 
 .bangla-ponjika-sub {
   margin-top: 3px !important;
@@ -6267,6 +7070,7 @@ p, small, span, label,
   color: var(--text-muted) !important;
   line-height: 1.35 !important;
 }
+
 
 /* ==========================================================================
    3. ONGOING WAQT & 5 FARD PRAYER SCHEDULE — CLEAN SEPARATED FEEL WITH BREATHING ROOM
@@ -6282,6 +7086,7 @@ p, small, span, label,
   gap: 12px !important;
 }
 
+
 /* Ongoing Prayer Card (Top Card) */
 .waqt-card-embedded-box {
   margin: 0 !important;
@@ -6292,11 +7097,13 @@ p, small, span, label,
   box-shadow: var(--shadow-m3-card) !important;
 }
 
+
 .ongoing-static-head {
   padding-bottom: 9px !important;
   margin-bottom: 10px !important;
   border-bottom: 1px solid #eef2ef !important;
 }
+
 
 .ongoing-static-head .waqt-popup-avatar {
   width: 34px !important;
@@ -6307,12 +7114,14 @@ p, small, span, label,
   box-shadow: none !important;
 }
 
+
 #live-waqt-title {
   font-size: 1.02rem !important;
   font-weight: 600 !important;
   color: #14532d !important;
   line-height: 1.25 !important;
 }
+
 
 .waqt-popup-title-text small {
   font-size: 0.72rem !important;
@@ -6322,17 +7131,20 @@ p, small, span, label,
   margin-top: 1px;
 }
 
+
 .waqt-popup-status-pill {
   font-size: 0.68rem !important;
   font-weight: 500 !important;
   padding: 4px 10px !important;
 }
 
+
 .waqt-popup-status-pill.status-active {
   background: #e8f5ee !important;
   color: #15803d !important;
   border: 1px solid #bbf7d0 !important;
 }
+
 
 /* Ongoing Start -> End Time Grid */
 .ongoing-static-time-grid {
@@ -6344,11 +7156,13 @@ p, small, span, label,
   box-shadow: none !important;
 }
 
+
 .ongoing-static-time-grid .waqt-popup-time-lbl {
   font-size: 0.64rem !important;
   font-weight: 500 !important;
   color: var(--text-muted) !important;
 }
+
 
 .ongoing-static-time-grid .waqt-popup-time-val {
   font-size: 0.88rem !important;
@@ -6356,9 +7170,11 @@ p, small, span, label,
   color: #15803d !important;
 }
 
+
 .ongoing-static-time-grid .waqt-popup-time-box.end-box .waqt-popup-time-val {
   color: #b45309 !important;
 }
+
 
 .ongoing-static-time-grid .waqt-popup-time-divider {
   width: 24px !important;
@@ -6369,10 +7185,12 @@ p, small, span, label,
   color: #16a34a !important;
 }
 
+
 /* Ongoing Meta Rows (Prime Time & Countdown) */
 .ongoing-static-meta-rows {
   gap: 6px !important;
 }
+
 
 .ongoing-static-meta-rows .waqt-popup-meta-item.single-line-meta-row {
   padding: 7px 11px !important;
@@ -6381,12 +7199,14 @@ p, small, span, label,
   border: 1px solid #e9f0ec !important;
 }
 
+
 .ongoing-static-meta-rows .waqt-popup-meta-item > span,
 .ongoing-static-meta-rows .waqt-popup-meta-item .meta-row-label {
   font-size: 0.78rem !important;
   font-weight: 400 !important;
   color: var(--text-secondary) !important;
 }
+
 
 .ongoing-static-meta-rows .waqt-popup-meta-item > strong,
 .ongoing-static-meta-rows .waqt-popup-meta-item .meta-row-value {
@@ -6395,17 +7215,20 @@ p, small, span, label,
   color: var(--text-primary) !important;
 }
 
+
 .ongoing-static-meta-rows .waqt-popup-meta-item.countdown-single-line-row {
   padding: 7px 11px !important;
   background: #f3f9f5 !important;
   border-color: #d8ebe0 !important;
 }
 
+
 .ongoing-static-meta-rows .waqt-popup-meta-item.countdown-single-line-row .meta-row-label {
   font-size: 0.82rem !important;
   font-weight: 500 !important;
   color: #1e2923 !important;
 }
+
 
 .ongoing-static-meta-rows .waqt-popup-meta-item.countdown-single-line-row .meta-row-value,
 #live-waqt-remaining {
@@ -6414,9 +7237,11 @@ p, small, span, label,
   color: #15803d !important;
 }
 
+
 .live-waqt-countdown-box.waqt-prohibited-active #live-waqt-remaining {
   color: #dc2626 !important;
 }
+
 
 .ongoing-tahajjud-mini-bar {
   margin-top: 8px !important;
@@ -6427,14 +7252,17 @@ p, small, span, label,
   border: 1px dashed #cbd5e1 !important;
 }
 
+
 .tahajjud-mini-title {
   font-weight: 400 !important;
 }
+
 
 .tahajjud-mini-time,
 .tahajjud-mini-badge {
   font-weight: 500 !important;
 }
+
 
 .ongoing-rakah-footer {
   margin-top: 8px !important;
@@ -6444,6 +7272,7 @@ p, small, span, label,
   font-weight: 400 !important;
   color: var(--text-secondary) !important;
 }
+
 
 /* ==========================================================================
    4. 5 ফরজ নামাজের সময়সূচী — GOOGLE M3 CLEAN CARD & SOFT WEIGHTS
@@ -6456,12 +7285,14 @@ p, small, span, label,
   box-shadow: var(--shadow-m3-card) !important;
 }
 
+
 .fard-schedule-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-bottom: 8px;
 }
+
 
 /* Left Green Accent Pill Indicator inspired by the Reference Image ("ইলম ও আমল") */
 .fard-schedule-header h4,
@@ -6476,6 +7307,7 @@ p, small, span, label,
   gap: 8px;
 }
 
+
 .fard-schedule-header h4::before,
 .nafl-minimal-header h4::before {
   content: "";
@@ -6486,16 +7318,19 @@ p, small, span, label,
   background: #16a34a;
 }
 
+
 .fard-schedule-dashed-divider {
   border-top: 1px solid #eef2ef !important;
   margin: 0 0 8px 0 !important;
 }
+
 
 .five-waqt-grid.fard-waqt-list-ui {
   display: flex !important;
   flex-direction: column !important;
   gap: 6px !important;
 }
+
 
 .waqt-pill-card.fard-waqt-row-item {
   width: 100% !important;
@@ -6513,6 +7348,7 @@ p, small, span, label,
   transition: background-color 0.18s ease, border-color 0.18s ease !important;
 }
 
+
 .fard-row-left {
   display: flex;
   align-items: center;
@@ -6520,6 +7356,7 @@ p, small, span, label,
   min-width: 0;
   flex: 1;
 }
+
 
 .fard-status-dot {
   width: 7px;
@@ -6529,10 +7366,12 @@ p, small, span, label,
   flex-shrink: 0;
 }
 
+
 .fard-status-dot.active {
   background: #22c55e;
   box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
 }
+
 
 .waqt-circle-logo.fard-squircle-icon {
   width: 34px !important;
@@ -6548,6 +7387,7 @@ p, small, span, label,
   padding: 0 !important;
 }
 
+
 .waqt-name.fard-prayer-title {
   font-size: 0.88rem !important;
   font-weight: 500 !important;
@@ -6555,12 +7395,14 @@ p, small, span, label,
   white-space: nowrap;
 }
 
+
 .fard-row-right {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
 }
+
 
 .waqt-time.fard-time-range-pill {
   background: #f8faf9;
@@ -6573,6 +7415,7 @@ p, small, span, label,
   min-width: 102px;
   text-align: center;
 }
+
 
 .waqt-info-micro-badge.fard-row-info-btn {
   position: static !important;
@@ -6592,16 +7435,19 @@ p, small, span, label,
   flex-shrink: 0 !important;
 }
 
+
 /* Active Fard Row Highlight — Soft Mint-Green Eye-Relief */
 .waqt-pill-card.fard-waqt-row-item.waqt-active {
   background: #eaf6ef !important;
   border-color: rgba(22, 163, 74, 0.22) !important;
 }
 
+
 .waqt-pill-card.fard-waqt-row-item.waqt-active .fard-prayer-title {
   color: #15803d !important;
   font-weight: 600 !important;
 }
+
 
 .waqt-pill-card.fard-waqt-row-item.waqt-active .fard-time-range-pill {
   background: #ffffff !important;
@@ -6610,6 +7456,7 @@ p, small, span, label,
   font-weight: 600 !important;
 }
 
+
 .waqt-pill-card.fard-waqt-row-item.waqt-active .fard-row-info-btn,
 .waqt-info-micro-badge.fard-row-info-btn.active-info-btn {
   background: #16a34a !important;
@@ -6617,11 +7464,13 @@ p, small, span, label,
   color: #ffffff !important;
 }
 
+
 /* Selected Popup State for Fard Row */
 .waqt-pill-card.fard-waqt-row-item.waqt-popup-selected {
   background: #eff6ff !important;
   border-color: #93c5fd !important;
 }
+
 
 .waqt-pill-card.fard-waqt-row-item.waqt-popup-selected .fard-prayer-title,
 .waqt-pill-card.fard-waqt-row-item.waqt-popup-selected .fard-time-range-pill {
@@ -6629,11 +7478,13 @@ p, small, span, label,
   border-color: #60a5fa !important;
 }
 
+
 .waqt-pill-card.fard-waqt-row-item.waqt-popup-selected .fard-row-info-btn {
   background: #2563eb !important;
   border-color: #1d4ed8 !important;
   color: #ffffff !important;
 }
+
 
 /* ==========================================================================
    5. DAILY SUNNAH MASTERY CARD, PROHIBITED SALAH & NAFL SALAH CARDS
@@ -6648,12 +7499,14 @@ p, small, span, label,
   box-shadow: var(--shadow-m3-card) !important;
 }
 
+
 .hero-card.hero-card-compact .label {
   font-size: 0.72rem !important;
   font-weight: 600 !important;
   color: #15803d !important;
   letter-spacing: 0.02em !important;
 }
+
 
 .hero-card.hero-card-compact .hero-stats h2 {
   font-size: 1.75rem !important;
@@ -6662,11 +7515,13 @@ p, small, span, label,
   margin: 2px 0 3px !important;
 }
 
+
 .hero-card.hero-card-compact .hero-left-info p {
   font-size: 0.78rem !important;
   font-weight: 400 !important;
   color: var(--text-secondary) !important;
 }
+
 
 .hero-card.hero-card-compact .time-lock-pill {
   margin-top: 7px !important;
@@ -6679,18 +7534,22 @@ p, small, span, label,
   box-shadow: none !important;
 }
 
+
 .streak-circle-wrapper {
   box-shadow: 0 4px 14px rgba(15, 35, 25, 0.07) !important;
   border: 1px solid #eef2ef !important;
 }
 
+
 .streak-circle-inner strong {
   font-weight: 700 !important;
 }
 
+
 .streak-circle-inner small {
   font-weight: 400 !important;
 }
+
 
 .hero-card.hero-card-compact .hero-meta {
   margin-top: 11px !important;
@@ -6700,6 +7559,7 @@ p, small, span, label,
   font-weight: 500 !important;
   color: var(--text-secondary) !important;
 }
+
 
 /* Prohibited Salah Card */
 .home-prohibited-card,
@@ -6711,9 +7571,11 @@ p, small, span, label,
   box-shadow: var(--shadow-m3-card) !important;
 }
 
+
 .prohibited-header-btn {
   padding: 12px 15px !important;
 }
+
 
 .prohibited-static-header h4 {
   font-size: 0.86rem !important;
@@ -6721,11 +7583,13 @@ p, small, span, label,
   color: #1e2923 !important;
 }
 
+
 .prohibited-row-label {
   font-size: 0.76rem !important;
   font-weight: 400 !important;
   color: var(--text-secondary) !important;
 }
+
 
 .prohibited-time-pill {
   font-size: 0.75rem !important;
@@ -6738,6 +7602,7 @@ p, small, span, label,
   box-shadow: none !important;
 }
 
+
 /* Nafl Salah Schedule Card */
 .nafl-salah-card {
   margin: 0 14px 16px !important;
@@ -6748,22 +7613,27 @@ p, small, span, label,
   box-shadow: var(--shadow-m3-card) !important;
 }
 
+
 .nafl-minimal-header {
   padding-bottom: 8px !important;
 }
+
 
 .nafl-salah-card .prohibited-dashed-divider {
   border-top: 1px solid #eef2ef !important;
   margin-bottom: 8px !important;
 }
 
+
 .nafl-salah-list {
   gap: 8px !important;
 }
 
+
 .nafl-minimal-row {
   padding: 5px 2px !important;
 }
+
 
 .nafl-minimal-label {
   font-size: 0.8rem !important;
@@ -6771,10 +7641,12 @@ p, small, span, label,
   color: #1e2923 !important;
 }
 
+
 .nafl-minimal-row.is-active-nafl .nafl-minimal-label {
   color: #15803d !important;
   font-weight: 600 !important;
 }
+
 
 /* ==========================================================================
    6. SUNNAH GRID PAGE (#sunnah-grid-view) — SOFT ICON TILES LIKE REFERENCE IMAGE
@@ -6782,6 +7654,7 @@ p, small, span, label,
 .sunnah-grid-view .sections-hub-wrapper {
   margin: 12px 14px 20px !important;
 }
+
 
 #sections-hub-heading {
   font-size: 1.02rem !important;
@@ -6792,6 +7665,7 @@ p, small, span, label,
   gap: 8px;
 }
 
+
 .hub-sparkle-dot {
   width: 4px !important;
   height: 18px !important;
@@ -6799,6 +7673,7 @@ p, small, span, label,
   background: #16a34a !important;
   box-shadow: none !important;
 }
+
 
 .sections-hub-summary-pill {
   font-weight: 500 !important;
@@ -6809,9 +7684,11 @@ p, small, span, label,
   box-shadow: none !important;
 }
 
+
 .master-sections-grid {
   gap: 11px !important;
 }
+
 
 .section-launcher-card {
   background: #ffffff !important;
@@ -6821,17 +7698,20 @@ p, small, span, label,
   box-shadow: var(--shadow-m3-card) !important;
 }
 
+
 .section-card-title {
   font-size: 0.82rem !important;
   font-weight: 500 !important;
   color: #1e2923 !important;
 }
 
+
 .section-live-pill {
   font-size: 0.65rem !important;
   font-weight: 500 !important;
   padding: 2px 7px !important;
 }
+
 
 /* Bottom Navigation Bar — Soft Pill Active Indicator like Reference Image */
 .s24-bottom-nav {
@@ -6840,19 +7720,23 @@ p, small, span, label,
   box-shadow: 0 -2px 12px rgba(15, 35, 25, 0.04) !important;
 }
 
+
 .s24-bnav-label {
   font-size: 0.68rem !important;
   font-weight: 500 !important;
 }
 
+
 .s24-bnav-btn.active .s24-bnav-label {
   font-weight: 600 !important;
 }
+
 
 .s24-bnav-btn.active .s24-bnav-icon {
   background: #dcfce7 !important;
   color: #15803d !important;
 }
+
 
 /* Dark Mode Overrides for V10.0 */
 html[data-theme="dark"] body {
@@ -6861,14 +7745,17 @@ html[data-theme="dark"] body {
   color: #f1f5f9 !important;
 }
 
+
 html[data-theme="dark"] .app-header {
   background: rgba(11, 34, 26, 0.95) !important;
   border-bottom-color: rgba(16, 185, 129, 0.22) !important;
 }
 
+
 html[data-theme="dark"] .app-header h1 {
   color: #34d399 !important;
 }
+
 
 html[data-theme="dark"] .lunar-ponjika-card,
 html[data-theme="dark"] .waqt-card-embedded-box,
@@ -6880,6 +7767,7 @@ html[data-theme="dark"] .section-launcher-card {
   background: #0b221a !important;
   border-color: rgba(16, 185, 129, 0.22) !important;
 }
+
 
 html[data-theme="dark"] #lunar-hijri-headline,
 html[data-theme="dark"] #live-waqt-title,
@@ -6894,6 +7782,7 @@ html[data-theme="dark"] #sections-hub-heading {
   color: #f8fafc !important;
 }
 
+
 html[data-theme="dark"] .ongoing-static-time-grid,
 html[data-theme="dark"] .ongoing-static-meta-rows .waqt-popup-meta-item.single-line-meta-row,
 html[data-theme="dark"] .waqt-circle-logo.fard-squircle-icon,
@@ -6905,14 +7794,64 @@ html[data-theme="dark"] .waqt-info-micro-badge.fard-row-info-btn {
   color: #e2e8f0 !important;
 }
 
+
 html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.waqt-active {
   background: rgba(16, 185, 129, 0.18) !important;
   border-color: rgba(52, 211, 153, 0.35) !important;
 }
 
+
 html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.waqt-active .fard-prayer-title,
 html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.waqt-active .fard-time-range-pill {
   color: #6ee7b7 !important;
   border-color: #34d399 !important;
+}
+/* ==========================================================================
+   V10.1 SLIGHT GREEN BORDER ON EVERY SECTION SPECIFICALLY ON THE HOME PAGE
+   Applies a refined emerald-tinted border across every section card and
+   inner sub-box inside #home-dashboard-view (Light & Dark themes)
+   ========================================================================== */
+#home-dashboard-view .lunar-ponjika-card,
+#home-dashboard-view .waqt-card-embedded-box,
+#home-dashboard-view .fard-schedule-subcard,
+#home-dashboard-view .hero-card,
+#home-dashboard-view .hero-card.hero-card-compact,
+#home-dashboard-view #prohibited-salah-card,
+#home-dashboard-view .home-prohibited-card,
+#home-dashboard-view #nafl-salah-card,
+#home-dashboard-view .nafl-salah-card {
+  border: 1.5px solid rgba(22, 163, 74, 0.34) !important;
+  box-shadow: 0 3px 12px rgba(16, 185, 129, 0.06), 0 1px 3px rgba(15, 35, 25, 0.03) !important;
+}
+
+#home-dashboard-view .ongoing-static-time-grid,
+#home-dashboard-view .ongoing-static-meta-rows .waqt-popup-meta-item.single-line-meta-row,
+#home-dashboard-view .ongoing-tahajjud-mini-bar {
+  border-color: rgba(22, 163, 74, 0.24) !important;
+}
+
+#home-dashboard-view .fard-schedule-dashed-divider,
+#home-dashboard-view .prohibited-dashed-divider,
+#home-dashboard-view .ongoing-static-head,
+#home-dashboard-view .ongoing-rakah-footer,
+#home-dashboard-view .hero-card.hero-card-compact .hero-meta {
+  border-color: rgba(22, 163, 74, 0.2) !important;
+}
+
+/* Preserve crimson alert border only when a prohibited salah window is actively running */
+#home-dashboard-view .live-waqt-countdown-box.waqt-prohibited-active {
+  border-color: rgba(220, 38, 38, 0.45) !important;
+}
+
+html[data-theme="dark"] #home-dashboard-view .lunar-ponjika-card,
+html[data-theme="dark"] #home-dashboard-view .waqt-card-embedded-box,
+html[data-theme="dark"] #home-dashboard-view .fard-schedule-subcard,
+html[data-theme="dark"] #home-dashboard-view .hero-card,
+html[data-theme="dark"] #home-dashboard-view .hero-card.hero-card-compact,
+html[data-theme="dark"] #home-dashboard-view #prohibited-salah-card,
+html[data-theme="dark"] #home-dashboard-view .home-prohibited-card,
+html[data-theme="dark"] #home-dashboard-view #nafl-salah-card,
+html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
+  border: 1.5px solid rgba(52, 211, 153, 0.38) !important;
 }
 
