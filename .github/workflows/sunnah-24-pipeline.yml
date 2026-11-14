@@ -1140,7 +1140,8 @@ jobs:
               echo "💡 To also enable automatic public Releases page publishing, go to Repo Settings -> Actions -> General -> Workflow permissions -> select 'Read and write permissions' and click Save."
             fi
           fi
-prepare-multi-repo-matrix:
+
+  prepare-multi-repo-matrix:
     name: 3. Discover & Prepare Target Repositories Matrix (Pages + Release)
     needs: [ deploy-pages, build-and-release-apk ]
     if: github.event_name != 'pull_request'
@@ -1163,19 +1164,19 @@ prepare-multi-repo-matrix:
               if [ "$FIRST" -eq 0 ]; then
                 JSON_ARRAY="${JSON_ARRAY},"
               fi
-              JSON_ARRAY="${JSON_ARRAY}"${repo}""
+              JSON_ARRAY="${JSON_ARRAY}\"${repo}\""
               FIRST=0
             fi
           done
           JSON_ARRAY="${JSON_ARRAY}]"
 
           if [ "$JSON_ARRAY" = "[]" ]; then
-            echo "has_targets=false" >> $GITHUB_OUTPUT
-            echo "repo_matrix=["none"]" >> $GITHUB_OUTPUT
+            echo "has_targets=false" >> "$GITHUB_OUTPUT"
+            echo 'repo_matrix=["none"]' >> "$GITHUB_OUTPUT"
             echo "ℹ️ No external target repositories configured. Skipping multi-repo fan-out."
           else
-            echo "has_targets=true" >> $GITHUB_OUTPUT
-            echo "repo_matrix=${JSON_ARRAY}" >> $GITHUB_OUTPUT
+            echo "has_targets=true" >> "$GITHUB_OUTPUT"
+            echo "repo_matrix=${JSON_ARRAY}" >> "$GITHUB_OUTPUT"
             echo "✅ Prepared simultaneous matrix for target repositories: ${JSON_ARRAY}"
           fi
 
@@ -1307,7 +1308,13 @@ prepare-multi-repo-matrix:
           echo "✅ Pushed live web bundle to ${TARGET_REPO} (gh-pages branch)"
 
           # Enable or update GitHub Pages on target repository via GitHub REST API (serves from gh-pages root /)
-          gh api --method POST "repos/${TARGET_REPO}/pages"             -f "source[branch]=gh-pages"             -f "source[path]=/" >/dev/null 2>&1 ||           gh api --method PUT "repos/${TARGET_REPO}/pages"             -f "source[branch]=gh-pages"             -f "source[path]=/"             -f "build_type=legacy" >/dev/null 2>&1 || true
+          gh api --method POST "repos/${TARGET_REPO}/pages" \
+            -f "source[branch]=gh-pages" \
+            -f "source[path]=/" >/dev/null 2>&1 || \
+          gh api --method PUT "repos/${TARGET_REPO}/pages" \
+            -f "source[branch]=gh-pages" \
+            -f "source[path]=/" \
+            -f "build_type=legacy" >/dev/null 2>&1 || true
 
           # Trigger an immediate GitHub Pages build on the target repository
           gh api --method POST "repos/${TARGET_REPO}/pages/builds" >/dev/null 2>&1 || true
@@ -1325,10 +1332,18 @@ prepare-multi-repo-matrix:
           sed -i 's/^          //' /tmp/target_release_notes.md
 
           if gh release view "$TAG" --repo "${TARGET_REPO}" >/dev/null 2>&1; then
-            gh release upload "$TAG"               "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-Enterprise-Signed.apk"               "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-PlayStore-Signed.aab"               --repo "${TARGET_REPO}" --clobber
+            gh release upload "$TAG" \
+              "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-Enterprise-Signed.apk" \
+              "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-PlayStore-Signed.aab" \
+              --repo "${TARGET_REPO}" --clobber
             echo "✅ Updated existing Release ${TAG} on ${TARGET_REPO}"
           else
-            gh release create "$TAG"               "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-Enterprise-Signed.apk"               "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-PlayStore-Signed.aab"               --repo "${TARGET_REPO}"               --title "$TITLE"               --notes-file /tmp/target_release_notes.md
+            gh release create "$TAG" \
+              "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-Enterprise-Signed.apk" \
+              "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-PlayStore-Signed.aab" \
+              --repo "${TARGET_REPO}" \
+              --title "$TITLE" \
+              --notes-file /tmp/target_release_notes.md
             echo "✅ Published new GitHub Release ${TAG} (Signed APK + Play Store AAB) on ${TARGET_REPO}"
           fi
 
