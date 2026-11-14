@@ -4022,20 +4022,23 @@ function getFardWaqtSvgIcon(waqtId) {
 
 
 // ============================================================================
-// V10.6 COMPLETE 24-HOUR SYMMETRICAL MASJID AN-NABAWI FLAT-VECTOR SCENE ENGINE
-// Covers all 5 Fard Prayers (ফজর, যোহর, আসর, মাগরিব, ইশা) + জুমু'আ (Jumu'ah) +
-// ইশরাক/চাশত (Ishraq/Duha) + ৩ নিষিদ্ধ সময় (Sunrise, Zawal, Sunset Prohibited)
+// V10.7 COMPACT NON-OVERLAPPING SYMMETRICAL MASJID AN-NABAWI FLAT-VECTOR ENGINE
+// - Shrunk Masjid an-Nabawi twin minarets, Green Dome & celestial icons so the
+//   entire SVG illustration is visible at a glance in a dedicated upper stage
+// - Strictly separates the 3 timeline rows (Start-End, Awwal Waqt, Left Time)
+//   into a fixed lower section so they NEVER overlap or cover Masjid an-Nabawi
+// - Removes Tahajjud sub-bar from Ongoing Prayer card (handled by Nafl index)
 // ============================================================================
 function getSymmetricNabawiCardSvg(sceneKey) {
   const configs = {
     fajr: {
       bgTop: "#cbe7f8",
       bgBottom: "#fef6d8",
-      horizonBar: `<rect x="0" y="156" width="400" height="22" fill="#15803d" opacity="0.92" />`,
+      horizonBar: `<rect x="0" y="138" width="400" height="14" fill="#15803d" opacity="0.92" />`,
       celestial: `
         <g class="s24-celestial-anim">
-          <path d="M200 44V54M165 56L173 64M235 56L227 64M150 84H160M240 84H250" stroke="#f59e0b" stroke-width="5" stroke-linecap="round" />
-          <circle cx="200" cy="88" r="27" fill="#f59e0b" />
+          <path d="M200 44V52M173 54L179 60M227 54L221 60M161 74H169M231 74H239" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" />
+          <circle cx="200" cy="79" r="20" fill="#f59e0b" />
         </g>
       `
     },
@@ -4045,12 +4048,12 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       horizonBar: "",
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="200" cy="84" r="38" fill="none" stroke="#dc2626" stroke-width="2.6" />
-          <circle cx="200" cy="84" r="31" fill="none" stroke="#dc2626" stroke-width="2.2" stroke-dasharray="5 4" />
-          <circle cx="200" cy="84" r="23" fill="#ef4444" stroke="#b91c1c" stroke-width="3" />
-          <path d="M200 32L209 47H191L200 32Z" fill="#dc2626" stroke="#991b1b" stroke-width="1.5" stroke-linejoin="round" />
-          <line x1="200" y1="37" x2="200" y2="42" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
-          <circle cx="200" cy="45" r="1.1" fill="#ffffff" />
+          <circle cx="200" cy="74" r="28" fill="none" stroke="#dc2626" stroke-width="2.2" />
+          <circle cx="200" cy="74" r="23" fill="none" stroke="#dc2626" stroke-width="1.8" stroke-dasharray="4 3" />
+          <circle cx="200" cy="74" r="17" fill="#ef4444" stroke="#b91c1c" stroke-width="2.5" />
+          <path d="M200 34L207 46H193L200 34Z" fill="#dc2626" stroke="#991b1b" stroke-width="1.2" stroke-linejoin="round" />
+          <line x1="200" y1="38" x2="200" y2="42" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" />
+          <circle cx="200" cy="44.2" r="1" fill="#ffffff" />
         </g>
       `
     },
@@ -4060,35 +4063,35 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       horizonBar: "",
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="200" cy="64" r="30" fill="#fde047" opacity="0.45" />
-          <circle cx="200" cy="64" r="21" fill="#fbbf24" />
-          <path d="M200 26V35M200 93V102M162 64H171M229 64H238M173.1 37.1L179.5 43.5M220.5 84.5L226.9 90.9M226.9 37.1L220.5 43.5M179.5 84.5L173.1 90.9" stroke="#f59e0b" stroke-width="4.5" stroke-linecap="round" />
+          <circle cx="200" cy="54" r="23" fill="#fde047" opacity="0.45" />
+          <circle cx="200" cy="54" r="16" fill="#fbbf24" />
+          <path d="M200 25V32M200 76V83M171 54H178M222 54H229M179.5 33.5L184.5 38.5M215.5 69.5L220.5 74.5M220.5 33.5L215.5 38.5M184.5 69.5L179.5 74.5" stroke="#f59e0b" stroke-width="3.8" stroke-linecap="round" />
         </g>
       `
     },
     prohibited_zawal: {
       bgTop: "#ffe4e6",
       bgBottom: "#fecdd3",
-      horizonBar: `<rect x="0" y="156" width="400" height="22" fill="#15803d" opacity="0.92" />`,
+      horizonBar: `<rect x="0" y="138" width="400" height="14" fill="#15803d" opacity="0.92" />`,
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="200" cy="58" r="27" fill="#ffffff" stroke="#b91c1c" stroke-width="5" />
-          <circle cx="200" cy="58" r="18" fill="#ef4444" />
-          <line x1="181" y1="77" x2="219" y2="39" stroke="#b91c1c" stroke-width="5.5" stroke-linecap="round" />
+          <circle cx="200" cy="50" r="20" fill="#ffffff" stroke="#b91c1c" stroke-width="4" />
+          <circle cx="200" cy="50" r="13.5" fill="#ef4444" />
+          <line x1="186" y1="64" x2="214" y2="36" stroke="#b91c1c" stroke-width="4.5" stroke-linecap="round" />
         </g>
       `
     },
     jumuah: {
       bgTop: "#eefbf3",
       bgBottom: "#fefce8",
-      horizonBar: `<rect x="0" y="158" width="400" height="5" fill="#15803d" />`,
+      horizonBar: `<rect x="0" y="142" width="400" height="4" fill="#15803d" />`,
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="200" cy="62" r="38" fill="none" stroke="#e2e8f0" stroke-width="1.4" stroke-dasharray="4 4" />
-          <circle cx="200" cy="62" r="32" fill="#dcfce7" opacity="0.65" />
-          <path d="M200 20V30M200 94V104M158 62H168M232 62H242M170.3 32.3L177.4 39.4M222.6 84.6L229.7 91.7M229.7 32.3L222.6 39.4M177.4 84.6L170.3 91.7" stroke="#f59e0b" stroke-width="4.8" stroke-linecap="round" />
-          <path d="M184 25L188 34M216 25L212 34M163 46L172 50M237 46L228 50M163 78L172 74M237 78L228 74M184 99L188 90M216 99L212 90" stroke="#15803d" stroke-width="3.6" stroke-linecap="round" />
-          <circle cx="200" cy="62" r="22" fill="#f59e0b" stroke="#15803d" stroke-width="3" />
+          <circle cx="200" cy="52" r="29" fill="none" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="3 3" />
+          <circle cx="200" cy="52" r="24" fill="#dcfce7" opacity="0.65" />
+          <path d="M200 19V27M200 77V85M167 52H175M225 52H233M176.7 28.7L182.3 34.3M217.7 69.7L223.3 75.3M223.3 28.7L217.7 34.3M182.3 69.7L176.7 75.3" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" />
+          <path d="M187 23L190 30M213 23L210 30M171 39L178 42M229 39L222 42M171 65L178 62M229 65L222 62M187 81L190 74M213 81L210 74" stroke="#15803d" stroke-width="3" stroke-linecap="round" />
+          <circle cx="200" cy="52" r="17" fill="#f59e0b" stroke="#15803d" stroke-width="2.5" />
         </g>
       `
     },
@@ -4098,8 +4101,8 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       horizonBar: "",
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="200" cy="64" r="24" fill="#f59e0b" />
-          <path d="M200 24V33M200 95V104M160 64H169M231 64H240M171.7 35.7L178 42M222 86L228.3 92.3M228.3 35.7L222 42M178 86L171.7 92.3" stroke="#f59e0b" stroke-width="5" stroke-linecap="round" />
+          <circle cx="200" cy="54" r="18" fill="#f59e0b" />
+          <path d="M200 23V30M200 78V85M169 54H176M224 54H231M178.1 32.1L183 37M217 71L221.9 75.9M221.9 32.1L217 37M183 71L178.1 75.9" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" />
         </g>
       `
     },
@@ -4109,9 +4112,9 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       horizonBar: "",
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="184" cy="55" r="20" fill="#f59e0b" />
-          <path d="M184 24V31M153 55H160M162 33L167 38M206 33L201 38M162 77L167 72" stroke="#f59e0b" stroke-width="4.5" stroke-linecap="round" />
-          <path d="M180 84H224C232.8 84 240 76.8 240 68C240 59.8 233.9 53.1 225.9 52.1C223.4 40.9 213.5 32.5 201.6 32.5C187.8 32.5 176.8 43.6 176.8 57.3C176.8 58.2 176.9 59.1 177 60C171.3 62 167.2 67.3 167.2 73.6C167.2 79.4 172 84 180 84Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2.8" stroke-linejoin="round" />
+          <circle cx="187" cy="47" r="15" fill="#f59e0b" />
+          <path d="M187 23V28M163 47H168M170 30L174 34M204 30L200 34M170 64L174 60" stroke="#f59e0b" stroke-width="3.6" stroke-linecap="round" />
+          <path d="M184 70H219C226 70 231.5 64.5 231.5 57.5C231.5 51.1 226.7 45.8 220.4 45C218.4 36.2 210.6 29.6 201.2 29.6C190.3 29.6 181.6 38.4 181.6 49.1C181.6 49.8 181.7 50.5 181.8 51.2C177.3 52.8 174 57 174 61.9C174 66.5 177.8 70 184 70Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2.3" stroke-linejoin="round" />
         </g>
       `
     },
@@ -4121,11 +4124,11 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       horizonBar: "",
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="200" cy="74" r="34" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="5 4" />
-          <path d="M168 76C168 58.3 182.3 44 200 44C217.7 44 232 58.3 232 76H168Z" fill="#ef4444" />
-          <path d="M152 76H248" stroke="#991b1b" stroke-width="4.2" stroke-linecap="round" />
-          <path d="M166 85H234" stroke="#dc2626" stroke-width="3.6" stroke-linecap="round" />
-          <path d="M180 93H220" stroke="#f87171" stroke-width="3" stroke-linecap="round" />
+          <circle cx="200" cy="62" r="27" fill="none" stroke="#dc2626" stroke-width="2.2" stroke-dasharray="4 3" />
+          <path d="M174 64C174 49.6 185.6 38 200 38C214.4 38 226 49.6 226 64H174Z" fill="#ef4444" />
+          <path d="M160 64H240" stroke="#991b1b" stroke-width="3.6" stroke-linecap="round" />
+          <path d="M172 72H228" stroke="#dc2626" stroke-width="3" stroke-linecap="round" />
+          <path d="M184 79H216" stroke="#f87171" stroke-width="2.6" stroke-linecap="round" />
         </g>
       `
     },
@@ -4135,10 +4138,10 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       horizonBar: "",
       celestial: `
         <g class="s24-celestial-anim">
-          <path d="M168 74C168 56.3 182.3 42 200 42C217.7 42 232 56.3 232 74H168Z" fill="#ea580c" />
-          <path d="M152 74H248" stroke="#c2410c" stroke-width="4.2" stroke-linecap="round" />
-          <path d="M164 83H236" stroke="#ea580c" stroke-width="3.8" stroke-linecap="round" />
-          <path d="M178 92H222" stroke="#fb923c" stroke-width="3.4" stroke-linecap="round" />
+          <path d="M174 62C174 47.6 185.6 36 200 36C214.4 36 226 47.6 226 62H174Z" fill="#ea580c" />
+          <path d="M160 62H240" stroke="#c2410c" stroke-width="3.6" stroke-linecap="round" />
+          <path d="M170 70H230" stroke="#ea580c" stroke-width="3.2" stroke-linecap="round" />
+          <path d="M182 78H218" stroke="#fb923c" stroke-width="2.8" stroke-linecap="round" />
         </g>
       `
     },
@@ -4148,11 +4151,11 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       horizonBar: "",
       celestial: `
         <g class="s24-celestial-anim">
-          <path d="M206 28C189 32.5 179 50 183.5 67C188 84 205.5 94 222.5 89.5C210 99 193 98.2 181.8 87C170.5 75.8 169.8 58.8 179.3 46.5C185.8 38 195.5 31 206 28Z" fill="#facc15" stroke="#eab308" stroke-width="2.2" stroke-linejoin="round" />
-          <path d="M222 34L224.8 41L231.8 43.8L224.8 46.6L222 53.6L219.2 46.6L212.2 43.8L219.2 41L222 34Z" fill="#1e293b" />
-          <path d="M166 74L168.2 79.5L173.7 81.7L168.2 83.9L166 89.4L163.8 83.9L158.3 81.7L163.8 79.5L166 74Z" fill="#1e293b" />
-          <path d="M232 76L233.6 80L237.6 81.6L233.6 83.2L232 87.2L230.4 83.2L226.4 81.6L230.4 80L232 76Z" fill="#1e293b" />
-          <circle cx="152" cy="44" r="2.3" fill="#64748b" />
+          <path d="M205 24C191 27.8 182.8 42.2 186.5 56.2C190.2 70.2 204.6 78.4 218.6 74.7C208.3 82.5 194.3 81.8 185.1 72.6C175.8 63.4 175.2 49.4 183 39.2C188.4 32.2 196.4 26.5 205 24Z" fill="#facc15" stroke="#eab308" stroke-width="2" stroke-linejoin="round" />
+          <path d="M217 30L219.3 35.8L225.1 38.1L219.3 40.4L217 46.2L214.7 40.4L208.9 38.1L214.7 35.8L217 30Z" fill="#1e293b" />
+          <path d="M172 62L173.8 66.5L178.3 68.3L173.8 70.1L172 74.6L170.2 70.1L165.7 68.3L170.2 66.5L172 62Z" fill="#1e293b" />
+          <path d="M226 64L227.3 67.3L230.6 68.6L227.3 69.9L226 73.2L224.7 69.9L221.4 68.6L224.7 67.3L226 64Z" fill="#1e293b" />
+          <circle cx="158" cy="38" r="2" fill="#64748b" />
         </g>
       `
     }
@@ -4161,60 +4164,60 @@ function getSymmetricNabawiCardSvg(sceneKey) {
   const c = configs[sceneKey] || configs.dhuhr;
 
   return `
-    <svg class="s24-sym-nabawi-svg" viewBox="0 0 400 265" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
+    <svg class="s24-sym-nabawi-svg" viewBox="0 0 400 245" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="s24SymSky_${sceneKey}" x1="0" y1="0" x2="0" y2="265" gradientUnits="userSpaceOnUse">
+        <linearGradient id="s24SymSky_${sceneKey}" x1="0" y1="0" x2="0" y2="245" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stop-color="${c.bgTop}" />
           <stop offset="100%" stop-color="${c.bgBottom}" />
         </linearGradient>
         <radialGradient id="s24DomeUnderGlow" cx="50%" cy="0%" r="55%">
-          <stop offset="0%" stop-color="#15803d" stop-opacity="0.38" />
+          <stop offset="0%" stop-color="#15803d" stop-opacity="0.34" />
           <stop offset="100%" stop-color="#15803d" stop-opacity="0" />
         </radialGradient>
       </defs>
 
       <!-- 1. Full Card Pastel Sky Backdrop -->
-      <rect width="400" height="265" fill="url(#s24SymSky_${sceneKey})" />
+      <rect width="400" height="245" fill="url(#s24SymSky_${sceneKey})" />
 
-      <!-- 2. Central Celestial Body (Above the Green Dome) -->
+      <!-- 2. Compact Celestial Body (Above the Green Dome, y: 20..82) -->
       ${c.celestial}
 
-      <!-- 3. Optional Horizon Band (Fajr, Jumu'ah, Zawal) -->
+      <!-- 3. Optional Horizon Band (Aligned with Mosque Base at y=144) -->
       ${c.horizonBar || ""}
 
-      <!-- 4. Symmetrical Twin Minarets -->
+      <!-- 4. Compact Symmetrical Twin Minarets (Entirely visible above y=144) -->
       <g>
-        <line x1="88" y1="42" x2="88" y2="54" stroke="#b48a4e" stroke-width="2.8" stroke-linecap="round" />
-        <path d="M77 72L88 52L99 72Z" fill="#edd8b4" />
-        <rect x="77" y="72" width="22" height="26" fill="#e6cfa8" />
-        <rect x="71" y="96" width="34" height="6" rx="2" fill="#cbb082" />
-        <rect x="75" y="102" width="26" height="26" fill="#e6cfa8" />
-        <rect x="69" y="126" width="38" height="6" rx="2" fill="#cbb082" />
-        <rect x="72" y="132" width="32" height="36" fill="#e6cfa8" />
-        <path d="M84 166V150C84 147.5 85.8 145.5 88 145.5C90.2 145.5 92 147.5 92 150V166Z" fill="#b49767" />
+        <line x1="104" y1="44" x2="104" y2="54" stroke="#b48a4e" stroke-width="2.4" stroke-linecap="round" />
+        <path d="M95 68L104 52L113 68Z" fill="#edd8b4" />
+        <rect x="95" y="68" width="18" height="21" fill="#e6cfa8" />
+        <rect x="90" y="88" width="28" height="5" rx="2" fill="#cbb082" />
+        <rect x="93" y="93" width="22" height="21" fill="#e6cfa8" />
+        <rect x="88" y="113" width="32" height="5" rx="2" fill="#cbb082" />
+        <rect x="91" y="118" width="26" height="27" fill="#e6cfa8" />
+        <path d="M100.5 145V132C100.5 129.8 102 128 104 128C106 128 107.5 129.8 107.5 132V145Z" fill="#b49767" />
       </g>
 
       <g>
-        <line x1="312" y1="42" x2="312" y2="54" stroke="#b48a4e" stroke-width="2.8" stroke-linecap="round" />
-        <path d="M301 72L312 52L323 72Z" fill="#edd8b4" />
-        <rect x="301" y="72" width="22" height="26" fill="#e6cfa8" />
-        <rect x="295" y="96" width="34" height="6" rx="2" fill="#cbb082" />
-        <rect x="299" y="102" width="26" height="26" fill="#e6cfa8" />
-        <rect x="293" y="126" width="38" height="6" rx="2" fill="#cbb082" />
-        <rect x="296" y="132" width="32" height="36" fill="#e6cfa8" />
-        <path d="M308 166V150C308 147.5 309.8 145.5 312 145.5C314.2 145.5 316 147.5 316 150V166Z" fill="#b49767" />
+        <line x1="296" y1="44" x2="296" y2="54" stroke="#b48a4e" stroke-width="2.4" stroke-linecap="round" />
+        <path d="M287 68L296 52L305 68Z" fill="#edd8b4" />
+        <rect x="287" y="68" width="18" height="21" fill="#e6cfa8" />
+        <rect x="282" y="88" width="28" height="5" rx="2" fill="#cbb082" />
+        <rect x="285" y="93" width="22" height="21" fill="#e6cfa8" />
+        <rect x="280" y="113" width="32" height="5" rx="2" fill="#cbb082" />
+        <rect x="283" y="118" width="26" height="27" fill="#e6cfa8" />
+        <path d="M292.5 145V132C292.5 129.8 294 128 296 128C298 128 299.5 129.8 299.5 132V145Z" fill="#b49767" />
       </g>
 
-      <!-- 5. Central Masjid an-Nabawi Green Dome (Two-Tone Shaded + Arched Drum Base) -->
+      <!-- 5. Compact Central Masjid an-Nabawi Green Dome (Rests cleanly at y=144 above the fixed timeline dock) -->
       <g>
-        <rect x="197.5" y="92" width="5" height="14" rx="2.5" fill="#d99b38" />
-        <ellipse cx="200" cy="105" rx="7" ry="2.5" fill="#c68a2c" />
-        <path d="M144 154C144 121 168 104 200 104C232 104 256 121 256 154Z" fill="#15803d" />
-        <path d="M200 104C232 104 256 121 256 154H200Z" fill="#116932" />
-        <rect x="142" y="148" width="116" height="12" rx="2" fill="#126e35" />
-        <path d="M152 160V153C152 151 154 149.5 156 149.5C158 149.5 160 151 160 153V160ZM169 160V153C169 151 171 149.5 173 149.5C175 149.5 177 151 177 153V160ZM186 160V153C186 151 188 149.5 190 149.5C192 149.5 194 151 194 153V160ZM206 160V153C206 151 208 149.5 210 149.5C212 149.5 214 151 214 153V160ZM223 160V153C223 151 225 149.5 227 149.5C229 149.5 231 151 231 153V160ZM240 160V153C240 151 242 149.5 244 149.5C246 149.5 248 151 248 153V160Z" fill="#0d5428" />
-        <rect x="136" y="158" width="128" height="6" rx="2.5" fill="#0b4620" />
-        <ellipse cx="200" cy="166" rx="70" ry="18" fill="url(#s24DomeUnderGlow)" />
+        <rect x="198" y="82" width="4" height="11" rx="2" fill="#d99b38" />
+        <ellipse cx="200" cy="93" rx="6" ry="2" fill="#c68a2c" />
+        <path d="M154 136C154 108 174 92 200 92C226 92 246 108 246 136Z" fill="#15803d" />
+        <path d="M200 92C226 92 246 108 246 136H200Z" fill="#116932" />
+        <rect x="152" y="131" width="96" height="10" rx="2" fill="#126e35" />
+        <path d="M160 141V135.5C160 134 161.5 132.8 163 132.8C164.5 132.8 166 134 166 135.5V141ZM174 141V135.5C174 134 175.5 132.8 177 132.8C178.5 132.8 180 134 180 135.5V141ZM188 141V135.5C188 134 189.5 132.8 191 132.8C192.5 132.8 194 134 194 135.5V141ZM206 141V135.5C206 134 207.5 132.8 209 132.8C210.5 132.8 212 134 212 135.5V141ZM220 141V135.5C220 134 221.5 132.8 223 132.8C224.5 132.8 226 134 226 135.5V141ZM234 141V135.5C234 134 235.5 132.8 237 132.8C238.5 132.8 240 134 240 135.5V141Z" fill="#0d5428" />
+        <rect x="147" y="140" width="106" height="5" rx="2" fill="#0b4620" />
+        <ellipse cx="200" cy="147" rx="58" ry="13" fill="url(#s24DomeUnderGlow)" />
       </g>
     </svg>
   `;
@@ -4872,8 +4875,6 @@ function renderFiveWaqtStrip(now = new Date()) {
                 <strong id="live-waqt-remaining" class="meta-row-value">${remainingTextStr}</strong>
               </div>
             </div>
-
-            ${tahajjudSubCardHtml}
 
             ${
               rakahSummary
