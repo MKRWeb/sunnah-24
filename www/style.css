@@ -7182,8 +7182,16 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   font-size: 0.82rem !important;
   font-weight: 500 !important;
   color: #0f172a !important;
-  width: 100% !important;
 }
+
+.s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-value {
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  margin-left: auto !important;
+  white-space: nowrap !important;
+}
+
 
 .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-label strong {
   font-weight: 700 !important;
