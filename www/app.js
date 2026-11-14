@@ -4028,7 +4028,7 @@ function renderFiveWaqtStrip(now = new Date()) {
         </div>
         <div class="waqt-popup-meta-item single-line-meta-row countdown-single-line-row">
           <span class="meta-row-label">${countdownRowLabel}</span>
-          <strong id="live-waqt-remaining" class="meta-row-value" style="color:var(--danger, #dc2626);font-weight:900;">${remainingTextStr}</strong>
+          <strong id="live-waqt-remaining" class="meta-row-value" style="color:var(--danger, #dc2626);font-weight:600;">${remainingTextStr}</strong>
         </div>
       </div>
 
