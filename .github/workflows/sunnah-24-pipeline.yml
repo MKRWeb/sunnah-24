@@ -23,7 +23,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 # Unified workflow-level concurrency group:
-# Rapid multi-file edits (index.html, style.css, app.js, or future modules) cancel intermediate runs
+# Rapid multi-file edits (www/index.html, www/style.css, www/app.js, or future modules) cancel intermediate runs
 # so only the final combined state deploys to GitHub Pages and compiles into APK/AAB.
 concurrency:
   group: "sunnah24-atomic-pipeline-${{ github.ref }}"
@@ -44,7 +44,7 @@ jobs:
     steps:
       - name: 1. Batch Stabilization Buffer & Enforce Single-Pipeline Rule (Only 2 Jobs Total)
         run: |
-          echo "⏳ Waiting 8s to allow rapid multi-file commits (index.html, style.css, app.js) to coalesce..."
+          echo "⏳ Waiting 8s to allow rapid multi-file commits inside www/ to coalesce..."
           sleep 8
 
       - name: 2. Checkout Repository & Pull Latest Branch HEAD
@@ -58,84 +58,74 @@ jobs:
         with:
           node-version: '24'
 
-      - name: 4. Atomic Sync of Root & www/ Assets, Cleanup Redundant Workflows & Auto Cache-Busting
+      - name: 4. Enforce Clean Root (Keep Web Assets Strictly Inside www/ Only) & Auto Cache-Busting
         run: |
           # Ensure we are on the absolute latest commit of the branch after the stabilization buffer
           git fetch origin "${GITHUB_REF_NAME}"
           git reset --hard "origin/${GITHUB_REF_NAME}"
 
-          # Strictly enforce that NO extra workflow files exist besides sunnah-24-pipeline.yml
+          mkdir -p www
+          REPO_CLEANUP_NEEDED=0
+
+          # 4A. Remove any redundant workflow files besides sunnah-24-pipeline.yml
           if [ -d ".github/workflows" ]; then
-            EXTRA_WF=0
             for wf in .github/workflows/*.yml .github/workflows/*.yaml; do
               if [ -f "$wf" ] && [ "$(basename "$wf")" != "sunnah-24-pipeline.yml" ]; then
                 echo "🧹 Removing redundant workflow file: $wf"
                 git rm -f "$wf" || rm -f "$wf"
-                EXTRA_WF=1
+                REPO_CLEANUP_NEEDED=1
               fi
             done
-            if [ "$EXTRA_WF" -eq 1 ]; then
-              git config user.name "github-actions[bot]"
-              git config user.email "github-actions[bot]@users.noreply.github.com"
-              git commit -m "chore(ci): enforce single 2-stage workflow pipeline [skip ci]" || true
-              git push origin "HEAD:${GITHUB_REF_NAME}" || true
-            fi
           fi
 
-          LATEST_SHA=$(git rev-parse --short=7 HEAD)
-
-          mkdir -p www
-          # Bi-directional freshest-file resolution for core files + any future added .html/.css/.js/.json/.svg/.png/.webp/.woff2 assets:
-          ASSET_LIST="index.html style.css app.js sw.js manifest.json icon.svg privacy.html"
+          # 4B. Consolidate any stray root web assets into www/ and DELETE them from the main root directory
+          # so that index.html, style.css, app.js, sw.js, manifest.json, icon.svg, privacy.html ONLY live inside www/
+          WEB_ASSETS="index.html style.css app.js sw.js manifest.json icon.svg privacy.html version.json"
           for extra in *.html *.css *.js *.svg *.png *.webp *.ico *.woff2; do
             if [ -f "$extra" ] && [ "$extra" != "package.json" ] && [ "$extra" != "package-lock.json" ] && [ "$extra" != "capacitor.config.json" ]; then
-              case " $ASSET_LIST " in
+              case " $WEB_ASSETS " in
                 *" $extra "*) ;;
-                *) ASSET_LIST="$ASSET_LIST $extra" ;;
+                *) WEB_ASSETS="$WEB_ASSETS $extra" ;;
               esac
             fi
           done
 
-          for f in $ASSET_LIST; do
-            if [ -f "$f" ] && [ -f "www/$f" ]; then
-              ROOT_TS=$(git log -1 --format="%ct" -- "$f" 2>/dev/null || echo 0)
-              WWW_TS=$(git log -1 --format="%ct" -- "www/$f" 2>/dev/null || echo 0)
-              if [ "${WWW_TS:-0}" -gt "${ROOT_TS:-0}" ]; then
-                echo "🔄 Syncing newer www/$f -> root $f"
-                cp -f "www/$f" "$f"
-              else
-                echo "✅ Syncing root $f -> www/$f"
+          for f in $WEB_ASSETS; do
+            if [ -f "$f" ]; then
+              if [ ! -f "www/$f" ]; then
+                echo "📦 Moving root $f -> www/$f"
                 cp -f "$f" "www/$f"
+              else
+                ROOT_TS=$(git log -1 --format="%ct" -- "$f" 2>/dev/null || echo 0)
+                WWW_TS=$(git log -1 --format="%ct" -- "www/$f" 2>/dev/null || echo 0)
+                if [ "${ROOT_TS:-0}" -gt "${WWW_TS:-0}" ]; then
+                  echo "🔄 Root $f had newer edit; copying to www/$f before cleaning root"
+                  cp -f "$f" "www/$f"
+                fi
               fi
-            elif [ -f "$f" ]; then
-              cp -f "$f" "www/$f"
-            elif [ -f "www/$f" ]; then
-              cp -f "www/$f" "$f"
+              echo "🗑️ Removing duplicate $f from main root directory (keeping only www/$f)"
+              git rm -f "$f" 2>/dev/null || rm -f "$f"
+              REPO_CLEANUP_NEEDED=1
             fi
           done
 
-          # Sync any future sub-directories (e.g., assets/, icons/, audio/, fonts/, data/, components/, modules/) if created in future updates
-          for subdir in assets icons audio fonts data components modules; do
-            if [ -d "$subdir" ]; then
-              mkdir -p "www/$subdir"
-              cp -rf "$subdir/." "www/$subdir/"
-            elif [ -d "www/$subdir" ]; then
-              mkdir -p "$subdir"
-              cp -rf "www/$subdir/." "$subdir/"
-            fi
-          done
-
-          # Commit back if root <-> www sync updated any tracked source files so repository stays 100% aligned
-          if [ -n "$(git status --porcelain index.html style.css app.js sw.js manifest.json icon.svg privacy.html www/ 2>/dev/null)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add index.html style.css app.js sw.js manifest.json icon.svg privacy.html www/ 2>/dev/null || true
-            git commit -m "chore(sync): atomic root and www alignment [skip ci]" || true
-            git push origin "HEAD:${GITHUB_REF_NAME}" || true
-            LATEST_SHA=$(git rev-parse --short=7 HEAD)
+          #Also remove any generated www/version.json from git tracking if present (generated at build time only)
+          if git ls-files --error-unmatch www/version.json >/dev/null 2>&1; then
+            git rm -f www/version.json || true
+            REPO_CLEANUP_NEEDED=1
           fi
 
-          # Stamp Service Worker cache version & HTML asset query strings with unique run_number + commit SHA
+          if [ "$REPO_CLEANUP_NEEDED" -eq 1 ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add www/ 2>/dev/null || true
+            git commit -m "chore(clean-root): keep web assets strictly inside www/ only [skip ci]" || true
+            git push origin "HEAD:${GITHUB_REF_NAME}" || true
+          fi
+
+          LATEST_SHA=$(git rev-parse --short=7 HEAD)
+
+          # 4C. Stamp Service Worker cache version & HTML asset query strings inside www/ (for artifact deployment only, not committed back)
           CACHE_VER="v4.2.${GITHUB_RUN_NUMBER}-${LATEST_SHA}"
           if [ -f "www/sw.js" ]; then
             sed -i "s/sunnah-24-cache-[a-zA-Z0-9._-]*/sunnah-24-cache-${CACHE_VER}/g" www/sw.js || true
@@ -146,24 +136,13 @@ jobs:
             sed -i "s|src=\"app.js[^\"]*\"|src=\"app.js?v=${CACHE_VER}\"|g" www/index.html || true
           fi
 
-          # Generate atomic version.json manifest for resilient website & in-app update checks
-          cat << EOF > www/version.json
-          {
-            "tag_name": "v4.2.${GITHUB_RUN_NUMBER}",
-            "version": "4.2.${GITHUB_RUN_NUMBER}",
-            "commit": "${LATEST_SHA}",
-            "apk_url": "https://github.com/${GITHUB_REPOSITORY}/releases/latest/download/Sunnah-24-v4.2-Enterprise-Signed.apk"
-          }
-          EOF
-          sed -i 's/^          //' www/version.json
-
           # Verify syntax of all JavaScript files in www/
           for jsfile in www/*.js; do
             if [ -f "$jsfile" ]; then
               node --check "$jsfile"
             fi
           done
-          echo "✅ Atomic Web Bundle verified with cache version: ${CACHE_VER}"
+          echo "✅ Clean www/-only Web Bundle verified with cache version: ${CACHE_VER}"
 
       - name: 5. Gradual Multi-Repository Auto-Update & Pages Rollout (Wave-by-Wave Sync)
         env:
@@ -171,7 +150,6 @@ jobs:
           REPOS_FROM_VARS: ${{ vars.TARGET_REPOSITORIES || secrets.TARGET_REPOSITORIES || '' }}
           REPOS_FROM_INPUT: ${{ github.event.inputs.target_repositories || '' }}
         run: |
-          # Collect target mirror repositories from workflow input, repo variables/secrets, or sync-repos.txt
           RAW_REPOS="${REPOS_FROM_INPUT} ${REPOS_FROM_VARS}"
           if [ -f "sync-repos.txt" ]; then
             FILE_REPOS=$(grep -v '^[[:space:]]*#' sync-repos.txt | tr '\n' ' ')
@@ -180,7 +158,7 @@ jobs:
           CLEAN_REPOS=$(echo "$RAW_REPOS" | tr ',' ' ' | xargs)
 
           if [ -z "$CLEAN_REPOS" ]; then
-            echo "ℹ️ Single-repository mode active (${GITHUB_REPOSITORY}). To auto-update multiple repositories gradually at once, add repo names (e.g. Owner/Repo2) to TARGET_REPOSITORIES variable, workflow dispatch input, or sync-repos.txt."
+            echo "ℹ️ Single-repository mode active (${GITHUB_REPOSITORY})."
             exit 0
           fi
 
@@ -200,13 +178,12 @@ jobs:
             TMP_DIR="/tmp/s24-mirror-${WAVE_INDEX}"
             rm -rf "$TMP_DIR"
             if git clone --depth 1 "https://x-access-token:${SYNC_PAT}@github.com/${TARGET_REPO}.git" "$TMP_DIR" 2>/dev/null || git clone "https://x-access-token:${SYNC_PAT}@github.com/${TARGET_REPO}.git" "$TMP_DIR"; then
-              rsync -a --exclude='.git' --exclude='node_modules' --exclude='android/build' --exclude='android/app/build' ./ "$TMP_DIR/"
-              mkdir -p "$TMP_DIR/www"
-              cp -rf www/. "$TMP_DIR/www/"
+              rsync -a --delete --exclude='.git' --exclude='node_modules' --exclude='android/build' --exclude='android/app/build' ./ "$TMP_DIR/"
               (
                 cd "$TMP_DIR"
                 git config user.name "github-actions[bot]"
                 git config user.email "github-actions[bot]@users.noreply.github.com"
+                git checkout -- www/sw.js www/index.html 2>/dev/null || true
                 git add -A
                 if [ -n "$(git status --porcelain)" ]; then
                   git commit -m "chore(multi-repo-sync): gradual auto-update from ${GITHUB_REPOSITORY}@${GITHUB_SHA::7}"
@@ -217,7 +194,6 @@ jobs:
                   echo "⚡ ${TARGET_REPO} is already up to date."
                 fi
               )
-              # Gradual pacing delay between repositories so GitHub Pages & API rate limits stay healthy
               sleep 5
             else
               echo "⚠️ Could not clone ${TARGET_REPO}. Verify repository name and PAT permissions."
@@ -285,16 +261,8 @@ jobs:
           name: sunnah24-verified-www-bundle
           path: ./www
 
-      - name: 4. Verify Web Assets for APK/AAB Bundle
+      - name: 4. Verify Web Assets inside www/ for APK/AAB Bundle
         run: |
-          for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html; do
-            if [ -f "www/$f" ]; then
-              cp -f "www/$f" "$f"
-            elif [ -f "$f" ]; then
-              cp -f "$f" "www/$f"
-            fi
-          done
-
           test -f www/index.html
           test -f www/style.css
           test -f www/app.js
