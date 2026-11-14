@@ -7,7 +7,18 @@ on:
       - 'signing/**'
   pull_request:
     branches: [ main, master ]
+  repository_dispatch:
+    types: [ sunnah24-auto-sync, multi-repo-update ]
   workflow_dispatch:
+    inputs:
+      target_repositories:
+        description: "Optional comma-separated list of additional repositories (owner/repo) to auto-update simultaneously"
+        required: false
+        default: ""
+      sync_releases_to_targets:
+        description: "Also publish Signed APK & Play Store AAB releases to all target repositories simultaneously"
+        required: false
+        default: "true" 
 
 permissions:
   contents: write
@@ -90,8 +101,8 @@ jobs:
             fi
           done
 
-          # Sync any future sub-directories (e.g., assets/, icons/, audio/, fonts/, data/) if created in future updates
-          for subdir in assets icons audio fonts data; do
+          # Future-Proof Dynamic Sub-Directory & Module Sync (automatically handles any current or future folders: assets/, icons/, audio/, fonts/, data/, components/, locales/, modules/, etc.)
+          for subdir in assets icons audio fonts data components locales modules scripts styles; do
             if [ -d "$subdir" ]; then
               mkdir -p "www/$subdir"
               cp -rf "$subdir/." "www/$subdir/"
@@ -1130,5 +1141,135 @@ jobs:
             fi
           fi
 
+  multi-repo-auto-update:
+    name: 3. Simultaneous Multi-Repository Auto-Update & Release Sync Engine
+    needs: [ deploy-pages, build-and-release-apk ]
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      SYNC_PAT: ${{ secrets.MULTI_REPO_PAT || secrets.RELEASE_PAT || secrets.GH_PAT || github.token }}
+      CONFIGURED_REPOS: ${{ github.event.inputs.target_repositories || secrets.MULTI_REPO_TARGETS || vars.MULTI_REPO_TARGETS || '' }}
+      SYNC_RELEASES: ${{ github.event.inputs.sync_releases_to_targets || 'true' }}
+      RUN_NUMBER: ${{ github.run_number }}
+      VERSION_NAME: "4.2.${{ github.run_number }}"
+    steps:
+      - name: 1. Checkout Primary Repository HEAD
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
 
+      - name: 2. Download Verified www/ Bundle & Signed APK/AAB Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: sunnah24-verified-www-bundle
+          path: ./www
+
+      - name: 3. Download Signed APK & Play Store AAB Bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: Sunnah-24-Enterprise-Release-Bundle
+          path: ./release-bundle
+
+      - name: 4. Simultaneous Parallel Multi-Repository Codebase & Release Auto-Updater
+        run: |
+          # Synchronize root files from verified www/ bundle so pushed trees are 100% identical
+          for f in index.html style.css app.js sw.js manifest.json icon.svg privacy.html version.json; do
+            if [ -f "www/$f" ]; then
+              cp -f "www/$f" "$f"
+            fi
+          done
+
+          # Commit back any synced root/www parity updates to the current repository if needed
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain index.html style.css app.js sw.js manifest.json icon.svg privacy.html www/ 2>/dev/null)" ]; then
+            git add index.html style.css app.js sw.js manifest.json icon.svg privacy.html www/ || true
+            git commit -m "chore(sync): atomic root & www/ asset parity sync v${VERSION_NAME} [skip ci]" || true
+            git pull --rebase origin "${GITHUB_REF_NAME}" || true
+            git push origin "HEAD:${GITHUB_REF_NAME}" || true
+            echo "✅ Current repository (${GITHUB_REPOSITORY}) root & www/ synced atomically."
+          fi
+
+          # Parse comma- or space-separated target repositories for simultaneous multi-repo fan-out
+          RAW_TARGETS=$(echo "${CONFIGURED_REPOS}" | tr ',' ' ' | xargs)
+          if [ -z "$RAW_TARGETS" ]; then
+            echo "ℹ️ No external target repositories specified in MULTI_REPO_TARGETS / workflow input. Single-repository atomic pipeline complete!"
+            exit 0
+          fi
+
+          echo "🚀 Starting simultaneous parallel auto-update across target repositories: ${RAW_TARGETS}"
+          SOURCE_DIR="$PWD"
+          PIDS=""
+
+          for TARGET_REPO in $RAW_TARGETS; do
+            # Skip self if accidentally listed in target list
+            if [ "$TARGET_REPO" = "$GITHUB_REPOSITORY" ]; then
+              continue
+            fi
+
+            (
+              echo "🔄 [Parallel Worker] Syncing target repository: ${TARGET_REPO} ..."
+              WORK_DIR="/tmp/multi_repo_$(echo "$TARGET_REPO" | tr '/:' '__')"
+              rm -rf "$WORK_DIR"
+
+              if git clone --depth 1 "https://x-access-token:${SYNC_PAT}@github.com/${TARGET_REPO}.git" "$WORK_DIR" 2>/dev/null; then
+                cd "$WORK_DIR"
+                TARGET_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+                mkdir -p www .github/workflows
+
+                # Copy all verified core & future web assets to both root and www/ of target repo
+                for asset in index.html style.css app.js sw.js manifest.json icon.svg privacy.html version.json package.json capacitor.config.json; do
+                  if [ -f "${SOURCE_DIR}/$asset" ]; then
+                    cp -f "${SOURCE_DIR}/$asset" "./$asset"
+                  fi
+                  if [ -f "${SOURCE_DIR}/www/$asset" ]; then
+                    cp -f "${SOURCE_DIR}/www/$asset" "./www/$asset"
+                  fi
+                done
+
+                # Copy any future sub-directories (assets/, icons/, audio/, fonts/, data/, components/, etc.)
+                for subdir in assets icons audio fonts data components locales modules scripts styles; do
+                  if [ -d "${SOURCE_DIR}/www/$subdir" ]; then
+                    mkdir -p "./$subdir" "./www/$subdir"
+                    cp -rf "${SOURCE_DIR}/www/$subdir/." "./$subdir/"
+                    cp -rf "${SOURCE_DIR}/www/$subdir/." "./www/$subdir/"
+                  fi
+                done
+
+                # Sync CI/CD workflow file so target repository stays aligned with future updates
+                if [ -d "${SOURCE_DIR}/.github/workflows" ]; then
+                  cp -rf "${SOURCE_DIR}/.github/workflows/." "./.github/workflows/"
+                fi
+
+                git config user.name "github-actions[bot]"
+                git config user.email "github-actions[bot]@users.noreply.github.com"
+                git add -A
+                if [ -n "$(git status --porcelain)" ]; then
+                  git commit -m "chore(multi-repo-sync): auto-update from ${GITHUB_REPOSITORY} v${VERSION_NAME}"
+                  git push origin "HEAD:${TARGET_BRANCH}"
+                  echo "✅ [Parallel Worker] Pushed latest codebase to ${TARGET_REPO} (${TARGET_BRANCH})"
+                else
+                  echo "ℹ️ [Parallel Worker] ${TARGET_REPO} is already up to date."
+                fi
+
+                # Simultaneously publish Signed APK & Play Store AAB release to target repository if enabled
+                if [ "$SYNC_RELEASES" = "true" ] && [ -d "${SOURCE_DIR}/release-bundle" ]; then
+                  GH_TOKEN="${SYNC_PAT}" gh release create "v${VERSION_NAME}"                     "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-Enterprise-Signed.apk"                     "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-PlayStore-Signed.aab"                     --repo "${TARGET_REPO}"                     --title "☪️ Sunnah 24 v${VERSION_NAME} — Synced Multi-Repo Release"                     --notes "Automated simultaneous multi-repository release synced from ${GITHUB_REPOSITORY} (v${VERSION_NAME})." ||                   GH_TOKEN="${SYNC_PAT}" gh release upload "v${VERSION_NAME}"                     "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-Enterprise-Signed.apk"                     "${SOURCE_DIR}/release-bundle/Sunnah-24-v4.2-PlayStore-Signed.aab"                     --repo "${TARGET_REPO}" --clobber || true
+                  echo "✅ [Parallel Worker] Synced APK & AAB Release v${VERSION_NAME} to ${TARGET_REPO}"
+                fi
+              else
+                echo "⚠️ [Parallel Worker] Could not clone ${TARGET_REPO}. Verify MULTI_REPO_PAT has write access to ${TARGET_REPO}."
+              fi
+            ) &
+            PIDS="$PIDS $!"
+          done
+
+          # Wait for all parallel repository updates to finish simultaneously
+          for pid in $PIDS; do
+            wait "$pid" || true
+          done
+          echo "🎉 All target repositories updated simultaneously!"
 
