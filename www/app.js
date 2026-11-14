@@ -4300,12 +4300,13 @@ function renderFiveWaqtStrip(now = new Date()) {
             </div>
 
             <div class="waqt-popup-meta-rows ongoing-static-meta-rows s24-nabawi-glass-rows">
-              <div class="waqt-popup-meta-item single-line-meta-row s24-prime-inline-row">
-                <span class="meta-row-label">
-                  ${getInlineSparklesSvg()}
-                  <span>${primeLabelText} <strong>${primeValueHtml}</strong></span>
-                </span>
-              </div>
+           <div class="waqt-popup-meta-item single-line-meta-row s24-prime-inline-row">
+            <span class="meta-row-label">
+            ${getInlineSparklesSvg()}
+             <span>${primeLabelText}</span>
+             </span>
+             <strong class="meta-row-value">${primeValueHtml}</strong>
+             </div>
               <div class="waqt-popup-meta-item single-line-meta-row countdown-single-line-row s24-countdown-split-row">
                 <span class="meta-row-label">
                   ${getInlineStopwatchSvg(isProhibitedNow)}
