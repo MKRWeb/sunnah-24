@@ -7253,4 +7253,17 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
     font-size: 0.74rem !important;
   }
 }
+/* ==========================================================================
+   V11.3 GENTLE & POLISHED 5 FARD PRAYER SCHEDULE (NO `i` BUTTON)
+   - Removes the `i` info button from the 5 Fard Prayer Schedule rows
+   - Refines row padding & time-range pill alignment for a calm, seamless look
+   ========================================================================== */
+#five-waqt-grid .waqt-info-micro-badge,
+#five-waqt-grid .fard-row-info-btn {
+  display: none !important;
+}
+
+.waqt-pill-card.fard-waqt-row-item .fard-row-right {
+  gap: 0 !important;
+}
 
