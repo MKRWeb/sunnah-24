@@ -7277,3 +7277,141 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   gap: 0 !important;
 }
 
+
+
+/* ==========================================================================
+   V11.4 EXACT 1ST UI STYLE FOR ISHA ONGOING SECTION & 2ND UI STYLE FOR ASR
+   ONGOING SECTION (ZERO CHANGES TO ANY OTHER WAQT OR SECTION)
+   ========================================================================== */
+
+/* --- 1ST UI STYLE: ISHA ONGOING PRAYER CARD (.scene-isha) --- */
+.s24-nabawi-scenic-card.scene-isha {
+  border: 1.5px solid rgba(148, 184, 218, 0.42) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 10px 26px rgba(8, 22, 38, 0.35) !important;
+}
+
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-title-block h4,
+#home-dashboard-view .s24-nabawi-scenic-card.scene-isha #live-waqt-title {
+  color: #ffffff !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45) !important;
+}
+
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-title-block small {
+  color: #cbd5e1 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-live-pill {
+  background: rgba(25, 68, 94, 0.88) !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(94, 168, 204, 0.38) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28) !important;
+}
+
+.s24-nabawi-scenic-card.scene-isha .s24-status-dot.dot-active {
+  background: #22c55e !important;
+  border: 1.5px solid #4ade80 !important;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.55) !important;
+}
+
+/* Dark Frosted Slate-Blue Glass Pills with Glowing Center Highlight for Isha */
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-time {
+  background: radial-gradient(circle at 50% 50%, rgba(116, 150, 182, 0.42) 0%, rgba(36, 58, 82, 0.86) 62%, rgba(26, 45, 66, 0.92) 100%) !important;
+  border: 1.2px solid rgba(164, 192, 218, 0.45) !important;
+  box-shadow: 0 6px 16px rgba(5, 15, 28, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.16) !important;
+}
+
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-time .waqt-popup-time-lbl {
+  color: #cbd5e1 !important;
+}
+
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-time .waqt-popup-time-val,
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-time .waqt-popup-time-box.end-box .waqt-popup-time-val {
+  color: #ffffff !important;
+}
+
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-time .waqt-popup-time-divider {
+  background: radial-gradient(circle at 35% 30%, rgba(148, 178, 206, 0.65), rgba(62, 88, 114, 0.88)) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(203, 213, 225, 0.45) !important;
+  box-shadow: 0 0 14px rgba(148, 184, 218, 0.35) !important;
+}
+
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .waqt-popup-meta-item {
+  background: linear-gradient(90deg, rgba(28, 49, 72, 0.9) 0%, rgba(44, 70, 98, 0.88) 50%, rgba(28, 49, 72, 0.9) 100%) !important;
+  border: 1.2px solid rgba(164, 192, 218, 0.42) !important;
+  box-shadow: 0 4px 12px rgba(5, 15, 28, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.12) !important;
+}
+
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-label,
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-value,
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .s24-countdown-split-row .meta-row-label,
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .s24-countdown-split-row #live-waqt-remaining {
+  color: #ffffff !important;
+}
+
+/* --- 2ND UI STYLE: ASR ONGOING PRAYER CARD (.scene-asr) --- */
+.s24-nabawi-scenic-card.scene-asr {
+  border: 1.5px solid rgba(215, 192, 160, 0.65) !important;
+}
+
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-title-block h4,
+#home-dashboard-view .s24-nabawi-scenic-card.scene-asr #live-waqt-title {
+  color: #1b3b22 !important;
+  text-shadow: none !important;
+}
+
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-title-block small {
+  color: #1e2923 !important;
+  text-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-live-pill {
+  background: #e6f4ea !important;
+  color: #1b3b22 !important;
+  border: 1px solid rgba(134, 197, 156, 0.55) !important;
+  box-shadow: 0 2px 6px rgba(15, 45, 34, 0.06) !important;
+}
+
+.s24-nabawi-scenic-card.scene-asr .s24-status-dot.dot-active {
+  background: #4caf50 !important;
+  border: 1.5px solid #2e7d32 !important;
+  box-shadow: none !important;
+}
+
+/* Pure Crisp White Elevated Pills on Warm Tan Ground for Asr */
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-time {
+  background: #ffffff !important;
+  border: 1.2px solid #e2d5c1 !important;
+  box-shadow: 0 3px 10px rgba(92, 64, 28, 0.08) !important;
+}
+
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-time .waqt-popup-time-lbl {
+  color: #1e293b !important;
+}
+
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-time .waqt-popup-time-val,
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-time .waqt-popup-time-box.end-box .waqt-popup-time-val {
+  color: #090d16 !important;
+}
+
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-time .waqt-popup-time-divider {
+  background: #e2f2e8 !important;
+  color: #15803d !important;
+  border: none !important;
+}
+
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .waqt-popup-meta-item {
+  background: #ffffff !important;
+  border: 1.2px solid #e2d5c1 !important;
+  box-shadow: 0 3px 8px rgba(92, 64, 28, 0.07) !important;
+}
+
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-label,
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-value,
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .s24-countdown-split-row .meta-row-label,
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .s24-countdown-split-row #live-waqt-remaining {
+  color: #090d16 !important;
+}
+
