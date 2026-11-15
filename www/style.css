@@ -7456,3 +7456,89 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   text-shadow: none !important;
 }
 
+
+/* ==========================================================================
+   V11.6 PHOTOREALISTIC CELESTIAL & ATMOSPHERIC LIGHTING ENGINE (CSS3 + SVG)
+   - Injects a subtle, luminous white-mist radial backlight behind the central
+     Masjid an-Nabawi dome area below the moon on Isha (matching reference UI)
+   - Enhances depth, glassmorphic specular highlights, and realistic lighting
+     across Fajr, Duha, Dhuhr, Asr, Maghrib, and Isha ongoing cards
+   ========================================================================== */
+.s24-nabawi-scenic-card {
+  position: relative;
+  isolation: isolate;
+}
+
+/* CSS3 Ambient Center Mosque Backlight Overlay (Between SVG Sky & Foreground UI) */
+.s24-nabawi-scenic-card::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: 66%;
+  height: 44%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.24) 0%,
+    rgba(255, 255, 255, 0.1) 46%,
+    rgba(255, 255, 255, 0) 76%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Isha Center White-Mist Glow Below the Moon & Behind the Green Dome (Like Provided Image) */
+.s24-nabawi-scenic-card.scene-isha::before {
+  top: 46%;
+  width: 68%;
+  height: 46%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(224, 242, 254, 0.12) 42%,
+    rgba(186, 230, 253, 0.04) 68%,
+    rgba(15, 39, 68, 0) 100%
+  );
+  filter: blur(6px);
+}
+
+/* Smooth Celestial Floating & Subtle Atmospheric Shimmer */
+@keyframes s24CelestialBreathe {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-2px) scale(1.012);
+  }
+}
+
+.s24-celestial-anim {
+  transform-origin: 200px 80px;
+  animation: s24CelestialBreathe 5.5s ease-in-out infinite !important;
+}
+
+/* Refined Glassmorphic Specular Rim on Isha Time & Meta Pills */
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-time {
+  background: radial-gradient(
+    circle at 50% 48%,
+    rgba(148, 178, 208, 0.46) 0%,
+    rgba(38, 62, 88, 0.88) 60%,
+    rgba(24, 43, 64, 0.94) 100%
+  ) !important;
+  border: 1.25px solid rgba(186, 210, 235, 0.48) !important;
+  box-shadow: 0 8px 20px rgba(4, 12, 24, 0.38), inset 0 1px 1.5px rgba(255, 255, 255, 0.22) !important;
+}
+
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .waqt-popup-meta-item {
+  background: linear-gradient(
+    90deg,
+    rgba(26, 47, 70, 0.92) 0%,
+    rgba(52, 80, 110, 0.88) 50%,
+    rgba(26, 47, 70, 0.92) 100%
+  ) !important;
+  border: 1.25px solid rgba(186, 210, 235, 0.45) !important;
+  box-shadow: 0 5px 14px rgba(4, 12, 24, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.16) !important;
+}
+
