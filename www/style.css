@@ -7415,3 +7415,44 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   color: #090d16 !important;
 }
 
+
+/* ==========================================================================
+   V11.5 HIGH-VISIBILITY & CRISP CONTRAST FOR ONGOING WAQT META SENTENCES
+   ("✨ উত্তম সময় (আউয়াল ওয়াক্ত):" AND "⏱️ ওয়াক্ত শেষ হতে বাকি:")
+   Overrides generic `.waqt-popup-meta-item span` muted color & low weight
+   so the inner `<span>` text is 100% sharp, bright, and clearly legible!
+   ========================================================================== */
+
+/* All Daytime & General Ongoing Waqt Scenes (Fajr, Dhuhr, Jumu'ah, Asr, Maghrib) */
+.s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label,
+.s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label span,
+.s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label-text {
+  color: #090d16 !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+
+/* Isha Night Scene (.scene-isha) — Pure Crisp White with Subtle Contrast Shadow */
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label,
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label span,
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label-text,
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-value,
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .s24-countdown-split-row #live-waqt-remaining {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Asr Afternoon Scene (.scene-asr) — Deep Ink Black on Pure White Pill */
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label,
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label span,
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label-text,
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-value,
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .s24-countdown-split-row #live-waqt-remaining {
+  color: #090d16 !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
