@@ -3528,10 +3528,10 @@ function getFardWaqtSvgIcon(waqtId) {
 function getJumuahMandalaPatternSvg() {
   let petals = "";
   for (let deg = 0; deg < 360; deg += 30) {
-    petals += `<g transform="rotate(${deg} 200 92)">
-      <path d="M200 38 C208 45.5 208 59.5 200 68 C192 59.5 192 45.5 200 38 Z" fill="none" stroke="#cbd5cdb8" stroke-width="1.3" />
-      <path d="M200 42.5 C204.5 48 204.5 56.5 200 62.5 C195.5 56.5 195.5 48 200 42.5 Z" fill="none" stroke="#cbd5cd88" stroke-width="1" />
-      <circle cx="200" cy="50" r="1.6" fill="#cbd5cd99" />
+    petals += `<g transform="rotate(${deg} 200 76)">
+      <path d="M200 30 C206.5 36.5 206.5 48.5 200 56 C193.5 48.5 193.5 36.5 200 30 Z" fill="none" stroke="#cbd5cdb8" stroke-width="1.2" />
+      <path d="M200 34 C203.8 38.8 203.8 46 200 51 C196.2 46 196.2 38.8 200 34 Z" fill="none" stroke="#cbd5cd88" stroke-width="0.95" />
+      <circle cx="200" cy="40.5" r="1.4" fill="#cbd5cd99" />
     </g>`;
   }
   let rays = "";
@@ -3539,17 +3539,19 @@ function getJumuahMandalaPatternSvg() {
     const deg = i * 22.5;
     const isGreen = i % 2 === 1;
     const color = isGreen ? "#15803d" : "#f59e0b";
-    const y1 = isGreen ? 50 : 48;
-    const y2 = isGreen ? 65 : 63;
-    rays += `<line x1="200" y1="${y1}" x2="200" y2="${y2}" stroke="${color}" stroke-width="4.8" stroke-linecap="round" transform="rotate(${deg} 200 92)" />`;
+    const y1 = isGreen ? 40 : 38;
+    const y2 = isGreen ? 53 : 51;
+    rays += `<line x1="200" y1="${y1}" x2="200" y2="${y2}" stroke="${color}" stroke-width="3.6" stroke-linecap="round" transform="rotate(${deg} 200 76)" />`;
   }
   return `
     <g class="s24-celestial-anim">
-      <circle cx="200" cy="92" r="50" fill="none" stroke="#cbd5cd80" stroke-width="1.15" stroke-dasharray="3 3" />
-      <circle cx="200" cy="92" r="41" fill="#e8f5ee" opacity="0.58" />
+      <ellipse cx="200" cy="148" rx="115" ry="74" fill="url(#s24CenterWhiteBacklight)" />
+      <circle cx="200" cy="76" r="46" fill="url(#s24SunBloomWarm)" opacity="0.65" />
+      <circle cx="200" cy="76" r="42" fill="none" stroke="#cbd5cd80" stroke-width="1.1" stroke-dasharray="3 3" />
+      <circle cx="200" cy="76" r="34" fill="#e8f5ee" opacity="0.62" />
       ${petals}
       ${rays}
-      <circle cx="200" cy="92" r="25" fill="#f59e0b" stroke="#15803d" stroke-width="3.4" />
+      <circle cx="200" cy="76" r="20" fill="url(#s24NoonSunCore)" stroke="#15803d" stroke-width="2.8" />
     </g>
   `;
 }
@@ -3557,73 +3559,93 @@ function getJumuahMandalaPatternSvg() {
 function getSymmetricNabawiCardSvg(sceneKey) {
   const configs = {
     fajr: {
-      bgTop: "#b8e1f5",
-      bgMid: "#d9eff7",
-      bgBottom: "#fae9b8",
+      bgTop: "#8ec5e8",
+      bgMid: "#cde7f5",
+      bgBottom: "#fce5a8",
       celestial: `
         <g class="s24-celestial-anim">
-          <line x1="200" y1="88" x2="200" y2="103" stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round" />
-          <line x1="163" y1="98" x2="171" y2="112" stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round" />
-          <line x1="237" y1="98" x2="229" y2="112" stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round" />
-          <line x1="138" y1="125" x2="153" y2="133" stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round" />
-          <line x1="262" y1="125" x2="247" y2="133" stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round" />
-          <circle cx="200" cy="158" r="40" fill="#fcd34d" />
+          <!-- Soft White-Gold Dawn Horizon Atmospheric Backlight Behind Mosque -->
+          <ellipse cx="200" cy="172" rx="135" ry="78" fill="url(#s24CenterWhiteBacklight)" />
+          <ellipse cx="200" cy="160" rx="92" ry="54" fill="url(#s24DawnHorizonGlow)" />
+          <!-- Delicate Tapered Dawn Crepuscular Rays (Professional Volumetric Style) -->
+          <g opacity="0.72" stroke="url(#s24DawnRayGrad)" stroke-linecap="round">
+            <line x1="200" y1="76" x2="200" y2="112" stroke-width="2.6" />
+            <line x1="168" y1="84" x2="181" y2="115" stroke-width="2.2" />
+            <line x1="232" y1="84" x2="219" y2="115" stroke-width="2.2" />
+            <line x1="142" y1="104" x2="167" y2="124" stroke-width="2.0" />
+            <line x1="258" y1="104" x2="233" y2="124" stroke-width="2.0" />
+          </g>
+          <!-- Distant Photorealistic Rising Dawn Sun Orb -->
+          <circle cx="200" cy="148" r="36" fill="url(#s24SunBloomWarm)" opacity="0.78" />
+          <circle cx="200" cy="148" r="25" fill="url(#s24DawnSunOrb)" filter="url(#s24SoftSunGlow)" />
         </g>
       `,
       preMinaretLayer: `
         <rect x="0" y="218" width="400" height="26" fill="#126e38" />
         <rect x="0" y="244" width="400" height="60" fill="url(#s24FajrMintWash)" />
       `,
-      postDomeLayer: ""
+      postDomeLayer: `
+        <ellipse cx="200" cy="226" rx="96" ry="18" fill="url(#s24CenterWhiteSubtle)" />
+      `
     },
     ishraq_duha: {
-      bgTop: "#bae2fa",
-      bgMid: "#e3f2fd",
-      bgBottom: "#faecc4",
+      bgTop: "#a6d8f7",
+      bgMid: "#dcf0fc",
+      bgBottom: "#fcedc2",
       celestial: `
         <g class="s24-celestial-anim">
-          <polygon points="200,90 114,228 286,228" fill="url(#s24DuhaBeamGrad)" />
-          <circle cx="200" cy="90" r="31" fill="#fde68a" opacity="0.45" />
-          <g stroke="#fcd34d" stroke-width="4.8" stroke-linecap="round" opacity="0.85">
-            <line x1="200" y1="47" x2="200" y2="58" />
-            <line x1="200" y1="122" x2="200" y2="133" />
-            <line x1="157" y1="90" x2="168" y2="90" />
-            <line x1="232" y1="90" x2="243" y2="90" />
-            <line x1="170" y1="60" x2="178" y2="68" />
-            <line x1="222" y1="112" x2="230" y2="120" />
-            <line x1="230" y1="60" x2="222" y2="68" />
-            <line x1="178" y1="112" x2="170" y2="120" />
+          <!-- Volumetric Morning Light Shaft & White-Mist Mosque Backlight -->
+          <ellipse cx="200" cy="158" rx="122" ry="74" fill="url(#s24CenterWhiteBacklight)" />
+          <polygon points="200,68 112,228 288,228" fill="url(#s24DuhaBeamGrad)" />
+          <!-- Multi-Layer Photorealistic Morning Sun (High & Distant) -->
+          <circle cx="200" cy="70" r="38" fill="url(#s24SunBloomWarm)" opacity="0.75" />
+          <circle cx="200" cy="70" r="24" fill="#fef08a" opacity="0.42" />
+          <g stroke="#fde047" stroke-width="2.2" stroke-linecap="round" opacity="0.78">
+            <line x1="200" y1="36" x2="200" y2="45" />
+            <line x1="200" y1="95" x2="200" y2="104" />
+            <line x1="166" y1="70" x2="175" y2="70" />
+            <line x1="225" y1="70" x2="234" y2="70" />
+            <line x1="176" y1="46" x2="182" y2="52" />
+            <line x1="218" y1="88" x2="224" y2="94" />
+            <line x1="224" y1="46" x2="218" y2="52" />
+            <line x1="182" y1="88" x2="176" y2="94" />
           </g>
-          <circle cx="200" cy="90" r="22" fill="url(#s24DuhaSunCore)" />
+          <circle cx="200" cy="70" r="16.5" fill="url(#s24DuhaSunCore)" filter="url(#s24SoftSunGlow)" />
         </g>
       `,
       preMinaretLayer: "",
       postDomeLayer: `
-        <ellipse cx="200" cy="230" rx="78" ry="18" fill="url(#s24DomeUnderGlow)" />
+        <ellipse cx="200" cy="230" rx="82" ry="18" fill="url(#s24DomeUnderGlow)" />
       `
     },
     dhuhr: {
-      bgTop: "#fdf6e4",
-      bgMid: "#fbedcf",
-      bgBottom: "#f7e2b8",
+      bgTop: "#fcf3dc",
+      bgMid: "#fae8be",
+      bgBottom: "#f5dba4",
       celestial: `
         <g class="s24-celestial-anim">
-          <g stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round">
-            <line x1="200" y1="42" x2="200" y2="56" />
-            <line x1="200" y1="122" x2="200" y2="136" />
-            <line x1="153" y1="89" x2="167" y2="89" />
-            <line x1="233" y1="89" x2="247" y2="89" />
-            <line x1="167" y1="56" x2="177" y2="66" />
-            <line x1="223" y1="112" x2="233" y2="122" />
-            <line x1="233" y1="56" x2="223" y2="66" />
-            <line x1="177" y1="112" x2="167" y2="122" />
+          <!-- Radiant White-Gold Zenith Backlight Behind Central Mosque -->
+          <ellipse cx="200" cy="152" rx="128" ry="80" fill="url(#s24CenterWhiteBacklight)" />
+          <polygon points="200,64 122,226 278,226" fill="url(#s24DuhaBeamGrad)" opacity="0.65" />
+          <!-- High Distant Zenith Noon Sun with Corona Halo -->
+          <circle cx="200" cy="66" r="40" fill="url(#s24SunBloomWarm)" opacity="0.88" />
+          <circle cx="200" cy="66" r="25" fill="#fde68a" opacity="0.52" />
+          <g stroke="#f59e0b" stroke-width="2.4" stroke-linecap="round" opacity="0.72">
+            <line x1="200" y1="30" x2="200" y2="40" />
+            <line x1="200" y1="92" x2="200" y2="102" />
+            <line x1="164" y1="66" x2="174" y2="66" />
+            <line x1="226" y1="66" x2="236" y2="66" />
+            <line x1="174.5" y1="40.5" x2="181.5" y2="47.5" />
+            <line x1="218.5" y1="84.5" x2="225.5" y2="91.5" />
+            <line x1="225.5" y1="40.5" x2="218.5" y2="47.5" />
+            <line x1="181.5" y1="84.5" x2="174.5" y2="91.5" />
           </g>
-          <circle cx="200" cy="89" r="25" fill="#f59e0b" />
+          <circle cx="200" cy="66" r="17.5" fill="url(#s24NoonSunCore)" filter="url(#s24SoftSunGlow)" />
         </g>
       `,
       preMinaretLayer: "",
       postDomeLayer: `
-        <ellipse cx="200" cy="230" rx="80" ry="18" fill="url(#s24DomeUnderGlow)" />
+        <ellipse cx="200" cy="230" rx="84" ry="18" fill="url(#s24DomeUnderGlow)" />
       `
     },
     jumuah: {
@@ -3638,34 +3660,36 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       `
     },
     asr: {
-      bgTop: "#fdf4e3",
-      bgMid: "#fbe5be",
-      bgBottom: "#f5d4a0",
+      bgTop: "#fcf0d9",
+      bgMid: "#f9dfa8",
+      bgBottom: "#f1ca89",
       celestial: `
         <g class="s24-celestial-anim">
-          <!-- Back Left Cloud Layer -->
-          <path d="M 0 118 Q 16 105 38 111 Q 64 78 102 91 Q 134 95 148 116 L 148 122 L 0 122 Z" fill="#d9e2ec" stroke="#9fb3c8" stroke-width="2.2" stroke-linejoin="round" />
-          <path d="M 0 163 L 0 132 Q 26 125 48 138 Q 76 122 106 138 Q 132 144 146 163 Z" fill="#e2e8f0" stroke="#9fb3c8" stroke-width="2.2" stroke-linejoin="round" />
+          <!-- Warm Afternoon Atmospheric Haze Behind Mosque -->
+          <ellipse cx="200" cy="156" rx="124" ry="74" fill="url(#s24CenterWhiteBacklight)" opacity="0.82" />
+          <!-- Back Left Cloud Layer (Soft Volumetric Depth) -->
+          <path d="M 0 118 Q 16 105 38 111 Q 64 78 102 91 Q 134 95 148 116 L 148 122 L 0 122 Z" fill="#d9e2ec" stroke="#9fb3c8" stroke-width="1.8" stroke-linejoin="round" opacity="0.92" />
+          <path d="M 0 163 L 0 132 Q 26 125 48 138 Q 76 122 106 138 Q 132 144 146 163 Z" fill="#e2e8f0" stroke="#9fb3c8" stroke-width="1.8" stroke-linejoin="round" opacity="0.95" />
           <!-- Back Right Cloud Layer -->
-          <path d="M 272 118 Q 296 92 332 97 Q 368 68 400 72 L 400 122 L 272 122 Z" fill="#d9e2ec" stroke="#9fb3c8" stroke-width="2.2" stroke-linejoin="round" />
-          <path d="M 234 152 Q 254 134 282 138 Q 312 115 352 125 Q 378 120 400 130 L 400 152 Z" fill="#e2e8f0" stroke="#9fb3c8" stroke-width="2.2" stroke-linejoin="round" />
-          <!-- Dashed Sun Rays Fanning Out Above the Sun (Exactly Matching 2nd UI Reference) -->
-          <g stroke="#f59e0b" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="4.5 5">
-            <line x1="150" y1="95" x2="165" y2="95" />
-            <line x1="154" y1="74" x2="170" y2="81" />
-            <line x1="168" y1="57" x2="180" y2="70" />
-            <line x1="186" y1="47" x2="192" y2="63" />
-            <line x1="204" y1="45" x2="203" y2="62" />
-            <line x1="222" y1="49" x2="215" y2="65" />
-            <line x1="239" y1="59" x2="227" y2="72" />
-            <line x1="251" y1="74" x2="236" y2="83" />
+          <path d="M 272 118 Q 296 92 332 97 Q 368 68 400 72 L 400 122 L 272 122 Z" fill="#d9e2ec" stroke="#9fb3c8" stroke-width="1.8" stroke-linejoin="round" opacity="0.92" />
+          <path d="M 234 152 Q 254 134 282 138 Q 312 115 352 125 Q 378 120 400 130 L 400 152 Z" fill="#e2e8f0" stroke="#9fb3c8" stroke-width="1.8" stroke-linejoin="round" opacity="0.95" />
+          <!-- Refined Afternoon Sun Rays Fanning Out Above the Distant Sun -->
+          <g stroke="#f59e0b" stroke-width="2.1" stroke-linecap="round" stroke-dasharray="4 4.5" opacity="0.85">
+            <line x1="158" y1="84" x2="171" y2="84" />
+            <line x1="162" y1="66" x2="175" y2="72" />
+            <line x1="173" y1="52" x2="183" y2="63" />
+            <line x1="188" y1="44" x2="193" y2="57" />
+            <line x1="203" y1="42" x2="202" y2="56" />
+            <line x1="218" y1="46" x2="212" y2="59" />
+            <line x1="232" y1="54" x2="222" y2="65" />
+            <line x1="242" y1="67" x2="229" y2="74" />
           </g>
-          <!-- Warm Amber Afternoon Sun -->
-          <circle cx="201" cy="95" r="30" fill="#fb923c" />
-          <circle cx="201" cy="95" r="26" fill="#f59e0b" />
-          <!-- Foreground Central Cloud Overlapping Lower Right of Sun -->
-          <path d="M 192 128 C 184 128 180 121 182 113 C 184 103 196 96 208 99 C 216 85 236 80 252 88 C 263 93 268 103 267 112 C 276 113 283 119 283 126 C 283 132 276 135 266 135 L 204 135 C 196 135 192 132 192 128 Z" fill="#d9e2ec" stroke="#94a3b8" stroke-width="2.4" stroke-linejoin="round" />
-          <path d="M 195 126 C 189 126 186 120 188 114 C 190 105 200 100 211 102 C 218 89 236 85 250 92 C 260 97 264 106 263 114 C 271 115 277 120 277 125 C 277 130 271 132 263 132 L 205 132 C 199 132 195 130 195 126 Z" fill="#e8eef5" />
+          <!-- Distant Golden-Amber Afternoon Sun Orb with Multi-Stop Glow -->
+          <circle cx="201" cy="84" r="35" fill="url(#s24SunBloomWarm)" opacity="0.72" />
+          <circle cx="201" cy="84" r="22.5" fill="url(#s24AsrSunOrb)" filter="url(#s24SoftSunGlow)" />
+          <!-- Foreground Central Cloud Overlapping Lower Right of Sun with Silver-Gold Rim Lighting -->
+          <path d="M 192 118 C 184 118 180 111 182 104 C 184 95 196 88 208 91 C 216 78 236 73 252 81 C 263 86 268 95 267 103 C 276 104 283 110 283 116 C 283 122 276 125 266 125 L 204 125 C 196 125 192 122 192 118 Z" fill="#d9e2ec" stroke="#94a3b8" stroke-width="2.0" stroke-linejoin="round" />
+          <path d="M 195 116 C 189 116 186 110 188 105 C 190 97 200 92 211 94 C 218 82 236 78 250 85 C 260 89 264 98 263 105 C 271 106 277 111 277 115 C 277 120 271 122 263 122 L 205 122 C 199 122 195 120 195 116 Z" fill="#f1f5f9" />
         </g>
       `,
       preMinaretLayer: `
@@ -3674,16 +3698,20 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       postDomeLayer: ""
     },
     maghrib: {
-      bgTop: "#fcd34d",
-      bgMid: "#fb923c",
-      bgBottom: "#f97316",
+      bgTop: "#f59e0b",
+      bgMid: "#ea580c",
+      bgBottom: "#c2410c",
       celestial: `
         <g class="s24-celestial-anim">
-          <path d="M161 98 A39 39 0 0 1 239 98 Z" fill="#ea580c" />
-          <rect x="161" y="103.5" width="78" height="5" rx="2.5" fill="#ea580c" />
-          <rect x="171" y="112" width="58" height="5" rx="2.5" fill="#ea580c" />
-          <rect x="171" y="108.5" width="58" height="3.5" fill="#ea580c" />
-          <rect x="178" y="120.5" width="44" height="5" rx="2.5" fill="#ea580c" />
+          <!-- Warm Twilight Horizon Atmospheric Backlight Behind Central Mosque -->
+          <ellipse cx="200" cy="148" rx="126" ry="74" fill="url(#s24TwilightHorizonGlow)" />
+          <ellipse cx="200" cy="175" rx="98" ry="52" fill="url(#s24CenterWhiteBacklight)" opacity="0.55" />
+          <!-- Distant Setting Crimson-Amber Twilight Sun Orb & Horizon Reflection Bands -->
+          <circle cx="200" cy="96" r="42" fill="url(#s24SunBloomWarm)" opacity="0.62" />
+          <path d="M170 96 A30 30 0 0 1 230 96 Z" fill="url(#s24MaghribSunOrb)" filter="url(#s24SoftSunGlow)" />
+          <rect x="170" y="100.5" width="60" height="3.8" rx="1.9" fill="#fff7ed" opacity="0.78" />
+          <rect x="177" y="107" width="46" height="3.5" rx="1.75" fill="#fed7aa" opacity="0.68" />
+          <rect x="184" y="113" width="32" height="3.2" rx="1.6" fill="#fdba74" opacity="0.55" />
         </g>
       `,
       preMinaretLayer: `
@@ -3695,36 +3723,46 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       postDomeLayer: ""
     },
     isha: {
-      bgTop: "#0e223d",
-      bgMid: "#122a49",
-      bgBottom: "#173458",
+      bgTop: "#0a192f",
+      bgMid: "#0f2744",
+      bgBottom: "#15355a",
       celestial: `
-        <g class="s24-celestial-anim" filter="url(#s24MoonStarGlow)">
-          <defs>
-            <filter id="s24MoonStarGlow" x="-35%" y="-35%" width="170%" height="170%">
-              <feDropShadow dx="0" dy="0" stdDeviation="2.6" flood-color="#fde047" flood-opacity="0.85" />
-            </filter>
-          </defs>
-          <!-- Glowing Golden Crescent Moon (Centered Above Green Dome — Matching 1st UI Style) -->
-          <path d="M204 54 C185.5 58 175.5 76.5 180.8 95 C186.2 113.5 205.5 122.5 223.5 115 C207.8 126.5 185.5 123.8 173.4 108.8 C161.2 93.8 162.2 71.5 176.2 57.5 C183.6 50.1 193.8 49.2 204 54 Z" fill="#fde047" stroke="#facc15" stroke-width="1.2" stroke-linejoin="round" />
-          <!-- Star Field Across Night Sky (Matching 1st UI Style) -->
-          <circle cx="145" cy="64" r="2.6" fill="#fef08a" />
-          <path d="M238 56 L239.4 60.2 L243.6 61.6 L239.4 63 L238 67.2 L236.6 63 L232.4 61.6 L236.6 60.2 Z" fill="#fde047" />
-          <path d="M161 101 L162.3 104.8 L166.1 106.1 L162.3 107.4 L161 111.2 L159.7 107.4 L155.9 106.1 L159.7 104.8 Z" fill="#fde047" />
-          <circle cx="240" cy="86" r="1.9" fill="#fef08a" />
-          <path d="M266 104 L267.1 107.3 L270.4 108.4 L267.1 109.5 L266 112.8 L264.9 109.5 L261.6 108.4 L264.9 107.3 Z" fill="#fde047" />
-          <path d="M344 74 L345.1 77.2 L348.3 78.3 L345.1 79.4 L344 82.6 L342.9 79.4 L339.7 78.3 L342.9 77.2 Z" fill="#fde047" />
-          <path d="M48 118 L49.1 121.2 L52.3 122.3 L49.1 123.4 L48 126.6 L46.9 123.4 L43.7 122.3 L46.9 121.2 Z" fill="#fde047" />
-          <circle cx="118" cy="96" r="1.5" fill="#fef08a" opacity="0.9" />
-          <circle cx="139" cy="128" r="1.6" fill="#fde047" opacity="0.9" />
-          <circle cx="268" cy="134" r="1.5" fill="#fde047" opacity="0.85" />
-          <circle cx="358" cy="122" r="1.6" fill="#fef08a" opacity="0.9" />
+        <g class="s24-celestial-anim">
+          <!-- 1. Soft White-Mist Atmospheric Backlight at the Center of the Mosque Area Below the Moon (Matching Reference Image) -->
+          <ellipse cx="200" cy="172" rx="118" ry="76" fill="url(#s24IshaMosqueWhiteMist)" />
+          <ellipse cx="200" cy="194" rx="86" ry="52" fill="url(#s24IshaMosqueInnerWhite)" />
+
+          <!-- 2. Distant Optical Lunar Halo Around the Shrunk High-Altitude Crescent Moon -->
+          <circle cx="198" cy="68" r="36" fill="url(#s24LunarAtmosphericHalo)" />
+          <!-- Subtle Earthshine on the Dark Limb of the Moon for Realistic 3D Astronomical Depth -->
+          <circle cx="198" cy="68" r="14.5" fill="#93c5fd" opacity="0.06" />
+
+          <!-- 3. Shrunk, Distant, Razor-Sharp Astronomical Crescent Moon (Moved Higher & Smaller for a Crisp, Professional Look) -->
+          <path d="M 197.5 52.5 A 15.5 15.5 0 1 0 212.2 73.2 A 13.2 13.2 0 1 1 197.5 52.5 Z" fill="url(#s24RealisticCrescentGrad)" filter="url(#s24MoonCrispGlow)" />
+
+          <!-- 4. Refined Multi-Depth Twinkling Starfield (Crisp Pinpoint Stars + Delicate 4-Point Celestial Glints) -->
+          <circle cx="152" cy="57" r="1.45" fill="#fef9c3" opacity="0.92" />
+          <path d="M225 46 L225.7 48.2 L227.9 48.9 L225.7 49.6 L225 51.8 L224.3 49.6 L222.1 48.9 L224.3 48.2 Z" fill="#fef08a" opacity="0.9" />
+          <path d="M174 87 L174.6 89.0 L176.6 89.6 L174.6 90.2 L174 92.2 L173.4 90.2 L171.4 89.6 L173.4 89.0 Z" fill="#fde047" opacity="0.85" />
+          <circle cx="226" cy="73" r="1.15" fill="#fef9c3" opacity="0.82" />
+          <path d="M250 89 L250.5 90.7 L252.2 91.2 L250.5 91.7 L250 93.4 L249.5 91.7 L247.8 91.2 L249.5 90.7 Z" fill="#fef08a" opacity="0.8" />
+          <path d="M342 68 L342.6 69.8 L344.4 70.4 L342.6 71.0 L342 72.8 L341.4 71.0 L339.6 70.4 L341.4 69.8 Z" fill="#fde047" opacity="0.78" />
+          <path d="M52 112 L52.6 113.8 L54.4 114.4 L52.6 115.0 L52 116.8 L51.4 115.0 L49.6 114.4 L51.4 113.8 Z" fill="#fde047" opacity="0.75" />
+          <circle cx="122" cy="88" r="1.05" fill="#e2e8f0" opacity="0.75" />
+          <circle cx="144" cy="116" r="1.15" fill="#fef08a" opacity="0.72" />
+          <circle cx="256" cy="118" r="1.1" fill="#fef08a" opacity="0.72" />
+          <circle cx="356" cy="114" r="1.15" fill="#e2e8f0" opacity="0.75" />
+          <circle cx="218" cy="96" r="0.95" fill="#f8fafc" opacity="0.7" />
+          <circle cx="158" cy="134" r="0.9" fill="#f8fafc" opacity="0.65" />
         </g>
       `,
       preMinaretLayer: `
-        <rect x="0" y="232" width="400" height="143" fill="#0d3149" />
+        <rect x="0" y="232" width="400" height="143" fill="#0b2940" />
       `,
-      postDomeLayer: ""
+      postDomeLayer: `
+        <!-- Subtle Pearlescent Horizon Ambient Glow Below the Mosque Plinth & Around Center -->
+        <ellipse cx="200" cy="242" rx="112" ry="30" fill="url(#s24IshaMosqueInnerWhite)" opacity="0.75" />
+      `
     },
 
     prohibited_sunrise: {
@@ -3733,9 +3771,10 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       bgBottom: "#fef2f2",
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="200" cy="90" r="31" fill="none" stroke="#dc2626" stroke-width="2.2" stroke-dasharray="5 4" />
-          <circle cx="200" cy="90" r="21.5" fill="#ef4444" stroke="#b91c1c" stroke-width="2.8" />
-          <line x1="184" y1="106" x2="216" y2="74" stroke="#ffffff" stroke-width="3.8" stroke-linecap="round" />
+          <ellipse cx="200" cy="154" rx="115" ry="68" fill="url(#s24CenterWhiteBacklight)" />
+          <circle cx="200" cy="76" r="26" fill="none" stroke="#dc2626" stroke-width="2.0" stroke-dasharray="4.5 3.5" />
+          <circle cx="200" cy="76" r="18" fill="#ef4444" stroke="#b91c1c" stroke-width="2.4" />
+          <line x1="187" y1="89" x2="213" y2="63" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" />
         </g>
       `,
       preMinaretLayer: "",
@@ -3747,9 +3786,10 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       bgBottom: "#fff1f2",
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="200" cy="88" r="29" fill="#ffffff" stroke="#b91c1c" stroke-width="3.6" />
-          <circle cx="200" cy="88" r="20" fill="#ef4444" />
-          <line x1="182" y1="106" x2="218" y2="70" stroke="#b91c1c" stroke-width="4.2" stroke-linecap="round" />
+          <ellipse cx="200" cy="154" rx="115" ry="68" fill="url(#s24CenterWhiteBacklight)" />
+          <circle cx="200" cy="74" r="25" fill="#ffffff" stroke="#b91c1c" stroke-width="3.0" />
+          <circle cx="200" cy="74" r="17" fill="#ef4444" />
+          <line x1="185" y1="89" x2="215" y2="59" stroke="#b91c1c" stroke-width="3.6" stroke-linecap="round" />
         </g>
       `,
       preMinaretLayer: "",
@@ -3761,10 +3801,11 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       bgBottom: "#ffedd5",
       celestial: `
         <g class="s24-celestial-anim">
-          <circle cx="200" cy="92" r="31" fill="none" stroke="#dc2626" stroke-width="2.2" stroke-dasharray="5 4" />
-          <path d="M167 98 A33 33 0 0 1 233 98 Z" fill="#ef4444" />
-          <rect x="160" y="102.5" width="80" height="4.8" rx="2.4" fill="#b91b1b" />
-          <rect x="172" y="111" width="56" height="4.8" rx="2.4" fill="#dc2626" />
+          <ellipse cx="200" cy="154" rx="115" ry="68" fill="url(#s24CenterWhiteBacklight)" />
+          <circle cx="200" cy="82" r="27" fill="none" stroke="#dc2626" stroke-width="2.0" stroke-dasharray="4.5 3.5" />
+          <path d="M172 88 A28 28 0 0 1 228 88 Z" fill="#ef4444" />
+          <rect x="166" y="92" width="68" height="4.2" rx="2.1" fill="#b91b1b" />
+          <rect x="176" y="99.5" width="48" height="4.2" rx="2.1" fill="#dc2626" />
         </g>
       `,
       preMinaretLayer: "",
@@ -3775,7 +3816,7 @@ function getSymmetricNabawiCardSvg(sceneKey) {
   const c = configs[sceneKey] || configs.dhuhr;
 
   const renderMinaret = (cx) => `
-    <g>
+    <g filter="url(#s24ArchShadow)">
       <!-- Finial Spire -->
       <path d="M${cx - 2.1} 76 L${cx} 54 L${cx + 2.1} 76 Z" fill="#b59461" />
       <!-- Conical Upper Cap (2-Tone) -->
@@ -3815,6 +3856,102 @@ function getSymmetricNabawiCardSvg(sceneKey) {
           <stop offset="52%" stop-color="${c.bgMid}" />
           <stop offset="100%" stop-color="${c.bgBottom}" />
         </linearGradient>
+
+        <!-- Realistic Isha Crescent Moon Gradient & Crisp Optical Glow -->
+        <linearGradient id="s24RealisticCrescentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff" />
+          <stop offset="38%" stop-color="#fef9c3" />
+          <stop offset="78%" stop-color="#fde047" />
+          <stop offset="100%" stop-color="#eab308" />
+        </linearGradient>
+        <radialGradient id="s24LunarAtmosphericHalo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#fef9c3" stop-opacity="0.28" />
+          <stop offset="48%" stop-color="#93c5fd" stop-opacity="0.1" />
+          <stop offset="100%" stop-color="#93c5fd" stop-opacity="0" />
+        </radialGradient>
+        <filter id="s24MoonCrispGlow" x="-40%" y="-40%" width="180%" height="180%">
+          <feDropShadow dx="0" dy="0" stdDeviation="2.2" flood-color="#fef08a" flood-opacity="0.72" />
+        </filter>
+
+        <!-- White Background Mist Effect at Center of Mosque Area Below Moon (Isha & All Scenes) -->
+        <radialGradient id="s24IshaMosqueWhiteMist" cx="50%" cy="48%" r="54%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.26" />
+          <stop offset="42%" stop-color="#e0f2fe" stop-opacity="0.14" />
+          <stop offset="75%" stop-color="#bae6fd" stop-opacity="0.05" />
+          <stop offset="100%" stop-color="#0f2744" stop-opacity="0" />
+        </radialGradient>
+        <radialGradient id="s24IshaMosqueInnerWhite" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22" />
+          <stop offset="55%" stop-color="#f0f9ff" stop-opacity="0.09" />
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+        </radialGradient>
+        <radialGradient id="s24CenterWhiteBacklight" cx="50%" cy="50%" r="52%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.58" />
+          <stop offset="55%" stop-color="#ffffff" stop-opacity="0.22" />
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+        </radialGradient>
+        <radialGradient id="s24CenterWhiteSubtle" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35" />
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- Photorealistic Solar Gradients & Soft Atmospheric Filters (Fajr, Duha, Dhuhr, Asr, Maghrib) -->
+        <radialGradient id="s24SunBloomWarm" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.7" />
+          <stop offset="38%" stop-color="#fde047" stop-opacity="0.42" />
+          <stop offset="72%" stop-color="#f59e0b" stop-opacity="0.14" />
+          <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+        </radialGradient>
+        <radialGradient id="s24DawnHorizonGlow" cx="50%" cy="55%" r="52%">
+          <stop offset="0%" stop-color="#fef9c3" stop-opacity="0.75" />
+          <stop offset="55%" stop-color="#fde68a" stop-opacity="0.32" />
+          <stop offset="100%" stop-color="#fde68a" stop-opacity="0" />
+        </radialGradient>
+        <linearGradient id="s24DawnRayGrad" x1="0" y1="75" x2="0" y2="130" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.42" />
+          <stop offset="100%" stop-color="#fcd34d" stop-opacity="0.9" />
+        </linearGradient>
+        <radialGradient id="s24DawnSunOrb" cx="42%" cy="38%" r="62%">
+          <stop offset="0%" stop-color="#ffffff" />
+          <stop offset="35%" stop-color="#fef08a" />
+          <stop offset="78%" stop-color="#fbbf24" />
+          <stop offset="100%" stop-color="#f59e0b" />
+        </radialGradient>
+        <radialGradient id="s24DuhaSunCore" cx="40%" cy="38%" r="65%">
+          <stop offset="0%" stop-color="#ffffff" />
+          <stop offset="42%" stop-color="#fef08a" />
+          <stop offset="100%" stop-color="#f59e0b" />
+        </radialGradient>
+        <radialGradient id="s24NoonSunCore" cx="40%" cy="38%" r="65%">
+          <stop offset="0%" stop-color="#ffffff" />
+          <stop offset="35%" stop-color="#fef9c3" />
+          <stop offset="75%" stop-color="#fbbf24" />
+          <stop offset="100%" stop-color="#d97706" />
+        </radialGradient>
+        <radialGradient id="s24AsrSunOrb" cx="38%" cy="38%" r="65%">
+          <stop offset="0%" stop-color="#fef9c3" />
+          <stop offset="45%" stop-color="#fbbf24" />
+          <stop offset="82%" stop-color="#f97316" />
+          <stop offset="100%" stop-color="#ea580c" />
+        </radialGradient>
+        <radialGradient id="s24MaghribSunOrb" cx="50%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#fde047" />
+          <stop offset="45%" stop-color="#f97316" />
+          <stop offset="85%" stop-color="#ea580c" />
+          <stop offset="100%" stop-color="#b91c1c" />
+        </radialGradient>
+        <radialGradient id="s24TwilightHorizonGlow" cx="50%" cy="50%" r="52%">
+          <stop offset="0%" stop-color="#fef08a" stop-opacity="0.62" />
+          <stop offset="50%" stop-color="#fb923c" stop-opacity="0.28" />
+          <stop offset="100%" stop-color="#ea580c" stop-opacity="0" />
+        </radialGradient>
+        <filter id="s24SoftSunGlow" x="-35%" y="-35%" width="170%" height="170%">
+          <feDropShadow dx="0" dy="0" stdDeviation="3.2" flood-color="#fbbf24" flood-opacity="0.58" />
+        </filter>
+        <filter id="s24ArchShadow" x="-12%" y="-10%" width="124%" height="124%">
+          <feDropShadow dx="0" dy="2" stdDeviation="2.2" flood-color="#091526" flood-opacity="0.18" />
+        </filter>
+
         <radialGradient id="s24DomeUnderGlow" cx="50%" cy="20%" r="60%">
           <stop offset="0%" stop-color="#15803d" stop-opacity="0.34" />
           <stop offset="100%" stop-color="#15803d" stop-opacity="0" />
@@ -3823,14 +3960,10 @@ function getSymmetricNabawiCardSvg(sceneKey) {
           <stop offset="0%" stop-color="#6ee7b7" stop-opacity="0.45" />
           <stop offset="100%" stop-color="#6ee7b7" stop-opacity="0" />
         </linearGradient>
-        <linearGradient id="s24DuhaBeamGrad" x1="200" y1="90" x2="200" y2="228" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55" />
+        <linearGradient id="s24DuhaBeamGrad" x1="200" y1="68" x2="200" y2="228" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.62" />
           <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
         </linearGradient>
-        <radialGradient id="s24DuhaSunCore" cx="40%" cy="40%" r="65%">
-          <stop offset="0%" stop-color="#fde047" />
-          <stop offset="100%" stop-color="#f59e0b" />
-        </radialGradient>
       </defs>
 
       <!-- 1. Full Card Sky Backdrop -->
@@ -3847,14 +3980,15 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       ${renderMinaret(316)}
 
       <!-- 5. Iconic Central Masjid an-Nabawi Green Dome (Qubbat al-Khadra — 100% Unobstructed at y=114..229) -->
-      <g>
+      <g filter="url(#s24ArchShadow)">
         <!-- Golden Finial Spire (Hilal Rod & Globes) -->
         <path d="M198.2 138 L200 114 L201.8 138 Z" fill="#b48a3e" />
         <ellipse cx="200" cy="132.5" rx="4" ry="1.7" fill="#c6923a" />
         <polygon points="193,139 200,133 207,139" fill="#c6923a" />
-        <!-- Pointed Green Dome Left & Right Halves (2-Tone 3D Shading) -->
+        <!-- Pointed Green Dome Left & Right Halves (2-Tone 3D Shading + Subtle Rim Highlight) -->
         <path d="M139 202 C139 166 164 146 200 138 L200 202 Z" fill="#15803d" />
         <path d="M200 138 C236 146 261 166 261 202 L200 202 Z" fill="#116932" />
+        <path d="M140 201 C140 166.5 164.5 147 200 139" fill="none" stroke="#4ade80" stroke-width="0.9" stroke-opacity="0.45" />
         <!-- Drum Band & 7 Arched Windows -->
         <rect x="136" y="201" width="128" height="16" rx="2.4" fill="#126e35" />
         <rect x="200" y="201" width="64" height="16" rx="1.5" fill="#0f5c2c" />
