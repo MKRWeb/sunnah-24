@@ -3681,15 +3681,15 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       `,
       postDomeLayer: ""
     },
-        isha: {
-      bgTop: "#cbd5e1",
-      bgMid: "#64748b",
-      bgBottom: "#94a3b8",
+            isha: {
+      bgTop: "#112236",
+      bgMid: "#193552",
+      bgBottom: "#244d75",
       celestial: `
         <g class="s24-celestial-anim" filter="url(#s24MoonStarGlow)">
           <defs>
             <filter id="s24MoonStarGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feDropShadow dx="0" dy="0" stdDeviation="2.6" flood-color="#facc15" flood-opacity="0.75" />
+              <feDropShadow dx="0" dy="0" stdDeviation="2.8" flood-color="#facc15" flood-opacity="0.8" />
             </filter>
           </defs>
           <path d="M206 56 C187.5 60 177.5 78.5 182.8 97 C188.2 115.5 207.5 124.5 225.5 117 C209.8 128.5 187.5 125.8 175.4 110.8 C163.2 95.8 164.2 73.5 178.2 59.5 C185.6 52.1 195.8 51.2 206 56 Z" fill="#facc15" stroke="#eab308" stroke-width="1.5" stroke-linejoin="round" />
