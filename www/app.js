@@ -3639,28 +3639,41 @@ function getSymmetricNabawiCardSvg(sceneKey) {
     },
     asr: {
       bgTop: "#fdf4e3",
-      bgMid: "#fbe8c7",
-      bgBottom: "#f5d7a9",
+      bgMid: "#fbe5be",
+      bgBottom: "#f5d4a0",
       celestial: `
         <g class="s24-celestial-anim">
-          <g stroke="#f59e0b" stroke-width="5.8" stroke-linecap="round">
-            <line x1="200" y1="42" x2="200" y2="54" />
-            <line x1="168" y1="55" x2="176" y2="63" />
-            <line x1="232" y1="55" x2="224" y2="63" />
-            <line x1="154" y1="87" x2="166" y2="87" />
-            <line x1="168" y1="119" x2="176" y2="111" />
+          <!-- Back Left Cloud Layer -->
+          <path d="M 0 118 Q 16 105 38 111 Q 64 78 102 91 Q 134 95 148 116 L 148 122 L 0 122 Z" fill="#d9e2ec" stroke="#9fb3c8" stroke-width="2.2" stroke-linejoin="round" />
+          <path d="M 0 163 L 0 132 Q 26 125 48 138 Q 76 122 106 138 Q 132 144 146 163 Z" fill="#e2e8f0" stroke="#9fb3c8" stroke-width="2.2" stroke-linejoin="round" />
+          <!-- Back Right Cloud Layer -->
+          <path d="M 272 118 Q 296 92 332 97 Q 368 68 400 72 L 400 122 L 272 122 Z" fill="#d9e2ec" stroke="#9fb3c8" stroke-width="2.2" stroke-linejoin="round" />
+          <path d="M 234 152 Q 254 134 282 138 Q 312 115 352 125 Q 378 120 400 130 L 400 152 Z" fill="#e2e8f0" stroke="#9fb3c8" stroke-width="2.2" stroke-linejoin="round" />
+          <!-- Dashed Sun Rays Fanning Out Above the Sun (Exactly Matching 2nd UI Reference) -->
+          <g stroke="#f59e0b" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="4.5 5">
+            <line x1="150" y1="95" x2="165" y2="95" />
+            <line x1="154" y1="74" x2="170" y2="81" />
+            <line x1="168" y1="57" x2="180" y2="70" />
+            <line x1="186" y1="47" x2="192" y2="63" />
+            <line x1="204" y1="45" x2="203" y2="62" />
+            <line x1="222" y1="49" x2="215" y2="65" />
+            <line x1="239" y1="59" x2="227" y2="72" />
+            <line x1="251" y1="74" x2="236" y2="83" />
           </g>
-          <circle cx="200" cy="87" r="23" fill="#f59e0b" />
-          <path d="M187 119 H250 C260 119 268 111.5 268 102 C268 93.2 261.5 85.8 252.8 84.5 C250.4 71.8 239.2 62.5 225.8 62.5 C213.8 62.5 203.6 70 199.8 80.6 C197.8 80 195.8 79.8 193.6 79.8 C182 79.8 172.5 89.2 172.5 100.8 C172.5 111.2 179.2 119 187 119 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2.2" stroke-linejoin="round" />
-          <path d="M189 114.5 H247 C254.5 114.5 260 109 260 102 C260 95 254.5 89.8 247.5 89.8 C245.6 78.5 236 70.5 224.5 70.5 C213.8 70.5 205 77.8 202.6 87.5 C192.8 87.5 185 94.8 185 104 C185 110 186.5 114.5 189 114.5 Z" fill="#f1f5f9" />
+          <!-- Warm Amber Afternoon Sun -->
+          <circle cx="201" cy="95" r="30" fill="#fb923c" />
+          <circle cx="201" cy="95" r="26" fill="#f59e0b" />
+          <!-- Foreground Central Cloud Overlapping Lower Right of Sun -->
+          <path d="M 192 128 C 184 128 180 121 182 113 C 184 103 196 96 208 99 C 216 85 236 80 252 88 C 263 93 268 103 267 112 C 276 113 283 119 283 126 C 283 132 276 135 266 135 L 204 135 C 196 135 192 132 192 128 Z" fill="#d9e2ec" stroke="#94a3b8" stroke-width="2.4" stroke-linejoin="round" />
+          <path d="M 195 126 C 189 126 186 120 188 114 C 190 105 200 100 211 102 C 218 89 236 85 250 92 C 260 97 264 106 263 114 C 271 115 277 120 277 125 C 277 130 271 132 263 132 L 205 132 C 199 132 195 130 195 126 Z" fill="#e8eef5" />
         </g>
       `,
-      preMinaretLayer: "",
-      postDomeLayer: `
-        <ellipse cx="200" cy="230" rx="78" ry="18" fill="url(#s24DomeUnderGlow)" />
-      `
+      preMinaretLayer: `
+        <rect x="0" y="232" width="400" height="143" fill="#d5b384" />
+      `,
+      postDomeLayer: ""
     },
-        maghrib: {
+    maghrib: {
       bgTop: "#fcd34d",
       bgMid: "#fb923c",
       bgBottom: "#f97316",
@@ -3681,29 +3694,37 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       `,
       postDomeLayer: ""
     },
-            isha: {
-      bgTop: "#112236",
-      bgMid: "#193552",
-      bgBottom: "#244d75",
+    isha: {
+      bgTop: "#0e223d",
+      bgMid: "#122a49",
+      bgBottom: "#173458",
       celestial: `
         <g class="s24-celestial-anim" filter="url(#s24MoonStarGlow)">
           <defs>
-            <filter id="s24MoonStarGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feDropShadow dx="0" dy="0" stdDeviation="2.8" flood-color="#facc15" flood-opacity="0.8" />
+            <filter id="s24MoonStarGlow" x="-35%" y="-35%" width="170%" height="170%">
+              <feDropShadow dx="0" dy="0" stdDeviation="2.6" flood-color="#fde047" flood-opacity="0.85" />
             </filter>
           </defs>
-          <path d="M206 56 C187.5 60 177.5 78.5 182.8 97 C188.2 115.5 207.5 124.5 225.5 117 C209.8 128.5 187.5 125.8 175.4 110.8 C163.2 95.8 164.2 73.5 178.2 59.5 C185.6 52.1 195.8 51.2 206 56 Z" fill="#facc15" stroke="#eab308" stroke-width="1.5" stroke-linejoin="round" />
-          <path d="M229 52 L231.6 59.6 L239.2 62.2 L231.6 64.8 L229 72.4 L226.4 64.8 L218.8 62.2 L226.4 59.6 Z" fill="#fde047" stroke="#eab308" stroke-width="0.8" stroke-linejoin="round" />
-          <path d="M213 67 L214.8 72.4 L220.2 74.2 L214.8 76 L213 81.4 L211.2 76 L205.8 74.2 L211.2 72.4 Z" fill="#fde047" stroke="#eab308" stroke-width="0.8" stroke-linejoin="round" />
-          <path d="M164 102 L166.2 108.2 L172.4 110.4 L166.2 112.6 L164 118.8 L161.8 112.6 L155.6 110.4 L161.8 108.2 Z" fill="#fde047" stroke="#eab308" stroke-width="0.8" stroke-linejoin="round" />
-          <path d="M233 105 L234.8 110.1 L240 111.9 L234.8 113.7 L233 118.8 L231.2 113.7 L226 111.9 L231.2 110.1 Z" fill="#fde047" stroke="#eab308" stroke-width="0.8" stroke-linejoin="round" />
-          <circle cx="154" cy="70" r="2.4" fill="#fde047" stroke="#eab308" stroke-width="0.6" />
+          <!-- Glowing Golden Crescent Moon (Centered Above Green Dome — Matching 1st UI Style) -->
+          <path d="M204 54 C185.5 58 175.5 76.5 180.8 95 C186.2 113.5 205.5 122.5 223.5 115 C207.8 126.5 185.5 123.8 173.4 108.8 C161.2 93.8 162.2 71.5 176.2 57.5 C183.6 50.1 193.8 49.2 204 54 Z" fill="#fde047" stroke="#facc15" stroke-width="1.2" stroke-linejoin="round" />
+          <!-- Star Field Across Night Sky (Matching 1st UI Style) -->
+          <circle cx="145" cy="64" r="2.6" fill="#fef08a" />
+          <path d="M238 56 L239.4 60.2 L243.6 61.6 L239.4 63 L238 67.2 L236.6 63 L232.4 61.6 L236.6 60.2 Z" fill="#fde047" />
+          <path d="M161 101 L162.3 104.8 L166.1 106.1 L162.3 107.4 L161 111.2 L159.7 107.4 L155.9 106.1 L159.7 104.8 Z" fill="#fde047" />
+          <circle cx="240" cy="86" r="1.9" fill="#fef08a" />
+          <path d="M266 104 L267.1 107.3 L270.4 108.4 L267.1 109.5 L266 112.8 L264.9 109.5 L261.6 108.4 L264.9 107.3 Z" fill="#fde047" />
+          <path d="M344 74 L345.1 77.2 L348.3 78.3 L345.1 79.4 L344 82.6 L342.9 79.4 L339.7 78.3 L342.9 77.2 Z" fill="#fde047" />
+          <path d="M48 118 L49.1 121.2 L52.3 122.3 L49.1 123.4 L48 126.6 L46.9 123.4 L43.7 122.3 L46.9 121.2 Z" fill="#fde047" />
+          <circle cx="118" cy="96" r="1.5" fill="#fef08a" opacity="0.9" />
+          <circle cx="139" cy="128" r="1.6" fill="#fde047" opacity="0.9" />
+          <circle cx="268" cy="134" r="1.5" fill="#fde047" opacity="0.85" />
+          <circle cx="358" cy="122" r="1.6" fill="#fef08a" opacity="0.9" />
         </g>
       `,
-      preMinaretLayer: "",
-      postDomeLayer: `
-        <ellipse cx="200" cy="230" rx="80" ry="18" fill="url(#s24DomeUnderGlow)" />
-      `
+      preMinaretLayer: `
+        <rect x="0" y="232" width="400" height="143" fill="#0d3149" />
+      `,
+      postDomeLayer: ""
     },
 
     prohibited_sunrise: {
@@ -3779,10 +3800,10 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       <rect x="${cx}" y="181.5" width="21" height="5.5" rx="1.8" fill="#bfa174" />
       <polygon points="${cx - 21},187 ${cx},187 ${cx},195.5 ${cx - 16},195.5" fill="#cbb085" />
       <polygon points="${cx},187 ${cx + 21},187 ${cx + 16},195.5 ${cx},195.5" fill="#b89b6f" />
-      <!-- Lower Main Shaft with Arched Window Completely Visible Above the Pills (y=195.5..223) -->
-      <rect x="${cx - 16}" y="195.5" width="16" height="72" fill="#f1dfc0" />
-      <rect x="${cx}" y="195.5" width="16" height="72" fill="#e2caa3" />
-      <path d="M${cx - 5.2} 222 V207 A5.2 5.2 0 0 1 ${cx + 5.2} 207 V222 Z" fill="#b49669" />
+      <!-- Lower Main Shaft with Arched Window Resting Cleanly on the Horizon Line (y=195.5..232) -->
+      <rect x="${cx - 16}" y="195.5" width="16" height="${sceneKey === "isha" || sceneKey === "asr" ? "36.5" : "72"}" fill="#f1dfc0" />
+      <rect x="${cx}" y="195.5" width="16" height="${sceneKey === "isha" || sceneKey === "asr" ? "36.5" : "72"}" fill="#e2caa3" />
+      <path d="M${cx - 5.2} ${sceneKey === "isha" || sceneKey === "asr" ? "232" : "222"} V207 A5.2 5.2 0 0 1 ${cx + 5.2} 207 V${sceneKey === "isha" || sceneKey === "asr" ? "232" : "222"} Z" fill="#b49669" />
     </g>
   `;
 
@@ -3844,9 +3865,15 @@ function getSymmetricNabawiCardSvg(sceneKey) {
                  M212.2 217 V209.5 A4.4 4.4 0 0 1 221 209.5 V217 Z
                  M229.2 217 V209.5 A4.4 4.4 0 0 1 238 209.5 V217 Z
                  M246.2 217 V209.5 A4.4 4.4 0 0 1 255 209.5 V217 Z" fill="#16803c" opacity="0.88" />
-        <!-- Stepped Plinth Base Resting at y=229 Above the 3 Time Pills -->
-        <rect x="129" y="217" width="142" height="7.5" rx="2" fill="#0f5c2c" />
-        <rect x="123" y="224" width="154" height="5" rx="1.5" fill="#0b4620" />
+        <!-- Stepped Plinth Base Resting Above the 3 Time Pills (Two-Tone Cream-Sandstone Base on Isha, Deep Green on Asr & Daytime) -->
+        ${
+          sceneKey === "isha"
+            ? `<rect x="129" y="217" width="142" height="6.5" rx="1.5" fill="#0f5c2c" />
+               <rect x="124" y="223" width="88" height="9" rx="2" fill="#f1dfc0" />
+               <rect x="212" y="223" width="64" height="9" rx="2" fill="#d8bc90" />`
+            : `<rect x="129" y="217" width="142" height="8" rx="2" fill="#0f5c2c" />
+               <rect x="123" y="224.5" width="154" height="7.5" rx="1.5" fill="#0b4620" />`
+        }
       </g>
 
       <!-- 6. Post-Dome Underglow or Jumu'ah Horizon Stripe -->
@@ -3863,13 +3890,16 @@ function getInlineSparklesSvg() {
   </svg>`;
 }
 
-function getInlineStopwatchSvg(isDanger = false) {
-  const strokeCol = isDanger ? "#b91c1c" : "#64748b";
+function getInlineStopwatchSvg(isDanger = false, sceneKey = "") {
+  const isIsha = sceneKey === "isha" && !isDanger;
+  const isAsr = sceneKey === "asr" && !isDanger;
+  const strokeCol = isDanger ? "#b91c1c" : isIsha ? "#cbd5e1" : isAsr ? "#0f172a" : "#64748b";
+  const circleFill = isIsha ? "none" : "#f8fafc";
   return `<svg class="s24-inline-meta-svg" viewBox="0 0 24 24" width="17" height="17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <line x1="9" y1="2" x2="15" y2="2" stroke="${strokeCol}" stroke-width="2" stroke-linecap="round" />
     <line x1="12" y1="2" x2="12" y2="5" stroke="${strokeCol}" stroke-width="2" stroke-linecap="round" />
     <line x1="18.5" y1="5.5" x2="20" y2="4" stroke="${strokeCol}" stroke-width="2" stroke-linecap="round" />
-    <circle cx="12" cy="13.5" r="8" fill="#f8fafc" stroke="${strokeCol}" stroke-width="2" />
+    <circle cx="12" cy="13.5" r="8" fill="${circleFill}" stroke="${strokeCol}" stroke-width="2" />
     <path d="M12 9.5 V13.5 L14.5 15" stroke="${strokeCol}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
   </svg>`;
 }
@@ -4315,7 +4345,7 @@ function renderFiveWaqtStrip(now = new Date()) {
              </div>
               <div class="waqt-popup-meta-item single-line-meta-row countdown-single-line-row s24-countdown-split-row">
                 <span class="meta-row-label">
-                  ${getInlineStopwatchSvg(isProhibitedNow)}
+                  ${getInlineStopwatchSvg(isProhibitedNow, waqtSceneKey)}
                   <span>${countdownRowLabelText}</span>
                 </span>
                 <strong id="live-waqt-remaining" class="meta-row-value">${remainingTextStr}</strong>
@@ -10304,4 +10334,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
