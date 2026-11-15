@@ -3660,10 +3660,10 @@ function getSymmetricNabawiCardSvg(sceneKey) {
         <ellipse cx="200" cy="230" rx="78" ry="18" fill="url(#s24DomeUnderGlow)" />
       `
     },
-    maghrib: {
-      bgTop: "#fde5d2",
-      bgMid: "#fbd2b3",
-      bgBottom: "#f5be96",
+        maghrib: {
+      bgTop: "#fcd34d",
+      bgMid: "#fb923c",
+      bgBottom: "#f97316",
       celestial: `
         <g class="s24-celestial-anim">
           <path d="M161 98 A39 39 0 0 1 239 98 Z" fill="#ea580c" />
@@ -3674,7 +3674,7 @@ function getSymmetricNabawiCardSvg(sceneKey) {
         </g>
       `,
       preMinaretLayer: `
-        <rect x="0" y="223" width="400" height="152" fill="#f3c59e" opacity="0.65" />
+        <rect x="0" y="223" width="400" height="152" fill="#fdba74" opacity="0.65" />
         <polygon points="106,258 140,214 260,214 294,258" fill="#edd3b2" />
         <circle cx="200" cy="232" r="6" fill="#cbb084" />
         <path d="M192.5 256 A7.5 7.5 0 0 1 207.5 256 Z" fill="#cbb084" />
@@ -3682,9 +3682,9 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       postDomeLayer: ""
     },
     isha: {
-      bgTop: "#d9e2ef",
-      bgMid: "#e3eaf4",
-      bgBottom: "#eef2f8",
+      bgTop: "#64748b",
+      bgMid: "#94a3b8",
+      bgBottom: "#cbd5e1",
       celestial: `
         <g class="s24-celestial-anim">
           <path d="M206 56 C187.5 60 177.5 78.5 182.8 97 C188.2 115.5 207.5 124.5 225.5 117 C209.8 128.5 187.5 125.8 175.4 110.8 C163.2 95.8 164.2 73.5 178.2 59.5 C185.6 52.1 195.8 51.2 206 56 Z" fill="#facc15" stroke="#eab308" stroke-width="1.5" stroke-linejoin="round" />
@@ -3692,7 +3692,7 @@ function getSymmetricNabawiCardSvg(sceneKey) {
           <path d="M213 67 L214.8 72.4 L220.2 74.2 L214.8 76 L213 81.4 L211.2 76 L205.8 74.2 L211.2 72.4 Z" fill="#1e293b" />
           <path d="M164 102 L166.2 108.2 L172.4 110.4 L166.2 112.6 L164 118.8 L161.8 112.6 L155.6 110.4 L161.8 108.2 Z" fill="#1e293b" />
           <path d="M233 105 L234.8 110.1 L240 111.9 L234.8 113.7 L233 118.8 L231.2 113.7 L226 111.9 L231.2 110.1 Z" fill="#1e293b" />
-          <circle cx="154" cy="70" r="2.1" fill="#94a3b8" />
+          <circle cx="154" cy="70" r="2.1" fill="#475569" />
         </g>
       `,
       preMinaretLayer: "",
@@ -3700,6 +3700,7 @@ function getSymmetricNabawiCardSvg(sceneKey) {
         <ellipse cx="200" cy="230" rx="80" ry="18" fill="url(#s24DomeUnderGlow)" />
       `
     },
+
     prohibited_sunrise: {
       bgTop: "#ffe4e6",
       bgMid: "#fecdd3",
