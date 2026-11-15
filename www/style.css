@@ -7055,18 +7055,20 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 #home-dashboard-view #live-waqt-title {
   font-size: 1.42rem !important;
   font-weight: 700 !important;
-  color: #143625 !important;
+  color: #f8fafc !important;
   line-height: 1.16 !important;
   letter-spacing: -0.02em !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .s24-nabawi-title-block small {
   display: block;
   font-size: 0.82rem !important;
   font-weight: 500 !important;
-  color: #1e2923 !important;
+  color: #cbd5e1 !important;
   margin-top: 2px;
-}
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+} 
 
 .s24-nabawi-live-pill {
   display: inline-flex !important;
