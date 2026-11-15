@@ -3681,18 +3681,23 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       `,
       postDomeLayer: ""
     },
-    isha: {
-      bgTop: "#64748b",
+        isha: {
+      bgTop: "#cbd5e1",
       bgMid: "#94a3b8",
-      bgBottom: "#cbd5e1",
+      bgBottom: "#64748b",
       celestial: `
-        <g class="s24-celestial-anim">
+        <g class="s24-celestial-anim" filter="url(#s24MoonStarGlow)">
+          <defs>
+            <filter id="s24MoonStarGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="0" stdDeviation="2.6" flood-color="#facc15" flood-opacity="0.75" />
+            </filter>
+          </defs>
           <path d="M206 56 C187.5 60 177.5 78.5 182.8 97 C188.2 115.5 207.5 124.5 225.5 117 C209.8 128.5 187.5 125.8 175.4 110.8 C163.2 95.8 164.2 73.5 178.2 59.5 C185.6 52.1 195.8 51.2 206 56 Z" fill="#facc15" stroke="#eab308" stroke-width="1.5" stroke-linejoin="round" />
-          <path d="M229 52 L231.6 59.6 L239.2 62.2 L231.6 64.8 L229 72.4 L226.4 64.8 L218.8 62.2 L226.4 59.6 Z" fill="#1e293b" />
-          <path d="M213 67 L214.8 72.4 L220.2 74.2 L214.8 76 L213 81.4 L211.2 76 L205.8 74.2 L211.2 72.4 Z" fill="#1e293b" />
-          <path d="M164 102 L166.2 108.2 L172.4 110.4 L166.2 112.6 L164 118.8 L161.8 112.6 L155.6 110.4 L161.8 108.2 Z" fill="#1e293b" />
-          <path d="M233 105 L234.8 110.1 L240 111.9 L234.8 113.7 L233 118.8 L231.2 113.7 L226 111.9 L231.2 110.1 Z" fill="#1e293b" />
-          <circle cx="154" cy="70" r="2.1" fill="#475569" />
+          <path d="M229 52 L231.6 59.6 L239.2 62.2 L231.6 64.8 L229 72.4 L226.4 64.8 L218.8 62.2 L226.4 59.6 Z" fill="#fde047" stroke="#eab308" stroke-width="0.8" stroke-linejoin="round" />
+          <path d="M213 67 L214.8 72.4 L220.2 74.2 L214.8 76 L213 81.4 L211.2 76 L205.8 74.2 L211.2 72.4 Z" fill="#fde047" stroke="#eab308" stroke-width="0.8" stroke-linejoin="round" />
+          <path d="M164 102 L166.2 108.2 L172.4 110.4 L166.2 112.6 L164 118.8 L161.8 112.6 L155.6 110.4 L161.8 108.2 Z" fill="#fde047" stroke="#eab308" stroke-width="0.8" stroke-linejoin="round" />
+          <path d="M233 105 L234.8 110.1 L240 111.9 L234.8 113.7 L233 118.8 L231.2 113.7 L226 111.9 L231.2 110.1 Z" fill="#fde047" stroke="#eab308" stroke-width="0.8" stroke-linejoin="round" />
+          <circle cx="154" cy="70" r="2.4" fill="#fde047" stroke="#eab308" stroke-width="0.6" />
         </g>
       `,
       preMinaretLayer: "",
