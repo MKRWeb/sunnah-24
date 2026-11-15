@@ -3683,8 +3683,8 @@ function getSymmetricNabawiCardSvg(sceneKey) {
     },
         isha: {
       bgTop: "#cbd5e1",
-      bgMid: "#94a3b8",
-      bgBottom: "#64748b",
+      bgMid: "#64748b",
+      bgBottom: "#94a3b8",
       celestial: `
         <g class="s24-celestial-anim" filter="url(#s24MoonStarGlow)">
           <defs>
