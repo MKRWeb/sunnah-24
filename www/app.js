@@ -3893,7 +3893,7 @@ function getInlineSparklesSvg() {
 function getInlineStopwatchSvg(isDanger = false, sceneKey = "") {
   const isIsha = sceneKey === "isha" && !isDanger;
   const isAsr = sceneKey === "asr" && !isDanger;
-  const strokeCol = isDanger ? "#b91c1c" : isIsha ? "#cbd5e1" : isAsr ? "#0f172a" : "#64748b";
+  const strokeCol = isDanger ? "#b91c1c" : isIsha ? "#ffffff" : isAsr ? "#0f172a" : "#0f172a";
   const circleFill = isIsha ? "none" : "#f8fafc";
   return `<svg class="s24-inline-meta-svg" viewBox="0 0 24 24" width="17" height="17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <line x1="9" y1="2" x2="15" y2="2" stroke="${strokeCol}" stroke-width="2" stroke-linecap="round" />
@@ -4336,17 +4336,17 @@ function renderFiveWaqtStrip(now = new Date()) {
             </div>
 
             <div class="waqt-popup-meta-rows ongoing-static-meta-rows s24-nabawi-glass-rows">
-           <div class="waqt-popup-meta-item single-line-meta-row s24-prime-inline-row">
-            <span class="meta-row-label">
-            ${getInlineSparklesSvg()}
-             <span>${primeLabelText}</span>
-             </span>
-             <strong class="meta-row-value">${primeValueHtml}</strong>
-             </div>
+              <div class="waqt-popup-meta-item single-line-meta-row s24-prime-inline-row">
+                <span class="meta-row-label">
+                  ${getInlineSparklesSvg()}
+                  <span class="meta-row-label-text">${primeLabelText}</span>
+                </span>
+                <strong class="meta-row-value">${primeValueHtml}</strong>
+              </div>
               <div class="waqt-popup-meta-item single-line-meta-row countdown-single-line-row s24-countdown-split-row">
                 <span class="meta-row-label">
                   ${getInlineStopwatchSvg(isProhibitedNow, waqtSceneKey)}
-                  <span>${countdownRowLabelText}</span>
+                  <span class="meta-row-label-text">${countdownRowLabelText}</span>
                 </span>
                 <strong id="live-waqt-remaining" class="meta-row-value">${remainingTextStr}</strong>
               </div>
