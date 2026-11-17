@@ -109,7 +109,7 @@ jobs:
             fi
           done
 
-          #Also remove any generated www/version.json from git tracking if present (generated at build time only)
+          # Also remove any generated www/version.json from git tracking if present (generated at build time only)
           if git ls-files --error-unmatch www/version.json >/dev/null 2>&1; then
             git rm -f www/version.json || true
             REPO_CLEANUP_NEEDED=1
@@ -246,7 +246,7 @@ jobs:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
 
-      - name: 2. Setup Node.js 24 & Java 21 (Android Gradle Toolchain for API 35)
+      - name: 2. Setup Node.js 24, Java 21 & Persistent Gradle Dependency Cache (API 35)
         uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -254,6 +254,15 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
+      - name: 2B. Cache Gradle Dependencies & Wrapper to Prevent Maven 429 Rate Limits
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-sunnah24-${{ hashFiles('package-lock.json', 'package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-sunnah24-
 
       - name: 3. Download Verified www/ Web Bundle from Job 1
         uses: actions/download-artifact@v4
@@ -1117,11 +1126,90 @@ jobs:
           sed -i 's/^          //' "$DEBUG_JAVA_DIR/MainActivity.java"
           echo "✅ Isolated Play Store Safe Release MainActivity & Sideload Debug MainActivity!"
 
+          # 6I. Inject Google Maven Central Mirror Init Script & Gradle HTTP Retry Properties
+          # Permanently eliminates HTTP 429 Too Many Requests from repo.maven.apache.org on GitHub Actions runners
+          mkdir -p "$HOME/.gradle/init.d"
+          cat << 'INIT_GRADLE_EOF' > "$HOME/.gradle/init.d/00-google-maven-mirror.init.gradle"
+          // Global Gradle Init Script: Route all Maven Central requests through Google's high-availability mirror first
+          def GOOGLE_MAVEN_CENTRAL = "https://maven-central.storage-download.googleapis.com/maven2/"
+          def MAVEN_CENTRAL_PRIMARY = "https://repo1.maven.org/maven2/"
+
+          settingsEvaluated { settings ->
+              settings.pluginManagement.repositories {
+                  maven { url GOOGLE_MAVEN_CENTRAL }
+                  google()
+                  maven { url MAVEN_CENTRAL_PRIMARY }
+                  gradlePluginPortal()
+              }
+              try {
+                  settings.dependencyResolutionManagement.repositories {
+                      maven { url GOOGLE_MAVEN_CENTRAL }
+                      google()
+                      maven { url MAVEN_CENTRAL_PRIMARY }
+                  }
+              } catch (Throwable ignored) {}
+          }
+
+          allprojects {
+              buildscript {
+                  repositories {
+                      maven { url GOOGLE_MAVEN_CENTRAL }
+                      google()
+                      maven { url MAVEN_CENTRAL_PRIMARY }
+                      mavenCentral()
+                  }
+              }
+              repositories {
+                  maven { url GOOGLE_MAVEN_CENTRAL }
+                  google()
+                  maven { url MAVEN_CENTRAL_PRIMARY }
+                  mavenCentral()
+              }
+          }
+          INIT_GRADLE_EOF
+          sed -i 's/^          //' "$HOME/.gradle/init.d/00-google-maven-mirror.init.gradle"
+          cp -f "$HOME/.gradle/init.d/00-google-maven-mirror.init.gradle" "android/maven-mirror.init.gradle"
+
+          GRADLE_PROPS="android/gradle.properties"
+          touch "$GRADLE_PROPS"
+          if ! grep -q "org.gradle.internal.repository.max.tentatives" "$GRADLE_PROPS"; then
+            cat << 'PROPS_EOF' >> "$GRADLE_PROPS"
+
+          # --- ANTI-429 MAVEN RATE-LIMIT & NETWORK RESILIENCE TUNING ---
+          org.gradle.jvmargs=-Xmx3072m -Dfile.encoding=UTF-8
+          org.gradle.parallel=true
+          org.gradle.caching=true
+          org.gradle.internal.http.connectionTimeout=120000
+          org.gradle.internal.http.socketTimeout=120000
+          org.gradle.internal.repository.max.tentatives=6
+          org.gradle.internal.repository.initial.backoff=3000
+          systemProp.http.keepAlive=true
+          systemProp.sun.net.client.defaultConnectTimeout=120000
+          systemProp.sun.net.client.defaultReadTimeout=120000
+          PROPS_EOF
+            sed -i 's/^          //' "$GRADLE_PROPS"
+          fi
+          echo "✅ Configured Google Maven Central Mirror & HTTP 429 Auto-Retry in Gradle!"
+
       - name: 7. Compile Sideload APK (assembleDebug) & Play Store Signed AAB (bundleRelease)
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug bundleRelease --no-daemon
+          ./gradlew assembleDebug bundleRelease \
+            --init-script maven-mirror.init.gradle \
+            --no-daemon \
+            -Dorg.gradle.internal.http.connectionTimeout=120000 \
+            -Dorg.gradle.internal.http.socketTimeout=120000 \
+            -Dorg.gradle.internal.repository.max.tentatives=6 \
+            -Dorg.gradle.internal.repository.initial.backoff=3000 || \
+          (echo "⏳ Transient network/Maven hiccup detected; waiting 12s and retrying with cached artifacts..." && \
+           sleep 12 && \
+           ./gradlew assembleDebug bundleRelease \
+             --init-script maven-mirror.init.gradle \
+             --no-daemon \
+             --max-workers=2 \
+             -Dorg.gradle.internal.repository.max.tentatives=8 \
+             -Dorg.gradle.internal.repository.initial.backoff=5000)
 
       - name: 8. Sign Sideload APK & Verify Signed Play Store AAB
         run: |
@@ -1216,7 +1304,3 @@ jobs:
               sleep 4
             done
           fi
-
-
-
-
