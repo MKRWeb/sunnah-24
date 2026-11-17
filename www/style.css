@@ -9338,3 +9338,92 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   background: rgba(74, 222, 128, 0.32) !important;
 }
 
+
+/* ==========================================================================
+   V12.3 STANDARD SIZING & REFINED BREATHING PULSE PATCH
+   ========================================================================== */
+
+/* 1. Restore Standard Legible Sizing for "ওয়াক্ত শেষ হতে বাকি:" Row */
+.s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-line-row,
+.s24-nabawi-glass-rows .s24-countdown-split-row {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100% !important;
+  padding: 8px 14px !important;
+  box-sizing: border-box !important;
+}
+
+.s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-label,
+.s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-line-row > .meta-row-label {
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+  white-space: nowrap !important;
+}
+
+.s24-nabawi-glass-rows .s24-countdown-split-row > #live-waqt-remaining,
+.s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-value,
+.s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-line-row > #live-waqt-remaining {
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.01em !important;
+  font-variant-numeric: tabular-nums !important;
+  white-space: nowrap !important;
+  margin-left: auto !important;
+}
+
+html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > #live-waqt-remaining,
+html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-value {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+@media (max-width: 360px) {
+  .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-label,
+  .s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-line-row > .meta-row-label {
+    font-size: 0.82rem !important;
+  }
+  .s24-nabawi-glass-rows .s24-countdown-split-row > #live-waqt-remaining,
+  .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-value {
+    font-size: 0.84rem !important;
+  }
+}
+
+/* 2. Clean, Elegant Breathing Pulse Animation for Active Fard Prayer Dot (No Heavy Ripple) */
+@keyframes s24StandardBreathingPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+  }
+  50% {
+    transform: scale(1.32);
+    opacity: 0.85;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0);
+  }
+}
+
+#five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active {
+  display: block !important;
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  width: 8.5px !important;
+  height: 8.5px !important;
+  border-radius: 50% !important;
+  background-color: #16a34a !important;
+  z-index: 3 !important;
+  animation: s24StandardBreathingPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
+}
+
+#five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active::after {
+  display: none !important;
+}
+
+html[dir="rtl"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active {
+  right: auto !important;
+  left: 8px !important;
+}
+
