@@ -4539,8 +4539,8 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
 
 /* --- 2. LARGER STANDARD SIZE ONLY FOR "⏱️ ওয়াক্ত শেষ হতে বাকি:" --- */
 .waqt-popup-meta-item.countdown-single-line-row {
-  gap: 10px !important;
-  padding: 9px 13px !important;
+  gap: 8px !important;
+  padding: 6px 10px !important;
 }
 
 
