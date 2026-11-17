@@ -5198,7 +5198,7 @@ function renderFiveWaqtStrip(now = new Date()) {
             ${getFardWaqtSvgIcon(w.id)}
           </div>
           <div class="fard-below-svg-info">
-            <span class="waqt-name fard-prayer-title">${w.num}. ${w.name}</span>
+            <span class="waqt-name fard-prayer-title">${w.name}</span>
             <strong class="waqt-time fard-time-range-pill">${startTimeStr} - ${endTimeStr}</strong>
           </div>
         </div>
