@@ -192,7 +192,7 @@ const I18N_DICTIONARIES = deepFreeze({
     day_detail_none: "এই তারিখে কোনো সুন্নাহ আমল চিহ্নিত করা হয়নি।",
     prohibited_title: "নামাজ নিষিদ্ধ সময় (ট্যাপ করে দেখুন)",
     prohibited_sunrise: "১. সূর্যোদয়ের সময় (Sunrise):",
-    prohibited_zawal: "২. ঠিক দ্বিপ্রহর/দুপুরের সময় (Midday Zenith/Zawal):",
+    prohibited_zawal: "২. ঠিক দ্বিপ্রহরের সময় (Midday):",
     prohibited_sunset: "৩. সূর্যাস্তের সময় (Sunset):",
     prohibited_hadith_ref: "📖 দলিল: সহীহ মুসলিম ৮৩১ — উকবাহ ইবনু আমির (রা.) বর্ণিত সূর্যোদয়, ঠিক দ্বিপ্রহর (যাওয়াল) ও সূর্যাস্তের সময় সালাত আদায় নিষিদ্ধ।",
     sections_hub_title: "নববী জীবনধারা ও ইবাদত বিভাগসমূহ",
@@ -369,7 +369,7 @@ const I18N_DICTIONARIES = deepFreeze({
     day_detail_none: "لم يتم تسجيل سنن مكتملة في هذا التاريخ.",
     prohibited_title: "أوقات النهي عن الصلاة (اضغط للتفاصيل)",
     prohibited_sunrise: "١. وقت الشروق (Sunrise):",
-    prohibited_zawal: "٢. وقت الزوال / الاستواء (Midday Zenith/Zawal):",
+    prohibited_zawal: "٢. وقت الزوال (Midday):",
     prohibited_sunset: "٣. وقت الغروب (Sunset):",
     prohibited_hadith_ref: "📖 الدليل: صحيح مسلم ٨٣١ — نهى رسول الله ﷺ عن الصلاة في ثلاث ساعات: عند طلوع الشمس، وعند استوائها، وعند غروبها.",
     sections_hub_title: "أقسام السنة النبوية والعبادات",
@@ -546,7 +546,7 @@ const I18N_DICTIONARIES = deepFreeze({
     day_detail_none: "No habits were marked completed on this date.",
     prohibited_title: "Prohibited Times for Salah (Tap to Expand)",
     prohibited_sunrise: "1. Sunrise Time (Sunrise):",
-    prohibited_zawal: "2. Midday Zenith Time (Midday Zenith/Zawal):",
+    prohibited_zawal: "2. Midday Time (Midday):",
     prohibited_sunset: "3. Sunset Time (Sunset):",
     prohibited_hadith_ref: "📖 Proof: Sahih Muslim 831 — Uqbah ibn Amir (RA) reported that the Prophet ﷺ forbade praying during sunrise, solar zenith (Zawal), and sunset.",
     sections_hub_title: "Prophetic Lifestyle & Worship Sections",
@@ -3627,7 +3627,7 @@ function getFardWaqtSvgIcon(waqtId) {
   switch (waqtId) {
     case "fajr":
       return `
-        <svg viewBox="0 0 36 36" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="fard-prayer-svg" viewBox="0 0 36 36" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="fardFajrSky" x1="0" y1="0" x2="0" y2="36" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stop-color="#bae6fd"/>
@@ -3644,7 +3644,7 @@ function getFardWaqtSvgIcon(waqtId) {
       `;
     case "dhuhr":
       return `
-        <svg viewBox="0 0 36 36" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="fard-prayer-svg" viewBox="0 0 36 36" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="2" y="2" width="32" height="32" rx="8" fill="#fffbeb"/>
           <circle cx="18" cy="18" r="7.2" fill="#f59e0b"/>
           <path d="M18 5.5V8.5M18 27.5V30.5M5.5 18H8.5M27.5 18H30.5M9.16 9.16L11.28 11.28M24.72 24.72L26.84 26.84M26.84 9.16L24.72 11.28M11.28 24.72L9.16 26.84" stroke="#f59e0b" stroke-width="2.1" stroke-linecap="round"/>
@@ -3652,7 +3652,7 @@ function getFardWaqtSvgIcon(waqtId) {
       `;
     case "asr":
       return `
-        <svg viewBox="0 0 36 36" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="fard-prayer-svg" viewBox="0 0 36 36" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="2" y="2" width="32" height="32" rx="8" fill="#f8fafc"/>
           <circle cx="13.5" cy="14.5" r="5.5" fill="#f59e0b"/>
           <path d="M13.5 6.5V8M6 14.5H7.5M8.2 9.2L9.4 10.4M18.8 9.2L17.6 10.4" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round"/>
@@ -3661,7 +3661,7 @@ function getFardWaqtSvgIcon(waqtId) {
       `;
     case "maghrib":
       return `
-        <svg viewBox="0 0 36 36" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="fard-prayer-svg" viewBox="0 0 36 36" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="2" y="2" width="32" height="32" rx="8" fill="#fff7ed"/>
           <path d="M10 21C10 16.5817 13.5817 13 18 13C22.4183 13 26 16.5817 26 21H10Z" fill="#ea580c"/>
           <path d="M6 21H30" stroke="#9a3412" stroke-width="2" stroke-linecap="round"/>
@@ -3672,7 +3672,7 @@ function getFardWaqtSvgIcon(waqtId) {
     case "isha":
     default:
       return `
-        <svg viewBox="0 0 36 36" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="fard-prayer-svg" viewBox="0 0 36 36" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="2" y="2" width="32" height="32" rx="8" fill="#f8fafc"/>
           <path d="M21.8 9.2C17.2 10.4 14.5 15.1 15.7 19.7C16.9 24.3 21.6 27 26.2 25.8C22.9 28.4 18.2 28.2 15.1 25.1C12 22 11.8 17.3 14.4 14C16.2 11.7 18.9 9.9 21.8 9.2Z" fill="#facc15" stroke="#eab308" stroke-width="1.1" stroke-linejoin="round"/>
           <path d="M24.5 11.5L25.2 13.3L27 14L25.2 14.7L24.5 16.5L23.8 14.7L22 14L23.8 13.3L24.5 11.5Z" fill="#1e293b"/>
@@ -3729,9 +3729,9 @@ function getJumuahMandalaPatternSvg() {
 function getSymmetricNabawiCardSvg(sceneKey) {
   const configs = {
     fajr: {
-      bgTop: "#b8dff5",
-      bgMid: "#e3f2fd",
-      bgBottom: "#fde69e",
+      bgTop: "#8ec5e8",
+      bgMid: "#cde7f5",
+      bgBottom: "#fce5a8",
       celestial: `
         <g class="s24-celestial-anim">
           <!-- Soft White-Gold Dawn Horizon Atmospheric Backlight Behind Mosque -->
@@ -3759,9 +3759,9 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       `
     },
     ishraq_duha: {
-      bgTop: "#c2e5fc",
-      bgMid: "#eaf6ff",
-      bgBottom: "#fdefb2",
+      bgTop: "#a6d8f7",
+      bgMid: "#dcf0fc",
+      bgBottom: "#fcedc2",
       celestial: `
         <g class="s24-celestial-anim">
           <!-- Volumetric Morning Light Shaft & White-Mist Mosque Backlight -->
@@ -3789,9 +3789,9 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       `
     },
     dhuhr: {
-      bgTop: "#fff9e6",
-      bgMid: "#fdefc3",
-      bgBottom: "#f6dc9b",
+      bgTop: "#fcf3dc",
+      bgMid: "#fae8be",
+      bgBottom: "#f5dba4",
       celestial: `
         <g class="s24-celestial-anim">
           <!-- Radiant White-Gold Zenith Backlight Behind Central Mosque -->
@@ -3830,9 +3830,9 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       `
     },
     asr: {
-      bgTop: "#fdf2dc",
-      bgMid: "#fae0ad",
-      bgBottom: "#efc67c",
+      bgTop: "#fcf0d9",
+      bgMid: "#f9dfa8",
+      bgBottom: "#f1ca89",
       celestial: `
         <g class="s24-celestial-anim">
           <!-- Warm Afternoon Atmospheric Haze Behind Mosque -->
@@ -3868,9 +3868,9 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       postDomeLayer: ""
     },
     maghrib: {
-      bgTop: "#fde07a",
-      bgMid: "#fbaa4b",
-      bgBottom: "#e87825",
+      bgTop: "#f59e0b",
+      bgMid: "#ea580c",
+      bgBottom: "#c2410c",
       celestial: `
         <g class="s24-celestial-anim">
           <!-- Warm Twilight Horizon Atmospheric Backlight Behind Central Mosque -->
@@ -4402,10 +4402,10 @@ function renderFiveWaqtStrip(now = new Date()) {
           : "Ishraq / Duha";
       activeSubLabel =
         lang === "bn"
-          ? "দ্বিপ্রহর (যাওয়াল) পূর্ব পর্যন্ত"
+          ? "দ্বিপ্রহরের পূর্ব পর্যন্ত"
           : lang === "ar"
           ? "إلى قبيل الزوال"
-          : "Until before Zawal";
+          : "Until before Midday";
       winStart = pWindows.sunrise.end;
       winEnd = pWindows.zawal.start;
 
@@ -4736,15 +4736,13 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
       return `
-        <div class="waqt-pill-card fard-waqt-row-item m3-interactive-waqt-pill ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""} ${isPopupSelected ? "waqt-popup-selected" : ""}" data-waqt-id="${w.id}" data-waqt-phase="${w.phase}" aria-expanded="${isPopupSelected ? "true" : "false"}" title="${w.name}">
-          <div class="fard-row-left">
-            <span class="fard-status-dot ${isActive ? "active" : ""}" aria-hidden="true"></span>
-            <div class="waqt-circle-logo fard-squircle-icon" aria-hidden="true">
-              ${getFardWaqtSvgIcon(w.id)}
-            </div>
-            <span class="waqt-name fard-prayer-title">${w.num}. ${w.name}</span>
+        <div class="waqt-pill-card fard-waqt-row-item fard-waqt-vertical-card m3-interactive-waqt-pill ${isActive ? "waqt-active" : ""} ${isPassed ? "waqt-passed" : ""} ${isPopupSelected ? "waqt-popup-selected" : ""}" data-waqt-id="${w.id}" data-waqt-phase="${w.phase}" aria-expanded="${isPopupSelected ? "true" : "false"}" title="${w.name}">
+          <span class="fard-status-dot ${isActive ? "active" : ""}" aria-hidden="true"></span>
+          <div class="waqt-circle-logo fard-squircle-icon fard-medium-svg-wrap" aria-hidden="true">
+            ${getFardWaqtSvgIcon(w.id)}
           </div>
-          <div class="fard-row-right">
+          <div class="fard-below-svg-info">
+            <span class="waqt-name fard-prayer-title">${w.num}. ${w.name}</span>
             <strong class="waqt-time fard-time-range-pill">${startTimeStr} - ${endTimeStr}</strong>
           </div>
         </div>
@@ -7057,13 +7055,59 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  const splash = document.getElementById("s24-startup-splash");
-  if (splash) {
-    setTimeout(() => {
+  const STANDARD_INTRO_HOLD_MS = 2200;
+  let splashHideTimer = null;
+  let splashFadeTimer = null;
+  let lastHiddenTimestamp = 0;
+
+  function triggerStandardIntroSplash(holdMs = STANDARD_INTRO_HOLD_MS) {
+    let splash = document.getElementById("s24-startup-splash");
+    if (!splash) {
+      splash = document.createElement("div");
+      splash.id = "s24-startup-splash";
+      splash.className = "startup-splash";
+      splash.innerHTML = `
+        <div class="splash-inner">
+          <img src="icon.svg" alt="Sunnah 24" class="splash-logo" />
+          <h2>সুন্নাহ ২৪ • Sunnah 24</h2>
+          <p>Enterprise Prophetic 24-Hour Lifestyle</p>
+        </div>
+      `;
+      document.body.prepend(splash);
+    } else {
+      splash.style.display = "flex";
+      splash.classList.remove("splash-hidden");
+    }
+
+    if (splashHideTimer) clearTimeout(splashHideTimer);
+    if (splashFadeTimer) clearTimeout(splashFadeTimer);
+
+    splashHideTimer = setTimeout(() => {
       splash.classList.add("splash-hidden");
-      setTimeout(() => splash.remove(), 450);
-    }, 550);
+      splashFadeTimer = setTimeout(() => {
+        if (splash) splash.style.display = "none";
+      }, 450);
+    }, holdMs);
   }
+
+  triggerStandardIntroSplash(STANDARD_INTRO_HOLD_MS);
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      lastHiddenTimestamp = Date.now();
+    } else if (document.visibilityState === "visible") {
+      if (lastHiddenTimestamp > 0 && Date.now() - lastHiddenTimestamp >= 1500) {
+        triggerStandardIntroSplash(STANDARD_INTRO_HOLD_MS);
+      }
+      lastHiddenTimestamp = 0;
+    }
+  });
+
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) {
+      triggerStandardIntroSplash(STANDARD_INTRO_HOLD_MS);
+    }
+  });
 });
 
 
