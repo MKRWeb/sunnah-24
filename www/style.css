@@ -7937,7 +7937,7 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
       ONLY the top-right green dot particle + soft light-green card fill.
    ========================================================================== */
 
-/* 1. Ongoing Prayers: Hide any inline meta icons & enforce zero-overwrite, zero-abbreviation layout */
+/* 1. Ongoing Prayers: Hide any inline meta icons & enforce zero-overwrite, zero-abbreviation layout (Wider & Fatigue-Free) */
 .s24-nabawi-glass-rows .s24-inline-meta-svg {
   display: none !important;
 }
@@ -7950,9 +7950,9 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   align-items: center !important;
   justify-content: space-between !important;
   flex-wrap: wrap !important;
-  column-gap: 8px !important;
-  row-gap: 2px !important;
-  padding: 6.5px 12px !important;
+  column-gap: 12px !important;
+  row-gap: 3px !important;
+  padding: 8.5px 15px !important;
   border-radius: 999px !important;
   overflow: visible !important;
   box-sizing: border-box !important;
@@ -7971,8 +7971,8 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   white-space: nowrap !important;
   overflow: visible !important;
   text-overflow: clip !important;
-  font-size: clamp(0.72rem, 3.35vw, 0.82rem) !important;
-  line-height: 1.32 !important;
+  font-size: clamp(0.78rem, 3.6vw, 0.88rem) !important;
+  line-height: 1.38 !important;
 }
 
 .s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label-text {
@@ -7990,8 +7990,8 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   white-space: nowrap !important;
   font-variant-numeric: tabular-nums !important;
   font-feature-settings: "tnum" 1 !important;
-  font-size: clamp(0.73rem, 3.45vw, 0.85rem) !important;
-  line-height: 1.32 !important;
+  font-size: clamp(0.8rem, 3.75vw, 0.92rem) !important;
+  line-height: 1.38 !important;
   letter-spacing: -0.01em !important;
   text-align: right !important;
 }
