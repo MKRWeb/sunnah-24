@@ -8769,3 +8769,145 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   border: 1.5px solid rgba(52, 211, 153, 0.32) !important;
 }
 
+
+/* ==========================================================================
+   V12.0 GOOGLE DEEPMIND UI/UX DESIGNER & DEV ULTIMATE UPGRADE
+   1. Fixes tight time-pill padding on the top row of the 3+2 Fard Prayer Grid
+      and widens the Fard Prayer Schedule container & time section to eliminate
+      visual fatigue across all viewport widths.
+   2. Styles the high-precision second-by-second live countdown ticker on the
+      "ওয়াক্ত শেষ হতে বাকি:" (Waqt Ends In) row with zero-jitter tabular numerals.
+   ========================================================================== */
+
+/* Widen the Fard Prayer Schedule Subcard to maximize horizontal breathing room */
+#home-dashboard-view #fard-schedule-subcard,
+.fard-schedule-subcard {
+  padding: 13px 10px 12px !important;
+}
+
+#home-dashboard-view #five-waqt-grid.five-waqt-grid.fard-waqt-list-ui {
+  gap: 7px !important;
+}
+
+/* Widen inner card horizontal geometry so top-row cards (Fajr, Dhuhr, Asr) never squeeze their time pills */
+#five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card {
+  padding: 12px 5px 11px !important;
+  gap: 7px !important;
+  border-radius: 16px !important;
+}
+
+/* Make the info stack span full width inside each card */
+#five-waqt-grid .fard-below-svg-info {
+  width: 100% !important;
+  padding: 0 1px !important;
+  gap: 5px !important;
+}
+
+/* Widened, Fatigue-Free Time Pill for All 5 Fard Prayers (Especially Top Row 1..3) */
+#five-waqt-grid .fard-below-svg-info .waqt-time.fard-time-range-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: calc(100% - 2px) !important;
+  min-width: 96% !important;
+  max-width: 100% !important;
+  padding: 5px 9px !important;
+  min-height: 27px !important;
+  font-size: 0.76rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.015em !important;
+  line-height: 1.25 !important;
+  border-radius: 999px !important;
+  white-space: nowrap !important;
+  font-variant-numeric: tabular-nums !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 1px 2px rgba(15, 35, 25, 0.04) !important;
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* Top-Row Specific Ergonomic Enhancement (Fajr, Dhuhr, Asr — 3-up cards) */
+#five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(-n+3) {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+#five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(-n+3) .fard-below-svg-info .waqt-time.fard-time-range-pill {
+  width: 100% !important;
+  min-width: 100% !important;
+  padding: 5px 8px !important;
+  font-size: 0.75rem !important;
+}
+
+/* Bottom-Row Ergonomic Balance (Maghrib & Isha — 2-up wider cards) */
+#five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(4) .fard-below-svg-info .waqt-time.fard-time-range-pill,
+#five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(5) .fard-below-svg-info .waqt-time.fard-time-range-pill {
+  width: 92% !important;
+  min-width: 124px !important;
+  padding: 5.5px 14px !important;
+  font-size: 0.79rem !important;
+}
+
+/* Active Prayer Card Time-Pill Contrast & Clarity */
+#five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active .fard-below-svg-info .waqt-time.fard-time-range-pill {
+  background: #ffffff !important;
+  border: 1.5px solid #16a34a !important;
+  color: #14532d !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12) !important;
+}
+
+/* Live Ongoing Waqt Second-by-Second Countdown Ticker Styling */
+#live-waqt-remaining,
+.s24-live-countdown-ticker {
+  font-variant-numeric: tabular-nums !important;
+  font-feature-settings: "tnum" 1 !important;
+  letter-spacing: 0.01em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 4px !important;
+  white-space: nowrap !important;
+  transition: color 0.2s ease !important;
+}
+
+.s24-live-pulse-colon {
+  display: inline-block;
+  animation: s24ColonPulse 1s steps(1, end) infinite;
+}
+
+@keyframes s24ColonPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+/* Small Screen Safeguard (<= 380px and <= 350px) to Prevent Visual Fatigue */
+@media (max-width: 380px) {
+  #home-dashboard-view #fard-schedule-subcard,
+  .fard-schedule-subcard {
+    padding: 12px 8px 10px !important;
+  }
+  #home-dashboard-view #five-waqt-grid.five-waqt-grid.fard-waqt-list-ui {
+    gap: 5.5px !important;
+  }
+  #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(-n+3) {
+    padding: 10px 3px 9px !important;
+  }
+  #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(-n+3) .fard-below-svg-info .waqt-time.fard-time-range-pill {
+    padding: 4.5px 6px !important;
+    font-size: 0.71rem !important;
+    min-height: 25px !important;
+  }
+  #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(4) .fard-below-svg-info .waqt-time.fard-time-range-pill,
+  #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(5) .fard-below-svg-info .waqt-time.fard-time-range-pill {
+    padding: 4.5px 10px !important;
+    font-size: 0.74rem !important;
+  }
+}
+
+@media (max-width: 345px) {
+  #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(-n+3) .fard-below-svg-info .waqt-time.fard-time-range-pill {
+    padding: 4px 4px !important;
+    font-size: 0.67rem !important;
+  }
+}
+
