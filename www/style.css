@@ -7963,20 +7963,20 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 #home-dashboard-view #live-waqt-title {
   font-size: 1.42rem !important;
   font-weight: 700 !important;
-  color: #f8fafc !important;
+  color: #091526 !important;
   line-height: 1.16 !important;
   letter-spacing: -0.02em !important;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  text-shadow: none !important;
 }
 
 
 .s24-nabawi-title-block small {
   display: block;
   font-size: 0.82rem !important;
-  font-weight: 500 !important;
-  color: #cbd5e1 !important;
+  font-weight: 600 !important;
+  color: #1e2923 !important;
   margin-top: 2px;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  text-shadow: none !important;
 } 
 
 
@@ -8544,8 +8544,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   padding: 12px 6px 10px !important;
   border-radius: 16px !important;
   background: #f8faf9 !important;
-  border: 1px solid #e2ebe5 !important;
-  box-shadow: 0 2px 6px rgba(15, 35, 25, 0.03) !important;
+  border: 1.5px solid rgba(22, 163, 74, 0.28) !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.05) !important;
   gap: 7px !important;
   transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease !important;
 }
@@ -8711,5 +8711,61 @@ html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-ca
     font-size: 0.65rem !important;
     padding: 2px 5px !important;
   }
+}
+
+
+/* ==========================================================================
+   V11.8 ONGOING PRAYERS LEFT HEADER WORDS COLOR FIX
+   Standard black color in all prayer times (Fajr, Ishraq/Duha, Dhuhr, Jumu'ah,
+   Asr, Maghrib) except Isha prayer (.scene-isha remains crisp white)
+   ========================================================================== */
+.s24-nabawi-scenic-card:not(.scene-isha) .s24-nabawi-title-block h4,
+#home-dashboard-view .s24-nabawi-scenic-card:not(.scene-isha) #live-waqt-title {
+  color: #091526 !important;
+  text-shadow: none !important;
+}
+
+.s24-nabawi-scenic-card:not(.scene-isha) .s24-nabawi-title-block small {
+  color: #1e2923 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-title-block h4,
+#home-dashboard-view .s24-nabawi-scenic-card.scene-isha #live-waqt-title {
+  color: #ffffff !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45) !important;
+}
+
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-title-block small {
+  color: #cbd5e1 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+
+/* ==========================================================================
+   V11.9 VERY SLIGHT GREEN BORDER ON ALL 5 FARD PRAYER TIME CARDS
+   (ফরজ নামাজের সময়সূচী — Clear & Subtle Separation Across All 5 Cards)
+   ========================================================================== */
+#five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card {
+  border: 1.5px solid rgba(22, 163, 74, 0.28) !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.05) !important;
+}
+
+#five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-medium-svg-wrap {
+  border: 1px solid rgba(22, 163, 74, 0.22) !important;
+}
+
+#five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-time-range-pill {
+  border: 1px solid rgba(22, 163, 74, 0.26) !important;
+}
+
+#five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active {
+  border: 1.5px solid #16a34a !important;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.14) !important;
+}
+
+html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card {
+  border: 1.5px solid rgba(52, 211, 153, 0.32) !important;
 }
 
