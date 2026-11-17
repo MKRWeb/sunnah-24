@@ -7963,21 +7963,21 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 #home-dashboard-view #live-waqt-title {
   font-size: 1.42rem !important;
   font-weight: 700 !important;
-  color: #111827 !important;
+  color: #f8fafc !important;
   line-height: 1.16 !important;
   letter-spacing: -0.02em !important;
-  text-shadow: none !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 
 .s24-nabawi-title-block small {
   display: block;
   font-size: 0.82rem !important;
-  font-weight: 600 !important;
-  color: #1f2937 !important;
+  font-weight: 500 !important;
+  color: #cbd5e1 !important;
   margin-top: 2px;
-  text-shadow: none !important;
-}
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+} 
 
 
 .s24-nabawi-live-pill {
@@ -8311,13 +8311,13 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-title-block h4,
 #home-dashboard-view .s24-nabawi-scenic-card.scene-asr #live-waqt-title {
-  color: #111827 !important;
+  color: #1b3b22 !important;
   text-shadow: none !important;
 }
 
 
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-title-block small {
-  color: #1f2937 !important;
+  color: #1e2923 !important;
   text-shadow: none !important;
   font-weight: 600 !important;
 }
@@ -8517,3 +8517,199 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   border: 1.25px solid rgba(186, 210, 235, 0.45) !important;
   box-shadow: 0 5px 14px rgba(4, 12, 24, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.16) !important;
 }
+
+
+/* ==========================================================================
+   V11.7 REARRANGED ফরজ নামাজের সময়সূচী (3+2 ATTRACTIVE MINIMAL CARD GRID)
+   - Medium-sized SVG icon at the top of each prayer card
+   - Prayer Name & Time Range neatly stacked below the SVG image
+   - Attractive, minimal Material 3 card aesthetic with subtle active state
+   ========================================================================== */
+.five-waqt-grid.fard-waqt-list-ui {
+  display: grid !important;
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  align-items: stretch !important;
+}
+
+.waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card {
+  grid-column: span 2 !important;
+  position: relative !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 12px 6px 10px !important;
+  border-radius: 16px !important;
+  background: #f8faf9 !important;
+  border: 1px solid #e2ebe5 !important;
+  box-shadow: 0 2px 6px rgba(15, 35, 25, 0.03) !important;
+  gap: 7px !important;
+  transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+/* Row 2 (Maghrib & Isha): 2 symmetrical cards below Row 1 (Fajr, Dhuhr, Asr) */
+.waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(4),
+.waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(5) {
+  grid-column: span 3 !important;
+}
+
+.waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  background: #cbd5e1 !important;
+}
+
+html[dir="rtl"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot {
+  right: auto !important;
+  left: 8px !important;
+}
+
+.waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active {
+  background: #16a34a !important;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18) !important;
+}
+
+/* Medium-Sized SVG Container */
+.waqt-circle-logo.fard-squircle-icon.fard-medium-svg-wrap {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 13px !important;
+  background: #ffffff !important;
+  border: 1px solid #e4ece7 !important;
+  box-shadow: 0 2px 6px rgba(15, 35, 25, 0.04) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.waqt-circle-logo.fard-squircle-icon.fard-medium-svg-wrap svg,
+.waqt-circle-logo.fard-squircle-icon.fard-medium-svg-wrap .fard-prayer-svg {
+  width: 34px !important;
+  height: 34px !important;
+  display: block !important;
+}
+
+/* Information Stacked Cleanly Below the SVG Image */
+.fard-below-svg-info {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.fard-below-svg-info .waqt-name.fard-prayer-title {
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  color: #1e2923 !important;
+  line-height: 1.22 !important;
+  white-space: nowrap !important;
+}
+
+.fard-below-svg-info .waqt-time.fard-time-range-pill {
+  background: #ffffff !important;
+  border: 1px solid #d5e0da !important;
+  color: #334155 !important;
+  border-radius: 999px !important;
+  padding: 2.5px 8px !important;
+  font-size: 0.71rem !important;
+  font-weight: 500 !important;
+  line-height: 1.25 !important;
+  min-width: 0 !important;
+  width: auto !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  box-shadow: none !important;
+}
+
+/* Active Prayer Card State — Attractive Soft Emerald Highlight */
+.waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active {
+  background: linear-gradient(180deg, #eaf7ef 0%, #f3fbf6 100%) !important;
+  border: 1.5px solid #16a34a !important;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.12) !important;
+}
+
+.waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active .fard-medium-svg-wrap {
+  background: #ffffff !important;
+  border-color: rgba(22, 163, 74, 0.35) !important;
+  box-shadow: 0 3px 8px rgba(22, 163, 74, 0.12) !important;
+}
+
+.waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active .fard-prayer-title {
+  color: #15803d !important;
+  font-weight: 700 !important;
+}
+
+.waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active .fard-time-range-pill {
+  background: #ffffff !important;
+  border-color: #16a34a !important;
+  color: #15803d !important;
+  font-weight: 600 !important;
+}
+
+/* Dark Theme Support for Rearranged 5-Waqt Cards */
+html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card {
+  background: #071913 !important;
+  border-color: rgba(16, 185, 129, 0.22) !important;
+}
+
+html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-medium-svg-wrap {
+  background: #0b221a !important;
+  border-color: rgba(16, 185, 129, 0.28) !important;
+}
+
+html[data-theme="dark"] .fard-below-svg-info .waqt-name.fard-prayer-title {
+  color: #f8fafc !important;
+}
+
+html[data-theme="dark"] .fard-below-svg-info .waqt-time.fard-time-range-pill {
+  background: #0b221a !important;
+  border-color: rgba(148, 163, 184, 0.28) !important;
+  color: #e2e8f0 !important;
+}
+
+html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.22) 0%, #0b221a 100%) !important;
+  border-color: #34d399 !important;
+}
+
+@media (max-width: 360px) {
+  .five-waqt-grid.fard-waqt-list-ui {
+    gap: 6px !important;
+  }
+  .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card {
+    padding: 10px 4px 8px !important;
+    border-radius: 14px !important;
+    gap: 5px !important;
+  }
+  .waqt-circle-logo.fard-squircle-icon.fard-medium-svg-wrap {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  .waqt-circle-logo.fard-squircle-icon.fard-medium-svg-wrap svg,
+  .waqt-circle-logo.fard-squircle-icon.fard-medium-svg-wrap .fard-prayer-svg {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  .fard-below-svg-info .waqt-name.fard-prayer-title {
+    font-size: 0.76rem !important;
+  }
+  .fard-below-svg-info .waqt-time.fard-time-range-pill {
+    font-size: 0.65rem !important;
+    padding: 2px 5px !important;
+  }
+}
+
