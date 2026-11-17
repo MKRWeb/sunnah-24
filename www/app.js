@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SUNNAH 24 — ENTERPRISE PROPHETIC 24-HOUR LIFESTYLE & HABIT TRACKER (v4.2)
  * SHA-256 Tamper-Proof Engine + Triple-Redundant Multi-Month Vault (LocalStorage + IndexedDB + Native Android)
  * Local Timezone Date Engine + Accurate Hijri Calendar + Full Bangla (Default), Arabic & English Localization
@@ -4667,14 +4667,12 @@ function renderFiveWaqtStrip(now = new Date()) {
             <div class="waqt-popup-meta-rows ongoing-static-meta-rows s24-nabawi-glass-rows">
               <div class="waqt-popup-meta-item single-line-meta-row s24-prime-inline-row">
                 <span class="meta-row-label">
-                  ${getInlineSparklesSvg()}
                   <span class="meta-row-label-text">${primeLabelText}</span>
                 </span>
                 <strong class="meta-row-value">${primeValueHtml}</strong>
               </div>
               <div class="waqt-popup-meta-item single-line-meta-row countdown-single-line-row s24-countdown-split-row">
                 <span class="meta-row-label">
-                  ${getInlineStopwatchSvg(isProhibitedNow, waqtSceneKey)}
                   <span class="meta-row-label-text">${countdownRowLabelText}</span>
                 </span>
                 <strong id="live-waqt-remaining" class="meta-row-value s24-live-countdown-ticker">${remainingTextStr}</strong>
