@@ -3910,50 +3910,224 @@ function formatShortWaqtClock(totalMins, locale = appState.locale) {
 
 
 
-function formatRemainingDurationText(remainingMins, locale = appState.locale, includeSuffix = false) {
-  const safeMins = Math.max(1, Math.ceil(remainingMins));
-  const hrs = Math.floor(safeMins / 60);
-  const mins = safeMins % 60;
+// ============================================================================
+// GOOGLE DEEPMIND REAL-TIME SECOND-PRECISION WAQT COUNTDOWN ENGINE (1Hz TICKER)
+// Computes exact remaining Hours, Minutes, and Seconds until the current Waqt
+// or Prohibited Window ends and updates #live-waqt-remaining every 1 second
+// without re-rendering the entire SVG DOM (unless a Waqt boundary is crossed).
+// ============================================================================
+let activeOngoingWaqtState = {
+  sceneKey: "",
+  winStartMins: 0,
+  winEndMins: 0,
+  isCrossMidnight: false,
+  isProhibited: false
+};
 
+function formatLiveCountdownWithSeconds(remainingTotalSeconds, locale = appState.locale, includeSuffix = false) {
+  const safeTotalSecs = Math.max(0, Math.floor(remainingTotalSeconds));
+  const hrs = Math.floor(safeTotalSecs / 3600);
+  const mins = Math.floor((safeTotalSecs % 3600) / 60);
+  const secs = safeTotalSecs % 60;
 
-
+  const pad2 = (n) => String(n).padStart(2, "0");
 
   if (locale === "bn") {
     const suffix = includeSuffix ? " বাকি" : "";
-    if (hrs > 0 && mins > 0) {
-      return `${localizeDigits(hrs, "bn")} ঘণ্টা ${localizeDigits(mins, "bn")} মি.${suffix}`;
-    }
+    const hStr = localizeDigits(hrs, "bn");
+    const mStr = localizeDigits(pad2(mins), "bn");
+    const sStr = localizeDigits(pad2(secs), "bn");
     if (hrs > 0) {
-      return `${localizeDigits(hrs, "bn")} ঘণ্টা${suffix}`;
+      return `${hStr} ঘণ্টা ${mStr} মি. ${sStr} সে.${suffix}`;
     }
-    return `${localizeDigits(mins, "bn")} মিনিট${suffix}`;
+    if (mins > 0) {
+      return `${localizeDigits(mins, "bn")} মি. ${sStr} সে.${suffix}`;
+    }
+    return `${sStr} সেকেন্ড${suffix}`;
   }
-
-
-
 
   if (locale === "ar") {
     const prefix = includeSuffix ? "متبقي " : "";
-    if (hrs > 0 && mins > 0) {
-      return `${prefix}${localizeDigits(hrs, "ar")} س و ${localizeDigits(mins, "ar")} د`;
-    }
+    const hStr = localizeDigits(hrs, "ar");
+    const mStr = localizeDigits(pad2(mins), "ar");
+    const sStr = localizeDigits(pad2(secs), "ar");
     if (hrs > 0) {
-      return `${prefix}${localizeDigits(hrs, "ar")} ساعة`;
+      return `${prefix}${hStr} س ${mStr} د ${sStr} ث`;
     }
-    return `${prefix}${localizeDigits(mins, "ar")} دقيقة`;
+    if (mins > 0) {
+      return `${prefix}${localizeDigits(mins, "ar")} د ${sStr} ث`;
+    }
+    return `${prefix}${sStr} ثانية`;
   }
-
-
-
 
   const suffixEn = includeSuffix ? " left" : "";
-  if (hrs > 0 && mins > 0) {
-    return `${hrs}h ${mins}m${suffixEn}`;
-  }
   if (hrs > 0) {
-    return `${hrs} hr${suffixEn}`;
+    return `${hrs}h ${pad2(mins)}m ${pad2(secs)}s${suffixEn}`;
   }
-  return `${mins} min${suffixEn}`;
+  if (mins > 0) {
+    return `${mins}m ${pad2(secs)}s${suffixEn}`;
+  }
+  return `${pad2(secs)}s${suffixEn}`;
+}
+
+function formatRemainingDurationText(remainingMins, locale = appState.locale, includeSuffix = false) {
+  const totalSeconds = Math.max(0, Math.round(Number(remainingMins || 0) * 60));
+  return formatLiveCountdownWithSeconds(totalSeconds, locale, includeSuffix);
+}
+
+// High-precision 1-second live countdown algorithm for "ওয়াক্ত শেষ হতে বাকি:" (#live-waqt-remaining)
+function computeActiveOngoingWaqtTelemetry(now = new Date()) {
+  const sched = computeSeasonalPrayerSchedule(now);
+  const pWindows = sched.prohibitedWindows || {
+    sunrise: { start: sched.sunrise, end: sched.sunrise + 15 },
+    zawal: { start: sched.zawal, end: sched.dhuhr },
+    sunset: { start: sched.sunset - 15, end: sched.sunset }
+  };
+  const lang = (appState && appState.locale) || "bn";
+  const middayMeta = resolveMiddayWaqtMeta(now, lang);
+
+  const nowTotalSecs =
+    now.getHours() * 3600 +
+    now.getMinutes() * 60 +
+    now.getSeconds();
+  const nowMins = nowTotalSecs / 60;
+
+  let sceneKey = "isha";
+  let winStartMins = sched.isha;
+  let winEndMins = sched.fajr + 1440;
+  let currentPosSecs = nowTotalSecs;
+  let isProhibitedNow = false;
+
+  if (nowMins >= sched.fajr && nowMins < pWindows.sunrise.start) {
+    sceneKey = "fajr";
+    winStartMins = sched.fajr;
+    winEndMins = pWindows.sunrise.start;
+  } else if (nowMins >= pWindows.sunrise.start && nowMins < pWindows.sunrise.end) {
+    sceneKey = "prohibited_sunrise";
+    winStartMins = pWindows.sunrise.start;
+    winEndMins = pWindows.sunrise.end;
+    isProhibitedNow = true;
+  } else if (nowMins >= pWindows.sunrise.end && nowMins < pWindows.zawal.start) {
+    sceneKey = "ishraq_duha";
+    winStartMins = pWindows.sunrise.end;
+    winEndMins = pWindows.zawal.start;
+  } else if (nowMins >= pWindows.zawal.start && nowMins < pWindows.zawal.end) {
+    sceneKey = "prohibited_zawal";
+    winStartMins = pWindows.zawal.start;
+    winEndMins = pWindows.zawal.end;
+    isProhibitedNow = true;
+  } else if (nowMins >= pWindows.zawal.end && nowMins < sched.asr) {
+    sceneKey = middayMeta.isJumuah ? "jumuah" : "dhuhr";
+    winStartMins = pWindows.zawal.end;
+    winEndMins = sched.asr;
+  } else if (nowMins >= sched.asr && nowMins < pWindows.sunset.start) {
+    sceneKey = "asr";
+    winStartMins = sched.asr;
+    winEndMins = pWindows.sunset.start;
+  } else if (nowMins >= pWindows.sunset.start && nowMins < sched.maghrib) {
+    sceneKey = "prohibited_sunset";
+    winStartMins = pWindows.sunset.start;
+    winEndMins = sched.maghrib;
+    isProhibitedNow = true;
+  } else if (nowMins >= sched.maghrib && nowMins < sched.isha) {
+    sceneKey = "maghrib";
+    winStartMins = sched.maghrib;
+    winEndMins = sched.isha;
+  } else {
+    sceneKey = "isha";
+    winStartMins = sched.isha;
+    winEndMins = sched.fajr + 1440;
+    if (nowMins < sched.fajr) {
+      currentPosSecs = nowTotalSecs + 86400;
+    }
+  }
+
+  const winStartSecs = winStartMins * 60;
+  const winEndSecs = winEndMins * 60;
+  const totalDurationSecs = Math.max(1, winEndSecs - winStartSecs);
+  const elapsedSecs = Math.max(0, Math.min(totalDurationSecs, currentPosSecs - winStartSecs));
+  const remainingSecs = Math.max(0, winEndSecs - currentPosSecs);
+  const pct = Math.max(4, Math.min(100, Math.round((elapsedSecs / totalDurationSecs) * 100)));
+
+  return {
+    sceneKey,
+    winStartMins,
+    winEndMins,
+    totalDurationSecs,
+    elapsedSecs,
+    remainingSecs,
+    pct,
+    isProhibitedNow,
+    formattedRemaining: formatLiveCountdownWithSeconds(remainingSecs, lang, false)
+  };
+}
+
+// Lightweight 1-Second DOM Ticker for Ongoing Prayers ("ওয়াক্ত শেষ হতে বাকি:")
+function tickOngoingPrayerLiveCountdown() {
+  const now = new Date();
+  const currentKey = getLocalDateKey(now);
+  if (currentKey !== lastObservedDateKey) {
+    lastObservedDateKey = currentKey;
+    renderHeaderDatesAndPhase();
+    renderHabits();
+    renderDuas();
+    return;
+  }
+
+  const telemetry = computeActiveOngoingWaqtTelemetry(now);
+
+  // If the prayer Waqt boundary just transitioned (e.g., Dhuhr -> Asr), trigger full card & strip re-render immediately
+  if (
+    activeOngoingWaqtState.sceneKey &&
+    (activeOngoingWaqtState.sceneKey !== telemetry.sceneKey ||
+      activeOngoingWaqtState.winEndMins !== telemetry.winEndMins)
+  ) {
+    activeOngoingWaqtState.sceneKey = telemetry.sceneKey;
+    activeOngoingWaqtState.winStartMins = telemetry.winStartMins;
+    activeOngoingWaqtState.winEndMins = telemetry.winEndMins;
+    activeOngoingWaqtState.isProhibited = telemetry.isProhibitedNow;
+    renderHeaderDatesAndPhase();
+    renderHabits();
+    renderDuas();
+    return;
+  }
+
+  activeOngoingWaqtState.sceneKey = telemetry.sceneKey;
+  activeOngoingWaqtState.winStartMins = telemetry.winStartMins;
+  activeOngoingWaqtState.winEndMins = telemetry.winEndMins;
+  activeOngoingWaqtState.isProhibited = telemetry.isProhibitedNow;
+
+  // Update the live countdown text in-place without re-creating the SVG card
+  const remEl = document.getElementById("live-waqt-remaining");
+  if (remEl) {
+    if (!remEl.classList.contains("s24-live-countdown-ticker")) {
+      remEl.classList.add("s24-live-countdown-ticker");
+    }
+    if (remEl.textContent !== telemetry.formattedRemaining) {
+      remEl.textContent = telemetry.formattedRemaining;
+    }
+  }
+
+  const fillEl = document.getElementById("live-waqt-fill");
+  if (fillEl) {
+    fillEl.style.width = `${telemetry.pct}%`;
+  }
+
+  // Also keep any open 5-Waqt popup countdown ticking live every second
+  if (typeof activeSelectedWaqtPopupId === "string" && activeSelectedWaqtPopupId) {
+    const popupValEl = document.querySelector(
+      "#waqt-range-popup-wrap .countdown-single-line-row .meta-row-value"
+    );
+    if (popupValEl && typeof getExactWaqtPopupDetails === "function") {
+      const info = getExactWaqtPopupDetails(activeSelectedWaqtPopupId, now);
+      if (info) {
+        const livePopupStr = formatRemainingDurationText(info.remOrStartsMins, appState.locale || "bn");
+        if (popupValEl.textContent !== livePopupStr) {
+          popupValEl.textContent = livePopupStr;
+        }
+      }
+    }
+  }
 }
 
 
@@ -5080,6 +5254,13 @@ function renderFiveWaqtStrip(now = new Date()) {
 
 
 
+    activeOngoingWaqtState = {
+      sceneKey: waqtSceneKey,
+      winStartMins: winStart,
+      winEndMins: winEnd,
+      isCrossMidnight: winEnd > 1440,
+      isProhibited: isProhibitedNow
+    };
     const fardNumMap = { fajr: 1, dhuhr: 2, asr: 3, maghrib: 4, isha: 5 };
     const numPrefix = fardNumMap[waqtSceneKey]
       ? `${localizeDigits(fardNumMap[waqtSceneKey], lang)}. `
@@ -5160,7 +5341,7 @@ function renderFiveWaqtStrip(now = new Date()) {
                   ${getInlineStopwatchSvg(isProhibitedNow, waqtSceneKey)}
                   <span class="meta-row-label-text">${countdownRowLabelText}</span>
                 </span>
-                <strong id="live-waqt-remaining" class="meta-row-value">${remainingTextStr}</strong>
+                <strong id="live-waqt-remaining" class="meta-row-value s24-live-countdown-ticker">${remainingTextStr}</strong>
               </div>
             </div>
           </div>
@@ -6845,7 +7026,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
-  // Automatic Real-Time Waqt Lock, Live Prayer Progress Bar & Midnight Rollover Watcher (Refreshes every 15s)
+  // Real-Time 1-Second Live Countdown Ticker for Ongoing Prayers ("ওয়াক্ত শেষ হতে বাকি:" section)
+  tickOngoingPrayerLiveCountdown();
+  setInterval(() => {
+    try {
+      tickOngoingPrayerLiveCountdown();
+    } catch (err) {
+      console.warn("Live countdown tick warning:", err);
+    }
+  }, 1000);
+
+  // Automatic Real-Time Waqt Lock, Habit Window & Midnight Rollover Watcher (Refreshes every 15s)
   setInterval(() => {
     try {
       const currentKey = getTodayKey();
@@ -12744,3 +12935,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
