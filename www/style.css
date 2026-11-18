@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg-main: #f1f6f3;
   --bg-card: #ffffff;
   --bg-card-elevated: #f8fbf9;
@@ -17,6 +17,8 @@
 }
 
 
+
+
 @keyframes gentleFloat {
   0%, 100% {
     transform: translateY(0px);
@@ -27,12 +29,16 @@
 }
 
 
+
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
 }
+
+
 
 
 body {
@@ -46,6 +52,8 @@ body {
   line-height: 1.55;
   user-select: none;
 }
+
+
 
 
 /* ==========================================================================
@@ -72,6 +80,8 @@ body {
 }
 
 
+
+
 .header-left {
   display: flex;
   align-items: center;
@@ -79,10 +89,14 @@ body {
 }
 
 
+
+
 .header-left img {
   box-shadow: 0 4px 10px rgba(16, 185, 129, 0.18);
   border: 1.5px solid var(--accent-emerald) !important;
 }
+
+
 
 
 .header-right {
@@ -92,12 +106,16 @@ body {
 }
 
 
+
+
 .header-controls-stack {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 5px;
 }
+
+
 
 
 .lang-select {
@@ -115,15 +133,21 @@ body {
 }
 
 
+
+
 .lang-select:active {
   transform: scale(0.96);
 }
+
+
 
 
 .lang-select option {
   background: #ffffff;
   color: var(--text-primary);
 }
+
+
 
 
 .brand-badge {
@@ -138,6 +162,8 @@ body {
 }
 
 
+
+
 .app-header h1 {
   font-size: 1.18rem;
   font-weight: 800;
@@ -146,11 +172,15 @@ body {
 }
 
 
+
+
 .app-header p {
   font-size: 0.72rem;
   color: var(--text-muted);
   font-weight: 600;
 }
+
+
 
 
 .badge-verified {
@@ -165,11 +195,15 @@ body {
 }
 
 
+
+
 .badge-tampered {
   background: #fee2e2;
   color: #b91c1c;
   border: 1px solid var(--danger);
 }
+
+
 
 
 /* ==========================================================================
@@ -190,10 +224,14 @@ body {
 }
 
 
+
+
 .hero-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float-hover);
 }
+
+
 
 
 .hero-stats {
@@ -205,12 +243,16 @@ body {
 }
 
 
+
+
 .label {
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   color: var(--accent-emerald-dark);
   font-weight: 800;
 }
+
+
 
 
 .hero-stats h2 {
@@ -221,11 +263,15 @@ body {
 }
 
 
+
+
 .hero-left-info p {
   color: var(--text-muted);
   font-size: 0.8rem;
   font-weight: 600;
 }
+
+
 
 
 .progress-track {
@@ -238,12 +284,16 @@ body {
 }
 
 
+
+
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #10b981, #22c55e);
   border-radius: 999px;
   transition: width 0.35s ease;
 }
+
+
 
 
 .hero-meta {
@@ -259,6 +309,8 @@ body {
 }
 
 
+
+
 /* ==========================================================================
    FLOATING NAVIGATION TABS & CHIPS
    ========================================================================== */
@@ -268,6 +320,8 @@ body {
   gap: 8px;
   margin: 0 14px 14px;
 }
+
+
 
 
 .tab-btn {
@@ -289,15 +343,21 @@ body {
 }
 
 
+
+
 .tab-btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float-hover);
 }
 
 
+
+
 .tab-btn:active {
   transform: translateY(0px) scale(0.96);
 }
+
+
 
 
 .tab-circle-icon {
@@ -315,6 +375,8 @@ body {
 }
 
 
+
+
 .tab-btn.active {
   background: #ffffff;
   color: var(--accent-emerald-dark);
@@ -322,6 +384,8 @@ body {
   box-shadow: 0 10px 24px -4px rgba(16, 185, 129, 0.22);
   transform: translateY(-2px);
 }
+
+
 
 
 .tab-btn.active .tab-circle-icon {
@@ -332,15 +396,21 @@ body {
 }
 
 
+
+
 .tab-content {
   display: none;
   padding: 0 14px;
 }
 
 
+
+
 .tab-content.active {
   display: block;
 }
+
+
 
 
 .filter-bar {
@@ -351,6 +421,8 @@ body {
   margin-bottom: 6px;
   scrollbar-width: none;
 }
+
+
 
 
 .chip {
@@ -371,14 +443,20 @@ body {
 }
 
 
+
+
 .chip:hover {
   transform: translateY(-1.5px);
 }
 
 
+
+
 .chip:active {
   transform: scale(0.96);
 }
+
+
 
 
 .chip-circle-avatar {
@@ -395,6 +473,8 @@ body {
 }
 
 
+
+
 .chip.active {
   background: var(--accent-emerald-soft);
   color: var(--accent-emerald-dark);
@@ -404,10 +484,14 @@ body {
 }
 
 
+
+
 .chip.active .chip-circle-avatar {
   background: #ffffff;
   border-color: var(--accent-emerald);
 }
+
+
 
 
 .quick-actions-bar {
@@ -419,12 +503,16 @@ body {
 }
 
 
+
+
 .muted-small {
   font-size: 0.78rem;
   color: var(--text-muted);
   line-height: 1.5;
   font-weight: 600;
 }
+
+
 
 
 .link-btn {
@@ -441,6 +529,8 @@ body {
 }
 
 
+
+
 /* ==========================================================================
    FLOATING HABIT ITEMS, DUA CARDS & GENERAL CARDS
    ========================================================================== */
@@ -450,6 +540,8 @@ body {
   flex-direction: column;
   gap: 12px;
 }
+
+
 
 
 .habit-item {
@@ -465,10 +557,14 @@ body {
 }
 
 
+
+
 .habit-item:hover {
   transform: translateY(-2.5px);
   box-shadow: var(--shadow-float-hover);
 }
+
+
 
 
 .habit-item:active {
@@ -476,11 +572,15 @@ body {
 }
 
 
+
+
 .habit-item.completed {
   background: linear-gradient(145deg, #f2fbf7, #ffffff);
   border-color: var(--accent-emerald);
   box-shadow: 0 8px 22px -4px rgba(16, 185, 129, 0.16);
 }
+
+
 
 
 .habit-left {
@@ -491,6 +591,8 @@ body {
 }
 
 
+
+
 .habit-info h4 {
   font-size: 0.94rem;
   color: var(--text-primary);
@@ -499,10 +601,14 @@ body {
 }
 
 
+
+
 .habit-item.completed .habit-info h4 {
   text-decoration: line-through;
   color: var(--text-muted);
 }
+
+
 
 
 .habit-time {
@@ -513,11 +619,15 @@ body {
 }
 
 
+
+
 .habit-snippet {
   font-size: 0.76rem;
   color: var(--text-muted);
   margin-top: 3px;
 }
+
+
 
 
 .info-btn {
@@ -535,10 +645,14 @@ body {
 }
 
 
+
+
 .info-btn:active {
   transform: scale(0.94);
   background: var(--accent-emerald-soft);
 }
+
+
 
 
 .card {
@@ -552,10 +666,14 @@ body {
 }
 
 
+
+
 .card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float-hover);
 }
+
+
 
 
 .card h3 {
@@ -566,11 +684,15 @@ body {
 }
 
 
+
+
 .muted {
   color: var(--text-muted);
   font-size: 0.8rem;
   margin-bottom: 12px;
 }
+
+
 
 
 .dua-card {
@@ -586,10 +708,14 @@ body {
 }
 
 
+
+
 .dua-card:hover {
   transform: translateY(-2.5px);
   box-shadow: var(--shadow-float-hover);
 }
+
+
 
 
 .dua-header {
@@ -601,6 +727,8 @@ body {
 }
 
 
+
+
 .dua-card h4 {
   font-size: 0.92rem;
   color: var(--text-primary);
@@ -609,6 +737,8 @@ body {
   flex: 1;
   min-width: 0;
 }
+
+
 
 
 .dua-badge {
@@ -631,6 +761,8 @@ body {
 }
 
 
+
+
 .dua-arabic {
   font-size: 1.22rem;
   line-height: 1.95;
@@ -647,6 +779,8 @@ body {
 }
 
 
+
+
 .translit {
   font-size: 0.84rem;
   margin-bottom: 6px;
@@ -654,6 +788,8 @@ body {
   font-weight: 700;
   line-height: 1.55;
 }
+
+
 
 
 .dua-virtue {
@@ -664,6 +800,8 @@ body {
   color: #92400e;
   font-weight: 700;
 }
+
+
 
 
 .input-select,
@@ -684,6 +822,8 @@ body {
 }
 
 
+
+
 .input-select:focus,
 .input-text:focus,
 .input-textarea:focus {
@@ -691,6 +831,8 @@ body {
   background: #ffffff;
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14);
 }
+
+
 
 
 /* ==========================================================================
@@ -716,9 +858,13 @@ body {
 }
 
 
+
+
 .tasbih-wheel:active {
   transform: scale(0.95);
 }
+
+
 
 
 #tasbih-current {
@@ -729,10 +875,14 @@ body {
 }
 
 
+
+
 #tasbih-target {
   color: var(--text-muted);
   font-weight: 700;
 }
+
+
 
 
 #tasbih-label {
@@ -746,6 +896,8 @@ body {
 }
 
 
+
+
 .stats-mini {
   text-align: center;
   font-size: 0.82rem;
@@ -755,10 +907,14 @@ body {
 }
 
 
+
+
 .stats-mini strong {
   color: var(--accent-emerald-dark);
   font-weight: 800;
 }
+
+
 
 
 /* ==========================================================================
@@ -772,6 +928,8 @@ body {
 }
 
 
+
+
 .day-col {
   background: #f8fbf9;
   border: 1px solid rgba(16, 185, 129, 0.2);
@@ -783,10 +941,14 @@ body {
 }
 
 
+
+
 .day-col:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float);
 }
+
+
 
 
 .day-col.today-active {
@@ -795,9 +957,13 @@ body {
 }
 
 
+
+
 .day-col.has-progress {
   border-color: rgba(16, 185, 129, 0.45);
 }
+
+
 
 
 .day-col strong {
@@ -808,6 +974,8 @@ body {
 }
 
 
+
+
 .day-col small {
   display: block;
   font-size: 0.65rem;
@@ -816,12 +984,16 @@ body {
 }
 
 
+
+
 .day-col .day-date-num {
   font-size: 0.62rem;
   color: var(--accent-gold);
   font-weight: 800;
   margin-top: 2px;
 }
+
+
 
 
 .archive-header-row {
@@ -833,12 +1005,16 @@ body {
 }
 
 
+
+
 .monthly-summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
   gap: 10px;
   margin-bottom: 12px;
 }
+
+
 
 
 .month-summary-card {
@@ -850,6 +1026,8 @@ body {
 }
 
 
+
+
 .month-summary-card h4 {
   font-size: 0.8rem;
   color: var(--accent-emerald-dark);
@@ -858,10 +1036,14 @@ body {
 }
 
 
+
+
 .month-summary-card p {
   font-size: 0.74rem;
   color: var(--text-primary);
 }
+
+
 
 
 .longterm-history-list {
@@ -872,6 +1054,8 @@ body {
   gap: 7px;
   padding-right: 4px;
 }
+
+
 
 
 .history-day-row {
@@ -888,10 +1072,14 @@ body {
 }
 
 
+
+
 .history-day-row strong {
   color: var(--accent-emerald-dark);
   font-weight: 800;
 }
+
+
 
 
 .btn-primary,
@@ -907,6 +1095,8 @@ body {
 }
 
 
+
+
 .btn-primary {
   background: linear-gradient(135deg, #10b981, #059669);
   color: #ffffff;
@@ -914,10 +1104,14 @@ body {
 }
 
 
+
+
 .btn-primary:active,
 .btn-secondary:active {
   transform: scale(0.98);
 }
+
+
 
 
 .btn-secondary {
@@ -928,11 +1122,15 @@ body {
 }
 
 
+
+
 .btn-row {
   display: flex;
   gap: 10px;
   margin-top: 8px;
 }
+
+
 
 
 .mood-selector {
@@ -941,6 +1139,8 @@ body {
   gap: 8px;
   margin-bottom: 12px;
 }
+
+
 
 
 .mood-btn {
@@ -956,12 +1156,16 @@ body {
 }
 
 
+
+
 .mood-btn.active {
   border-color: var(--accent-emerald);
   color: var(--accent-emerald-dark);
   background: var(--accent-emerald-soft);
   font-weight: 800;
 }
+
+
 
 
 .field-label {
@@ -971,6 +1175,8 @@ body {
   margin-bottom: 5px;
   color: var(--text-primary);
 }
+
+
 
 
 .quote-box {
@@ -984,6 +1190,8 @@ body {
 }
 
 
+
+
 .hash-box {
   background: #f4faf7;
   padding: 11px;
@@ -994,10 +1202,14 @@ body {
 }
 
 
+
+
 .hash-box small {
   color: var(--text-muted);
   font-weight: 700;
 }
+
+
 
 
 .hash-box code {
@@ -1007,6 +1219,8 @@ body {
   font-weight: 700;
   margin-top: 4px;
 }
+
+
 
 
 /* ==========================================================================
@@ -1026,9 +1240,13 @@ body {
 }
 
 
+
+
 .modal-overlay.hidden {
   display: none;
 }
+
+
 
 
 .modal-card {
@@ -1046,6 +1264,8 @@ body {
 }
 
 
+
+
 .modal-card h3 {
   font-size: 0.98rem;
   color: var(--accent-emerald-dark);
@@ -1056,11 +1276,15 @@ body {
 }
 
 
+
+
 .modal-card #modal-category {
   align-self: flex-start;
   margin-bottom: 6px;
   flex-shrink: 0;
 }
+
+
 
 
 .modal-section {
@@ -1075,6 +1299,8 @@ body {
 }
 
 
+
+
 .modal-section h4 {
   font-size: 0.82rem;
   color: var(--accent-emerald-dark);
@@ -1083,10 +1309,14 @@ body {
 }
 
 
+
+
 .modal-section p {
   font-size: 0.82rem;
   color: var(--text-primary);
 }
+
+
 
 
 #modal-evidence {
@@ -1094,6 +1324,8 @@ body {
   font-size: 0.79rem;
   line-height: 1.55;
 }
+
+
 
 
 .compact-history-grid {
@@ -1104,6 +1336,8 @@ body {
   overflow-y: auto;
   padding-right: 4px;
 }
+
+
 
 
 .compact-history-item {
@@ -1120,10 +1354,14 @@ body {
 }
 
 
+
+
 html[dir="rtl"] .compact-history-item {
   border-left: 1px solid rgba(16, 185, 129, 0.22);
   border-right: 3.5px solid var(--accent-emerald);
 }
+
+
 
 
 .modal-card #close-modal-btn {
@@ -1132,10 +1370,14 @@ html[dir="rtl"] .compact-history-item {
 }
 
 
+
+
 .file-label {
   text-align: center;
   display: inline-block;
 }
+
+
 
 
 html[dir="rtl"] .dua-card {
@@ -1144,16 +1386,22 @@ html[dir="rtl"] .dua-card {
 }
 
 
+
+
 html[dir="rtl"] .quote-box {
   border-left: none;
   border-right: 4px solid var(--accent-emerald);
 }
 
 
+
+
 html[dir="rtl"] .info-btn {
   margin-left: 0;
   margin-right: 8px;
 }
+
+
 
 
 /* Back-Button Exit Toast Notification */
@@ -1174,6 +1422,8 @@ html[dir="rtl"] .info-btn {
   pointer-events: none;
   transition: opacity 0.25s ease;
 }
+
+
 
 
 /* ==========================================================================
@@ -1198,14 +1448,20 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .apk-install-btn:active {
   transform: scale(0.95);
 }
 
 
+
+
 .apk-install-btn.hidden {
   display: none !important;
 }
+
+
 
 
 .update-banner-card {
@@ -1223,10 +1479,14 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 @keyframes slideUpFade {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
 
 
 .update-banner-content {
@@ -1237,9 +1497,13 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .update-banner-content span {
   font-size: 1.6rem;
 }
+
+
 
 
 .update-banner-content strong {
@@ -1250,16 +1514,22 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .update-banner-content small {
   font-size: 0.72rem;
   color: var(--text-muted);
 }
 
 
+
+
 .update-banner-actions {
   display: flex;
   gap: 8px;
 }
+
+
 
 
 .btn-update-action {
@@ -1277,6 +1547,8 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .btn-update-dismiss {
   flex: 1;
   background: #f1f6f3;
@@ -1288,6 +1560,8 @@ html[dir="rtl"] .info-btn {
   font-size: 0.82rem;
   cursor: pointer;
 }
+
+
 
 
 /* ==========================================================================
@@ -1305,6 +1579,8 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .startup-splash.splash-hidden {
   opacity: 0;
   visibility: hidden;
@@ -1312,10 +1588,14 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .splash-inner {
   text-align: center;
   padding: 24px;
 }
+
+
 
 
 .splash-logo {
@@ -1328,12 +1608,16 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .splash-inner h2 {
   font-size: 1.25rem;
   color: var(--accent-emerald-dark);
   font-weight: 900;
   margin-bottom: 4px;
 }
+
+
 
 
 .splash-inner p {
@@ -1343,10 +1627,14 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .hero-left-info {
   flex: 1;
   padding-right: 10px;
 }
+
+
 
 
 .time-lock-pill {
@@ -1365,6 +1653,8 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .streak-circle-wrapper {
   position: relative;
   width: 108px;
@@ -1380,6 +1670,8 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .progress-ring-svg {
   position: absolute;
   inset: 0;
@@ -1387,15 +1679,21 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .progress-ring-bg {
   stroke: #e2ece7;
 }
+
+
 
 
 .progress-ring-meter {
   transition: stroke-dashoffset 0.55s cubic-bezier(0.4, 0, 0.2, 1);
   filter: drop-shadow(0 2px 5px rgba(16, 185, 129, 0.3));
 }
+
+
 
 
 .streak-circle-inner {
@@ -1410,10 +1708,14 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .streak-circle-inner .streak-flame {
   font-size: 1.15rem;
   line-height: 1;
 }
+
+
 
 
 .streak-circle-inner strong {
@@ -1425,6 +1727,8 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .streak-circle-inner small {
   font-size: 0.58rem;
   color: var(--text-muted);
@@ -1432,6 +1736,8 @@ html[dir="rtl"] .info-btn {
   max-width: 76px;
   line-height: 1.15;
 }
+
+
 
 
 /* Digital Tasbih Circular Progress Ring */
@@ -1447,6 +1753,8 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .tasbih-ring-svg {
   position: absolute;
   inset: 0;
@@ -1455,15 +1763,21 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .tasbih-ring-bg {
   stroke: #e2ece7;
 }
+
+
 
 
 .tasbih-ring-meter {
   transition: stroke-dashoffset 0.22s ease-out;
   filter: drop-shadow(0 3px 8px rgba(16, 185, 129, 0.35));
 }
+
+
 
 
 .tasbih-cycle-pill {
@@ -1479,6 +1793,8 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 /* Daily Masnoon Duas Circular Ring & Completion Check */
 .duas-header-top {
   display: flex;
@@ -1487,6 +1803,8 @@ html[dir="rtl"] .info-btn {
   gap: 12px;
   margin-bottom: 10px;
 }
+
+
 
 
 .dua-mastery-ring-box {
@@ -1503,9 +1821,13 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 #dua-progress-ring-circle {
   transition: stroke-dashoffset 0.45s ease;
 }
+
+
 
 
 .dua-ring-label {
@@ -1516,15 +1838,21 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .dua-card.completed {
   border-left-color: var(--accent-emerald);
   background: linear-gradient(145deg, #f2fbf7, #ffffff);
 }
 
 
+
+
 .dua-card.time-locked {
   opacity: 0.78;
 }
+
+
 
 
 .dua-action-footer {
@@ -1536,6 +1864,8 @@ html[dir="rtl"] .info-btn {
   border-top: 1px solid rgba(16, 185, 129, 0.16);
   gap: 8px;
 }
+
+
 
 
 .dua-check-btn {
@@ -1552,10 +1882,14 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .dua-check-btn.done {
   background: var(--accent-emerald);
   color: #ffffff;
 }
+
+
 
 
 .dua-check-btn.locked {
@@ -1566,6 +1900,8 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 /* Strict Time-Window Habit Lock Styles */
 .habit-item.time-expired {
   border-color: rgba(220, 38, 38, 0.25);
@@ -1573,10 +1909,14 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .habit-item.time-upcoming {
   border-color: rgba(217, 119, 6, 0.25);
   background: #fffdf9;
 }
+
+
 
 
 .habit-check.locked-expired {
@@ -1588,6 +1928,8 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .habit-check.locked-upcoming {
   border-color: rgba(217, 119, 6, 0.45);
   background: #fef3c7;
@@ -1597,6 +1939,8 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .habit-time-row {
   display: flex;
   align-items: center;
@@ -1604,6 +1948,8 @@ html[dir="rtl"] .info-btn {
   gap: 6px;
   margin-bottom: 4px;
 }
+
+
 
 
 .time-status-badge {
@@ -1617,11 +1963,15 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .time-status-badge.status-open {
   background: #d1fae5;
   color: #065f46;
   border: 1px solid rgba(16, 185, 129, 0.4);
 }
+
+
 
 
 .time-status-badge.status-expired {
@@ -1631,6 +1981,8 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .time-status-badge.status-upcoming {
   background: #fef3c7;
   color: #92400e;
@@ -1638,11 +1990,15 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 .time-status-badge.status-done {
   background: #10b981;
   color: #ffffff;
   border: 1px solid #059669;
 }
+
+
 
 
 /* ==========================================================================
@@ -1658,6 +2014,8 @@ html[dir="rtl"] .info-btn {
   box-shadow: var(--shadow-float);
   overflow: hidden;
 }
+
+
 
 
 .prohibited-header-btn {
@@ -1677,9 +2035,13 @@ html[dir="rtl"] .info-btn {
 }
 
 
+
+
 html[dir="rtl"] .prohibited-header-btn {
   text-align: right;
 }
+
+
 
 
 .prohibited-static-header {
@@ -1691,6 +2053,8 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .prohibited-warning-triangle {
   display: inline-flex;
   align-items: center;
@@ -1700,6 +2064,8 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .prohibited-static-header h4 {
   font-size: 0.82rem;
   font-weight: 900;
@@ -1707,6 +2073,8 @@ html[dir="rtl"] .prohibited-header-btn {
   letter-spacing: -0.01em;
   line-height: 1.2;
 }
+
+
 
 
 .prohibited-chevron {
@@ -1725,11 +2093,15 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .prohibited-static-card:not(.is-collapsed) .prohibited-chevron {
   transform: rotate(180deg);
   background: var(--accent-emerald);
   color: #ffffff;
 }
+
+
 
 
 .prohibited-collapsible-body {
@@ -1740,10 +2112,14 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .prohibited-static-card.is-collapsed .prohibited-collapsible-body {
   grid-template-rows: 0fr;
   opacity: 0;
 }
+
+
 
 
 .prohibited-static-inner {
@@ -1755,15 +2131,21 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .prohibited-static-card.is-collapsed .prohibited-static-inner {
   padding-bottom: 0;
 }
+
+
 
 
 .prohibited-dashed-divider {
   border-top: 1px dashed rgba(16, 185, 129, 0.32);
   margin: 5px 0;
 }
+
+
 
 
 .prohibited-static-list {
@@ -1774,12 +2156,16 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .prohibited-static-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
 }
+
+
 
 
 .prohibited-row-label {
@@ -1789,6 +2175,8 @@ html[dir="rtl"] .prohibited-header-btn {
   line-height: 1.25;
   flex: 1;
 }
+
+
 
 
 .prohibited-time-pill {
@@ -1808,6 +2196,8 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .prohibited-amber-alert-box {
   background: #fde69e;
   border: 1px solid rgba(180, 83, 9, 0.28);
@@ -1815,6 +2205,8 @@ html[dir="rtl"] .prohibited-header-btn {
   padding: 5px 8px;
   margin-top: 2px;
 }
+
+
 
 
 .prohibited-hadith-proof {
@@ -1829,6 +2221,8 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 @media (max-width: 370px) {
   .prohibited-row-label {
     font-size: 0.68rem;
@@ -1839,6 +2233,8 @@ html[dir="rtl"] .prohibited-header-btn {
     min-width: 88px;
   }
 }
+
+
 
 
 /* ==========================================================================
@@ -1854,11 +2250,15 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .five-waqt-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 7px;
 }
+
+
 
 
 .waqt-pill-card {
@@ -1879,15 +2279,21 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .waqt-pill-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-pill);
 }
 
 
+
+
 .waqt-pill-card:active {
   transform: scale(0.95);
 }
+
+
 
 
 .waqt-circle-logo {
@@ -1904,12 +2310,16 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .waqt-pill-card.waqt-active {
   background: linear-gradient(145deg, #e6f7ef, #ffffff);
   border: 2px solid var(--accent-emerald);
   box-shadow: 0 8px 18px rgba(16, 185, 129, 0.2);
   transform: translateY(-2px);
 }
+
+
 
 
 .waqt-pill-card.waqt-active .waqt-circle-logo {
@@ -1919,9 +2329,13 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .waqt-pill-card.waqt-passed {
   opacity: 0.72;
 }
+
+
 
 
 .waqt-name {
@@ -1931,9 +2345,13 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .waqt-pill-card.waqt-active .waqt-name {
   color: var(--accent-emerald-dark);
 }
+
+
 
 
 .waqt-time {
@@ -1941,6 +2359,8 @@ html[dir="rtl"] .prohibited-header-btn {
   color: var(--text-primary);
   font-weight: 900;
 }
+
+
 
 
 /* Individual Habit & Dua Floating Circular Logo Avatars */
@@ -1962,10 +2382,14 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .habit-item:hover .item-circle-avatar,
 .dua-card:hover .item-circle-avatar {
   transform: scale(1.05);
 }
+
+
 
 
 .item-circle-avatar.theme-gold,
@@ -1976,12 +2400,16 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .item-circle-avatar.theme-indigo,
 .item-circle-avatar.theme-purple {
   background: linear-gradient(145deg, #f3e8ff, #e9d5ff);
   border-color: rgba(147, 51, 234, 0.35);
   box-shadow: 0 6px 14px rgba(147, 51, 234, 0.12), inset 0 2px 3px rgba(255, 255, 255, 0.9);
 }
+
+
 
 
 .item-circle-avatar.theme-teal,
@@ -1992,11 +2420,15 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .item-circle-avatar.theme-rose {
   background: linear-gradient(145deg, #ffe4e6, #fecdd3);
   border-color: rgba(225, 29, 72, 0.35);
   box-shadow: 0 6px 14px rgba(225, 29, 72, 0.12), inset 0 2px 3px rgba(255, 255, 255, 0.9);
 }
+
+
 
 
 .avatar-done-dot {
@@ -2018,6 +2450,8 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 .habit-right-actions {
   display: flex;
   flex-direction: column;
@@ -2028,10 +2462,14 @@ html[dir="rtl"] .prohibited-header-btn {
 }
 
 
+
+
 html[dir="rtl"] .habit-right-actions {
   margin-left: 0;
   margin-right: 8px;
 }
+
+
 
 
 /* Circular Check Button on Habit Cards */
@@ -2053,15 +2491,21 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 .habit-item.completed .habit-check {
   background: var(--accent-emerald);
   color: #ffffff;
 }
 
 
+
+
 .habit-check:active {
   transform: scale(0.9);
 }
+
+
 
 
 .habit-right-actions .info-btn {
@@ -2070,6 +2514,8 @@ html[dir="rtl"] .habit-right-actions {
   padding: 4px 9px;
   font-size: 0.66rem;
 }
+
+
 
 
 .dua-title-with-avatar {
@@ -2081,11 +2527,15 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 .dua-title-with-avatar .item-circle-avatar {
   width: 42px;
   height: 42px;
   font-size: 1.12rem;
 }
+
+
 
 
 /* ==========================================================================
@@ -2102,15 +2552,21 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 .monthly-breakdown-panel {
   margin-top: 10px;
   margin-bottom: 14px;
 }
 
 
+
+
 .category-breakdown-header {
   margin-bottom: 14px;
 }
+
+
 
 
 .category-breakdown-header h4 {
@@ -2121,11 +2577,15 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 .category-breakdown-header p {
   font-size: 0.78rem;
   color: #6b726e;
   font-weight: 600;
 }
+
+
 
 
 .category-bars-list {
@@ -2135,6 +2595,8 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 .cat-graph-row {
   display: flex;
   align-items: center;
@@ -2142,6 +2604,8 @@ html[dir="rtl"] .habit-right-actions {
   cursor: default;
   pointer-events: none;
 }
+
+
 
 
 .cat-icon-squircle {
@@ -2156,10 +2620,14 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 .cat-bar-content {
   flex: 1;
   min-width: 0;
 }
+
+
 
 
 .cat-bar-top-row {
@@ -2171,6 +2639,8 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 .cat-bar-title {
   font-size: 0.92rem;
   font-weight: 800;
@@ -2178,11 +2648,15 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 .cat-bar-pct {
   font-size: 0.88rem;
   font-weight: 900;
   color: #2c3531;
 }
+
+
 
 
 .cat-bar-track {
@@ -2194,11 +2668,15 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 .cat-bar-fill {
   height: 100%;
   border-radius: 999px;
   transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+
 
 
 .category-advice-comment {
@@ -2211,11 +2689,15 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 .category-advice-comment.needs-focus {
   background: #fffbeb;
   border: 1px solid rgba(217, 119, 6, 0.35);
   color: #92400e;
 }
+
+
 
 
 .category-advice-comment.all-perfect {
@@ -2225,6 +2707,8 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 /* Interactive 30D (Default) / 90D / 180D / 365D Range Pills */
 .archive-range-pills {
   display: grid;
@@ -2232,6 +2716,8 @@ html[dir="rtl"] .habit-right-actions {
   gap: 6px;
   margin-bottom: 12px;
 }
+
+
 
 
 .range-pill-btn {
@@ -2249,9 +2735,13 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 .range-pill-btn:hover {
   transform: translateY(-1.5px);
 }
+
+
 
 
 .range-pill-btn.active {
@@ -2260,6 +2750,8 @@ html[dir="rtl"] .habit-right-actions {
   border-color: #047857;
   box-shadow: 0 6px 14px rgba(16, 185, 129, 0.25);
 }
+
+
 
 
 /* Interactive Clickable Month Cards */
@@ -2273,9 +2765,13 @@ html[dir="rtl"] .habit-right-actions {
 }
 
 
+
+
 html[dir="rtl"] .month-summary-card {
   text-align: right;
 }
+
+
 
 
 .month-summary-card:hover {
@@ -2284,11 +2780,15 @@ html[dir="rtl"] .month-summary-card {
 }
 
 
+
+
 .month-summary-card.selected-month-card {
   background: linear-gradient(145deg, #e8f8f0, #ffffff);
   border: 2px solid var(--accent-emerald);
   box-shadow: 0 8px 20px rgba(16, 185, 129, 0.18);
 }
+
+
 
 
 .month-card-top {
@@ -2300,10 +2800,14 @@ html[dir="rtl"] .month-summary-card {
 }
 
 
+
+
 .month-selected-dot {
   color: var(--accent-emerald);
   font-size: 0.85rem;
 }
+
+
 
 
 .month-tap-hint {
@@ -2315,9 +2819,13 @@ html[dir="rtl"] .month-summary-card {
 }
 
 
+
+
 .selected-month-history-header {
   margin: 6px 2px 8px;
 }
+
+
 
 
 /* ==========================================================================
@@ -2332,11 +2840,15 @@ html[dir="rtl"] .month-summary-card {
 }
 
 
+
+
 .header-left {
   gap: 9px;
   min-width: 0;
   flex: 1;
 }
+
+
 
 
 .header-brand-logo {
@@ -2348,16 +2860,22 @@ html[dir="rtl"] .month-summary-card {
 }
 
 
+
+
 .header-title-wrap {
   min-width: 0;
   flex: 1;
 }
 
 
+
+
 .app-header h1 {
   font-size: 1.02rem;
   line-height: 1.2;
 }
+
+
 
 
 .app-header p {
@@ -2369,16 +2887,22 @@ html[dir="rtl"] .month-summary-card {
 }
 
 
+
+
 .header-right {
   gap: 6px;
   flex-shrink: 0;
 }
 
 
+
+
 .lang-select {
   padding: 4px 8px;
   font-size: 0.68rem;
 }
+
+
 
 
 /* Universal Asr Madhab Toggle Button (Hanafi <-> Standard/Shafi'i) */
@@ -2401,6 +2925,8 @@ html[dir="rtl"] .month-summary-card {
 }
 
 
+
+
 .madhab-toggle-btn[data-madhab="standard"] {
   background: linear-gradient(135deg, #065f46, #047857);
   color: #ffffff;
@@ -2409,14 +2935,20 @@ html[dir="rtl"] .month-summary-card {
 }
 
 
+
+
 .madhab-toggle-btn:hover {
   transform: translateY(-1.5px);
 }
 
 
+
+
 .madhab-toggle-btn:active {
   transform: scale(0.94);
 }
+
+
 
 
 /* ==========================================================================
@@ -2441,6 +2973,8 @@ html[data-theme="dark"] {
 }
 
 
+
+
 html[data-theme="dark"] body {
   background-color: #05130e;
   background-image: radial-gradient(circle at 50% 0%, #092c20 0%, #05130e 65%);
@@ -2448,11 +2982,15 @@ html[data-theme="dark"] body {
 }
 
 
+
+
 html[data-theme="dark"] .app-header {
   background: #0b221a;
   border-bottom: 1.5px solid rgba(16, 185, 129, 0.32);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
+
+
 
 
 /* In Dark mode, the button displays the opposite Crisp White background */
@@ -2464,10 +3002,14 @@ html[data-theme="dark"] .theme-toggle-btn {
 }
 
 
+
+
 html[data-theme="dark"] .hero-card {
   background: linear-gradient(145deg, #0f382a, #071913);
   border-color: rgba(16, 185, 129, 0.28);
 }
+
+
 
 
 html[data-theme="dark"] .streak-circle-wrapper {
@@ -2476,15 +3018,21 @@ html[data-theme="dark"] .streak-circle-wrapper {
 }
 
 
+
+
 html[data-theme="dark"] .progress-ring-bg,
 html[data-theme="dark"] .tasbih-ring-bg {
   stroke: rgba(255, 255, 255, 0.1);
 }
 
 
+
+
 html[data-theme="dark"] .progress-track {
   background: rgba(255, 255, 255, 0.09);
 }
+
+
 
 
 html[data-theme="dark"] .waqt-strip-card,
@@ -2498,14 +3046,20 @@ html[data-theme="dark"] .modal-card {
 }
 
 
+
+
 html[data-theme="dark"] .prohibited-card.status-safe {
   background: linear-gradient(145deg, rgba(16, 185, 129, 0.1), #0b221a);
 }
 
 
+
+
 html[data-theme="dark"] .prohibited-card.status-danger {
   background: linear-gradient(145deg, rgba(239, 68, 68, 0.2), #161116);
 }
+
+
 
 
 html[data-theme="dark"] .waqt-pill-card,
@@ -2524,12 +3078,16 @@ html[data-theme="dark"] .modal-section {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-pill-card.waqt-active,
 html[data-theme="dark"] .tab-btn.active,
 html[data-theme="dark"] .month-summary-card.selected-month-card {
   background: linear-gradient(145deg, rgba(16, 185, 129, 0.22), #0b221a);
   border-color: var(--accent-gold);
 }
+
+
 
 
 html[data-theme="dark"] .habit-item.completed,
@@ -2539,16 +3097,22 @@ html[data-theme="dark"] .dua-card.completed {
 }
 
 
+
+
 html[data-theme="dark"] .habit-item.time-expired {
   background: rgba(15, 23, 42, 0.65);
   border-color: rgba(239, 68, 68, 0.35);
 }
 
 
+
+
 html[data-theme="dark"] .habit-item.time-upcoming {
   background: rgba(11, 34, 26, 0.85);
   border-color: rgba(234, 179, 8, 0.3);
 }
+
+
 
 
 html[data-theme="dark"] .input-select,
@@ -2560,10 +3124,14 @@ html[data-theme="dark"] .input-textarea {
 }
 
 
+
+
 html[data-theme="dark"] .dua-arabic {
   background: rgba(6, 78, 59, 0.32);
   color: #f8fafc;
 }
+
+
 
 
 html[data-theme="dark"] .translit {
@@ -2571,9 +3139,13 @@ html[data-theme="dark"] .translit {
 }
 
 
+
+
 html[data-theme="dark"] .dua-virtue {
   color: #fde047;
 }
+
+
 
 
 html[data-theme="dark"] .tasbih-wheel {
@@ -2582,10 +3154,14 @@ html[data-theme="dark"] .tasbih-wheel {
 }
 
 
+
+
 html[data-theme="dark"] .category-breakdown-panel {
   background: #071913;
   border-color: rgba(16, 185, 129, 0.25);
 }
+
+
 
 
 html[data-theme="dark"] .category-breakdown-header h4,
@@ -2595,14 +3171,20 @@ html[data-theme="dark"] .cat-bar-pct {
 }
 
 
+
+
 html[data-theme="dark"] .category-breakdown-header p {
   color: #94a3b8;
 }
 
 
+
+
 html[data-theme="dark"] .cat-bar-track {
   background: rgba(255, 255, 255, 0.1);
 }
+
+
 
 
 html[data-theme="dark"] .category-advice-comment.needs-focus {
@@ -2612,11 +3194,15 @@ html[data-theme="dark"] .category-advice-comment.needs-focus {
 }
 
 
+
+
 html[data-theme="dark"] .category-advice-comment.all-perfect {
   background: rgba(16, 185, 129, 0.15);
   border-color: rgba(16, 185, 129, 0.4);
   color: #6ee7b7;
 }
+
+
 
 
 html[data-theme="dark"] .habit-check {
@@ -2625,10 +3211,14 @@ html[data-theme="dark"] .habit-check {
 }
 
 
+
+
 html[data-theme="dark"] .quote-box,
 html[data-theme="dark"] .hash-box {
   background: #071913;
 }
+
+
 
 
 html[data-theme="dark"] .exit-toast,
@@ -2636,6 +3226,8 @@ html[data-theme="dark"] .update-banner-card {
   background: #0b221a;
   color: #f8fafc;
 }
+
+
 
 
 /* ==========================================================================
@@ -2654,10 +3246,14 @@ html[data-theme="dark"] .update-banner-card {
 }
 
 
+
+
 .lunar-ponjika-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-float-hover);
 }
+
+
 
 
 .lunar-hijri-row {
@@ -2669,12 +3265,16 @@ html[data-theme="dark"] .update-banner-card {
 }
 
 
+
+
 #lunar-hijri-headline {
   font-size: 1.02rem;
   font-weight: 900;
   color: #163a2c;
   letter-spacing: 0.01em;
 }
+
+
 
 
 #lunar-hijri-headline .prev-hijri-day {
@@ -2686,11 +3286,15 @@ html[data-theme="dark"] .update-banner-card {
 }
 
 
+
+
 .crescent-badge {
   font-size: 1.05rem;
   line-height: 1;
   filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.25));
 }
+
+
 
 
 .bangla-ponjika-sub {
@@ -2701,12 +3305,16 @@ html[data-theme="dark"] .update-banner-card {
 }
 
 
+
+
 /* Live Ongoing Waqt Progress & Countdown Box inside .waqt-strip-card */
 .live-waqt-countdown-box {
   padding: 6px 6px 12px;
   margin-bottom: 10px;
   border-bottom: 1px dashed rgba(16, 185, 129, 0.22);
 }
+
+
 
 
 .live-waqt-top-row {
@@ -2718,6 +3326,8 @@ html[data-theme="dark"] .update-banner-card {
 }
 
 
+
+
 #live-waqt-title {
   font-size: 1.02rem;
   font-weight: 900;
@@ -2725,11 +3335,15 @@ html[data-theme="dark"] .update-banner-card {
 }
 
 
+
+
 .live-waqt-range {
   font-size: 0.94rem;
   font-weight: 800;
   color: #1e352b;
 }
+
+
 
 
 .live-waqt-track {
@@ -2743,6 +3357,8 @@ html[data-theme="dark"] .update-banner-card {
 }
 
 
+
+
 .live-waqt-fill {
   height: 100%;
   border-radius: 999px;
@@ -2751,12 +3367,16 @@ html[data-theme="dark"] .update-banner-card {
 }
 
 
+
+
 .live-waqt-bottom-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
 }
+
+
 
 
 .live-waqt-running {
@@ -2769,6 +3389,8 @@ html[data-theme="dark"] .update-banner-card {
 }
 
 
+
+
 .live-waqt-dot {
   width: 10px;
   height: 10px;
@@ -2777,6 +3399,8 @@ html[data-theme="dark"] .update-banner-card {
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
   animation: waqtPulse 1.8s infinite ease-in-out;
 }
+
+
 
 
 @keyframes waqtPulse {
@@ -2791,11 +3415,15 @@ html[data-theme="dark"] .update-banner-card {
 }
 
 
+
+
 #live-waqt-remaining {
   font-size: 0.88rem;
   font-weight: 900;
   color: #1e4635;
 }
+
+
 
 
 /* Dark Theme Support for Lunar Ponjika Card & Live Waqt Countdown Box */
@@ -2805,9 +3433,13 @@ html[data-theme="dark"] .lunar-ponjika-card {
 }
 
 
+
+
 html[data-theme="dark"] #lunar-hijri-headline {
   color: #f8fafc;
 }
+
+
 
 
 html[data-theme="dark"] #lunar-hijri-headline .prev-hijri-day {
@@ -2815,9 +3447,13 @@ html[data-theme="dark"] #lunar-hijri-headline .prev-hijri-day {
 }
 
 
+
+
 html[data-theme="dark"] .bangla-ponjika-sub {
   color: #94a3b8;
 }
+
+
 
 
 html[data-theme="dark"] #live-waqt-title,
@@ -2826,9 +3462,13 @@ html[data-theme="dark"] .live-waqt-range {
 }
 
 
+
+
 html[data-theme="dark"] .live-waqt-track {
   background: rgba(255, 255, 255, 0.1);
 }
+
+
 
 
 html[data-theme="dark"] .live-waqt-running {
@@ -2836,9 +3476,13 @@ html[data-theme="dark"] .live-waqt-running {
 }
 
 
+
+
 html[data-theme="dark"] #live-waqt-remaining {
   color: #fde047;
 }
+
+
 
 
 /* ==========================================================================
@@ -2855,11 +3499,15 @@ html[data-theme="dark"] #live-waqt-remaining {
 }
 
 
+
+
 html[data-theme="dark"] .hero-embedded-waqt-box {
   background: rgba(7, 25, 19, 0.88);
   border-color: rgba(16, 185, 129, 0.28);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
+
+
 
 
 /* ==========================================================================
@@ -2874,10 +3522,14 @@ html[data-theme="dark"] .compact-history-item {
 }
 
 
+
+
 html[data-theme="dark"][dir="rtl"] .compact-history-item {
   border-left: 1px solid rgba(16, 185, 129, 0.32);
   border-right: 3.5px solid var(--accent-emerald);
 }
+
+
 
 
 .category-advice-comment.empty-archive-notice {
@@ -2888,11 +3540,15 @@ html[data-theme="dark"][dir="rtl"] .compact-history-item {
 }
 
 
+
+
 html[data-theme="dark"] .category-advice-comment.empty-archive-notice {
   background: rgba(15, 23, 42, 0.55);
   border: 1px dashed rgba(148, 163, 184, 0.35);
   color: #94a3b8;
 }
+
+
 
 
 /* ==========================================================================
@@ -2906,6 +3562,8 @@ html[data-theme="dark"] .category-advice-comment.empty-archive-notice {
 }
 
 
+
+
 .live-waqt-countdown-box.waqt-prohibited-active #live-waqt-title,
 .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-range,
 .live-waqt-countdown-box.waqt-prohibited-active #live-waqt-remaining {
@@ -2913,14 +3571,20 @@ html[data-theme="dark"] .category-advice-comment.empty-archive-notice {
 }
 
 
+
+
 .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-fill {
   background: linear-gradient(90deg, #ef4444, #dc2626);
 }
 
 
+
+
 .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-running {
   color: #dc2626;
 }
+
+
 
 
 .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-dot {
@@ -2929,10 +3593,14 @@ html[data-theme="dark"] .category-advice-comment.empty-archive-notice {
 }
 
 
+
+
 html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active {
   background: linear-gradient(145deg, rgba(239, 68, 68, 0.18), #1a0f12);
   border-color: rgba(239, 68, 68, 0.5);
 }
+
+
 
 
 html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-waqt-title,
@@ -2941,6 +3609,8 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-wa
 html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-waqt-running {
   color: #fca5a5;
 }
+
+
 
 
 /* ==========================================================================
@@ -2953,9 +3623,13 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-wa
 }
 
 
+
+
 .hero-card.hero-card-compact .label {
   font-size: 0.66rem;
 }
+
+
 
 
 .hero-card.hero-card-compact .hero-stats h2 {
@@ -2965,10 +3639,14 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-wa
 }
 
 
+
+
 .hero-card.hero-card-compact .hero-left-info p {
   font-size: 0.75rem;
   line-height: 1.35;
 }
+
+
 
 
 .hero-card.hero-card-compact .time-lock-pill {
@@ -2978,15 +3656,21 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-wa
 }
 
 
+
+
 .hero-card.hero-card-compact .streak-circle-wrapper {
   width: 92px;
   height: 92px;
 }
 
 
+
+
 .hero-card.hero-card-compact .streak-circle-inner .streak-flame {
   font-size: 1rem;
 }
+
+
 
 
 .hero-card.hero-card-compact .streak-circle-inner strong {
@@ -2995,10 +3679,14 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-wa
 }
 
 
+
+
 .hero-card.hero-card-compact .streak-circle-inner small {
   font-size: 0.54rem;
   max-width: 68px;
 }
+
+
 
 
 .hero-card.hero-card-compact .hero-meta {
@@ -3008,12 +3696,16 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-wa
 }
 
 
+
+
 /* Unified 5-Waqt Card with Live Ongoing Prayer Progress Header */
 .waqt-strip-card {
   margin: 0 14px 12px;
   padding: 12px;
   border-radius: 22px;
 }
+
+
 
 
 .waqt-card-embedded-box {
@@ -3026,11 +3718,15 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active .live-wa
 }
 
 
+
+
 html[data-theme="dark"] .waqt-card-embedded-box {
   background: linear-gradient(145deg, rgba(16, 185, 129, 0.12), #071913);
   border-color: rgba(16, 185, 129, 0.28);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
+
+
 
 
 /* ==========================================================================
@@ -3059,10 +3755,14 @@ html[data-theme="dark"] .waqt-card-embedded-box {
 }
 
 
+
+
 .app-header.is-scrolled {
   box-shadow: 0 8px 22px -4px rgba(15, 45, 34, 0.15) !important;
   border-bottom-color: rgba(16, 185, 129, 0.36) !important;
 }
+
+
 
 
 html[data-theme="dark"] .app-header {
@@ -3072,15 +3772,21 @@ html[data-theme="dark"] .app-header {
 }
 
 
+
+
 html[data-theme="dark"] .app-header.is-scrolled {
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.68) !important;
   border-bottom-color: rgba(16, 185, 129, 0.45) !important;
 }
 
 
+
+
 .lunar-ponjika-card {
   margin-top: 2px;
 }
+
+
 
 
 /* ==========================================================================
@@ -3094,6 +3800,8 @@ html[data-theme="dark"] .app-header.is-scrolled {
 }
 
 
+
+
 #live-waqt-remaining {
   color: #dc2626 !important;
   font-weight: 900;
@@ -3101,9 +3809,13 @@ html[data-theme="dark"] .app-header.is-scrolled {
 }
 
 
+
+
 html[data-theme="dark"] #live-waqt-remaining {
   color: #f87171 !important;
 }
+
+
 
 
 #live-tahajjud-subrow {
@@ -3111,9 +3823,13 @@ html[data-theme="dark"] #live-waqt-remaining {
 }
 
 
+
+
 html[data-theme="dark"] #live-tahajjud-subrow {
   border-color: rgba(16, 185, 129, 0.28) !important;
 }
+
+
 
 
 .live-waqt-countdown-box.waqt-prohibited-active #live-tahajjud-subrow {
@@ -3123,10 +3839,14 @@ html[data-theme="dark"] #live-tahajjud-subrow {
 }
 
 
+
+
 html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-tahajjud-subrow {
   background: linear-gradient(145deg, rgba(127, 29, 29, 0.36), rgba(69, 10, 10, 0.42)) !important;
   border-color: rgba(248, 113, 113, 0.45) !important;
 }
+
+
 
 
 /* ==========================================================================
@@ -3140,6 +3860,8 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-ta
   align-items: stretch;
   gap: 4px;
 }
+
+
 
 
 .header-loc-pill-btn {
@@ -3165,15 +3887,21 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-ta
 }
 
 
+
+
 .header-loc-pill-btn:hover {
   background: #e6f7ef;
   border-color: var(--accent-emerald, #10b981);
 }
 
 
+
+
 .header-loc-pill-btn:active {
   transform: scale(0.95);
 }
+
+
 
 
 .header-loc-popover,
@@ -3195,11 +3923,15 @@ html[data-theme="dark"] .live-waqt-countdown-box.waqt-prohibited-active #live-ta
 }
 
 
+
+
 html[dir="rtl"] .header-loc-popover,
 html[dir="rtl"] .bd-loc-Cascading-panel {
   right: auto;
   left: 0;
 }
+
+
 
 
 @keyframes locPopIn {
@@ -3214,10 +3946,14 @@ html[dir="rtl"] .bd-loc-Cascading-panel {
 }
 
 
+
+
 .header-loc-popover.is-open,
 .bd-loc-Cascading-panel.is-open {
   display: flex;
 }
+
+
 
 
 .bd-loc-popover-head {
@@ -3230,11 +3966,15 @@ html[dir="rtl"] .bd-loc-Cascading-panel {
 }
 
 
+
+
 .bd-loc-popover-title {
   font-size: 0.74rem;
   font-weight: 900;
   color: var(--accent-emerald-dark, #065f46);
 }
+
+
 
 
 .bd-loc-coords-pill {
@@ -3249,11 +3989,15 @@ html[dir="rtl"] .bd-loc-Cascading-panel {
 }
 
 
+
+
 .bd-loc-selects-grid {
   display: flex;
   flex-direction: column;
   gap: 7px;
 }
+
+
 
 
 .bd-loc-field {
@@ -3264,9 +4008,13 @@ html[dir="rtl"] .bd-loc-Cascading-panel {
 }
 
 
+
+
 html[dir="rtl"] .bd-loc-field {
   text-align: right;
 }
+
+
 
 
 .bd-loc-field label {
@@ -3275,6 +4023,8 @@ html[dir="rtl"] .bd-loc-field {
   color: var(--text-muted, #5b7268);
   padding-left: 2px;
 }
+
+
 
 
 .bd-loc-select {
@@ -3292,10 +4042,14 @@ html[dir="rtl"] .bd-loc-field {
 }
 
 
+
+
 .bd-loc-select:focus {
   border-color: var(--accent-emerald, #10b981);
   background: #ffffff;
 }
+
+
 
 
 .bd-loc-actions-row {
@@ -3305,6 +4059,8 @@ html[dir="rtl"] .bd-loc-field {
   gap: 8px;
   padding-top: 4px;
 }
+
+
 
 
 .bd-loc-auto-btn {
@@ -3318,6 +4074,8 @@ html[dir="rtl"] .bd-loc-field {
   cursor: pointer;
   font-family: inherit;
 }
+
+
 
 
 .bd-loc-done-btn {
@@ -3334,11 +4092,15 @@ html[dir="rtl"] .bd-loc-field {
 }
 
 
+
+
 html[data-theme="dark"] .header-loc-pill-btn {
   background: #071913;
   color: #34d399;
   border-color: rgba(16, 185, 129, 0.45);
 }
+
+
 
 
 html[data-theme="dark"] .header-loc-popover,
@@ -3349,6 +4111,8 @@ html[data-theme="dark"] .bd-loc-Cascading-panel {
 }
 
 
+
+
 html[data-theme="dark"] .bd-loc-select {
   background: #05130e;
   color: #f8fafc;
@@ -3356,11 +4120,15 @@ html[data-theme="dark"] .bd-loc-select {
 }
 
 
+
+
 html[data-theme="dark"] .bd-loc-auto-btn {
   background: #071913;
   color: #94a3b8;
   border-color: rgba(16, 185, 129, 0.25);
 }
+
+
 
 
 /* ==========================================================================
@@ -3381,15 +4149,21 @@ html[data-theme="dark"] .bd-loc-auto-btn {
 }
 
 
+
+
 .s24-loc-overlay.hidden {
   display: none !important;
 }
+
+
 
 
 @keyframes s24FadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+
 
 
 .s24-loc-prompt-card {
@@ -3404,14 +4178,20 @@ html[data-theme="dark"] .bd-loc-auto-btn {
 }
 
 
+
+
 html[dir="rtl"] .s24-loc-prompt-card {
   text-align: right;
 }
 
 
+
+
 .s24-loc-prompt-card.hidden {
   display: none !important;
 }
+
+
 
 
 @keyframes s24TriggerBorderPulse {
@@ -3422,6 +4202,8 @@ html[dir="rtl"] .s24-loc-prompt-card {
     box-shadow: 0 18px 40px rgba(16, 185, 129, 0.3);
   }
 }
+
+
 
 
 .s24-loc-search-trigger {
@@ -3445,6 +4227,8 @@ html[dir="rtl"] .s24-loc-prompt-card {
 }
 
 
+
+
 .s24-loc-search-trigger:hover {
   background: linear-gradient(145deg, #e6f7ef 0%, #d1fae5 100%);
   border-color: #059669;
@@ -3452,10 +4236,14 @@ html[dir="rtl"] .s24-loc-prompt-card {
 }
 
 
+
+
 .s24-loc-search-trigger:active {
   transform: scale(0.97);
   background: #d1fae5;
 }
+
+
 
 
 .s24-loc-trigger-left {
@@ -3465,6 +4253,8 @@ html[dir="rtl"] .s24-loc-prompt-card {
   min-width: 0;
   flex: 1;
 }
+
+
 
 
 .s24-loc-trigger-icon {
@@ -3482,6 +4272,8 @@ html[dir="rtl"] .s24-loc-prompt-card {
 }
 
 
+
+
 .s24-loc-trigger-text-wrap {
   display: flex;
   flex-direction: column;
@@ -3492,10 +4284,14 @@ html[dir="rtl"] .s24-loc-prompt-card {
 }
 
 
+
+
 html[dir="rtl"] .s24-loc-trigger-text-wrap {
   align-items: flex-end;
   text-align: right;
 }
+
+
 
 
 .s24-loc-trigger-title {
@@ -3506,12 +4302,16 @@ html[dir="rtl"] .s24-loc-trigger-text-wrap {
 }
 
 
+
+
 .s24-loc-trigger-hint {
   font-size: 0.71rem;
   font-weight: 700;
   color: var(--text-muted, #5b7268);
   line-height: 1.3;
 }
+
+
 
 
 .s24-loc-trigger-arrow {
@@ -3530,9 +4330,13 @@ html[dir="rtl"] .s24-loc-trigger-text-wrap {
 }
 
 
+
+
 html[dir="rtl"] .s24-loc-trigger-arrow {
   transform: scaleX(-1);
 }
+
+
 
 
 .s24-loc-picker-card {
@@ -3548,9 +4352,13 @@ html[dir="rtl"] .s24-loc-trigger-arrow {
 }
 
 
+
+
 .s24-loc-picker-card.hidden {
   display: none !important;
 }
+
+
 
 
 .s24-loc-floating-close {
@@ -3574,10 +4382,14 @@ html[dir="rtl"] .s24-loc-trigger-arrow {
 }
 
 
+
+
 html[dir="rtl"] .s24-loc-floating-close {
   right: auto;
   left: -12px;
 }
+
+
 
 
 .s24-loc-picker-header {
@@ -3593,6 +4405,8 @@ html[dir="rtl"] .s24-loc-floating-close {
 }
 
 
+
+
 .s24-loc-back-btn {
   position: absolute;
   left: 12px;
@@ -3606,6 +4420,8 @@ html[dir="rtl"] .s24-loc-floating-close {
 }
 
 
+
+
 html[dir="rtl"] .s24-loc-back-btn {
   left: auto;
   right: 12px;
@@ -3613,9 +4429,13 @@ html[dir="rtl"] .s24-loc-back-btn {
 }
 
 
+
+
 .s24-loc-back-btn.hidden {
   display: none !important;
 }
+
+
 
 
 #s24-loc-picker-title {
@@ -3630,10 +4450,14 @@ html[dir="rtl"] .s24-loc-back-btn {
 }
 
 
+
+
 .s24-loc-search-wrap {
   padding: 10px 14px 6px;
   background: #ffffff;
 }
+
+
 
 
 .s24-loc-search-input {
@@ -3649,9 +4473,13 @@ html[dir="rtl"] .s24-loc-back-btn {
 }
 
 
+
+
 .s24-loc-search-input::placeholder {
   color: #9ca3af;
 }
+
+
 
 
 .s24-loc-list-scroll {
@@ -3662,6 +4490,8 @@ html[dir="rtl"] .s24-loc-back-btn {
   scrollbar-width: thin;
   scrollbar-color: #2e5c46 transparent;
 }
+
+
 
 
 .s24-loc-item-btn {
@@ -3682,9 +4512,13 @@ html[dir="rtl"] .s24-loc-back-btn {
 }
 
 
+
+
 html[dir="rtl"] .s24-loc-item-btn {
   text-align: right;
 }
+
+
 
 
 .s24-loc-item-btn:hover,
@@ -3694,11 +4528,15 @@ html[dir="rtl"] .s24-loc-item-btn {
 }
 
 
+
+
 .s24-loc-item-btn.is-active-loc {
   color: #047857;
   font-weight: 800;
   background: rgba(16, 185, 129, 0.08);
 }
+
+
 
 
 html[data-theme="dark"] .s24-loc-picker-card,
@@ -3708,9 +4546,13 @@ html[data-theme="dark"] .s24-loc-search-wrap {
 }
 
 
+
+
 html[data-theme="dark"] .s24-loc-prompt-card {
   background: transparent;
 }
+
+
 
 
 html[data-theme="dark"] .s24-loc-search-trigger {
@@ -3720,14 +4562,20 @@ html[data-theme="dark"] .s24-loc-search-trigger {
 }
 
 
+
+
 html[data-theme="dark"] .s24-loc-trigger-title {
   color: #34d399;
 }
 
 
+
+
 html[data-theme="dark"] .s24-loc-trigger-hint {
   color: #94a3b8;
 }
+
+
 
 
 html[data-theme="dark"] .s24-loc-trigger-icon {
@@ -3736,10 +4584,14 @@ html[data-theme="dark"] .s24-loc-trigger-icon {
 }
 
 
+
+
 html[data-theme="dark"] .s24-loc-search-input,
 html[data-theme="dark"] .s24-loc-item-btn {
   color: #f8fafc;
 }
+
+
 
 
 html[data-theme="dark"] .s24-loc-floating-close {
@@ -3747,6 +4599,8 @@ html[data-theme="dark"] .s24-loc-floating-close {
   color: #ffffff;
   border-color: rgba(16, 185, 129, 0.4);
 }
+
+
 
 
 /* ==========================================================================
@@ -3759,10 +4613,14 @@ html[data-theme="dark"] .s24-loc-floating-close {
 }
 
 
+
+
 .waqt-pill-card {
   position: relative;
   outline: none;
 }
+
+
 
 
 .waqt-pill-card.waqt-popup-selected {
@@ -3773,11 +4631,15 @@ html[data-theme="dark"] .s24-loc-floating-close {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   background: linear-gradient(145deg, rgba(234, 179, 8, 0.2), #0b221a) !important;
   border-color: #eab308 !important;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55) !important;
 }
+
+
 
 
 .waqt-range-popup-wrap {
@@ -3788,9 +4650,13 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
 }
 
 
+
+
 .waqt-range-popup-wrap.hidden {
   display: none !important;
 }
+
+
 
 
 @keyframes waqtPopupReveal {
@@ -3803,6 +4669,8 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
     transform: translateY(0) scale(1);
   }
 }
+
+
 
 
 .waqt-popup-arrow {
@@ -3820,6 +4688,8 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
 }
 
 
+
+
 .waqt-range-popup-card {
   position: relative;
   z-index: 2;
@@ -3829,6 +4699,8 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   padding: 13px 14px;
   box-shadow: 0 14px 32px -6px rgba(15, 45, 34, 0.16), 0 4px 12px -2px rgba(16, 185, 129, 0.1);
 }
+
+
 
 
 .waqt-popup-head {
@@ -3842,12 +4714,16 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
 }
 
 
+
+
 .waqt-popup-title-group {
   display: flex;
   align-items: center;
   gap: 9px;
   min-width: 0;
 }
+
+
 
 
 .waqt-popup-avatar {
@@ -3865,11 +4741,15 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
 }
 
 
+
+
 .waqt-popup-title-text {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
+
+
 
 
 .waqt-popup-title-text h4 {
@@ -3880,11 +4760,15 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
 }
 
 
+
+
 .waqt-popup-title-text small {
   font-size: 0.68rem;
   font-weight: 700;
   color: var(--text-muted, #5b7268);
 }
+
+
 
 
 .waqt-popup-head-right {
@@ -3893,6 +4777,8 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
   gap: 6px;
   flex-shrink: 0;
 }
+
+
 
 
 .waqt-popup-status-pill {
@@ -3904,11 +4790,15 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
 }
 
 
+
+
 .waqt-popup-status-pill.status-active {
   background: #d1fae5;
   color: #065f46;
   border: 1px solid rgba(16, 185, 129, 0.45);
 }
+
+
 
 
 .waqt-popup-status-pill.status-passed {
@@ -3918,11 +4808,15 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
 }
 
 
+
+
 .waqt-popup-status-pill.status-upcoming {
   background: #fef3c7;
   color: #92400e;
   border: 1px solid rgba(217, 119, 6, 0.38);
 }
+
+
 
 
 .waqt-popup-close-btn {
@@ -3942,9 +4836,13 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
 }
 
 
+
+
 .waqt-popup-close-btn:active {
   transform: scale(0.9);
 }
+
+
 
 
 /* Structured High-Contrast Start & End Time Field Grid */
@@ -3962,6 +4860,8 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
 }
 
 
+
+
 .waqt-popup-time-box {
   display: flex;
   flex-direction: column;
@@ -3969,14 +4869,20 @@ html[data-theme="dark"] .waqt-pill-card.waqt-popup-selected {
 }
 
 
+
+
 .waqt-popup-time-box.end-box {
   text-align: right;
 }
 
 
+
+
 html[dir="rtl"] .waqt-popup-time-box.end-box {
   text-align: left;
 }
+
+
 
 
 .waqt-popup-time-lbl {
@@ -3988,6 +4894,8 @@ html[dir="rtl"] .waqt-popup-time-box.end-box {
 }
 
 
+
+
 .waqt-popup-time-val {
   font-size: 0.96rem;
   font-weight: 900;
@@ -3996,9 +4904,13 @@ html[dir="rtl"] .waqt-popup-time-box.end-box {
 }
 
 
+
+
 .waqt-popup-time-box.end-box .waqt-popup-time-val {
   color: #b45309;
 }
+
+
 
 
 .waqt-popup-time-divider {
@@ -4015,9 +4927,13 @@ html[dir="rtl"] .waqt-popup-time-box.end-box {
 }
 
 
+
+
 html[dir="rtl"] .waqt-popup-time-divider {
   transform: scaleX(-1);
 }
+
+
 
 
 .waqt-popup-meta-rows {
@@ -4025,6 +4941,8 @@ html[dir="rtl"] .waqt-popup-time-divider {
   flex-direction: column;
   gap: 6px;
 }
+
+
 
 
 .waqt-popup-meta-item {
@@ -4041,16 +4959,22 @@ html[dir="rtl"] .waqt-popup-time-divider {
 }
 
 
+
+
 .waqt-popup-meta-item span {
   font-weight: 700;
   color: var(--text-muted, #5b7268);
 }
 
 
+
+
 .waqt-popup-meta-item strong {
   font-weight: 800;
   color: var(--text-primary, #1e352b);
 }
+
+
 
 
 .waqt-popup-sunnah-note {
@@ -4067,6 +4991,8 @@ html[dir="rtl"] .waqt-popup-time-divider {
 }
 
 
+
+
 .waqt-popup-filter-btn {
   background: var(--accent-emerald-soft, #e6f6ef);
   color: var(--accent-emerald-dark, #065f46);
@@ -4081,9 +5007,13 @@ html[dir="rtl"] .waqt-popup-time-divider {
 }
 
 
+
+
 .waqt-popup-filter-btn:active {
   transform: scale(0.95);
 }
+
+
 
 
 /* Dark Mode Overrides for 5-Waqt Popup */
@@ -4093,6 +5023,8 @@ html[data-theme="dark"] .waqt-popup-arrow {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-range-popup-card {
   background: linear-gradient(180deg, #0b221a 0%, #071913 100%);
   border-color: rgba(16, 185, 129, 0.5);
@@ -4100,10 +5032,14 @@ html[data-theme="dark"] .waqt-range-popup-card {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-popup-title-text h4,
 html[data-theme="dark"] .waqt-popup-meta-item strong {
   color: #f8fafc;
 }
+
+
 
 
 html[data-theme="dark"] .waqt-popup-close-btn {
@@ -4113,10 +5049,14 @@ html[data-theme="dark"] .waqt-popup-close-btn {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-popup-time-grid {
   background: #05130e;
   border-color: rgba(16, 185, 129, 0.3);
 }
+
+
 
 
 html[data-theme="dark"] .waqt-popup-time-val {
@@ -4124,9 +5064,13 @@ html[data-theme="dark"] .waqt-popup-time-val {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-popup-time-box.end-box .waqt-popup-time-val {
   color: #fde047;
 }
+
+
 
 
 html[data-theme="dark"] .waqt-popup-meta-item {
@@ -4135,10 +5079,14 @@ html[data-theme="dark"] .waqt-popup-meta-item {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-popup-status-pill.status-active {
   background: rgba(16, 185, 129, 0.22);
   color: #6ee7b7;
 }
+
+
 
 
 html[data-theme="dark"] .waqt-popup-status-pill.status-passed {
@@ -4147,10 +5095,14 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-passed {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
   background: rgba(234, 179, 8, 0.18);
   color: #fde047;
 }
+
+
 
 
 /* ==========================================================================
@@ -4167,16 +5119,22 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
 }
 
 
+
+
 .ongoing-static-head {
   margin-bottom: 10px;
   padding-bottom: 9px;
 }
 
 
+
+
 .waqt-popup-avatar.prohibited-avatar {
   background: #fee2e2;
   border-color: rgba(220, 38, 38, 0.45);
 }
+
+
 
 
 .waqt-popup-status-pill.status-prohibited {
@@ -4186,9 +5144,13 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
 }
 
 
+
+
 .ongoing-static-time-grid {
   margin-bottom: 10px;
 }
+
+
 
 
 .ongoing-progress-strip {
@@ -4199,6 +5161,8 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
   margin-bottom: 9px;
   box-shadow: inset 0 1px 2px rgba(15, 45, 34, 0.03);
 }
+
+
 
 
 .ongoing-countdown-pill {
@@ -4212,9 +5176,13 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
 }
 
 
+
+
 .ongoing-static-meta-rows {
   margin-top: 2px;
 }
+
+
 
 
 .ongoing-prime-badge {
@@ -4228,6 +5196,8 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
 }
 
 
+
+
 .ongoing-prime-badge.active {
   background: rgba(220, 38, 38, 0.1);
   color: #dc2626;
@@ -4235,11 +5205,15 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
 }
 
 
+
+
 .ongoing-prime-badge.ended {
   background: rgba(220, 38, 38, 0.09);
   color: #b91c1c;
   border: 1px solid rgba(220, 38, 38, 0.25);
 }
+
+
 
 
 .ongoing-prime-subnote {
@@ -4254,11 +5228,15 @@ html[data-theme="dark"] .waqt-popup-status-pill.status-upcoming {
 }
 
 
+
+
 html[dir="rtl"] .ongoing-prime-subnote {
   border-left: none;
   border-right: 3px solid var(--accent-emerald, #10b981);
   border-radius: 9px 0 0 9px;
 }
+
+
 
 
 .ongoing-prime-subnote.note-alert {
@@ -4268,9 +5246,13 @@ html[dir="rtl"] .ongoing-prime-subnote {
 }
 
 
+
+
 html[dir="rtl"] .ongoing-prime-subnote.note-alert {
   border-right-color: #dc2626;
 }
+
+
 
 
 /* Tahajjud / Qiyam al-Layl Static Inner Card inside Ongoing Isha */
@@ -4284,10 +5266,14 @@ html[dir="rtl"] .ongoing-prime-subnote.note-alert {
 }
 
 
+
+
 .ongoing-tahajjud-subcard.golden-state {
   background: linear-gradient(145deg, #fffbeb, #f4fbf7);
   border-color: rgba(217, 119, 6, 0.42);
 }
+
+
 
 
 .ongoing-rakah-footer {
@@ -4298,6 +5284,8 @@ html[dir="rtl"] .ongoing-prime-subnote.note-alert {
 }
 
 
+
+
 /* Dark Theme Support for Static Ongoing Waqt Card */
 html[data-theme="dark"] .waqt-card-embedded-box {
   background: linear-gradient(180deg, #0b221a 0%, #071913 100%) !important;
@@ -4306,10 +5294,14 @@ html[data-theme="dark"] .waqt-card-embedded-box {
 }
 
 
+
+
 html[data-theme="dark"] .ongoing-progress-strip {
   background: #05130e;
   border-color: rgba(16, 185, 129, 0.25);
 }
+
+
 
 
 html[data-theme="dark"] .ongoing-countdown-pill {
@@ -4317,6 +5309,8 @@ html[data-theme="dark"] .ongoing-countdown-pill {
   color: #fca5a5 !important;
   border-color: rgba(239, 68, 68, 0.35);
 }
+
+
 
 
 html[data-theme="dark"] .ongoing-prime-badge.active,
@@ -4327,10 +5321,14 @@ html[data-theme="dark"] .ongoing-prime-badge.ended {
 }
 
 
+
+
 html[data-theme="dark"] .ongoing-prime-subnote {
   background: rgba(16, 185, 129, 0.08);
   color: #cbd5e1;
 }
+
+
 
 
 html[data-theme="dark"] .ongoing-prime-subnote.note-alert {
@@ -4339,16 +5337,22 @@ html[data-theme="dark"] .ongoing-prime-subnote.note-alert {
 }
 
 
+
+
 html[data-theme="dark"] .ongoing-tahajjud-subcard {
   background: linear-gradient(145deg, #0b221a, #05130e);
   border-color: rgba(16, 185, 129, 0.36);
 }
 
 
+
+
 html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
   background: linear-gradient(145deg, rgba(234, 179, 8, 0.12), #071913);
   border-color: rgba(234, 179, 8, 0.45);
 }
+
+
 
 
 /* ==========================================================================
@@ -4360,12 +5364,16 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
 }
 
 
+
+
 .ongoing-static-meta-rows {
   display: flex;
   flex-direction: column;
   gap: 6px;
   margin-top: 0;
 }
+
+
 
 
 .ongoing-tahajjud-mini-bar {
@@ -4383,10 +5391,14 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
 }
 
 
+
+
 .ongoing-tahajjud-mini-bar.golden-state {
   background: rgba(234, 179, 8, 0.08);
   border-color: rgba(217, 119, 6, 0.42);
 }
+
+
 
 
 .tahajjud-mini-left {
@@ -4398,10 +5410,14 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
 }
 
 
+
+
 .tahajjud-mini-icon {
   font-size: 0.8rem;
   line-height: 1;
 }
+
+
 
 
 .tahajjud-mini-title {
@@ -4410,10 +5426,14 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
 }
 
 
+
+
 .tahajjud-mini-time {
   color: var(--text-primary, #1e352b);
   font-weight: 800;
 }
+
+
 
 
 .tahajjud-mini-right {
@@ -4421,6 +5441,8 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
   align-items: center;
   flex-shrink: 0;
 }
+
+
 
 
 .tahajjud-mini-badge {
@@ -4432,11 +5454,15 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
 }
 
 
+
+
 .tahajjud-mini-badge.upcoming {
   background: #fef3c7;
   color: #92400e;
   border: 1px solid rgba(217, 119, 6, 0.32);
 }
+
+
 
 
 .tahajjud-mini-badge.active {
@@ -4446,11 +5472,15 @@ html[data-theme="dark"] .ongoing-tahajjud-subcard.golden-state {
 }
 
 
+
+
 .tahajjud-mini-badge.golden {
   background: #fef08a;
   color: #854d0e;
   border: 1px solid rgba(202, 138, 4, 0.42);
 }
+
+
 
 
 html[data-theme="dark"] .ongoing-tahajjud-mini-bar {
@@ -4459,10 +5489,14 @@ html[data-theme="dark"] .ongoing-tahajjud-mini-bar {
 }
 
 
+
+
 html[data-theme="dark"] .ongoing-tahajjud-mini-bar.golden-state {
   background: rgba(234, 179, 8, 0.12);
   border-color: rgba(234, 179, 8, 0.38);
 }
+
+
 
 
 html[data-theme="dark"] .tahajjud-mini-title {
@@ -4470,9 +5504,13 @@ html[data-theme="dark"] .tahajjud-mini-title {
 }
 
 
+
+
 html[data-theme="dark"] .tahajjud-mini-time {
   color: #f8fafc;
 }
+
+
 
 
 html[data-theme="dark"] .tahajjud-mini-badge.upcoming {
@@ -4481,10 +5519,14 @@ html[data-theme="dark"] .tahajjud-mini-badge.upcoming {
 }
 
 
+
+
 html[data-theme="dark"] .tahajjud-mini-badge.active {
   background: rgba(16, 185, 129, 0.22);
   color: #6ee7b7;
 }
+
+
 
 
 html[data-theme="dark"] .tahajjud-mini-badge.golden {
@@ -4493,11 +5535,15 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
 }
 
 
+
+
 /* ==========================================================================
    STRICT SINGLE-LINE WAQT COUNTDOWN & PRIME TIME META ROW LOCK (v4.3)
    1. Keeps "✨ উত্তম সময় (আউয়াল ওয়াক্ত):" at its original compact size.
    2. Increases ONLY "⏱️ ওয়াক্ত শেষ হতে বাকি:" to the larger standard size.
    ========================================================================== */
+
+
 
 
 /* --- 1. ORIGINAL STYLE FOR "✨ উত্তম সময় (আউয়াল ওয়াক্ত):" --- */
@@ -4515,6 +5561,8 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
 }
 
 
+
+
 .waqt-popup-meta-item > span,
 .waqt-popup-meta-item .meta-row-label {
   white-space: nowrap !important;
@@ -4527,6 +5575,8 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
 }
 
 
+
+
 .waqt-popup-meta-item > strong,
 .waqt-popup-meta-item .meta-row-value {
   white-space: nowrap !important;
@@ -4537,11 +5587,15 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
 }
 
 
+
+
 /* --- 2. LARGER STANDARD SIZE ONLY FOR "⏱️ ওয়াক্ত শেষ হতে বাকি:" --- */
 .waqt-popup-meta-item.countdown-single-line-row {
   gap: 10px !important;
   padding: 9px 13px !important;
 }
+
+
 
 
 .waqt-popup-meta-item.countdown-single-line-row > span,
@@ -4550,6 +5604,8 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
   font-weight: 800 !important;
   line-height: 1.4 !important;
 }
+
+
 
 
 .waqt-popup-meta-item.countdown-single-line-row > strong,
@@ -4562,12 +5618,16 @@ html[data-theme="dark"] .tahajjud-mini-badge.golden {
 }
 
 
+
+
 html[dir="rtl"] .waqt-popup-meta-item > strong,
 html[dir="rtl"] .waqt-popup-meta-item .meta-row-value,
 html[dir="rtl"] #live-waqt-remaining {
   margin-left: 0;
   margin-right: auto;
 }
+
+
 
 
 /* --- 3. SMALL SCREEN SAFEGUARD (360px and below) --- */
@@ -4588,6 +5648,8 @@ html[dir="rtl"] #live-waqt-remaining {
   }
 
 
+
+
   /* Larger standard small-screen values ONLY for "⏱️ ওয়াক্ত শেষ হতে বাকি:" */
   .waqt-popup-meta-item.countdown-single-line-row {
     padding: 8px 10px !important;
@@ -4605,6 +5667,8 @@ html[dir="rtl"] #live-waqt-remaining {
 }
 
 
+
+
 /* ==========================================================================
    GOOGLE MATERIAL 3 FULL-SCREEN MASTER SECTION & LAUNCHER HUB ARCHITECTURE (v5.0)
    - Removes combined 24H Routine & Muhasabah Diary
@@ -4616,6 +5680,8 @@ html[dir="rtl"] #live-waqt-remaining {
    ========================================================================== */
 
 
+
+
 /* 1. Screen Visibility & Smooth Native App Transitions */
 .home-dashboard-view {
   display: block;
@@ -4623,9 +5689,13 @@ html[dir="rtl"] #live-waqt-remaining {
 }
 
 
+
+
 .home-dashboard-view.hidden {
   display: none !important;
 }
+
+
 
 
 .master-section-view {
@@ -4636,9 +5706,13 @@ html[dir="rtl"] #live-waqt-remaining {
 }
 
 
+
+
 .master-section-view.hidden {
   display: none !important;
 }
+
+
 
 
 .master-screen-panel {
@@ -4648,9 +5722,13 @@ html[dir="rtl"] #live-waqt-remaining {
 }
 
 
+
+
 .master-screen-panel.hidden {
   display: none !important;
 }
+
+
 
 
 @keyframes m3ScreenFadeIn {
@@ -4665,6 +5743,8 @@ html[dir="rtl"] #live-waqt-remaining {
 }
 
 
+
+
 @keyframes m3MasterSlideIn {
   from {
     opacity: 0;
@@ -4675,6 +5755,8 @@ html[dir="rtl"] #live-waqt-remaining {
     transform: translateX(0);
   }
 }
+
+
 
 
 /* 2. Prohibited Salah Card Positioned Directly Below 5 Daily Prayers on Home */
@@ -4688,10 +5770,14 @@ html[dir="rtl"] #live-waqt-remaining {
 }
 
 
+
+
 .home-prohibited-card:hover {
   transform: translateY(-1.5px);
   box-shadow: 0 12px 26px -6px rgba(220, 38, 38, 0.15) !important;
 }
+
+
 
 
 html[data-theme="dark"] .home-prohibited-card {
@@ -4700,10 +5786,14 @@ html[data-theme="dark"] .home-prohibited-card {
 }
 
 
+
+
 /* 3. Home Master Section Launcher Hub & 2-Column Material 3 Card Grid */
 .sections-hub-wrapper {
   margin: 4px 14px 20px;
 }
+
+
 
 
 .sections-hub-header {
@@ -4715,11 +5805,15 @@ html[data-theme="dark"] .home-prohibited-card {
 }
 
 
+
+
 .sections-hub-title-row {
   display: flex;
   align-items: center;
   gap: 8px;
 }
+
+
 
 
 .hub-sparkle-dot {
@@ -4732,12 +5826,16 @@ html[data-theme="dark"] .home-prohibited-card {
 }
 
 
+
+
 #sections-hub-heading {
   font-size: 1.02rem;
   font-weight: 900;
   color: var(--accent-emerald-dark, #065f46);
   letter-spacing: -0.01em;
 }
+
+
 
 
 .sections-hub-subtitle {
@@ -4748,10 +5846,14 @@ html[data-theme="dark"] .home-prohibited-card {
 }
 
 
+
+
 html[dir="rtl"] .sections-hub-subtitle {
   padding-left: 0;
   padding-right: 18px;
 }
+
+
 
 
 .master-sections-grid {
@@ -4761,11 +5863,15 @@ html[dir="rtl"] .sections-hub-subtitle {
 }
 
 
+
+
 @media (max-width: 350px) {
   .master-sections-grid {
     grid-template-columns: 1fr;
   }
 }
+
+
 
 
 /* 4. Individual Section Launcher Card with High-Contrast Material 3 Styling */
@@ -4789,9 +5895,13 @@ html[dir="rtl"] .sections-hub-subtitle {
 }
 
 
+
+
 html[dir="rtl"] .section-launcher-card {
   text-align: right;
 }
+
+
 
 
 .section-launcher-card:hover {
@@ -4801,9 +5911,13 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-launcher-card:active {
   transform: scale(0.97);
 }
+
+
 
 
 .section-card-top {
@@ -4813,6 +5927,8 @@ html[dir="rtl"] .section-launcher-card {
   gap: 6px;
   width: 100%;
 }
+
+
 
 
 /* World-Class Vector Logo Squircle on Every Section */
@@ -4831,9 +5947,13 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-launcher-card:hover .section-world-logo {
   transform: scale(1.06) rotate(-2deg);
 }
+
+
 
 
 .section-world-logo.logo-indigo {
@@ -4843,11 +5963,15 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-world-logo.logo-amber {
   background: linear-gradient(145deg, #fffbeb, #fef3c7);
   border-color: rgba(217, 119, 6, 0.35);
   box-shadow: 0 6px 14px -3px rgba(217, 119, 6, 0.18);
 }
+
+
 
 
 .section-world-logo.logo-emerald,
@@ -4858,11 +5982,15 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-world-logo.logo-purple {
   background: linear-gradient(145deg, #faf5ff, #f3e8ff);
   border-color: rgba(147, 51, 234, 0.32);
   box-shadow: 0 6px 14px -3px rgba(147, 51, 234, 0.16);
 }
+
+
 
 
 .section-world-logo.logo-teal {
@@ -4872,11 +6000,15 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-world-logo.logo-gold {
   background: linear-gradient(145deg, #fefce8, #fef08a);
   border-color: rgba(180, 83, 9, 0.36);
   box-shadow: 0 6px 14px -3px rgba(180, 83, 9, 0.16);
 }
+
+
 
 
 .section-world-logo.logo-rose {
@@ -4886,6 +6018,8 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-world-logo.logo-cyan {
   background: linear-gradient(145deg, #f0f9ff, #e0f2fe);
   border-color: rgba(2, 132, 199, 0.34);
@@ -4893,11 +6027,15 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-world-logo.logo-slate {
   background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
   border-color: rgba(15, 118, 110, 0.32);
   box-shadow: 0 6px 14px -3px rgba(15, 45, 34, 0.12);
 }
+
+
 
 
 .section-live-pill {
@@ -4912,6 +6050,8 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-card-body {
   display: flex;
   flex-direction: column;
@@ -4920,12 +6060,16 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-card-title {
   font-size: 0.9rem;
   font-weight: 900;
   color: var(--text-primary, #1e352b);
   line-height: 1.28;
 }
+
+
 
 
 .section-card-desc {
@@ -4940,6 +6084,8 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-card-footer {
   display: flex;
   align-items: center;
@@ -4948,6 +6094,8 @@ html[dir="rtl"] .section-launcher-card {
   width: 100%;
   padding-top: 4px;
 }
+
+
 
 
 .section-mini-track {
@@ -4959,12 +6107,16 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-mini-fill {
   height: 100%;
   background: linear-gradient(90deg, #10b981, #059669);
   border-radius: 999px;
   transition: width 0.4s ease;
 }
+
+
 
 
 .section-enter-arrow {
@@ -4984,15 +6136,21 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 html[dir="rtl"] .section-enter-arrow {
   transform: scaleX(-1);
 }
+
+
 
 
 .section-launcher-card:hover .section-enter-arrow {
   background: var(--accent-emerald, #10b981);
   color: #ffffff;
 }
+
+
 
 
 /* 5. Master Section Full-Screen Top Navigation Bar (#master-section-topbar) */
@@ -5008,6 +6166,8 @@ html[dir="rtl"] .section-enter-arrow {
   border-radius: 20px;
   box-shadow: 0 10px 24px -6px rgba(15, 45, 34, 0.1);
 }
+
+
 
 
 .master-back-home-btn {
@@ -5029,9 +6189,13 @@ html[dir="rtl"] .section-enter-arrow {
 }
 
 
+
+
 .master-back-home-btn:hover {
   background: #d1fae5;
 }
+
+
 
 
 .master-back-home-btn:active {
@@ -5039,10 +6203,14 @@ html[dir="rtl"] .section-enter-arrow {
 }
 
 
+
+
 html[dir="rtl"] .back-arrow-icon {
   transform: scaleX(-1);
   display: inline-block;
 }
+
+
 
 
 .master-topbar-center {
@@ -5052,6 +6220,8 @@ html[dir="rtl"] .back-arrow-icon {
   min-width: 0;
   flex: 1;
 }
+
+
 
 
 .master-topbar-logo {
@@ -5069,11 +6239,15 @@ html[dir="rtl"] .back-arrow-icon {
 }
 
 
+
+
 .master-topbar-titles {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
+
+
 
 
 .master-topbar-titles h2 {
@@ -5087,6 +6261,8 @@ html[dir="rtl"] .back-arrow-icon {
 }
 
 
+
+
 .master-topbar-titles small {
   font-size: 0.67rem;
   font-weight: 700;
@@ -5095,6 +6271,8 @@ html[dir="rtl"] .back-arrow-icon {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+
 
 
 .master-topbar-badge {
@@ -5107,6 +6285,8 @@ html[dir="rtl"] .back-arrow-icon {
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
 }
+
+
 
 
 /* 6. Dedicated Master Phase Hero Banner inside Individual Habit Section */
@@ -5126,6 +6306,8 @@ html[dir="rtl"] .back-arrow-icon {
 }
 
 
+
+
 .master-phase-banner-left {
   display: flex;
   flex-direction: column;
@@ -5133,6 +6315,8 @@ html[dir="rtl"] .back-arrow-icon {
   min-width: 0;
   flex: 1;
 }
+
+
 
 
 .master-phase-tag {
@@ -5149,12 +6333,16 @@ html[dir="rtl"] .back-arrow-icon {
 }
 
 
+
+
 .master-phase-banner-left h3 {
   font-size: 1.08rem;
   font-weight: 900;
   color: var(--text-primary, #1e352b);
   line-height: 1.25;
 }
+
+
 
 
 .master-phase-banner-right {
@@ -5164,6 +6352,8 @@ html[dir="rtl"] .back-arrow-icon {
   gap: 7px;
   flex-shrink: 0;
 }
+
+
 
 
 .master-phase-score-pill {
@@ -5178,9 +6368,13 @@ html[dir="rtl"] .back-arrow-icon {
 }
 
 
+
+
 .master-phase-switcher {
   margin-bottom: 12px;
 }
+
+
 
 
 /* 7. Dark Mode Support for Master Section Views & Section Launcher Grid */
@@ -5191,9 +6385,13 @@ html[data-theme="dark"] .section-launcher-card {
 }
 
 
+
+
 html[data-theme="dark"] .section-launcher-card:hover {
   border-color: #10b981;
 }
+
+
 
 
 html[data-theme="dark"] .section-card-title,
@@ -5204,6 +6402,8 @@ html[data-theme="dark"] .master-phase-banner-left h3 {
 }
 
 
+
+
 html[data-theme="dark"] .section-card-desc,
 html[data-theme="dark"] .sections-hub-subtitle,
 html[data-theme="dark"] .master-topbar-titles small {
@@ -5211,9 +6411,13 @@ html[data-theme="dark"] .master-topbar-titles small {
 }
 
 
+
+
 html[data-theme="dark"] .section-mini-track {
   background: rgba(255, 255, 255, 0.1);
 }
+
+
 
 
 html[data-theme="dark"] .section-enter-arrow {
@@ -5223,11 +6427,15 @@ html[data-theme="dark"] .section-enter-arrow {
 }
 
 
+
+
 html[data-theme="dark"] .master-section-topbar,
 html[data-theme="dark"] .master-phase-banner-card {
   background: linear-gradient(160deg, #0b221a 0%, #071913 100%);
   border-color: rgba(16, 185, 129, 0.35);
 }
+
+
 
 
 html[data-theme="dark"] .master-back-home-btn {
@@ -5237,11 +6445,15 @@ html[data-theme="dark"] .master-back-home-btn {
 }
 
 
+
+
 html[data-theme="dark"] .master-phase-score-pill {
   background: #071913;
   color: #34d399;
   border-color: rgba(16, 185, 129, 0.45);
 }
+
+
 
 
 /* ==========================================================================
@@ -5254,9 +6466,13 @@ html[data-theme="dark"] .master-phase-score-pill {
 }
 
 
+
+
 html[dir="rtl"] .section-launcher-card {
   text-align: center !important;
 }
+
+
 
 
 .section-card-top {
@@ -5266,6 +6482,8 @@ html[dir="rtl"] .section-launcher-card {
   gap: 8px !important;
   width: 100% !important;
 }
+
+
 
 
 .section-world-logo {
@@ -5279,6 +6497,8 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-live-pill {
   position: absolute;
   top: 10px;
@@ -5288,10 +6508,14 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 html[dir="rtl"] .section-live-pill {
   right: auto;
   left: 10px;
 }
+
+
 
 
 .section-card-body {
@@ -5301,6 +6525,8 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 .section-card-title {
   font-size: 0.94rem !important;
   font-weight: 900 !important;
@@ -5308,9 +6534,13 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 .section-card-footer {
   margin-top: 4px;
 }
+
+
 
 
 /* ==========================================================================
@@ -5322,6 +6552,8 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 .section-launcher-card {
   align-items: center !important;
   text-align: center !important;
@@ -5329,9 +6561,13 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 html[dir="rtl"] .section-launcher-card {
   text-align: center !important;
 }
+
+
 
 
 .section-card-top {
@@ -5342,6 +6578,8 @@ html[dir="rtl"] .section-launcher-card {
   width: 100% !important;
   margin-bottom: 4px !important;
 }
+
+
 
 
 .section-world-logo {
@@ -5358,11 +6596,15 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-world-logo svg {
   width: 38px !important;
   height: 38px !important;
   display: block;
 }
+
+
 
 
 .master-topbar-logo {
@@ -5379,11 +6621,15 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .master-topbar-logo svg {
   width: 28px !important;
   height: 28px !important;
   display: block;
 }
+
+
 
 
 /* ==========================================================================
@@ -5400,9 +6646,13 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 html[dir="rtl"] .section-launcher-card {
   text-align: center !important;
 }
+
+
 
 
 .section-card-top {
@@ -5412,6 +6662,8 @@ html[dir="rtl"] .section-launcher-card {
   width: 100% !important;
   margin-bottom: 2px !important;
 }
+
+
 
 
 .section-world-logo,
@@ -5439,6 +6691,8 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-world-logo svg {
   width: 76px !important;
   height: 76px !important;
@@ -5447,14 +6701,20 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-launcher-card:hover .section-world-logo {
   transform: translateY(-4px) scale(1.07) !important;
 }
 
 
+
+
 .section-launcher-card:active .section-world-logo {
   transform: scale(0.95) !important;
 }
+
+
 
 
 .section-card-title {
@@ -5463,6 +6723,8 @@ html[dir="rtl"] .section-launcher-card {
   line-height: 1.3 !important;
   margin-top: 2px !important;
 }
+
+
 
 
 .master-topbar-logo {
@@ -5479,12 +6741,16 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .master-topbar-logo svg {
   width: 46px !important;
   height: 46px !important;
   display: block;
   overflow: visible;
 }
+
+
 
 
 /* ==========================================================================
@@ -5495,6 +6761,8 @@ html[dir="rtl"] .section-launcher-card {
   align-items: center !important;
   gap: 12px !important;
 }
+
+
 
 
 #master-active-logo,
@@ -5516,6 +6784,8 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 #master-active-logo svg,
 .master-topbar-logo svg {
   width: 52px !important;
@@ -5523,6 +6793,8 @@ html[dir="rtl"] .section-launcher-card {
   display: block !important;
   overflow: visible !important;
 }
+
+
 
 
 /* ==========================================================================
@@ -5539,12 +6811,16 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .master-sections-grid {
   display: grid !important;
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   gap: 8px !important;
   align-items: stretch !important;
 }
+
+
 
 
 .section-launcher-card {
@@ -5562,11 +6838,15 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 .section-card-top {
   width: 100% !important;
   margin-bottom: 0 !important;
   gap: 4px !important;
 }
+
+
 
 
 .section-live-pill {
@@ -5584,10 +6864,14 @@ html[dir="rtl"] .section-launcher-card {
 }
 
 
+
+
 html[dir="rtl"] .section-live-pill {
   right: auto !important;
   left: 6px !important;
 }
+
+
 
 
 .section-world-logo,
@@ -5607,10 +6891,14 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 .section-world-logo svg {
   width: 52px !important;
   height: 52px !important;
 }
+
+
 
 
 .section-card-body {
@@ -5622,6 +6910,8 @@ html[dir="rtl"] .section-live-pill {
   justify-content: center !important;
   padding: 0 2px !important;
 }
+
+
 
 
 .section-card-title {
@@ -5638,6 +6928,8 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 .section-card-footer {
   width: 100% !important;
   gap: 5px !important;
@@ -5646,9 +6938,13 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 .section-mini-track {
   height: 5px !important;
 }
+
+
 
 
 .section-enter-arrow {
@@ -5656,6 +6952,8 @@ html[dir="rtl"] .section-live-pill {
   height: 20px !important;
   font-size: 0.6rem !important;
 }
+
+
 
 
 @media (max-width: 360px) {
@@ -5697,6 +6995,8 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 /* ==========================================================================
    V5.7 REMOVE ARROW SIGN FROM ALL 10 HOME PAGE SECTION CARDS
    - Hides .section-enter-arrow completely and lets the progress track span 100%
@@ -5707,16 +7007,22 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 .section-card-footer {
   justify-content: center !important;
   gap: 0 !important;
 }
 
 
+
+
 .section-mini-track {
   width: 100% !important;
   flex: 1 1 100% !important;
 }
+
+
 
 
 /* ==========================================================================
@@ -5732,12 +7038,16 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 .custom-added-popup-icon-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
 }
+
+
 
 
 .custom-added-popup-orb {
@@ -5756,11 +7066,15 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 .custom-added-popup-card h3 {
   text-align: center;
   font-size: 1.04rem;
   margin-bottom: 4px;
 }
+
+
 
 
 .custom-added-summary-box {
@@ -5771,11 +7085,15 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 .custom-added-summary-box h4 {
   font-size: 0.94rem;
   color: var(--accent-emerald-dark, #065f46);
   margin-bottom: 5px;
 }
+
+
 
 
 .custom-added-summary-box p {
@@ -5786,6 +7104,8 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 html[data-theme="dark"] .custom-added-summary-box {
   background: linear-gradient(145deg, rgba(16, 185, 129, 0.14), #071913);
   border-color: rgba(16, 185, 129, 0.35);
@@ -5793,9 +7113,13 @@ html[data-theme="dark"] .custom-added-summary-box {
 }
 
 
+
+
 html[data-theme="dark"] .custom-added-summary-box h4 {
   color: #34d399;
 }
+
+
 
 
 html[data-theme="dark"] .custom-added-summary-box p {
@@ -5834,12 +7158,16 @@ html[data-theme="dark"] .custom-added-summary-box p {
 }
 
 
+
+
 .sections-hub-title-left {
   display: inline-flex !important;
   align-items: center !important;
   gap: 8px !important;
   min-width: 0 !important;
 }
+
+
 
 
 .sections-hub-summary-pill {
@@ -5861,6 +7189,8 @@ html[data-theme="dark"] .custom-added-summary-box p {
 }
 
 
+
+
 .sections-hub-summary-pill.all-completed {
   background: linear-gradient(135deg, #10b981, #059669) !important;
   color: #ffffff !important;
@@ -5869,11 +7199,15 @@ html[data-theme="dark"] .custom-added-summary-box p {
 }
 
 
+
+
 .section-launcher-card {
   padding: 32px 6px 13px !important;
   border-radius: 20px !important;
   gap: 7px !important;
 }
+
+
 
 
 /* Ergonomic At-A-Glance Corner Badge Sizing */
@@ -5900,10 +7234,14 @@ html[data-theme="dark"] .custom-added-summary-box p {
 }
 
 
+
+
 html[dir="rtl"] .section-live-pill {
   right: auto !important;
   left: 7px !important;
 }
+
+
 
 
 /* State 1: 0 Completed (Quiet Neutral Slate-Mint) */
@@ -5915,6 +7253,8 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 /* State 2: Partially Completed / In Progress (Warm Amber-Gold Highlight) */
 .section-live-pill.pill-state-progress {
   background: linear-gradient(135deg, #fef3c7, #fde68a) !important;
@@ -5922,6 +7262,8 @@ html[dir="rtl"] .section-live-pill {
   border: 1.5px solid rgba(217, 119, 6, 0.48) !important;
   box-shadow: 0 3px 8px rgba(217, 119, 6, 0.16) !important;
 }
+
+
 
 
 /* State 3: 100% Completed (Rewarding Solid Emerald Pill with White Text) */
@@ -5933,6 +7275,8 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 /* State 4: Utility Cards 9–12 (Crisp Tinted Utility Badge) */
 .section-live-pill.pill-state-utility {
   background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important;
@@ -5940,6 +7284,8 @@ html[dir="rtl"] .section-live-pill {
   border: 1.3px solid rgba(16, 185, 129, 0.38) !important;
   box-shadow: 0 2px 6px rgba(16, 185, 129, 0.1) !important;
 }
+
+
 
 
 /* Enlarged 3D Centerpiece Artwork & Card Title for Effortless Scanning */
@@ -5960,16 +7306,22 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 .section-world-logo svg {
   width: 60px !important;
   height: 60px !important;
 }
 
 
+
+
 .section-card-body {
   min-height: 2.45em !important;
   padding: 0 3px !important;
 }
+
+
 
 
 .section-card-title {
@@ -5980,11 +7332,15 @@ html[dir="rtl"] .section-live-pill {
 }
 
 
+
+
 /* Subtle Emerald Card Border Accent When Section is 100% Completed */
 .section-launcher-card.card-state-complete {
   border-color: rgba(16, 185, 129, 0.55) !important;
   background: linear-gradient(165deg, #ffffff 0%, #f0fdf6 100%) !important;
 }
+
+
 
 
 /* Dark Theme Support for 3-State Badges & Hub Summary Pill */
@@ -5995,10 +7351,14 @@ html[data-theme="dark"] .sections-hub-summary-pill {
 }
 
 
+
+
 html[data-theme="dark"] .sections-hub-summary-pill.all-completed {
   background: linear-gradient(135deg, #10b981, #059669) !important;
   color: #ffffff !important;
 }
+
+
 
 
 html[data-theme="dark"] .section-live-pill.pill-state-zero {
@@ -6008,11 +7368,15 @@ html[data-theme="dark"] .section-live-pill.pill-state-zero {
 }
 
 
+
+
 html[data-theme="dark"] .section-live-pill.pill-state-progress {
   background: rgba(234, 179, 8, 0.22) !important;
   color: #fde047 !important;
   border-color: rgba(234, 179, 8, 0.5) !important;
 }
+
+
 
 
 html[data-theme="dark"] .section-live-pill.pill-state-complete {
@@ -6022,6 +7386,8 @@ html[data-theme="dark"] .section-live-pill.pill-state-complete {
 }
 
 
+
+
 html[data-theme="dark"] .section-live-pill.pill-state-utility {
   background: rgba(16, 185, 129, 0.16) !important;
   color: #6ee7b7 !important;
@@ -6029,10 +7395,14 @@ html[data-theme="dark"] .section-live-pill.pill-state-utility {
 }
 
 
+
+
 html[data-theme="dark"] .section-launcher-card.card-state-complete {
   background: linear-gradient(165deg, #0d2b20 0%, #071913 100%) !important;
   border-color: rgba(16, 185, 129, 0.55) !important;
 }
+
+
 
 
 /* Small Screen Safeguard (<=360px) keeping text crisp and readable */
@@ -6079,11 +7449,15 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 /* ==========================================================================
    TARGETED 3-UPDATE PATCH (TOP BAR DECLUTTER + SETTINGS MODAL + STICKY 4-TAB
    BOTTOM NAVIGATION BAR + MOON REMOVAL FROM DATE CARD)
    All other cards, borders, colors, and sections remain 100% unchanged!
    ========================================================================== */
+
+
 
 
 /* 1. Decluttered Top App Bar & Settings Preferences Modal Drawer */
@@ -6094,6 +7468,8 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 .header-madhab-loc-stack.header-single-row-actions {
   display: flex !important;
   flex-direction: row !important;
@@ -6102,11 +7478,15 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 .header-loc-pill-btn {
   padding: 5px 11px !important;
   font-size: 0.72rem !important;
   max-width: 165px !important;
 }
+
+
 
 
 .header-settings-icon-btn {
@@ -6126,10 +7506,14 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 .header-settings-icon-btn:hover {
   background: #e6f7ef;
   border-color: var(--accent-emerald, #10b981);
 }
+
+
 
 
 .header-settings-icon-btn:active {
@@ -6137,11 +7521,15 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 .s24-settings-drawer-card {
   max-width: 375px;
   width: 100%;
   gap: 14px;
 }
+
+
 
 
 .s24-settings-drawer-head {
@@ -6154,11 +7542,15 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 .s24-settings-head-left {
   display: flex;
   align-items: center;
   gap: 8px;
 }
+
+
 
 
 .s24-settings-head-icon {
@@ -6174,12 +7566,16 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 .s24-settings-drawer-head h3 {
   margin: 0 !important;
   font-size: 0.98rem;
   font-weight: 900;
   color: var(--accent-emerald-dark, #065f46);
 }
+
+
 
 
 .s24-settings-group {
@@ -6193,11 +7589,15 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 .s24-settings-label {
   font-size: 0.8rem;
   font-weight: 800;
   color: var(--text-primary, #1e352b);
 }
+
+
 
 
 .s24-settings-hint {
@@ -6206,6 +7606,8 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   color: var(--text-muted, #5b7268);
   line-height: 1.38;
 }
+
+
 
 
 .s24-settings-select {
@@ -6217,6 +7619,8 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 .s24-settings-madhab-btn {
   width: 100%;
   justify-content: center;
@@ -6225,6 +7629,8 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
   border-radius: 11px !important;
   margin-top: 2px;
 }
+
+
 
 
 /* 2. Sticky 4-Tab Bottom Navigation Bar (Home, Sunnah Grid, Tasbeeh, Stats) */
@@ -6248,6 +7654,8 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 .s24-bnav-btn {
   background: transparent;
   border: none;
@@ -6265,9 +7673,13 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 .s24-bnav-btn:active {
   transform: scale(0.93);
 }
+
+
 
 
 .s24-bnav-icon {
@@ -6281,6 +7693,8 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 .s24-bnav-label {
   font-size: 0.68rem;
   font-weight: 800;
@@ -6289,9 +7703,13 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 .s24-bnav-btn.active {
   color: var(--accent-emerald-dark, #065f46);
 }
+
+
 
 
 .s24-bnav-btn.active .s24-bnav-icon {
@@ -6300,10 +7718,14 @@ html[data-theme="dark"] .section-launcher-card.card-state-complete {
 }
 
 
+
+
 /* 3. Remove Moon 🌙 from Arabic, Bangla, English Date Section */
 .lunar-ponjika-card .crescent-badge {
   display: none !important;
 }
+
+
 
 
 /* Dark Theme Support for Settings Drawer & Bottom Navigation Bar */
@@ -6314,10 +7736,14 @@ html[data-theme="dark"] .header-settings-icon-btn {
 }
 
 
+
+
 html[data-theme="dark"] .s24-settings-group {
   background: #071913;
   border-color: rgba(16, 185, 129, 0.25);
 }
+
+
 
 
 html[data-theme="dark"] .s24-settings-label,
@@ -6326,9 +7752,13 @@ html[data-theme="dark"] .s24-settings-drawer-head h3 {
 }
 
 
+
+
 html[data-theme="dark"] .s24-settings-hint {
   color: #94a3b8;
 }
+
+
 
 
 html[data-theme="dark"] .s24-bottom-nav {
@@ -6338,9 +7768,13 @@ html[data-theme="dark"] .s24-bottom-nav {
 }
 
 
+
+
 html[data-theme="dark"] .s24-bnav-btn {
   color: #94a3b8;
 }
+
+
 
 
 html[data-theme="dark"] .s24-bnav-btn.active {
@@ -6348,10 +7782,14 @@ html[data-theme="dark"] .s24-bnav-btn.active {
 }
 
 
+
+
 html[data-theme="dark"] .s24-bnav-btn.active .s24-bnav-icon {
   background: rgba(16, 185, 129, 0.22);
   color: #34d399;
 }
+
+
 
 
 /* ==========================================================================
@@ -6372,9 +7810,13 @@ html[data-theme="dark"] .s24-bnav-btn.active .s24-bnav-icon {
 }
 
 
+
+
 .sunnah-grid-view.hidden {
   display: none !important;
 }
+
+
 
 
 .sunnah-grid-view .sections-hub-wrapper {
@@ -6382,11 +7824,15 @@ html[data-theme="dark"] .s24-bnav-btn.active .s24-bnav-icon {
 }
 
 
+
+
 /* Home Page Smooth Expansion & Bottom Breathing Space */
 #home-dashboard-view {
   padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
   transition: padding-bottom 0.28s ease;
 }
+
+
 
 
 #home-waqt-section,
@@ -6398,9 +7844,13 @@ html[data-theme="dark"] .s24-bnav-btn.active .s24-bnav-icon {
 }
 
 
+
+
 #waqt-range-popup-wrap {
   scroll-margin-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
 }
+
+
 
 
 /* Extra bottom empty space on Home Page & Sunnah Grid Page so scrolling down feels easy and uncramped */
@@ -6412,9 +7862,13 @@ html[data-theme="dark"] .s24-bnav-btn.active .s24-bnav-icon {
 }
 
 
+
+
 body.home-popup-expanded .home-bottom-scroll-space {
   height: 76px;
 }
+
+
 
 
 .grid-bottom-scroll-space {
@@ -6422,6 +7876,8 @@ body.home-popup-expanded .home-bottom-scroll-space {
   height: 32px;
   pointer-events: none;
 }
+
+
 
 
 /* ==========================================================================
@@ -6435,10 +7891,14 @@ body {
 }
 
 
+
+
 #home-dashboard-view,
 .home-dashboard-view {
   padding-bottom: 4px !important;
 }
+
+
 
 
 .home-prohibited-card,
@@ -6447,10 +7907,14 @@ body {
 }
 
 
+
+
 .sunnah-grid-view {
   min-height: auto !important;
   padding-bottom: 4px !important;
 }
+
+
 
 
 .sunnah-grid-view .sections-hub-wrapper {
@@ -6458,10 +7922,14 @@ body {
 }
 
 
+
+
 .master-section-view {
   min-height: auto !important;
   padding-bottom: 4px !important;
 }
+
+
 
 
 .master-screen-panel > .card:last-child,
@@ -6472,9 +7940,13 @@ body {
 }
 
 
+
+
 .home-bottom-scroll-space {
   height: 4px !important;
 }
+
+
 
 
 body.home-popup-expanded .home-bottom-scroll-space {
@@ -6482,15 +7954,21 @@ body.home-popup-expanded .home-bottom-scroll-space {
 }
 
 
+
+
 .grid-bottom-scroll-space {
   height: 4px !important;
 }
+
+
 
 
 /* ==========================================================================
    V8.3 GOOGLE MINIMAL 5-WAQT PRAYER PILLS (ONLY TOP-RIGHT `i` BADGE)
    & ULTRA-CLEAN AT-A-GLANCE NAFL SALAH CARD (WITH CORNER `i` PROOF BUTTON)
    ========================================================================== */
+
+
 
 
 /* 1. Google Minimal 5-Waqt Prayer Pills (#five-waqt-grid) */
@@ -6510,6 +7988,8 @@ body.home-popup-expanded .home-bottom-scroll-space {
 }
 
 
+
+
 .waqt-pill-card.m3-interactive-waqt-pill:hover {
   background: #f8f9fa;
   border-color: #bdc1c6;
@@ -6517,9 +7997,13 @@ body.home-popup-expanded .home-bottom-scroll-space {
 }
 
 
+
+
 .waqt-pill-card.m3-interactive-waqt-pill:active {
   transform: scale(0.96);
 }
+
+
 
 
 .waqt-pill-card.m3-interactive-waqt-pill .waqt-circle-logo {
@@ -6536,11 +8020,15 @@ body.home-popup-expanded .home-bottom-scroll-space {
 }
 
 
+
+
 .waqt-pill-card.m3-interactive-waqt-pill .waqt-name {
   font-size: 0.68rem;
   color: #5f6368;
   font-weight: 700;
 }
+
+
 
 
 .waqt-pill-card.m3-interactive-waqt-pill .waqt-time {
@@ -6550,10 +8038,14 @@ body.home-popup-expanded .home-bottom-scroll-space {
 }
 
 
+
+
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-passed {
   opacity: 0.85;
   background: #f8f9fa;
 }
+
+
 
 
 /* Google Minimal Active Waqt State */
@@ -6565,11 +8057,15 @@ body.home-popup-expanded .home-bottom-scroll-space {
 }
 
 
+
+
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-circle-logo {
   background: #ffffff;
   border-color: #ceead6;
   box-shadow: none;
 }
+
+
 
 
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-name {
@@ -6578,9 +8074,13 @@ body.home-popup-expanded .home-bottom-scroll-space {
 }
 
 
+
+
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-time {
   color: #0d652d;
 }
+
+
 
 
 /* Google Minimal Selected Popup State */
@@ -6592,16 +8092,22 @@ body.home-popup-expanded .home-bottom-scroll-space {
 }
 
 
+
+
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-popup-selected .waqt-circle-logo {
   background: #ffffff !important;
   border-color: #d2e3fc !important;
 }
 
 
+
+
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-popup-selected .waqt-name,
 .waqt-pill-card.m3-interactive-waqt-pill.waqt-popup-selected .waqt-time {
   color: #174ea6 !important;
 }
+
+
 
 
 /* Minimal Top-Right `i` Button on Every 5-Waqt Card */
@@ -6627,10 +8133,14 @@ body.home-popup-expanded .home-bottom-scroll-space {
 }
 
 
+
+
 html[dir="rtl"] .waqt-info-micro-badge {
   right: auto;
   left: 5px;
 }
+
+
 
 
 .waqt-pill-card.waqt-active .waqt-info-micro-badge {
@@ -6640,11 +8150,15 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 .waqt-pill-card.waqt-popup-selected .waqt-info-micro-badge {
   background: #d2e3fc;
   border-color: #1a73e8;
   color: #174ea6;
 }
+
+
 
 
 /* 2. Minimal, At-a-Glance Nafl Salah Card (#nafl-salah-card) */
@@ -6658,12 +8172,16 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 .nafl-minimal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-bottom: 6px;
 }
+
+
 
 
 .nafl-minimal-header h4 {
@@ -6675,12 +8193,16 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 .nafl-salah-list {
   display: flex;
   flex-direction: column;
   gap: 6px;
   padding-top: 2px;
 }
+
+
 
 
 .nafl-minimal-row {
@@ -6693,6 +8215,8 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 .nafl-minimal-left {
   display: flex;
   align-items: center;
@@ -6700,6 +8224,8 @@ html[dir="rtl"] .waqt-info-micro-badge {
   min-width: 0;
   flex: 1;
 }
+
+
 
 
 .nafl-minimal-dot {
@@ -6711,10 +8237,14 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 .nafl-minimal-dot.active {
   background: #1e8e3e;
   box-shadow: 0 0 0 3px rgba(30, 142, 62, 0.16);
 }
+
+
 
 
 .nafl-minimal-label {
@@ -6727,9 +8257,13 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 .nafl-minimal-row.is-active-nafl .nafl-minimal-label {
   color: #137333;
 }
+
+
 
 
 .nafl-minimal-right {
@@ -6740,10 +8274,14 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 .nafl-minimal-time-pill {
   min-width: 96px;
   text-align: center;
 }
+
+
 
 
 /* Corner `i` Hadith Proof Button on Every Nafl Row */
@@ -6767,6 +8305,8 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 .nafl-corner-info-btn:hover {
   background: #e8f0fe;
   border-color: #1a73e8;
@@ -6774,9 +8314,13 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 .nafl-corner-info-btn:active {
   transform: scale(0.92);
 }
+
+
 
 
 /* Dark Theme Support */
@@ -6786,10 +8330,14 @@ html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill .waqt-circle-logo {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.12);
 }
+
+
 
 
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill .waqt-name {
@@ -6797,9 +8345,13 @@ html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill .waqt-name {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill .waqt-time {
   color: #f8fafc;
 }
+
+
 
 
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill.waqt-active {
@@ -6808,10 +8360,14 @@ html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill.waqt-active {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-name,
 html[data-theme="dark"] .waqt-pill-card.m3-interactive-waqt-pill.waqt-active .waqt-time {
   color: #6ee7b7;
 }
+
+
 
 
 html[data-theme="dark"] .waqt-info-micro-badge,
@@ -6822,16 +8378,22 @@ html[data-theme="dark"] .nafl-corner-info-btn {
 }
 
 
+
+
 html[data-theme="dark"] .nafl-salah-card {
   background: #0b221a;
   border-color: rgba(16, 185, 129, 0.28);
 }
 
 
+
+
 html[data-theme="dark"] .nafl-minimal-header h4,
 html[data-theme="dark"] .nafl-minimal-label {
   color: #f8fafc;
 }
+
+
 
 
 /* ==========================================================================
@@ -6846,9 +8408,13 @@ html[data-theme="dark"] .nafl-minimal-label {
 }
 
 
+
+
 .waqt-pill-card.m3-interactive-waqt-pill:active {
   transform: none !important;
 }
+
+
 
 
 .waqt-info-micro-badge {
@@ -6865,10 +8431,14 @@ html[data-theme="dark"] .nafl-minimal-label {
 }
 
 
+
+
 html[dir="rtl"] .waqt-info-micro-badge {
   right: auto !important;
   left: 4px !important;
 }
+
+
 
 
 .waqt-info-micro-badge:hover {
@@ -6878,9 +8448,13 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 .waqt-info-micro-badge:active {
   transform: scale(0.9) !important;
 }
+
+
 
 
 .nafl-minimal-row {
@@ -6888,10 +8462,14 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 .nafl-corner-info-btn {
   pointer-events: auto !important;
   cursor: pointer !important;
 }
+
+
 
 
 /* Fix #modal-category Rakah/Waqt badge crossing the modal border on 5th Nafl Salah */
@@ -6908,6 +8486,8 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 /* ==========================================================================
    V10.0 GOOGLE DEEPMIND MATERIAL YOU (M3) EYE-RELIEF, BALANCED TYPOGRAPHY
    & STANDARD BREATHING GAPS DESIGN SYSTEM
@@ -6917,6 +8497,8 @@ html[dir="rtl"] .waqt-info-micro-badge {
      (#f4f7f5 background, #ffffff pure cards, soft borders & whisper shadows)
    - Features the emerald left accent bar inspired by modern Islamic UI
    ========================================================================== */
+
+
 
 
 :root {
@@ -6937,6 +8519,8 @@ html[dir="rtl"] .waqt-info-micro-badge {
 }
 
 
+
+
 body,
 button,
 input,
@@ -6950,12 +8534,16 @@ textarea {
 }
 
 
+
+
 body {
   background-color: var(--bg-main) !important;
   background-image: linear-gradient(180deg, #ebf3ee 0%, #f4f7f5 260px, #f4f7f5 100%) !important;
   color: var(--text-primary) !important;
   line-height: 1.55 !important;
 }
+
+
 
 
 /* Tabular numerals with calm, non-heavy weight */
@@ -6970,6 +8558,8 @@ body {
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
 }
+
+
 
 
 /* ==========================================================================
@@ -6993,6 +8583,8 @@ h1, h2, h3, h4,
 }
 
 
+
+
 p, small, span, label,
 .muted, .muted-small,
 .habit-snippet,
@@ -7002,6 +8594,8 @@ p, small, span, label,
 .prohibited-hadith-proof {
   font-weight: 400 !important;
 }
+
+
 
 
 /* ==========================================================================
@@ -7018,11 +8612,15 @@ p, small, span, label,
 }
 
 
+
+
 .app-header h1 {
   font-size: 1.05rem !important;
   font-weight: 600 !important;
   color: #14532d !important;
 }
+
+
 
 
 .header-loc-pill-btn {
@@ -7036,12 +8634,16 @@ p, small, span, label,
 }
 
 
+
+
 .header-settings-icon-btn {
   background: #f4f7f5 !important;
   color: #334139 !important;
   border: 1px solid #d5e0da !important;
   box-shadow: none !important;
 }
+
+
 
 
 /* Date Bar Card — Calm & Airy like Reference Image */
@@ -7055,12 +8657,16 @@ p, small, span, label,
 }
 
 
+
+
 #lunar-hijri-headline {
   font-size: 0.95rem !important;
   font-weight: 600 !important;
   color: #1e2923 !important;
   line-height: 1.35 !important;
 }
+
+
 
 
 .bangla-ponjika-sub {
@@ -7070,6 +8676,8 @@ p, small, span, label,
   color: var(--text-muted) !important;
   line-height: 1.35 !important;
 }
+
+
 
 
 /* ==========================================================================
@@ -7087,6 +8695,8 @@ p, small, span, label,
 }
 
 
+
+
 /* Ongoing Prayer Card (Top Card) */
 .waqt-card-embedded-box {
   margin: 0 !important;
@@ -7098,11 +8708,15 @@ p, small, span, label,
 }
 
 
+
+
 .ongoing-static-head {
   padding-bottom: 9px !important;
   margin-bottom: 10px !important;
   border-bottom: 1px solid #eef2ef !important;
 }
+
+
 
 
 .ongoing-static-head .waqt-popup-avatar {
@@ -7115,12 +8729,16 @@ p, small, span, label,
 }
 
 
+
+
 #live-waqt-title {
   font-size: 1.02rem !important;
   font-weight: 600 !important;
   color: #14532d !important;
   line-height: 1.25 !important;
 }
+
+
 
 
 .waqt-popup-title-text small {
@@ -7132,6 +8750,8 @@ p, small, span, label,
 }
 
 
+
+
 .waqt-popup-status-pill {
   font-size: 0.68rem !important;
   font-weight: 500 !important;
@@ -7139,11 +8759,15 @@ p, small, span, label,
 }
 
 
+
+
 .waqt-popup-status-pill.status-active {
   background: #e8f5ee !important;
   color: #15803d !important;
   border: 1px solid #bbf7d0 !important;
 }
+
+
 
 
 /* Ongoing Start -> End Time Grid */
@@ -7157,11 +8781,15 @@ p, small, span, label,
 }
 
 
+
+
 .ongoing-static-time-grid .waqt-popup-time-lbl {
   font-size: 0.64rem !important;
   font-weight: 500 !important;
   color: var(--text-muted) !important;
 }
+
+
 
 
 .ongoing-static-time-grid .waqt-popup-time-val {
@@ -7171,9 +8799,13 @@ p, small, span, label,
 }
 
 
+
+
 .ongoing-static-time-grid .waqt-popup-time-box.end-box .waqt-popup-time-val {
   color: #b45309 !important;
 }
+
+
 
 
 .ongoing-static-time-grid .waqt-popup-time-divider {
@@ -7186,10 +8818,14 @@ p, small, span, label,
 }
 
 
+
+
 /* Ongoing Meta Rows (Prime Time & Countdown) */
 .ongoing-static-meta-rows {
   gap: 6px !important;
 }
+
+
 
 
 .ongoing-static-meta-rows .waqt-popup-meta-item.single-line-meta-row {
@@ -7200,12 +8836,16 @@ p, small, span, label,
 }
 
 
+
+
 .ongoing-static-meta-rows .waqt-popup-meta-item > span,
 .ongoing-static-meta-rows .waqt-popup-meta-item .meta-row-label {
   font-size: 0.78rem !important;
   font-weight: 400 !important;
   color: var(--text-secondary) !important;
 }
+
+
 
 
 .ongoing-static-meta-rows .waqt-popup-meta-item > strong,
@@ -7216,6 +8856,8 @@ p, small, span, label,
 }
 
 
+
+
 .ongoing-static-meta-rows .waqt-popup-meta-item.countdown-single-line-row {
   padding: 7px 11px !important;
   background: #f3f9f5 !important;
@@ -7223,11 +8865,15 @@ p, small, span, label,
 }
 
 
+
+
 .ongoing-static-meta-rows .waqt-popup-meta-item.countdown-single-line-row .meta-row-label {
   font-size: 0.82rem !important;
   font-weight: 500 !important;
   color: #1e2923 !important;
 }
+
+
 
 
 .ongoing-static-meta-rows .waqt-popup-meta-item.countdown-single-line-row .meta-row-value,
@@ -7238,9 +8884,13 @@ p, small, span, label,
 }
 
 
+
+
 .live-waqt-countdown-box.waqt-prohibited-active #live-waqt-remaining {
   color: #dc2626 !important;
 }
+
+
 
 
 .ongoing-tahajjud-mini-bar {
@@ -7253,15 +8903,21 @@ p, small, span, label,
 }
 
 
+
+
 .tahajjud-mini-title {
   font-weight: 400 !important;
 }
+
+
 
 
 .tahajjud-mini-time,
 .tahajjud-mini-badge {
   font-weight: 500 !important;
 }
+
+
 
 
 .ongoing-rakah-footer {
@@ -7272,6 +8928,8 @@ p, small, span, label,
   font-weight: 400 !important;
   color: var(--text-secondary) !important;
 }
+
+
 
 
 /* ==========================================================================
@@ -7286,12 +8944,16 @@ p, small, span, label,
 }
 
 
+
+
 .fard-schedule-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-bottom: 8px;
 }
+
+
 
 
 /* Left Green Accent Pill Indicator inspired by the Reference Image ("ইলম ও আমল") */
@@ -7308,6 +8970,8 @@ p, small, span, label,
 }
 
 
+
+
 .fard-schedule-header h4::before,
 .nafl-minimal-header h4::before {
   content: "";
@@ -7319,10 +8983,14 @@ p, small, span, label,
 }
 
 
+
+
 .fard-schedule-dashed-divider {
   border-top: 1px solid #eef2ef !important;
   margin: 0 0 8px 0 !important;
 }
+
+
 
 
 .five-waqt-grid.fard-waqt-list-ui {
@@ -7330,6 +8998,8 @@ p, small, span, label,
   flex-direction: column !important;
   gap: 6px !important;
 }
+
+
 
 
 .waqt-pill-card.fard-waqt-row-item {
@@ -7349,6 +9019,8 @@ p, small, span, label,
 }
 
 
+
+
 .fard-row-left {
   display: flex;
   align-items: center;
@@ -7356,6 +9028,8 @@ p, small, span, label,
   min-width: 0;
   flex: 1;
 }
+
+
 
 
 .fard-status-dot {
@@ -7367,10 +9041,14 @@ p, small, span, label,
 }
 
 
+
+
 .fard-status-dot.active {
   background: #22c55e;
   box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
 }
+
+
 
 
 .waqt-circle-logo.fard-squircle-icon {
@@ -7388,6 +9066,8 @@ p, small, span, label,
 }
 
 
+
+
 .waqt-name.fard-prayer-title {
   font-size: 0.88rem !important;
   font-weight: 500 !important;
@@ -7396,12 +9076,16 @@ p, small, span, label,
 }
 
 
+
+
 .fard-row-right {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
 }
+
+
 
 
 .waqt-time.fard-time-range-pill {
@@ -7415,6 +9099,8 @@ p, small, span, label,
   min-width: 102px;
   text-align: center;
 }
+
+
 
 
 .waqt-info-micro-badge.fard-row-info-btn {
@@ -7436,6 +9122,8 @@ p, small, span, label,
 }
 
 
+
+
 /* Active Fard Row Highlight — Soft Mint-Green Eye-Relief */
 .waqt-pill-card.fard-waqt-row-item.waqt-active {
   background: #eaf6ef !important;
@@ -7443,10 +9131,14 @@ p, small, span, label,
 }
 
 
+
+
 .waqt-pill-card.fard-waqt-row-item.waqt-active .fard-prayer-title {
   color: #15803d !important;
   font-weight: 600 !important;
 }
+
+
 
 
 .waqt-pill-card.fard-waqt-row-item.waqt-active .fard-time-range-pill {
@@ -7457,12 +9149,16 @@ p, small, span, label,
 }
 
 
+
+
 .waqt-pill-card.fard-waqt-row-item.waqt-active .fard-row-info-btn,
 .waqt-info-micro-badge.fard-row-info-btn.active-info-btn {
   background: #16a34a !important;
   border-color: #15803d !important;
   color: #ffffff !important;
 }
+
+
 
 
 /* Selected Popup State for Fard Row */
@@ -7472,6 +9168,8 @@ p, small, span, label,
 }
 
 
+
+
 .waqt-pill-card.fard-waqt-row-item.waqt-popup-selected .fard-prayer-title,
 .waqt-pill-card.fard-waqt-row-item.waqt-popup-selected .fard-time-range-pill {
   color: #1d4ed8 !important;
@@ -7479,11 +9177,15 @@ p, small, span, label,
 }
 
 
+
+
 .waqt-pill-card.fard-waqt-row-item.waqt-popup-selected .fard-row-info-btn {
   background: #2563eb !important;
   border-color: #1d4ed8 !important;
   color: #ffffff !important;
 }
+
+
 
 
 /* ==========================================================================
@@ -7500,12 +9202,16 @@ p, small, span, label,
 }
 
 
+
+
 .hero-card.hero-card-compact .label {
   font-size: 0.72rem !important;
   font-weight: 600 !important;
   color: #15803d !important;
   letter-spacing: 0.02em !important;
 }
+
+
 
 
 .hero-card.hero-card-compact .hero-stats h2 {
@@ -7516,11 +9222,15 @@ p, small, span, label,
 }
 
 
+
+
 .hero-card.hero-card-compact .hero-left-info p {
   font-size: 0.78rem !important;
   font-weight: 400 !important;
   color: var(--text-secondary) !important;
 }
+
+
 
 
 .hero-card.hero-card-compact .time-lock-pill {
@@ -7535,10 +9245,14 @@ p, small, span, label,
 }
 
 
+
+
 .streak-circle-wrapper {
   box-shadow: 0 4px 14px rgba(15, 35, 25, 0.07) !important;
   border: 1px solid #eef2ef !important;
 }
+
+
 
 
 .streak-circle-inner strong {
@@ -7546,9 +9260,13 @@ p, small, span, label,
 }
 
 
+
+
 .streak-circle-inner small {
   font-weight: 400 !important;
 }
+
+
 
 
 .hero-card.hero-card-compact .hero-meta {
@@ -7559,6 +9277,8 @@ p, small, span, label,
   font-weight: 500 !important;
   color: var(--text-secondary) !important;
 }
+
+
 
 
 /* Prohibited Salah Card */
@@ -7572,9 +9292,13 @@ p, small, span, label,
 }
 
 
+
+
 .prohibited-header-btn {
   padding: 12px 15px !important;
 }
+
+
 
 
 .prohibited-static-header h4 {
@@ -7584,11 +9308,15 @@ p, small, span, label,
 }
 
 
+
+
 .prohibited-row-label {
   font-size: 0.76rem !important;
   font-weight: 400 !important;
   color: var(--text-secondary) !important;
 }
+
+
 
 
 .prohibited-time-pill {
@@ -7603,6 +9331,8 @@ p, small, span, label,
 }
 
 
+
+
 /* Nafl Salah Schedule Card */
 .nafl-salah-card {
   margin: 0 14px 16px !important;
@@ -7614,9 +9344,13 @@ p, small, span, label,
 }
 
 
+
+
 .nafl-minimal-header {
   padding-bottom: 8px !important;
 }
+
+
 
 
 .nafl-salah-card .prohibited-dashed-divider {
@@ -7625,14 +9359,20 @@ p, small, span, label,
 }
 
 
+
+
 .nafl-salah-list {
   gap: 8px !important;
 }
 
 
+
+
 .nafl-minimal-row {
   padding: 5px 2px !important;
 }
+
+
 
 
 .nafl-minimal-label {
@@ -7642,10 +9382,14 @@ p, small, span, label,
 }
 
 
+
+
 .nafl-minimal-row.is-active-nafl .nafl-minimal-label {
   color: #15803d !important;
   font-weight: 600 !important;
 }
+
+
 
 
 /* ==========================================================================
@@ -7654,6 +9398,8 @@ p, small, span, label,
 .sunnah-grid-view .sections-hub-wrapper {
   margin: 12px 14px 20px !important;
 }
+
+
 
 
 #sections-hub-heading {
@@ -7666,6 +9412,8 @@ p, small, span, label,
 }
 
 
+
+
 .hub-sparkle-dot {
   width: 4px !important;
   height: 18px !important;
@@ -7673,6 +9421,8 @@ p, small, span, label,
   background: #16a34a !important;
   box-shadow: none !important;
 }
+
+
 
 
 .sections-hub-summary-pill {
@@ -7685,9 +9435,13 @@ p, small, span, label,
 }
 
 
+
+
 .master-sections-grid {
   gap: 11px !important;
 }
+
+
 
 
 .section-launcher-card {
@@ -7699,6 +9453,8 @@ p, small, span, label,
 }
 
 
+
+
 .section-card-title {
   font-size: 0.82rem !important;
   font-weight: 500 !important;
@@ -7706,11 +9462,15 @@ p, small, span, label,
 }
 
 
+
+
 .section-live-pill {
   font-size: 0.65rem !important;
   font-weight: 500 !important;
   padding: 2px 7px !important;
 }
+
+
 
 
 /* Bottom Navigation Bar — Soft Pill Active Indicator like Reference Image */
@@ -7721,10 +9481,14 @@ p, small, span, label,
 }
 
 
+
+
 .s24-bnav-label {
   font-size: 0.68rem !important;
   font-weight: 500 !important;
 }
+
+
 
 
 .s24-bnav-btn.active .s24-bnav-label {
@@ -7732,10 +9496,14 @@ p, small, span, label,
 }
 
 
+
+
 .s24-bnav-btn.active .s24-bnav-icon {
   background: #dcfce7 !important;
   color: #15803d !important;
 }
+
+
 
 
 /* Dark Mode Overrides for V10.0 */
@@ -7746,15 +9514,21 @@ html[data-theme="dark"] body {
 }
 
 
+
+
 html[data-theme="dark"] .app-header {
   background: rgba(11, 34, 26, 0.95) !important;
   border-bottom-color: rgba(16, 185, 129, 0.22) !important;
 }
 
 
+
+
 html[data-theme="dark"] .app-header h1 {
   color: #34d399 !important;
 }
+
+
 
 
 html[data-theme="dark"] .lunar-ponjika-card,
@@ -7767,6 +9541,8 @@ html[data-theme="dark"] .section-launcher-card {
   background: #0b221a !important;
   border-color: rgba(16, 185, 129, 0.22) !important;
 }
+
+
 
 
 html[data-theme="dark"] #lunar-hijri-headline,
@@ -7783,6 +9559,8 @@ html[data-theme="dark"] #sections-hub-heading {
 }
 
 
+
+
 html[data-theme="dark"] .ongoing-static-time-grid,
 html[data-theme="dark"] .ongoing-static-meta-rows .waqt-popup-meta-item.single-line-meta-row,
 html[data-theme="dark"] .waqt-circle-logo.fard-squircle-icon,
@@ -7795,10 +9573,14 @@ html[data-theme="dark"] .waqt-info-micro-badge.fard-row-info-btn {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.waqt-active {
   background: rgba(16, 185, 129, 0.18) !important;
   border-color: rgba(52, 211, 153, 0.35) !important;
 }
+
+
 
 
 html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.waqt-active .fard-prayer-title,
@@ -7825,11 +9607,15 @@ html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.waqt-active .fard-tim
 }
 
 
+
+
 #home-dashboard-view .ongoing-static-time-grid,
 #home-dashboard-view .ongoing-static-meta-rows .waqt-popup-meta-item.single-line-meta-row,
 #home-dashboard-view .ongoing-tahajjud-mini-bar {
   border-color: rgba(22, 163, 74, 0.24) !important;
 }
+
+
 
 
 #home-dashboard-view .fard-schedule-dashed-divider,
@@ -7841,10 +9627,14 @@ html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.waqt-active .fard-tim
 }
 
 
+
+
 /* Preserve crimson alert border only when a prohibited salah window is actively running */
 #home-dashboard-view .live-waqt-countdown-box.waqt-prohibited-active {
   border-color: rgba(220, 38, 38, 0.45) !important;
 }
+
+
 
 
 html[data-theme="dark"] #home-dashboard-view .lunar-ponjika-card,
@@ -7860,6 +9650,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 /* ==========================================================================
    V11.2 UNOBSTRUCTED MASJID AN-NABAWI ONGOING PRAYER CARD & HOME UI
    - Completely removes the Tahajjud box and Rak'ah footer from the ongoing card
@@ -7873,10 +9665,14 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .lunar-ponjika-card {
   margin: 0 12px 7px !important;
   padding: 9px 14px !important;
 }
+
+
 
 
 #home-waqt-section.waqt-strip-card {
@@ -7885,10 +9681,14 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .hero-card.hero-card-compact {
   margin: 0 12px 8px !important;
   padding: 12px 14px 10px !important;
 }
+
+
 
 
 .home-prohibited-card,
@@ -7897,10 +9697,14 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .nafl-salah-card {
   margin: 0 12px 10px !important;
   padding: 11px 14px 10px !important;
 }
+
+
 
 
 #home-dashboard-view .waqt-card-embedded-box {
@@ -7913,6 +9717,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-card {
   position: relative;
   width: 100%;
@@ -7923,12 +9729,16 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-bg {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
 }
+
+
 
 
 .s24-sym-nabawi-svg {
@@ -7938,6 +9748,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   object-position: center top;
   display: block;
 }
+
+
 
 
 .s24-nabawi-scenic-content {
@@ -7951,12 +9763,16 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-top-row {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 8px;
 }
+
+
 
 
 .s24-nabawi-title-block h4,
@@ -7970,6 +9786,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-title-block small {
   display: block;
   font-size: 0.82rem !important;
@@ -7978,6 +9796,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   margin-top: 2px;
   text-shadow: none !important;
 }
+
+
 
 
 .s24-nabawi-live-pill {
@@ -7995,12 +9815,16 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-status-dot {
   width: 8.5px;
   height: 8.5px;
   border-radius: 50%;
   flex-shrink: 0;
 }
+
+
 
 
 .s24-status-dot.dot-active {
@@ -8010,10 +9834,14 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-status-dot.dot-danger {
   background: #ef4444;
   border: 1.5px solid #b91c1c;
 }
+
+
 
 
 /* Dedicated 178px upper visual stage so Masjid an-Nabawi Dome, Arched Windows, Plinth & Twin Minarets are 100% visible above the 3 time pills */
@@ -8025,6 +9853,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 /* Bottom Stack for the 3 Time-Based Rows Positioned Cleanly Below the Mosque Dome */
 .s24-nabawi-bottom-stack {
   display: flex;
@@ -8033,6 +9863,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   margin-top: auto;
   flex-shrink: 0;
 }
+
+
 
 
 .s24-nabawi-glass-time {
@@ -8046,10 +9878,14 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-fajr .s24-nabawi-glass-time {
   background: linear-gradient(180deg, rgba(167, 218, 191, 0.76) 0%, rgba(244, 251, 247, 0.9) 100%) !important;
   border-color: rgba(22, 163, 74, 0.28) !important;
 }
+
+
 
 
 .s24-nabawi-glass-time .waqt-popup-time-lbl {
@@ -8059,6 +9895,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-glass-time .waqt-popup-time-val {
   font-size: 0.96rem !important;
   font-weight: 700 !important;
@@ -8066,14 +9904,20 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-glass-time .waqt-popup-time-box.end-box .waqt-popup-time-val {
   color: #0f172a !important;
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-fajr .s24-nabawi-glass-time .waqt-popup-time-box.end-box .waqt-popup-time-val {
   color: #9a3412 !important;
 }
+
+
 
 
 .s24-nabawi-glass-time .waqt-popup-time-divider {
@@ -8085,11 +9929,15 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-glass-rows {
   display: flex;
   flex-direction: column;
   gap: 6px !important;
 }
+
+
 
 
 .s24-nabawi-glass-rows .waqt-popup-meta-item {
@@ -8102,6 +9950,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-label {
   display: inline-flex !important;
   align-items: center !important;
@@ -8110,6 +9960,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   font-weight: 500 !important;
   color: #0f172a !important;
 }
+
+
 
 
 .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-value {
@@ -8121,10 +9973,14 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-label strong {
   font-weight: 700 !important;
   color: #0f172a !important;
 }
+
+
 
 
 .s24-nabawi-glass-rows .s24-countdown-split-row .meta-row-label {
@@ -8137,6 +9993,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-glass-rows .s24-countdown-split-row #live-waqt-remaining {
   font-size: 0.87rem !important;
   font-weight: 700 !important;
@@ -8144,9 +10002,13 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-inline-meta-svg {
   flex-shrink: 0;
 }
+
+
 
 
 /* Guarantee Tahajjud box and Rak'ah footer stay hidden inside the ongoing card */
@@ -8158,9 +10020,13 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-celestial-anim {
   animation: gentleFloat 4.2s ease-in-out infinite;
 }
+
+
 
 
 .live-waqt-countdown-box.waqt-prohibited-active .s24-nabawi-title-block h4 {
@@ -8168,9 +10034,13 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .live-waqt-countdown-box.waqt-prohibited-active .s24-nabawi-title-block small {
   color: #991b1b !important;
 }
+
+
 
 
 .live-waqt-countdown-box.waqt-prohibited-active .s24-nabawi-glass-time,
@@ -8178,6 +10048,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   background: rgba(255, 250, 250, 0.88) !important;
   border-color: rgba(220, 38, 38, 0.28) !important;
 }
+
+
 
 
 @media (max-width: 360px) {
@@ -8209,15 +10081,21 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .waqt-pill-card.fard-waqt-row-item .fard-row-right {
   gap: 0 !important;
 }
+
+
 
 
 /* ==========================================================================
    V11.4 EXACT 1ST UI STYLE FOR ISHA ONGOING SECTION & 2ND UI STYLE FOR ASR
    ONGOING SECTION (ZERO CHANGES TO ANY OTHER WAQT OR SECTION)
    ========================================================================== */
+
+
 
 
 /* --- 1ST UI STYLE: ISHA ONGOING PRAYER CARD (.scene-isha) --- */
@@ -8227,6 +10105,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-isha .s24-nabawi-title-block h4,
 #home-dashboard-view .s24-nabawi-scenic-card.scene-isha #live-waqt-title {
   color: #ffffff !important;
@@ -8234,10 +10114,14 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-isha .s24-nabawi-title-block small {
   color: #cbd5e1 !important;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
 }
+
+
 
 
 .s24-nabawi-scenic-card.scene-isha .s24-nabawi-live-pill {
@@ -8248,11 +10132,15 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-isha .s24-status-dot.dot-active {
   background: #22c55e !important;
   border: 1.5px solid #4ade80 !important;
   box-shadow: 0 0 6px rgba(34, 197, 94, 0.55) !important;
 }
+
+
 
 
 /* Dark Frosted Slate-Blue Glass Pills with Glowing Center Highlight for Isha */
@@ -8263,15 +10151,21 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-time .waqt-popup-time-lbl {
   color: #cbd5e1 !important;
 }
+
+
 
 
 .s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-time .waqt-popup-time-val,
 .s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-time .waqt-popup-time-box.end-box .waqt-popup-time-val {
   color: #ffffff !important;
 }
+
+
 
 
 .s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-time .waqt-popup-time-divider {
@@ -8282,11 +10176,15 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .waqt-popup-meta-item {
   background: linear-gradient(90deg, rgba(28, 49, 72, 0.9) 0%, rgba(44, 70, 98, 0.88) 50%, rgba(28, 49, 72, 0.9) 100%) !important;
   border: 1.2px solid rgba(164, 192, 218, 0.42) !important;
   box-shadow: 0 4px 12px rgba(5, 15, 28, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.12) !important;
 }
+
+
 
 
 .s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-label,
@@ -8297,10 +10195,14 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 /* --- 2ND UI STYLE: ASR ONGOING PRAYER CARD (.scene-asr) --- */
 .s24-nabawi-scenic-card.scene-asr {
   border: 1.5px solid rgba(215, 192, 160, 0.65) !important;
 }
+
+
 
 
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-title-block h4,
@@ -8310,11 +10212,15 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-title-block small {
   color: #1e2923 !important;
   text-shadow: none !important;
   font-weight: 600 !important;
 }
+
+
 
 
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-live-pill {
@@ -8325,11 +10231,15 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-asr .s24-status-dot.dot-active {
   background: #4caf50 !important;
   border: 1.5px solid #2e7d32 !important;
   box-shadow: none !important;
 }
+
+
 
 
 /* Pure Crisp White Elevated Pills on Warm Tan Ground for Asr */
@@ -8340,15 +10250,21 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-time .waqt-popup-time-lbl {
   color: #1e293b !important;
 }
+
+
 
 
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-time .waqt-popup-time-val,
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-time .waqt-popup-time-box.end-box .waqt-popup-time-val {
   color: #090d16 !important;
 }
+
+
 
 
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-time .waqt-popup-time-divider {
@@ -8358,11 +10274,15 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .waqt-popup-meta-item {
   background: #ffffff !important;
   border: 1.2px solid #e2d5c1 !important;
   box-shadow: 0 3px 8px rgba(92, 64, 28, 0.07) !important;
 }
+
+
 
 
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-label,
@@ -8373,12 +10293,16 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 /* ==========================================================================
    V11.5 HIGH-VISIBILITY & CRISP CONTRAST FOR ONGOING WAQT META SENTENCES
    ("✨ উত্তম সময় (আউয়াল ওয়াক্ত):" AND "⏱️ ওয়াক্ত শেষ হতে বাকি:")
    Overrides generic `.waqt-popup-meta-item span` muted color & low weight
    so the inner `<span>` text is 100% sharp, bright, and clearly legible!
    ========================================================================== */
+
+
 
 
 /* All Daytime & General Ongoing Waqt Scenes (Fajr, Dhuhr, Jumu'ah, Asr, Maghrib) */
@@ -8389,6 +10313,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   font-weight: 700 !important;
   opacity: 1 !important;
 }
+
+
 
 
 /* Isha Night Scene (.scene-isha) — Pure Crisp White with Subtle Contrast Shadow */
@@ -8404,6 +10330,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 /* Asr Afternoon Scene (.scene-asr) — Deep Ink Black on Pure White Pill */
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label,
 .s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label span,
@@ -8417,6 +10345,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 /* ==========================================================================
    V11.6 PHOTOREALISTIC CELESTIAL & ATMOSPHERIC LIGHTING ENGINE (CSS3 + SVG)
    - Injects a subtle, luminous white-mist radial backlight behind the central
@@ -8428,6 +10358,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   position: relative;
   isolation: isolate;
 }
+
+
 
 
 /* CSS3 Ambient Center Mosque Backlight Overlay (Between SVG Sky & Foreground UI) */
@@ -8451,6 +10383,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 /* Isha Center White-Mist Glow Below the Moon & Behind the Green Dome (Like Provided Image) */
 .s24-nabawi-scenic-card.scene-isha::before {
   top: 46%;
@@ -8467,6 +10401,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 /* Smooth Celestial Floating & Subtle Atmospheric Shimmer */
 @keyframes s24CelestialBreathe {
   0%, 100% {
@@ -8478,10 +10414,14 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-celestial-anim {
   transform-origin: 200px 80px;
   animation: s24CelestialBreathe 5.5s ease-in-out infinite !important;
 }
+
+
 
 
 /* Refined Glassmorphic Specular Rim on Isha Time & Meta Pills */
@@ -8497,6 +10437,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .waqt-popup-meta-item {
   background: linear-gradient(
     90deg,
@@ -8507,6 +10449,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   border: 1.25px solid rgba(186, 210, 235, 0.45) !important;
   box-shadow: 0 5px 14px rgba(4, 12, 24, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.16) !important;
 }
+
+
 
 
 /* ==========================================================================
@@ -8521,6 +10465,8 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
   gap: 8px !important;
   align-items: stretch !important;
 }
+
+
 
 
 .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card {
@@ -8542,11 +10488,15 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 /* Row 2 (Maghrib & Isha): 2 symmetrical cards below Row 1 (Fajr, Dhuhr, Asr) */
 .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(4),
 .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(5) {
   grid-column: span 3 !important;
 }
+
+
 
 
 .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot {
@@ -8560,16 +10510,22 @@ html[data-theme="dark"] #home-dashboard-view .nafl-salah-card {
 }
 
 
+
+
 html[dir="rtl"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot {
   right: auto !important;
   left: 8px !important;
 }
 
 
+
+
 .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active {
   background: #16a34a !important;
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18) !important;
 }
+
+
 
 
 /* Medium-Sized SVG Container */
@@ -8589,12 +10545,16 @@ html[dir="rtl"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard
 }
 
 
+
+
 .waqt-circle-logo.fard-squircle-icon.fard-medium-svg-wrap svg,
 .waqt-circle-logo.fard-squircle-icon.fard-medium-svg-wrap .fard-prayer-svg {
   width: 34px !important;
   height: 34px !important;
   display: block !important;
 }
+
+
 
 
 /* Information Stacked Cleanly Below the SVG Image */
@@ -8609,6 +10569,8 @@ html[dir="rtl"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard
 }
 
 
+
+
 .fard-below-svg-info .waqt-name.fard-prayer-title {
   font-size: 0.82rem !important;
   font-weight: 600 !important;
@@ -8616,6 +10578,8 @@ html[dir="rtl"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard
   line-height: 1.22 !important;
   white-space: nowrap !important;
 }
+
+
 
 
 .fard-below-svg-info .waqt-time.fard-time-range-pill {
@@ -8636,12 +10600,16 @@ html[dir="rtl"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard
 }
 
 
+
+
 /* Active Prayer Card State — Attractive Soft Emerald Highlight */
 .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active {
   background: linear-gradient(180deg, #eaf7ef 0%, #f3fbf6 100%) !important;
   border: 1.5px solid #16a34a !important;
   box-shadow: 0 4px 12px rgba(22, 163, 74, 0.12) !important;
 }
+
+
 
 
 .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active .fard-medium-svg-wrap {
@@ -8651,10 +10619,14 @@ html[dir="rtl"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard
 }
 
 
+
+
 .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active .fard-prayer-title {
   color: #15803d !important;
   font-weight: 700 !important;
 }
+
+
 
 
 .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active .fard-time-range-pill {
@@ -8665,11 +10637,15 @@ html[dir="rtl"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard
 }
 
 
+
+
 /* Dark Theme Support for Rearranged 5-Waqt Cards */
 html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card {
   background: #071913 !important;
   border-color: rgba(16, 185, 129, 0.22) !important;
 }
+
+
 
 
 html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-medium-svg-wrap {
@@ -8678,9 +10654,13 @@ html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-ca
 }
 
 
+
+
 html[data-theme="dark"] .fard-below-svg-info .waqt-name.fard-prayer-title {
   color: #f8fafc !important;
 }
+
+
 
 
 html[data-theme="dark"] .fard-below-svg-info .waqt-time.fard-time-range-pill {
@@ -8690,10 +10670,14 @@ html[data-theme="dark"] .fard-below-svg-info .waqt-time.fard-time-range-pill {
 }
 
 
+
+
 html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active {
   background: linear-gradient(180deg, rgba(16, 185, 129, 0.22) 0%, #0b221a 100%) !important;
   border-color: #34d399 !important;
 }
+
+
 
 
 @media (max-width: 360px) {
@@ -8724,6 +10708,8 @@ html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-ca
 }
 
 
+
+
 /* ==========================================================================
    V11.8 ONGOING PRAYERS LEFT HEADER WORDS COLOR FIX
    Standard black color in all prayer times (Fajr, Ishraq/Duha, Dhuhr, Jumu'ah,
@@ -8736,11 +10722,15 @@ html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-ca
 }
 
 
+
+
 .s24-nabawi-scenic-card:not(.scene-isha) .s24-nabawi-title-block small {
   color: #1e2923 !important;
   font-weight: 600 !important;
   text-shadow: none !important;
 }
+
+
 
 
 .s24-nabawi-scenic-card.scene-isha .s24-nabawi-title-block h4,
@@ -8750,10 +10740,14 @@ html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-ca
 }
 
 
+
+
 .s24-nabawi-scenic-card.scene-isha .s24-nabawi-title-block small {
   color: #cbd5e1 !important;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
 }
+
+
 
 
 /* ==========================================================================
@@ -8766,14 +10760,20 @@ html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-ca
 }
 
 
+
+
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-medium-svg-wrap {
   border: 1px solid rgba(22, 163, 74, 0.22) !important;
 }
 
 
+
+
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-time-range-pill {
   border: 1px solid rgba(22, 163, 74, 0.26) !important;
 }
+
+
 
 
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active {
@@ -8782,9 +10782,13 @@ html[data-theme="dark"] .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-ca
 }
 
 
+
+
 html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card {
   border: 1.5px solid rgba(52, 211, 153, 0.32) !important;
 }
+
+
 
 
 /* ==========================================================================
@@ -8797,6 +10801,8 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
    ========================================================================== */
 
 
+
+
 /* Widen the Fard Prayer Schedule Subcard to maximize horizontal breathing room */
 #home-dashboard-view #fard-schedule-subcard,
 .fard-schedule-subcard {
@@ -8804,9 +10810,13 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
 }
 
 
+
+
 #home-dashboard-view #five-waqt-grid.five-waqt-grid.fard-waqt-list-ui {
   gap: 7px !important;
 }
+
+
 
 
 /* Widen inner card horizontal geometry so top-row cards (Fajr, Dhuhr, Asr) never squeeze their time pills */
@@ -8817,12 +10827,16 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
 }
 
 
+
+
 /* Make the info stack span full width inside each card */
 #five-waqt-grid .fard-below-svg-info {
   width: 100% !important;
   padding: 0 1px !important;
   gap: 5px !important;
 }
+
+
 
 
 /* Widened, Fatigue-Free Time Pill for All 5 Fard Prayers (Especially Top Row 1..3) */
@@ -8848,11 +10862,15 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
 }
 
 
+
+
 /* Top-Row Specific Ergonomic Enhancement (Fajr, Dhuhr, Asr — 3-up cards) */
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(-n+3) {
   padding-left: 4px !important;
   padding-right: 4px !important;
 }
+
+
 
 
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(-n+3) .fard-below-svg-info .waqt-time.fard-time-range-pill {
@@ -8861,6 +10879,8 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   padding: 5px 8px !important;
   font-size: 0.75rem !important;
 }
+
+
 
 
 /* Bottom-Row Ergonomic Balance (Maghrib & Isha — 2-up wider cards) */
@@ -8873,6 +10893,8 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
 }
 
 
+
+
 /* Active Prayer Card Time-Pill Contrast & Clarity */
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active .fard-below-svg-info .waqt-time.fard-time-range-pill {
   background: #ffffff !important;
@@ -8881,6 +10903,8 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   font-weight: 700 !important;
   box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12) !important;
 }
+
+
 
 
 /* Live Ongoing Waqt Second-by-Second Countdown Ticker Styling */
@@ -8898,16 +10922,22 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
 }
 
 
+
+
 .s24-live-pulse-colon {
   display: inline-block;
   animation: s24ColonPulse 1s steps(1, end) infinite;
 }
 
 
+
+
 @keyframes s24ColonPulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.45; }
 }
+
+
 
 
 /* Small Screen Safeguard (<= 380px and <= 350px) to Prevent Visual Fatigue */
@@ -8935,12 +10965,16 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
 }
 
 
+
+
 @media (max-width: 345px) {
   #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(-n+3) .fard-below-svg-info .waqt-time.fard-time-range-pill {
     padding: 4px 4px !important;
     font-size: 0.67rem !important;
   }
 }
+
+
 
 
 /* ==========================================================================
@@ -8955,10 +10989,14 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
    ========================================================================== */
 
 
+
+
 /* 1. Ongoing Prayers: Hide any inline meta icons & enforce zero-overwrite, zero-abbreviation layout (Wider & Fatigue-Free) */
 .s24-nabawi-glass-rows .s24-inline-meta-svg {
   display: none !important;
 }
+
+
 
 
 .s24-nabawi-glass-rows .waqt-popup-meta-item,
@@ -8976,6 +11014,8 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   overflow: visible !important;
   box-sizing: border-box !important;
 }
+
+
 
 
 /* Full description never abbreviates, clips, or gets overwritten */
@@ -8996,11 +11036,15 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
 }
 
 
+
+
 .s24-nabawi-glass-rows .waqt-popup-meta-item .meta-row-label-text {
   white-space: nowrap !important;
   overflow: visible !important;
   text-overflow: clip !important;
 }
+
+
 
 
 /* Ongoing time frame & live countdown scale fluidly without colliding with the description */
@@ -9019,6 +11063,8 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
 }
 
 
+
+
 html[dir="rtl"] .s24-nabawi-glass-rows .s24-prime-inline-row .meta-row-value,
 html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row .meta-row-value,
 html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row #live-waqt-remaining {
@@ -9026,6 +11072,8 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row #live-waqt-remai
   margin-right: auto !important;
   text-align: left !important;
 }
+
+
 
 
 @media (max-width: 360px) {
@@ -9049,10 +11097,14 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row #live-waqt-remai
 }
 
 
+
+
 /* 2. 5 Fard Prayer Schedule: Remove unnecessary shadow dots & remove deep green border from active prayer section */
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot:not(.active) {
   display: none !important;
 }
+
+
 
 
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active {
@@ -9068,10 +11120,14 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row #live-waqt-remai
 }
 
 
+
+
 html[dir="rtl"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active {
   right: auto !important;
   left: 8px !important;
 }
+
+
 
 
 /* Active Fard Prayer Card: Soft light-green fill ONLY, no deep green border on card or inner time pill */
@@ -9082,11 +11138,15 @@ html[dir="rtl"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-ver
 }
 
 
+
+
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active .fard-medium-svg-wrap {
   background: #ffffff !important;
   border: 1px solid rgba(22, 163, 74, 0.22) !important;
   box-shadow: 0 2px 6px rgba(15, 35, 25, 0.04) !important;
 }
+
+
 
 
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active .fard-below-svg-info .waqt-time.fard-time-range-pill {
@@ -9098,11 +11158,15 @@ html[dir="rtl"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-ver
 }
 
 
+
+
 html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active {
   background: linear-gradient(180deg, rgba(16, 185, 129, 0.2) 0%, rgba(11, 34, 26, 0.92) 100%) !important;
   border: 1.5px solid rgba(52, 211, 153, 0.28) !important;
   box-shadow: none !important;
 }
+
+
 
 
 html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card.waqt-active .fard-below-svg-info .waqt-time.fard-time-range-pill {
@@ -9111,6 +11175,8 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   color: #6ee7b7 !important;
   box-shadow: none !important;
 }
+
+
 
 
 /* ==========================================================================
@@ -9125,19 +11191,23 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
       Prayer Schedule cards.
    ========================================================================== */
 
+
 /* 1A. Widen the Ongoing Prayer Scenic Content & Bottom Stack for Maximum Width */
 #home-dashboard-view .waqt-card-embedded-box {
   padding: 4px !important;
 }
 
+
 .s24-nabawi-scenic-content {
   padding: 12px 7px 10px !important;
 }
+
 
 .s24-nabawi-bottom-stack {
   width: 100% !important;
   gap: 6.5px !important;
 }
+
 
 /* 1B. Ergonomic Zero-Collision Grid + Container-Query Scaling for "ওয়াক্ত শেষ হতে বাকি:" Row */
 .s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-line-row,
@@ -9156,6 +11226,7 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   box-sizing: border-box !important;
   overflow: hidden !important;
 }
+
 
 /* Keep "ওয়াক্ত শেষ হতে বাকি:" anchored at the very beginning (left in LTR, right in RTL) */
 .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-label,
@@ -9178,12 +11249,14 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   line-height: 1.25 !important;
 }
 
+
 html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-label,
 html[dir="rtl"] .s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-line-row > .meta-row-label {
   text-align: right !important;
   padding-left: 0 !important;
   padding-right: 1px !important;
 }
+
 
 /* Compact, Fatigue-Free Tabular Countdown Value that Never Overwrites or Collides (Supports "১০ ঘণ্টা ৪৫ মি. ৩০ সে.") */
 .s24-nabawi-glass-rows .s24-countdown-split-row > #live-waqt-remaining,
@@ -9208,11 +11281,13 @@ html[dir="rtl"] .s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-li
   max-width: 100% !important;
 }
 
+
 html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > #live-waqt-remaining,
 html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-value {
   text-align: left !important;
   justify-content: flex-start !important;
 }
+
 
 /* Harmonized Prime Window ("উত্তম সময় (আউয়াল ওয়াক্ত):") Row Width & Alignment */
 .s24-nabawi-glass-rows .waqt-popup-meta-item.single-line-meta-row.s24-prime-inline-row {
@@ -9227,6 +11302,7 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-valu
   border-radius: 999px !important;
 }
 
+
 .s24-nabawi-glass-rows .s24-prime-inline-row > .meta-row-label {
   grid-column: 1 !important;
   justify-self: start !important;
@@ -9235,6 +11311,7 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-valu
   letter-spacing: -0.015em !important;
 }
 
+
 .s24-nabawi-glass-rows .s24-prime-inline-row > .meta-row-value {
   grid-column: 2 !important;
   justify-self: end !important;
@@ -9242,6 +11319,7 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-valu
   font-size: clamp(0.7rem, 3.8cqw, 0.86rem) !important;
   margin: 0 !important;
 }
+
 
 /* Ultra-Small Viewport Safeguard (<= 360px) */
 @media (max-width: 360px) {
@@ -9267,6 +11345,7 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-valu
   }
 }
 
+
 /* 2. Continuous Standard App Live Pulse & Ripple Halo Animation for Active Fard Prayer Dot */
 @keyframes s24ActiveFardDotCorePulse {
   0%, 100% {
@@ -9280,6 +11359,7 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-valu
     box-shadow: 0 0 0 5px rgba(34, 197, 94, 0), 0 0 10px rgba(34, 197, 94, 0.75);
   }
 }
+
 
 @keyframes s24ActiveFardDotRippleRing {
   0% {
@@ -9296,6 +11376,7 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-valu
   }
 }
 
+
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active {
   display: block !important;
   position: absolute !important;
@@ -9308,6 +11389,7 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-valu
   z-index: 3 !important;
   animation: s24ActiveFardDotCorePulse 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
 }
+
 
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active::after {
   content: "" !important;
@@ -9324,14 +11406,17 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-valu
   animation: s24ActiveFardDotRippleRing 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite !important;
 }
 
+
 html[dir="rtl"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active {
   right: auto !important;
   left: 8px !important;
 }
 
+
 html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active {
   background-color: #22c55e !important;
 }
+
 
 html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active::after {
   border-color: #4ade80 !important;
@@ -9339,9 +11424,12 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
 }
 
 
+
+
 /* ==========================================================================
    V12.3 STANDARD SIZING & REFINED BREATHING PULSE PATCH
    ========================================================================== */
+
 
 /* 1. Restore Standard Legible Sizing for "ওয়াক্ত শেষ হতে বাকি:" Row */
 .s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-line-row,
@@ -9355,6 +11443,7 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   box-sizing: border-box !important;
 }
 
+
 .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-label,
 .s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-line-row > .meta-row-label {
   font-size: 0.92rem !important;
@@ -9362,6 +11451,7 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   letter-spacing: -0.01em !important;
   white-space: nowrap !important;
 }
+
 
 .s24-nabawi-glass-rows .s24-countdown-split-row > #live-waqt-remaining,
 .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-value,
@@ -9374,11 +11464,13 @@ html[data-theme="dark"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-
   margin-left: auto !important;
 }
 
+
 html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > #live-waqt-remaining,
 html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-value {
   margin-left: 0 !important;
   margin-right: auto !important;
 }
+
 
 @media (max-width: 360px) {
   .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-label,
@@ -9390,6 +11482,7 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-valu
     font-size: 0.84rem !important;
   }
 }
+
 
 /* 2. Clean, Elegant Breathing Pulse Animation for Active Fard Prayer Dot (No Heavy Ripple) */
 @keyframes s24StandardBreathingPulse {
@@ -9405,6 +11498,7 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-valu
   }
 }
 
+
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active {
   display: block !important;
   position: absolute !important;
@@ -9418,12 +11512,144 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-valu
   animation: s24StandardBreathingPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
 }
 
+
 #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active::after {
   display: none !important;
 }
 
+
 html[dir="rtl"] #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card .fard-status-dot.active {
   right: auto !important;
   left: 8px !important;
+}
+/* ==========================================================================
+   V12.4 ULTIMATE ERGONOMIC PRIME-TIME & RED COUNTDOWN TYPOGRAPHY UPGRADE
+   1. Enlarges the Prime Time Window value ("০৬:৪০ – ০৭:২৫") to a crisp,
+      fatigue-free standard size (0.95rem) and balances the row spacing so
+      there is no awkward empty gap in front of the time range.
+   2. Styles the "ওয়াক্ত শেষ হতে বাকি:" countdown ("১০ঘন্টা ২৫মি. ২০সে.") in
+      standard red (#dc2626) with zero-collision fluid sizing so 2-digit hour
+      strings never overwrite or clip the label on any screen width.
+   3. Preserves all V12.3 updates including the breathing green active dot.
+   ========================================================================== */
+
+/* 1. Prime Time Window Row ("উত্তম সময় (আউয়াল ওয়াক্ত):") — Standard Unshrunk Time Frame & Balanced Gap */
+.s24-nabawi-glass-rows .waqt-popup-meta-item.single-line-meta-row.s24-prime-inline-row {
+  container-type: inline-size !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: nowrap !important;
+  width: 100% !important;
+  min-height: 38px !important;
+  padding: 8px 14px !important;
+  gap: 10px !important;
+  border-radius: 999px !important;
+  box-sizing: border-box !important;
+}
+
+.s24-nabawi-glass-rows .s24-prime-inline-row > .meta-row-label {
+  flex: 0 0 auto !important;
+  font-size: clamp(0.84rem, 3.8cqw, 0.92rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.3 !important;
+  white-space: nowrap !important;
+}
+
+.s24-nabawi-glass-rows .s24-prime-inline-row > .meta-row-value {
+  flex: 0 0 auto !important;
+  margin-left: auto !important;
+  padding-left: 6px !important;
+  font-size: clamp(0.88rem, 4.1cqw, 0.96rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1.3 !important;
+  font-variant-numeric: tabular-nums !important;
+  white-space: nowrap !important;
+  text-align: right !important;
+}
+
+html[dir="rtl"] .s24-nabawi-glass-rows .s24-prime-inline-row > .meta-row-value {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  padding-left: 0 !important;
+  padding-right: 6px !important;
+  text-align: left !important;
+}
+
+/* 2. "ওয়াক্ত শেষ হতে বাকি:" Row — Standard Red Color (#dc2626) + Zero-Overwrite Layout for "১০ঘন্টা ২৫মি. ২০সে." */
+.s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-line-row,
+.s24-nabawi-glass-rows .s24-countdown-split-row {
+  container-type: inline-size !important;
+  display: grid !important;
+  grid-template-columns: max-content minmax(0, 1fr) !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  min-height: 38px !important;
+  padding: 8px 14px !important;
+  column-gap: 8px !important;
+  border-radius: 999px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-label,
+.s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-line-row > .meta-row-label {
+  grid-column: 1 !important;
+  justify-self: start !important;
+  font-size: clamp(0.82rem, 3.75cqw, 0.92rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.015em !important;
+  line-height: 1.3 !important;
+  white-space: nowrap !important;
+}
+
+/* Standard Red Color for Remaining Time ("১০ঘন্টা ২৫মি. ২০সে.") Across All Prayer Scenes */
+.s24-nabawi-glass-rows .s24-countdown-split-row > #live-waqt-remaining,
+.s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-value,
+.s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-line-row > #live-waqt-remaining,
+.s24-nabawi-scenic-card.scene-asr .s24-nabawi-glass-rows .s24-countdown-split-row #live-waqt-remaining {
+  grid-column: 2 !important;
+  justify-self: end !important;
+  margin-left: auto !important;
+  font-size: clamp(0.82rem, 3.85cqw, 0.94rem) !important;
+  font-weight: 800 !important;
+  color: #dc2626 !important;
+  letter-spacing: -0.01em !important;
+  word-spacing: 0.04em !important;
+  line-height: 1.3 !important;
+  font-variant-numeric: tabular-nums !important;
+  font-feature-settings: "tnum" 1 !important;
+  white-space: nowrap !important;
+  text-align: right !important;
+  text-shadow: none !important;
+}
+
+/* High-Contrast Luminous Coral-Red on Dark Isha Card (.scene-isha) for Zero Eye Strain */
+.s24-nabawi-scenic-card.scene-isha .s24-nabawi-glass-rows .s24-countdown-split-row #live-waqt-remaining {
+  color: #ff6b6b !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55) !important;
+}
+
+@media (max-width: 360px) {
+  .s24-nabawi-glass-rows .waqt-popup-meta-item.single-line-meta-row.s24-prime-inline-row,
+  .s24-nabawi-glass-rows .waqt-popup-meta-item.countdown-single-line-row,
+  .s24-nabawi-glass-rows .s24-countdown-split-row {
+    padding: 7px 11px !important;
+    column-gap: 6px !important;
+  }
+  .s24-nabawi-glass-rows .s24-prime-inline-row > .meta-row-label,
+  .s24-nabawi-glass-rows .s24-countdown-split-row > .meta-row-label {
+    font-size: 0.78rem !important;
+  }
+  .s24-nabawi-glass-rows .s24-prime-inline-row > .meta-row-value {
+    font-size: 0.84rem !important;
+  }
+  .s24-nabawi-glass-rows .s24-countdown-split-row > #live-waqt-remaining {
+    font-size: 0.80rem !important;
+  }
 }
 
