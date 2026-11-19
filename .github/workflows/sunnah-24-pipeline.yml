@@ -217,8 +217,21 @@ jobs:
         with:
           path: './www'
 
-      - name: 9. Deploy to GitHub Pages
+      - name: 9. Deploy to GitHub Pages (Attempt 1)
         id: deployment
+        uses: actions/deploy-pages@v4
+        timeout-minutes: 10
+        continue-on-error: true
+
+      - name: 9B. Wait Briefly Before Pages Deployment Retry
+        if: steps.deployment.outcome == 'failure'
+        run: |
+          echo "⏳ GitHub Pages artifact metadata briefly delayed; waiting 8s before retry..."
+          sleep 8
+
+      - name: 9C. Deploy to GitHub Pages (Retry After Metadata Sync)
+        if: steps.deployment.outcome == 'failure'
+        id: deployment_retry
         uses: actions/deploy-pages@v4
         timeout-minutes: 10
 
