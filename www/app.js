@@ -11655,35 +11655,35 @@ const TWO_BLESSINGS_CONTENT = deepFreeze({
         title: "1. The Prophetic Hadith on Health & Free Time",
         ref: "Sahih al-Bukhari • 6412",
         arabic: "عَنِ ابْنِ عَبَّاسٍ رَضِيَ اللَّهُ عَنْهُمَا قَالَ: قَالَ النَّبِيُّ ﷺ: «نِعْمَتَانِ مَغْبُونٌ فِيهِمَا كَثِيرٌ مِنَ النَّاسِ: الصِّحَّةُ وَالْفَرَاغُ»",
-        text: "Ibn Abbas (RA) reported that the Messenger of Allah ﷺ said: "There are two blessings which many people are deceived into losing: (1) good health and (2) free time.""
+        text: "Ibn Abbas (RA) reported that the Messenger of Allah ﷺ said: \"There are two blessings which many people are deceived into losing: (1) good health and (2) free time.\""
       },
       {
         type: "quran",
         title: "2. Allah's Oath by Time (Surah Al-Asr)",
         ref: "Holy Quran • 103:1–3",
         arabic: "وَالْعَصْرِ ۝ إِنَّ الْإِنسَانَ لَفِي خُسْرٍ ۝ إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ",
-        text: ""By time! Indeed, mankind is in loss—except for those who have believed and done righteous deeds and advised each other to truth and advised each other to patience.""
+        text: "\"By time! Indeed, mankind is in loss—except for those who have believed and done righteous deeds and advised each other to truth and advised each other to patience.\""
       },
       {
         type: "quran",
         title: "3. Turning Free Moments into Devotion (Surah Ash-Sharh)",
         ref: "Holy Quran • 94:7–8",
         arabic: "فَإِذَا فَرَغْتَ فَانصَبْ ۝ وَإِلَىٰ رَبِّكَ فَارْغَب",
-        text: ""So when you have finished [your duties], then stand up [for worship], and to your Lord direct [your] longing.""
+        text: "\"So when you have finished [your duties], then stand up [for worship], and to your Lord direct [your] longing.\""
       },
       {
         type: "hadith",
         title: "4. Seize Five Blessings Before Five Trials",
         ref: "Al-Mustadrak • 7846 (Sahih)",
         arabic: "«اغْتَنِمْ خَمْسًا قَبْلَ خَمْسٍ: شَبَابَكَ قَبْلَ هَرَمِكَ، وَصِحَّتَكَ قَبْلَ سَقَمِكَ، وَغِنَاكَ قَبْلَ فَقْرِكَ، وَفَرَاغَكَ قَبْلَ شُغْلِكَ، وَحَيَاتَكَ قَبْلَ مَوْتِكَ»",
-        text: "The Prophet ﷺ advised: "Take advantage of five before five: your youth before your old age, your health before your illness, your wealth before your poverty, your free time before your busyness, and your life before your death.""
+        text: "The Prophet ﷺ advised: \"Take advantage of five before five: your youth before your old age, your health before your illness, your wealth before your poverty, your free time before your busyness, and your life before your death.\""
       },
       {
         type: "hadith",
         title: "5. Accountability for Lifetime & Physical Health",
         ref: "Jami` at-Tirmidhi • 2416",
         arabic: "«لَا تَزُولُ قَدَمَا عَبْدٍ يَوْمَ الْقِيَامَةِ حَتَّى يُسْأَلَ عَنْ عُمُرِهِ فِيمَا أَفْنَاهُ... وَعَنْ جِسْمِهِ فِيمَ أَبْلَاهُ»",
-        text: "The Prophet ﷺ said: "The feet of the son of Adam will not move on the Day of Resurrection until he is asked about four things: his life and how he spent it, his knowledge and how he acted upon it, his wealth and how he earned and spent it, and his body/health and how he wore it out.""
+        text: "The Prophet ﷺ said: \"The feet of the son of Adam will not move on the Day of Resurrection until he is asked about four things: his life and how he spent it, his knowledge and how he acted upon it, his wealth and how he earned and spent it, and his body/health and how he wore it out.\""
       },
       {
         type: "action",
