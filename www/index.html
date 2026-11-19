@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="bn" dir="ltr" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Sunnah 24 — নববী জীবনধারা ও রুটিন প্ল্যানার | Sunnah 24</title>
-  <meta name="description" content="Sunnah 24: Enterprise-grade 24-Hour Islamic Routine Planner, Prophetic Habit Tracker, Digital Tasbih & Triple-Layer Tamper-Proof Vault." />
+  <meta name="description" content="Sunnah 24: Enterprise-grade 24-Hour Islamic Routine Planner, Prophetic Habit Tracker, Digital Tasbih & Triple-Layer Local-Integrity-Verified Vault." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <link rel="apple-touch-icon" href="icon.svg" />
@@ -45,7 +45,7 @@
       <!-- Website-Only 1-Click APK Download Button -->
       <a
         id="web-apk-download-btn"
-        href="https://github.com/MKRWeb/sunnah-24/releases/latest/download/Sunnah-24-v4.2-Enterprise-Signed.apk"
+        href="https://github.com/MKRWeb/sunnah-24/releases/latest/download/Sunnah-24-v4.3-Enterprise-Signed.apk"
         class="apk-install-btn hidden"
         download
       >
@@ -1345,7 +1345,7 @@
 
 
 
-        <!-- SECTION 12: ডেটা ব্যাকআপ ও ভল্ট (Independent SHA-256 Tamper-Proof Triple-Layer Vault Section) -->
+        <!-- SECTION 12: ডেটা ব্যাকআপ ও ভল্ট (Independent SHA-256 Local-Integrity-Verified Triple-Layer Vault Section) -->
         <button type="button" class="section-launcher-card theme-gold" data-open-section="sec-crypto_vault">
           <div class="section-card-top">
             <div class="section-world-logo logo-gold" aria-hidden="true">
@@ -1627,7 +1627,7 @@
 
 
     <!-- ======================================================================
-         MASTER PANEL D: TAMPER-PROOF VAULT, 7-DAY MATRIX & 12-MONTH ARCHIVE (#tab-vault / #sec-vault)
+         MASTER PANEL D: LOCAL-INTEGRITY-VERIFIED VAULT, 7-DAY MATRIX & 12-MONTH ARCHIVE (#tab-vault / #sec-vault)
          ====================================================================== -->
     <main id="tab-vault" class="master-screen-panel hidden" data-section-type="standalone">
       <div class="card">
@@ -1767,11 +1767,11 @@
 
 
     <!-- ======================================================================
-         MASTER PANEL F: INDEPENDENT SHA-256 TAMPER-PROOF TRIPLE-LAYER VAULT (#sec-crypto_vault)
+         MASTER PANEL F: INDEPENDENT SHA-256 LOCAL-INTEGRITY-VERIFIED TRIPLE-LAYER VAULT (#sec-crypto_vault)
          ====================================================================== -->
     <main id="sec-crypto_vault" class="master-screen-panel hidden" data-section-type="standalone">
       <div class="card master-section-hero-card">
-        <h3 data-i18n="vault_crypto_title">🔐 SHA-256 টেম্পার-প্রুফ ট্রিপল-লেয়ার ভল্ট</h3>
+        <h3 data-i18n="vault_crypto_title">🔐 SHA-256 লোকাল ইন্টিগ্রিটি যাচাইকৃত ট্রিপল-লেয়ার ভল্ট</h3>
         <p class="muted" data-i18n="vault_crypto_sub">
           প্রতিটি আমল স্বয়ংক্রিয়ভাবে ৩টি স্তরে (LocalStorage, IndexedDB এবং Native Android Vault) সংরক্ষিত হয় যাতে মাসের পর মাস ডেটা কখনোই মুছে না যায়।
         </p>
@@ -1784,7 +1784,7 @@
           <code id="latest-hash-display">Initializing...</code>
         </div>
         <div class="hash-box">
-          <small data-i18n="vault_i18n_hash_label">টেম্পার-প্রুফ মাল্টি-ল্যাঙ্গুয়েজ প্যাক ডাইজেস্ট (SHA-256):</small>
+          <small data-i18n="vault_i18n_hash_label">লোকাল ইন্টিগ্রিটি যাচাইকৃত মাল্টি-ল্যাঙ্গুয়েজ প্যাক ডাইজেস্ট (SHA-256):</small>
           <code id="i18n-hash-display">Verifying language pack...</code>
         </div>
         <div class="btn-row">
@@ -2071,6 +2071,12 @@
 
 
 
-  <script src="app.js"></script>
+  <script src="data/i18n-data.js"></script>
+  <script src="data/habits-duas-data.js"></script>
+  <script src="data/locations-data.js"></script>
+  <script src="storage.js"></script>
+  <script src="astronomy.js"></script>
+  <script src="ui.js"></script>
 </body>
 </html>
+
