@@ -50,6 +50,16 @@ function localizeDigits(val, locale) {
   return str;
 }
 
+function escapeHtml(value) {
+  return String(value == null ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+
 // Local Timezone Date Key Generator (Fixes UTC midnight shift bug permanently)
 function getLocalDateKey(dateObj = new Date()) {
   const year = dateObj.getFullYear();
@@ -1399,7 +1409,6 @@ let appState = {
 let activePhase = "tahajjud_fajr";
 let activeMasterSectionId = null;
 let homeDashboardScrollY = 0;
-let selectedMood = "Khushu";
 let tasbihCount = 0;
 let tasbihTarget = 33;
 let verifiedI18nDigest = "";
@@ -4801,7 +4810,6 @@ function applyLanguageToDOM() {
   renderDuas();
   renderHeaderDatesAndPhase();
   renderHabits();
-  renderDiaryHistory();
   if (typeof renderCustomHabitsManageList === "function") renderCustomHabitsManageList();
   if (typeof syncMasterSectionsLiveProgress === "function") syncMasterSectionsLiveProgress();
   if (typeof syncTwoBlessingsCardLocale === "function") syncTwoBlessingsCardLocale();
@@ -5363,11 +5371,11 @@ function renderHabits() {
         </div>
         <div class="habit-info">
           <div class="habit-time-row">
-            <span class="habit-time">${getHabitTime(habit)}</span>
+            <span class="habit-time">${escapeHtml(getHabitTime(habit))}</span>
             ${statusBadgeHtml}
           </div>
-          <h4>${getHabitTitle(habit)}</h4>
-          <p class="habit-snippet">${getHabitWisdom(habit)}</p>
+          <h4>${escapeHtml(getHabitTitle(habit))}</h4>
+          <p class="habit-snippet">${escapeHtml(getHabitWisdom(habit))}</p>
         </div>
       </div>
       <div class="habit-right-actions">
@@ -5820,7 +5828,7 @@ function openDayHistoryModal(dateKey) {
 
   if (completedHabits.length > 0) {
     evidenceEl.innerHTML = `<div class="compact-history-grid">${completedHabits
-      .map((h) => `<div class="compact-history-item">✓ ${getHabitTitle(h)}</div>`)
+      .map((h) => `<div class="compact-history-item">✓ ${escapeHtml(getHabitTitle(h))}</div>`)
       .join("")}</div>`;
   } else {
     evidenceEl.textContent = t("day_detail_none");
@@ -5916,39 +5924,7 @@ function openHabitModal(habitId) {
   if (typeof pushAppHistoryState === "function") pushAppHistoryState("modal");
 }
 
-function getLocalizedMoodLabel(moodCode) {
-  if (!moodCode) return t("mood_khushu");
-  if (moodCode.includes("Khushu")) return t("mood_khushu");
-  if (moodCode.includes("Shukr")) return t("mood_shukr");
-  if (moodCode.includes("Sabr")) return t("mood_sabr");
-  if (moodCode.includes("Tawbah")) return t("mood_tawbah");
-  return moodCode;
-}
-
-function renderDiaryHistory() {
-  const listEl = document.getElementById("diary-history-list");
-  if (!listEl) return;
-  listEl.innerHTML = "";
-  const entries = [...(appState.diaryEntries || [])].reverse();
-
-  if (entries.length === 0) {
-    listEl.innerHTML = `<p class="muted">${t("diary_empty")}</p>`;
-    return;
-  }
-
-  entries.forEach((entry) => {
-    const item = document.createElement("div");
-    item.className = "modal-section";
-    item.innerHTML = `
-      <h4>📅 ${localizeDigits(entry.date, appState.locale)} — ${getLocalizedMoodLabel(entry.mood)}</h4>
-      <p><strong>${t("diary_lbl_shukr")}</strong> ${entry.gratitude}</p>
-      <p><strong>${t("diary_lbl_tawbah")}</strong> ${entry.shortcoming}</p>
-      <p><strong>${t("diary_lbl_niyyah")}</strong> ${entry.niyyah}</p>
-      <small style="color:#059669;font-size:0.68rem;font-weight:700;">SHA-256: ${(entry.entryHash || "").slice(0, 28)}...</small>
-    `;
-    listEl.appendChild(item);
-  });
-}
+// Muhasabah UI helpers removed (appState.diaryEntries preserved for SHA-256 backup compatibility)
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadAndVerifyState();
@@ -6017,12 +5993,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderLongTermArchive();
     });
   }
-
-  document.querySelectorAll(".tab-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      switchTabProgrammatically(btn.dataset.tab, true);
-    });
-  });
 
   const resetTodayBtnEl = document.getElementById("reset-today-btn");
   if (resetTodayBtnEl) resetTodayBtnEl.addEventListener("click", async () => {
@@ -6094,10 +6064,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   const closeModalBtnEl = document.getElementById("close-modal-btn");
-  if (closeModalBtnEl) {
+  const factModalEl = document.getElementById("fact-modal");
+  if (closeModalBtnEl && factModalEl) {
     closeModalBtnEl.addEventListener("click", () => {
-      const factModalEl = document.getElementById("fact-modal");
-      if (factModalEl) factModalEl.classList.add("hidden");
+      factModalEl.classList.add("hidden");
+    });
+    factModalEl.addEventListener("click", (e) => {
+      if (e.target === factModalEl) factModalEl.classList.add("hidden");
     });
   }
 
@@ -6138,7 +6111,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         appState.locale
       );
       updateTasbihCircularUI();
-      await saveAndSealState();
+      if (window.__s24TasbihSaveTimer) clearTimeout(window.__s24TasbihSaveTimer);
+      window.__s24TasbihSaveTimer = setTimeout(() => {
+        saveAndSealState().catch(() => {});
+      }, 250);
     });
   }
 
@@ -6171,9 +6147,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const titleInput = document.getElementById("custom-title");
     const phaseSelect = document.getElementById("custom-phase");
     const factInput = document.getElementById("custom-fact");
-    const title = titleInput ? titleInput.value.trim() : "";
-    const phase = phaseSelect ? phaseSelect.value : "tahajjud_fajr";
-    const fact = factInput ? factInput.value.trim() : "";
+    const title = titleInput ? titleInput.value.trim().slice(0, 200) : "";
+    const rawPhase = phaseSelect ? phaseSelect.value : "tahajjud_fajr";
+    const phase = PHASE_KEY_TO_TITLE_I18N[rawPhase] ? rawPhase : "tahajjud_fajr";
+    const fact = factInput ? factInput.value.trim().slice(0, 500) : "";
 
     if (!title) {
       if (titleInput) titleInput.focus();
@@ -6289,6 +6266,30 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
 
+      // Validate & sanitize imported customHabits against allowed phase keys to prevent corrupted/malicious payloads
+      const allowedPhases = new Set([
+        "tahajjud_fajr",
+        "duha_work",
+        "dhuhr_asr",
+        "maghrib_isha",
+        "sleep_sunnah",
+        "diet_hygiene",
+        "character_social"
+      ]);
+      if (Array.isArray(imported.customHabits)) {
+        imported.customHabits = imported.customHabits
+          .filter((ch) => ch && typeof ch === "object" && typeof ch.id === "string" && typeof ch.title === "string")
+          .map((ch) => ({
+            id: String(ch.id).replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 64) || ("s24_custom_" + Date.now()),
+            isCustom: true,
+            phase: allowedPhases.has(ch.phase) ? ch.phase : "tahajjud_fajr",
+            title: String(ch.title).trim().slice(0, 200),
+            title_bn: String(ch.title_bn || ch.title).trim().slice(0, 200),
+            title_ar: String(ch.title_ar || ch.title).trim().slice(0, 200),
+            customFact: ch.customFact ? String(ch.customFact).trim().slice(0, 500) : ""
+          }));
+      }
+
       // Deep-merge imported backup with existing history so importing never wipes other days
       const merged = mergeHistoryStates([imported, appState]);
       if (merged) {
@@ -6308,8 +6309,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 // ============================================================================
 // SMART ANDROID APK & PWA BACK-BUTTON NAVIGATION ENGINE (NEVER EXITS ABRUPTLY)
 // ============================================================================
-let navTabStack = ["tab-routine"];
-let tabScrollPositions = { "tab-routine": 0 };
 let lastBackTapTime = 0;
 
 function pushAppHistoryState(contextTag = "nav") {
@@ -6336,64 +6335,6 @@ function showExitToast() {
   setTimeout(() => {
     if (toast) toast.style.opacity = "0";
   }, 2000);
-}
-
-// Computes the exact viewport anchor offset so opening a non-Routine section
-// (Adhkar, Muhasabah, Vault & Info) for the first time brings the user slightly
-// down directly into that section's content card instead of jumping to the very top.
-function computeSectionFocusScrollOffset(targetTabId) {
-  if (!targetTabId || targetTabId === "tab-routine") return 0;
-  const headerEl = document.querySelector(".app-header");
-  const tabNavEl = document.querySelector(".tab-nav");
-  const targetSectionEl = document.getElementById(targetTabId);
-  const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 58;
-
-  if (tabNavEl) {
-    const navRect = tabNavEl.getBoundingClientRect();
-    const absoluteNavTop = (window.scrollY || window.pageYOffset || 0) + navRect.top;
-    return Math.max(0, Math.round(absoluteNavTop - headerHeight - 6));
-  }
-  if (targetSectionEl) {
-    const secRect = targetSectionEl.getBoundingClientRect();
-    const absoluteSecTop = (window.scrollY || window.pageYOffset || 0) + secRect.top;
-    return Math.max(0, Math.round(absoluteSecTop - headerHeight - 12));
-  }
-  return 0;
-}
-
-function switchTabProgrammatically(targetTabId, recordInStack = true) {
-  const currentActiveBtn = document.querySelector(".tab-btn.active");
-  if (currentActiveBtn) {
-    tabScrollPositions[currentActiveBtn.dataset.tab] = window.scrollY || window.pageYOffset || 0;
-  }
-
-  document.querySelectorAll(".tab-btn").forEach((b) => {
-    b.classList.toggle("active", b.dataset.tab === targetTabId);
-  });
-  document.querySelectorAll(".tab-content").forEach((c) => {
-    c.classList.toggle("active", c.id === targetTabId);
-  });
-
-  if (recordInStack && navTabStack[navTabStack.length - 1] !== targetTabId) {
-    navTabStack.push(targetTabId);
-    pushAppHistoryState(targetTabId);
-  }
-
-  requestAnimationFrame(() => {
-    const hasSavedPosition =
-      Object.prototype.hasOwnProperty.call(tabScrollPositions, targetTabId) &&
-      tabScrollPositions[targetTabId] > 0;
-
-    if (hasSavedPosition) {
-      window.scrollTo({ top: tabScrollPositions[targetTabId], behavior: "instant" });
-    } else if (targetTabId !== "tab-routine") {
-      const focusOffset = computeSectionFocusScrollOffset(targetTabId);
-      tabScrollPositions[targetTabId] = focusOffset;
-      window.scrollTo({ top: focusOffset, behavior: "smooth" });
-    } else {
-      window.scrollTo({ top: 0, behavior: "instant" });
-    }
-  });
 }
 
 // Superseded legacy handleSunnahBackNavigation #1 consolidated into unifiedLIFO modal & view handler
@@ -6586,12 +6527,13 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
   banner.className = "update-banner-card";
   banner.setAttribute("data-cached", isAlreadyOnDevice ? "true" : "false");
 
+  const safeVersion = escapeHtml(newVersion);
   const msgText =
     appState.locale === "ar"
-      ? `✨ تحديث جديد (${newVersion}) متاح لتطبيق سنة ٢٤!`
+      ? `✨ تحديث جديد (${safeVersion}) متاح لتطبيق سنة ٢٤!`
       : appState.locale === "en"
-      ? `✨ Update (${newVersion}) Available for Sunnah 24!`
-      : `✨ সুন্নাহ ২৪-এর নতুন আপডেট (${newVersion}) প্রস্তুত!`;
+      ? `✨ Update (${safeVersion}) Available for Sunnah 24!`
+      : `✨ সুন্নাহ ২৪-এর নতুন আপডেট (${safeVersion}) প্রস্তুত!`;
 
   const subText = isAlreadyOnDevice
     ? appState.locale === "bn"
@@ -7557,166 +7499,7 @@ function getLocalizedUpazilaName(rawUpazila, locale = appState.locale) {
   return rawUpazila.replace(/\s*\([^)]*\)/g, "").trim();
 }
 
-function injectBdLocationSelectorStyles() {
-  if (document.getElementById("s24-bd-loc-selector-styles")) return;
-  const styleEl = document.createElement("style");
-  styleEl.id = "s24-bd-loc-selector-styles";
-  styleEl.textContent = `
-    .header-madhab-loc-stack {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 4px;
-    }
-    .header-loc-pill-btn {
-      background: #f4fbf7;
-      color: var(--accent-emerald-dark, #065f46);
-      border: 1.5px solid rgba(16, 185, 129, 0.42);
-      padding: 3.5px 9px;
-      border-radius: 999px;
-      font-size: 0.66rem;
-      font-weight: 800;
-      font-family: inherit;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(15, 45, 34, 0.08);
-      transition: transform 0.16s ease, background 0.2s ease, border-color 0.2s ease;
-      white-space: nowrap;
-      max-width: 150px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .header-loc-pill-btn:hover {
-      background: #e6f7ef;
-      border-color: var(--accent-emerald, #10b981);
-    }
-    .header-loc-pill-btn:active {
-      transform: scale(0.95);
-    }
-    .header-loc-popover {
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      width: min(305px, calc(100vw - 24px));
-      background: #ffffff;
-      border: 1.5px solid rgba(16, 185, 129, 0.38);
-      border-radius: 18px;
-      padding: 12px;
-      box-shadow: 0 18px 40px rgba(15, 45, 34, 0.22), 0 4px 12px rgba(15, 45, 34, 0.08);
-      z-index: 220;
-      display: none;
-      flex-direction: column;
-      gap: 9px;
-      animation: locPopIn 0.18s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    html[dir="rtl"] .header-loc-popover {
-      right: auto;
-      left: 0;
-    }
-    @keyframes locPopIn {
-      from { opacity: 0; transform: translateY(-6px) scale(0.97); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .header-loc-popover.is-open {
-      display: flex;
-    }
-    .bd-loc-popover-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 6px;
-      padding-bottom: 6px;
-      border-bottom: 1px dashed rgba(16, 185, 129, 0.25);
-    }
-    .bd-loc-popover-title {
-      font-size: 0.74rem;
-      font-weight: 900;
-      color: var(--accent-emerald-dark, #065f46);
-    }
-    .bd-loc-coords-pill {
-      font-size: 0.63rem;
-      font-weight: 800;
-      color: var(--accent-gold, #b45309);
-      background: var(--accent-gold-soft, #fef3c7);
-      border: 1px solid rgba(180, 83, 9, 0.25);
-      padding: 2px 7px;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-    .bd-loc-selects-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-    .bd-loc-field {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      text-align: left;
-    }
-    html[dir="rtl"] .bd-loc-field {
-      text-align: right;
-    }
-    .bd-loc-field label {
-      font-size: 0.65rem;
-      font-weight: 800;
-      color: var(--text-muted, #5b7268);
-      padding-left: 2px;
-    }
-    .bd-loc-select {
-      width: 100%;
-      background: #f8fbf9;
-      color: var(--text-primary, #1e352b);
-      border: 1.2px solid rgba(16, 185, 129, 0.35);
-      border-radius: 10px;
-      padding: 7px 9px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      font-family: inherit;
-      outline: none;
-      cursor: pointer;
-    }
-    .bd-loc-select:focus {
-      border-color: var(--accent-emerald, #10b981);
-      background: #ffffff;
-    }
-    .bd-loc-actions-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      padding-top: 4px;
-    }
-    .bd-loc-auto-btn {
-      background: #f3f8f5;
-      color: var(--text-muted, #5b7268);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: 999px;
-      padding: 5px 11px;
-      font-size: 0.68rem;
-      font-weight: 800;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .bd-loc-done-btn {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: #ffffff;
-      border: none;
-      border-radius: 999px;
-      padding: 5px 14px;
-      font-size: 0.7rem;
-      font-weight: 800;
-      cursor: pointer;
-      font-family: inherit;
-      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.25);
-    }
-  `;
-  document.head.appendChild(styleEl);
-}
+// BD Location selector styles are loaded directly from style.css
 
 function triggerFullWaqtAndLockRefresh(showToast = false) {
   if (typeof syncMadhabToggleUI === "function") syncMadhabToggleUI();
@@ -7828,7 +7611,7 @@ function syncBdLocationBannerText() {
 }
 
 function initBdLocationSelectorEngine() {
-  injectBdLocationSelectorStyles();
+  // CSS is already cleanly loaded in style.css (avoiding duplicate <style> injection)
 
   // Ensure default Dhaka selection is initialized if no saved location exists yet
   if (!getSavedBdLocationSelection()) {
@@ -9565,13 +9348,12 @@ window.Sunnah24SectionEngine = {
       cardBtn.innerHTML = `
         <div class="section-card-top">
           <div class="section-world-logo logo-emerald">${logoSvg || "✨"}</div>
-          <span class="section-live-pill">${badgeText || "নতুন"}</span>
+          <span class="section-live-pill">${escapeHtml(badgeText || "নতুন")}</span>
         </div>
         <div class="section-card-body">
-          <h4 class="section-card-title">${title}</h4>
-          <p class="section-card-desc">${subtitle || ""}</p>
+          <h4 class="section-card-title">${escapeHtml(title)}</h4>
+          <p class="section-card-desc">${escapeHtml(subtitle || "")}</p>
         </div>
-
       `;
       gridSlot.appendChild(cardBtn);
     }
@@ -9691,16 +9473,16 @@ function renderCustomHabitsManageList() {
         </div>
         <div class="habit-info">
           <div class="habit-time-row">
-            <span class="habit-time">${t("custom_time_label")}</span>
-            <span class="time-status-badge status-open">📂 ${sectionName}</span>
+            <span class="habit-time">${escapeHtml(t("custom_time_label"))}</span>
+            <span class="time-status-badge status-open">📂 ${escapeHtml(sectionName)}</span>
           </div>
-          <h4>${getHabitTitle(habit)}</h4>
-          <p class="habit-snippet">${getHabitWisdom(habit)}</p>
+          <h4>${escapeHtml(getHabitTitle(habit))}</h4>
+          <p class="habit-snippet">${escapeHtml(getHabitWisdom(habit))}</p>
         </div>
       </div>
       <div class="habit-right-actions">
-        <button type="button" class="info-btn" data-open-custom-phase="sec-${habit.phase}">
-          📂 ${sectionName}
+        <button type="button" class="info-btn" data-open-custom-phase="sec-${escapeHtml(habit.phase)}">
+          📂 ${escapeHtml(sectionName)}
         </button>
       </div>
     `;
@@ -10256,8 +10038,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const gridView = document.getElementById("sunnah-grid-view");
     if (gridView) gridView.classList.add("hidden");
     isSunnahGridPageOpen = false;
+    s24ViewHistoryStack = ["home"];
     origCloseMasterSectionToHome();
-    setTimeout(syncBottomNavWithCurrentView, 40);
+    syncBottomNavWithCurrentView();
   };
   if (window.Sunnah24SectionEngine) {
     window.Sunnah24SectionEngine.backToHome = closeMasterSectionToHome;
@@ -11305,4 +11088,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
