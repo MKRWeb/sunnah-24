@@ -177,70 +177,7 @@
 
 
 
-    <!-- 3. DAILY SUNNAH MASTERY CARD (দৈনিক সুন্নাহ অনুশীলন — Positioned after Ongoing & 5 Fard Prayers) -->
-    <section class="hero-card hero-card-compact">
-      <div class="hero-stats">
-        <div class="hero-left-info">
-          <span class="label" data-i18n="hero_mastery_label">দৈনিক সুন্নাহ ২৪ অনুশীলন</span>
-          <h2 id="daily-score-text">০%</h2>
-          <p id="completed-count-text">আজ ৩২টি নববী সুন্নাহর মধ্যে ০টি সম্পন্ন হয়েছে</p>
-          <div id="time-lock-summary" class="time-lock-pill">⏱️ রিয়েল-টাইম ওয়াক্ত লক সক্রিয়</div>
-        </div>
-
-
-
-
-        <div class="streak-circle-wrapper" title="Daily Progress & Streak Ring">
-          <svg class="progress-ring-svg" width="92" height="92" viewBox="0 0 92 92">
-            <defs>
-              <linearGradient id="s24RingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#10b981" />
-                <stop offset="100%" stop-color="#eab308" />
-              </linearGradient>
-            </defs>
-            <circle class="progress-ring-bg" cx="46" cy="46" r="39" stroke-width="7.5" fill="transparent" />
-            <circle
-              id="hero-progress-ring-circle"
-              class="progress-ring-meter"
-              cx="46"
-              cy="46"
-              r="39"
-              stroke="url(#s24RingGrad)"
-              stroke-width="7.5"
-              stroke-linecap="round"
-              fill="transparent"
-              stroke-dasharray="245.04"
-              stroke-dashoffset="245.04"
-            />
-          </svg>
-          <div class="streak-circle-inner">
-            <span class="streak-flame">🔥</span>
-            <strong id="streak-count">০</strong>
-            <small data-i18n="day_streak">দিনের ধারাবাহিকতা</small>
-          </div>
-        </div>
-      </div>
-
-
-
-
-      <div class="progress-track" style="display:none;">
-        <div id="daily-progress-bar" class="progress-fill" style="width: 0%"></div>
-      </div>
-
-
-
-
-      <div class="hero-meta">
-        <span id="next-phase-banner" style="display:none;">🌌 চলমান ওয়াক্ত...</span>
-        <span id="fasting-banner">🌙 সুন্নাহ রোজা যাচাই...</span>
-      </div>
-    </section>
-
-
-
-
-    <!-- 4. PROHIBITED TIME FOR SALAH -->
+    <!-- 3. PROHIBITED TIME FOR SALAH (DIRECTLY BELOW FARD SALAH SECTION) -->
     <section id="prohibited-salah-card" class="prohibited-static-card is-collapsed home-prohibited-card" aria-label="Prohibited Times for Salah">
       <button
         type="button"
@@ -315,7 +252,7 @@
 
 
 
-    <!-- 5. MINIMAL NAFL SALAH WAQT CARD — DIRECTLY BELOW PROHIBITED SALAH CARD -->
+    <!-- 4. MINIMAL NAFL SALAH WAQT CARD — DIRECTLY BELOW PROHIBITED SALAH CARD -->
     <section id="nafl-salah-card" class="nafl-salah-card" aria-label="Nafl Prayer Waqt Schedule">
       <div class="nafl-minimal-header">
         <h4 id="nafl-card-title">নফল নামাজের সময়সূচী</h4>
@@ -327,6 +264,69 @@
     </section>
 
 
+
+
+
+
+    <!-- 5. DAILY SUNNAH MASTERY CARD (দৈনিক সুন্নাহ অনুশীলন — Positioned after Nafl Salah Section) -->
+    <section class="hero-card hero-card-compact">
+      <div class="hero-stats">
+        <div class="hero-left-info">
+          <span class="label" data-i18n="hero_mastery_label">দৈনিক সুন্নাহ ২৪ অনুশীলন</span>
+          <h2 id="daily-score-text">০%</h2>
+          <p id="completed-count-text">আজ ৩২টি নববী সুন্নাহর মধ্যে ০টি সম্পন্ন হয়েছে</p>
+          <div id="time-lock-summary" class="time-lock-pill">⏱️ রিয়েল-টাইম ওয়াক্ত লক সক্রিয়</div>
+        </div>
+
+
+
+
+        <div class="streak-circle-wrapper" title="Daily Progress & Streak Ring">
+          <svg class="progress-ring-svg" width="92" height="92" viewBox="0 0 92 92">
+            <defs>
+              <linearGradient id="s24RingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#10b981" />
+                <stop offset="100%" stop-color="#eab308" />
+              </linearGradient>
+            </defs>
+            <circle class="progress-ring-bg" cx="46" cy="46" r="39" stroke-width="7.5" fill="transparent" />
+            <circle
+              id="hero-progress-ring-circle"
+              class="progress-ring-meter"
+              cx="46"
+              cy="46"
+              r="39"
+              stroke="url(#s24RingGrad)"
+              stroke-width="7.5"
+              stroke-linecap="round"
+              fill="transparent"
+              stroke-dasharray="245.04"
+              stroke-dashoffset="245.04"
+            />
+          </svg>
+          <div class="streak-circle-inner">
+            <span class="streak-flame">🔥</span>
+            <strong id="streak-count">০</strong>
+            <small data-i18n="day_streak">দিনের ধারাবাহিকতা</small>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <div class="progress-track" style="display:none;">
+        <div id="daily-progress-bar" class="progress-fill" style="width: 0%"></div>
+      </div>
+
+
+
+
+      <div class="hero-meta">
+        <span id="next-phase-banner" style="display:none;">🌌 চলমান ওয়াক্ত...</span>
+        <span id="fasting-banner">🌙 সুন্নাহ রোজা যাচাই...</span>
+      </div>
+    </section>
 
 
 
