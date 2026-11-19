@@ -24,6 +24,7 @@
     </div>
   </div>
 
+
   <!-- Compact Commercial Top App Bar with Universal Asr Madhab Toggle & Header Location Pill -->
   <header class="app-header" id="main-app-header">
     <div class="header-left">
@@ -33,6 +34,7 @@
         <p id="current-date-display" style="display:none;"></p>
       </div>
     </div>
+
 
     <div class="header-right">
       <span id="integrity-badge" class="badge-verified" style="display:none;">🛡️ S24 যাচাইকৃত</span>
@@ -45,6 +47,7 @@
       >
         📲 <span>Install App</span>
       </a>
+
 
       <!-- Clean Single-Row Header Right: Location Pill + Settings Preferences Drawer Trigger -->
       <div class="header-madhab-loc-stack header-single-row-actions" id="bd-loc-selector-bar">
@@ -63,6 +66,7 @@
           <span id="bd-loc-active-label">ঢাকা ▾</span>
         </button>
 
+
         <button
           type="button"
           id="s24-settings-open-btn"
@@ -77,6 +81,7 @@
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
           </svg>
         </button>
+
 
         <!-- Clean Anchored Popover Panel: Division -> District -> Upazila -->
         <div id="bd-loc-cascading-panel" class="bd-loc-Cascading-panel header-loc-popover" role="dialog" aria-label="Bangladesh Location Selector">
@@ -107,6 +112,7 @@
     </div>
   </header>
 
+
   <!-- ========================================================================
        HOME DASHBOARD VIEW (#home-dashboard-view)
        When any section is clicked, this entire Home View hides and the clicked
@@ -120,6 +126,7 @@
       </div>
       <p id="bangla-ponjika-subline" class="bangla-ponjika-sub">বাংলা ও ইংরেজি তারিখ সিঙ্ক হচ্ছে...</p>
     </section>
+
 
     <!-- 2. INSTANT ABOVE-THE-FOLD ONGOING WAQT (V11.2 UNOBSTRUCTED MASJID AN-NABAWI) & 5 ফরজ নামাজের সময়সূচী SECTION -->
     <section id="home-waqt-section" class="waqt-strip-card" aria-label="Five Daily Prayers & Live Ongoing Waqt">
@@ -140,6 +147,7 @@
         </div>
       </div>
 
+
       <!-- 5 Fard Prayer Schedule Card (Matches Image 2 UI) -->
       <div class="fard-schedule-subcard" id="fard-schedule-subcard">
         <div class="fard-schedule-header">
@@ -150,6 +158,7 @@
       </div>
     </section>
 
+
     <!-- 3. DAILY SUNNAH MASTERY CARD (দৈনিক সুন্নাহ অনুশীলন — Positioned after Ongoing & 5 Fard Prayers) -->
     <section class="hero-card hero-card-compact">
       <div class="hero-stats">
@@ -159,6 +168,7 @@
           <p id="completed-count-text">আজ ৩২টি নববী সুন্নাহর মধ্যে ০টি সম্পন্ন হয়েছে</p>
           <div id="time-lock-summary" class="time-lock-pill">⏱️ রিয়েল-টাইম ওয়াক্ত লক সক্রিয়</div>
         </div>
+
 
         <div class="streak-circle-wrapper" title="Daily Progress & Streak Ring">
           <svg class="progress-ring-svg" width="92" height="92" viewBox="0 0 92 92">
@@ -191,15 +201,18 @@
         </div>
       </div>
 
+
       <div class="progress-track" style="display:none;">
         <div id="daily-progress-bar" class="progress-fill" style="width: 0%"></div>
       </div>
+
 
       <div class="hero-meta">
         <span id="next-phase-banner" style="display:none;">🌌 চলমান ওয়াক্ত...</span>
         <span id="fasting-banner">🌙 সুন্নাহ রোজা যাচাই...</span>
       </div>
     </section>
+
 
     <!-- 4. PROHIBITED TIME FOR SALAH -->
     <section id="prohibited-salah-card" class="prohibited-static-card is-collapsed home-prohibited-card" aria-label="Prohibited Times for Salah">
@@ -223,9 +236,11 @@
         <span id="prohibited-chevron" class="prohibited-chevron" aria-hidden="true">▼</span>
       </button>
 
+
       <div id="prohibited-collapsible-body" class="prohibited-collapsible-body">
         <div class="prohibited-static-inner">
           <div class="prohibited-dashed-divider" style="margin-top:0;"></div>
+
 
           <div class="prohibited-static-list">
             <div class="prohibited-static-row">
@@ -233,10 +248,12 @@
               <strong id="time-slot-sunrise" class="prohibited-time-pill">--:-- - --:--</strong>
             </div>
 
+
             <div class="prohibited-static-row">
               <span class="prohibited-row-label" data-i18n="prohibited_zawal">২. ঠিক দ্বিপ্রহরের সময় (Midday):</span>
               <strong id="time-slot-zawal" class="prohibited-time-pill">--:-- - --:--</strong>
             </div>
+
 
             <div class="prohibited-static-row">
               <span class="prohibited-row-label" data-i18n="prohibited_sunset">৩. সূর্যাস্তের সময় (Sunset):</span>
@@ -244,7 +261,9 @@
             </div>
           </div>
 
+
           <div class="prohibited-dashed-divider"></div>
+
 
           <div class="prohibited-amber-alert-box">
             <small class="prohibited-hadith-proof" data-i18n="prohibited_hadith_ref">
@@ -254,6 +273,7 @@
         </div>
       </div>
     </section>
+
 
     <!-- 5. MINIMAL NAFL SALAH WAQT CARD — DIRECTLY BELOW PROHIBITED SALAH CARD -->
     <section id="nafl-salah-card" class="nafl-salah-card" aria-label="Nafl Prayer Waqt Schedule">
@@ -266,9 +286,152 @@
       </div>
     </section>
 
+
+
+    <!-- 6. 3D TWO BLESSINGS (HEALTH & FREE TIME — SAHIH BUKHARI 6412) INTERACTIVE HOMEPAGE CARD -->
+    <section
+      id="two-blessings-3d-card"
+      class="s24-blessings-3d-card"
+      role="button"
+      tabindex="0"
+      aria-haspopup="dialog"
+      aria-label="দু'টি নিয়ামত: সুস্থতা ও অবসর — সহীহ বুখারী ৬৪১২ (ট্যাপ করে কুরআন ও হাদিসের বিস্তারিত নির্দেশনা পড়ুন)"
+    >
+      <div class="s24-blessings-3d-inner">
+        <div class="s24-blessings-ambient-glow" aria-hidden="true"></div>
+
+        <div class="s24-blessings-header">
+          <span class="s24-blessings-narrator" id="blessings-card-narrator">ইবনু আব্বাস (রা.) হতে বর্ণিত রাসূল ﷺ ইরশাদ করেন—</span>
+          <h3 class="s24-blessings-headline" id="blessings-card-headline">এমন দু’টি নিয়ামত আছে,</h3>
+          <p class="s24-blessings-subline" id="blessings-card-subline">
+            যে দু’টোতে <span class="s24-blessings-highlight">অধিকাংশ মানুষ উদাসীন</span>
+          </p>
+        </div>
+
+        <div class="s24-blessings-tiles-grid" aria-hidden="true">
+          <!-- Left 3D Tile: সুস্থতা (Health - Heart with ECG Pulse & Botanical Leaf) -->
+          <div class="s24-blessing-3d-tile tile-health">
+            <div class="s24-blessing-tile-frame">
+              <svg class="s24-blessing-3d-svg" viewBox="0 0 110 92" width="102" height="84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="s24HeartGreenTop" x1="22" y1="14" x2="78" y2="56" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#86efac"/>
+                    <stop offset="55%" stop-color="#4d9a6d"/>
+                    <stop offset="100%" stop-color="#2f6f4b"/>
+                  </linearGradient>
+                  <linearGradient id="s24HeartTerraBottom" x1="25" y1="44" x2="76" y2="82" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#d4845f"/>
+                    <stop offset="60%" stop-color="#b56542"/>
+                    <stop offset="100%" stop-color="#8a4427"/>
+                  </linearGradient>
+                  <linearGradient id="s24LeafGrad" x1="74" y1="18" x2="102" y2="44" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#bbf7d0"/>
+                    <stop offset="55%" stop-color="#4d9a6d"/>
+                    <stop offset="100%" stop-color="#1e4d33"/>
+                  </linearGradient>
+                  <filter id="s24TileObjShadow" x="-15%" y="-15%" width="130%" height="140%">
+                    <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#1e2923" flood-opacity="0.18"/>
+                  </filter>
+                </defs>
+                <g filter="url(#s24TileObjShadow)">
+                  <!-- Botanical Sprout Stem & Leaf on Right -->
+                  <path d="M68 46C74 44 79 40 83 34" stroke="#2c241d" stroke-width="2.6" stroke-linecap="round"/>
+                  <path d="M81 36C80 25 89 19 101 20C101 32 93 39 81 36Z" fill="url(#s24LeafGrad)" stroke="#2c241d" stroke-width="2.4" stroke-linejoin="round"/>
+                  <path d="M83 34L94 25" stroke="#1e352b" stroke-width="1.6" stroke-linecap="round"/>
+                  <!-- 3D Anatomical / Dual-Tone Heart -->
+                  <path d="M51 79C51 79 20 59.5 20 36.5C20 25.5 28.5 17 39 17C44.8 17 49.5 19.8 51 23.8C52.5 19.8 57.2 17 63 17C73.5 17 82 25.5 82 36.5C82 59.5 51 79 51 79Z" fill="url(#s24HeartGreenTop)"/>
+                  <!-- Lower Terracotta Vitality Half -->
+                  <path d="M21.2 44.5H80.8C76.2 62.5 51 79 51 79C51 79 25.8 62.5 21.2 44.5Z" fill="url(#s24HeartTerraBottom)"/>
+                  <!-- Outer Heart Contour -->
+                  <path d="M51 79C51 79 20 59.5 20 36.5C20 25.5 28.5 17 39 17C44.8 17 49.5 19.8 51 23.8C52.5 19.8 57.2 17 63 17C73.5 17 82 25.5 82 36.5C82 59.5 51 79 51 79Z" stroke="#2c241d" stroke-width="2.6" stroke-linejoin="round"/>
+                  <!-- Specular 3D Highlight on Upper Left Lobe -->
+                  <path d="M27.5 31C28.5 25.5 33 22.5 38 22.5" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-opacity="0.65"/>
+                  <!-- Crisp Heartbeat ECG Line -->
+                  <path d="M21.5 44.5H36L40.5 32.5L46.5 56L52.5 36.5L56.5 44.5H80.5" stroke="#2c241d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+              </svg>
+            </div>
+            <span class="s24-blessing-tile-label" id="blessings-tile-health">সুস্থতা</span>
+          </div>
+
+          <!-- Right 3D Tile: অবসর (Free Time - Hourglass & Steaming Cup) -->
+          <div class="s24-blessing-3d-tile tile-freetime">
+            <div class="s24-blessing-tile-frame">
+              <svg class="s24-blessing-3d-svg" viewBox="0 0 116 92" width="106" height="84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="s24WoodCap" x1="16" y1="12" x2="54" y2="20" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#e29a72"/>
+                    <stop offset="55%" stop-color="#b86b43"/>
+                    <stop offset="100%" stop-color="#7c3f20"/>
+                  </linearGradient>
+                  <linearGradient id="s24GlassBulb" x1="20" y1="18" x2="50" y2="76" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                    <stop offset="50%" stop-color="#f3ece1" stop-opacity="0.88"/>
+                    <stop offset="100%" stop-color="#dfd3c3" stop-opacity="0.92"/>
+                  </linearGradient>
+                  <linearGradient id="s24GoldenSand" x1="22" y1="30" x2="48" y2="76" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#e59e6d"/>
+                    <stop offset="60%" stop-color="#c47449"/>
+                    <stop offset="100%" stop-color="#8c4826"/>
+                  </linearGradient>
+                  <linearGradient id="s24CupBody" x1="56" y1="48" x2="96" y2="82" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#86efac"/>
+                    <stop offset="50%" stop-color="#4d9a6d"/>
+                    <stop offset="100%" stop-color="#275c3e"/>
+                  </linearGradient>
+                </defs>
+                <g filter="url(#s24TileObjShadow)">
+                  <!-- 3D Hourglass (Sand Timer) -->
+                  <path d="M21 18H49C49 31 41 40 35 46C41 52 49 61 49 74H21C21 61 29 52 35 46C29 40 21 31 21 18Z" fill="url(#s24GlassBulb)"/>
+                  <!-- Upper & Lower Flowing Sand -->
+                  <path d="M24.5 31C29 33 41 33 45.5 31C43.5 37.5 38.5 42.5 35 46C31.5 42.5 26.5 37.5 24.5 31Z" fill="url(#s24GoldenSand)"/>
+                  <line x1="35" y1="46" x2="35" y2="62" stroke="#b86b43" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M22.5 74C23.5 64.5 29.5 59.5 35 59.5C40.5 59.5 46.5 64.5 47.5 74H22.5Z" fill="url(#s24GoldenSand)"/>
+                  <!-- Glass Outline & Specular Reflection -->
+                  <path d="M21 18H49C49 31 41 40 35 46C41 52 49 61 49 74H21C21 61 29 52 35 46C29 40 21 31 21 18Z" stroke="#2c241d" stroke-width="2.4" stroke-linejoin="round"/>
+                  <path d="M25.5 22C25.5 27 27.5 31.5 30.5 35" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-opacity="0.8"/>
+                  <!-- Top & Bottom Carved Terracotta Caps -->
+                  <rect x="17" y="12" width="36" height="6.5" rx="3.2" fill="url(#s24WoodCap)" stroke="#2c241d" stroke-width="2.2"/>
+                  <rect x="17" y="73.5" width="36" height="6.5" rx="3.2" fill="url(#s24WoodCap)" stroke="#2c241d" stroke-width="2.2"/>
+
+                  <!-- 3D Steaming Tea/Coffee Cup of Leisure -->
+                  <!-- Rising Aroma Steam Waves -->
+                  <path d="M68 41C66.5 38.5 69.5 36.5 68 34" stroke="#6b5e51" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M75 40C73.5 37.5 76.5 35.5 75 33" stroke="#6b5e51" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M82 41C80.5 38.5 83.5 36.5 82 34" stroke="#6b5e51" stroke-width="2" stroke-linecap="round"/>
+                  <!-- Cup Handle -->
+                  <path d="M93 53H97.5C101.2 53 104 55.8 104 59.5C104 63.2 101.2 66 97.5 66H92" stroke="#2c241d" stroke-width="2.6" stroke-linecap="round"/>
+                  <!-- Cup Vessel -->
+                  <path d="M56 49H94V61C94 71.5 85.5 80 75 80C64.5 80 56 71.5 56 61V49Z" fill="url(#s24CupBody)" stroke="#2c241d" stroke-width="2.4" stroke-linejoin="round"/>
+                  <!-- Cup Rim & Warm Brew Surface -->
+                  <ellipse cx="75" cy="49" rx="19" ry="4.5" fill="#d9cbb8" stroke="#2c241d" stroke-width="2.2"/>
+                  <ellipse cx="75" cy="49.5" rx="14.5" ry="2.6" fill="#7c4a2d"/>
+                  <!-- Cup 3D Gloss Highlight -->
+                  <path d="M61 55V62C61 66.5 63.5 70.5 67.5 73" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-opacity="0.55"/>
+                </g>
+              </svg>
+            </div>
+            <span class="s24-blessing-tile-label" id="blessings-tile-freetime">অবসর</span>
+          </div>
+        </div>
+
+        <div class="s24-blessings-footer">
+          <div class="s24-blessings-source">
+            <span class="s24-rosette-icon" aria-hidden="true">۞</span>
+            <strong id="blessings-card-source">সহীহ বুখারী: ৬৪১২</strong>
+          </div>
+          <span class="s24-blessings-read-cta" id="blessings-card-cta">
+            <span>বিস্তারিত নির্দেশনা</span>
+            <span aria-hidden="true">➔</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
     <!-- Comfortable bottom breathing room on Home Page -->
     <div id="home-bottom-scroll-cushion" class="home-bottom-scroll-space" aria-hidden="true"></div>
   </div>
+
 
   <!-- ========================================================================
        INDEPENDENT SUNNAH GRID VIEW (#sunnah-grid-view) — UNDER "সুন্নাহ গ্রিড" TAB
@@ -288,8 +451,10 @@
         <span id="sections-hub-sub" class="sections-hub-subtitle" data-i18n="sections_hub_subtitle">যেকোনো বিভাগে ট্যাপ করে পূর্ণাঙ্গ স্ক্রিনে প্রবেশ করুন</span>
       </div>
 
+
       <!-- Extensible Grid of Independent Sections -->
       <div id="master-sections-grid" class="master-sections-grid" role="navigation" aria-label="Independent App Sections">
+
 
         <!-- SECTION 1: তাহাজ্জুদ ও ফজর (Tahajjud & Fajr) -->
         <button type="button" class="section-launcher-card theme-indigo" data-open-section="sec-tahajjud_fajr" data-phase-key="tahajjud_fajr">
@@ -321,6 +486,7 @@
                     <stop offset="100%" stop-color="#92400e"/>
                   </linearGradient>
 
+
                 </defs>
                 <g>
                   <!-- Ornate 3D Mihrab / Night Window Frame -->
@@ -348,8 +514,10 @@
           <div class="section-card-body">
             <h4 class="section-card-title" data-i18n="phase_tahajjud">তাহাজ্জুদ ও ফজর</h4>
 
+
           </div>
         </button>
+
 
         <!-- SECTION 2: সকাল ও কর্মক্ষেত্র (Duha & Work) -->
         <button type="button" class="section-launcher-card theme-amber" data-open-section="sec-duha_work" data-phase-key="duha_work">
@@ -376,6 +544,7 @@
                     <stop offset="100%" stop-color="#d97706"/>
                   </linearGradient>
 
+
                 </defs>
                 <g>
                   <!-- Radiant 3D Forenoon Duha Sun -->
@@ -397,8 +566,10 @@
           <div class="section-card-body">
             <h4 class="section-card-title" data-i18n="phase_duha">সকাল ও কর্মক্ষেত্র</h4>
 
+
           </div>
         </button>
+
 
         <!-- SECTION 3: যোহর, কাইলুলা ও আসর (Dhuhr, Qaylulah & Asr) -->
         <button type="button" class="section-launcher-card theme-emerald" data-open-section="sec-dhuhr_asr" data-phase-key="dhuhr_asr">
@@ -423,6 +594,7 @@
                     <stop offset="0%" stop-color="#fef08a"/>
                     <stop offset="100%" stop-color="#d97706"/>
                   </radialGradient>
+
 
                 </defs>
                 <g>
@@ -452,8 +624,10 @@
           <div class="section-card-body">
             <h4 class="section-card-title" data-i18n="phase_dhuhr">যোহর, কাইলুলা ও আসর</h4>
 
+
           </div>
         </button>
+
 
         <!-- SECTION 4: মাগরিব ও ইশা (Maghrib & Isha) -->
         <button type="button" class="section-launcher-card theme-purple" data-open-section="sec-maghrib_isha" data-phase-key="maghrib_isha">
@@ -480,6 +654,7 @@
                     <stop offset="100%" stop-color="#78350f"/>
                   </linearGradient>
 
+
                 </defs>
                 <g>
                   <!-- Twilight Maghrib & Isha Sky Backdrop -->
@@ -502,8 +677,10 @@
           <div class="section-card-body">
             <h4 class="section-card-title" data-i18n="phase_maghrib">মাগরিব ও ইশা</h4>
 
+
           </div>
         </button>
+
 
         <!-- SECTION 5: সুন্নাহ সম্মত ঘুম (Prophetic Sleep) -->
         <button type="button" class="section-launcher-card theme-teal" data-open-section="sec-sleep_sunnah" data-phase-key="sleep_sunnah">
@@ -524,6 +701,7 @@
                     <stop offset="0%" stop-color="#b45309"/>
                     <stop offset="100%" stop-color="#78350f"/>
                   </linearGradient>
+
 
                 </defs>
                 <g>
@@ -548,8 +726,10 @@
           <div class="section-card-body">
             <h4 class="section-card-title" data-i18n="phase_sleep">সুন্নাহ সম্মত ঘুম</h4>
 
+
           </div>
         </button>
+
 
         <!-- SECTION 6: তিব্বে নববী ও ফিতরাত (Tibb Nabawi & Fitrah) -->
         <button type="button" class="section-launcher-card theme-gold" data-open-section="sec-diet_hygiene" data-phase-key="diet_hygiene">
@@ -572,6 +752,7 @@
                     <stop offset="100%" stop-color="#0369a1"/>
                   </linearGradient>
 
+
                 </defs>
                 <g>
                   <!-- 3D Tibb Nabawi Golden Honey Jar -->
@@ -592,8 +773,10 @@
           <div class="section-card-body">
             <h4 class="section-card-title" data-i18n="phase_diet">তিব্বে নববী ও ফিতরাত</h4>
 
+
           </div>
         </button>
+
 
         <!-- SECTION 7: আখলাক ও সুন্নাহ দিবস (Akhlaq & Sunnah Days) -->
         <button type="button" class="section-launcher-card theme-rose" data-open-section="sec-character_social" data-phase-key="character_social">
@@ -620,6 +803,7 @@
                     <stop offset="100%" stop-color="#e11d48"/>
                   </linearGradient>
 
+
                 </defs>
                 <g>
                   <!-- Generous Giving Hand -->
@@ -642,8 +826,10 @@
           <div class="section-card-body">
             <h4 class="section-card-title" data-i18n="phase_character">আখলাক ও সুন্নাহ দিবস</h4>
 
+
           </div>
         </button>
+
 
         <!-- SECTION 8: মাসনূন আযকার ও দোয়া (Independent Adhkar Section — Separated from Tasbih!) -->
         <button type="button" class="section-launcher-card theme-emerald-deep" data-open-section="sec-adhkar">
@@ -665,6 +851,7 @@
                     <stop offset="100%" stop-color="#065f46"/>
                   </linearGradient>
 
+
                 </defs>
                 <g>
                   <circle cx="48" cy="42" r="34" fill="url(#home_sec_adhkar_adHalo)"/>
@@ -685,8 +872,10 @@
           <div class="section-card-body">
             <h4 class="section-card-title" data-i18n="sec_adhkar_title">মাসনূন আযকার ও দোয়া</h4>
 
+
           </div>
         </button>
+
 
         <!-- SECTION 9: ডিজিটাল তাসবীহ (Independent Digital Tasbih Section — Separated from Adhkar!) -->
         <button type="button" class="section-launcher-card theme-cyan" data-open-section="sec-tasbih">
@@ -708,6 +897,7 @@
                     <stop offset="0%" stop-color="#fde68a"/>
                     <stop offset="100%" stop-color="#d97706"/>
                   </linearGradient>
+
 
                 </defs>
                 <g>
@@ -734,8 +924,10 @@
           <div class="section-card-body">
             <h4 class="section-card-title" data-i18n="sec_tasbih_title">ডিজিটাল তাসবীহ</h4>
 
+
           </div>
         </button>
+
 
         <!-- SECTION 10: ভল্ট ও তথ্য (Vault, Analytics & Custom Sunnah) -->
         <button type="button" class="section-launcher-card theme-slate" data-open-section="sec-vault">
@@ -756,6 +948,7 @@
                     <stop offset="0%" stop-color="#34d399"/>
                     <stop offset="100%" stop-color="#047857"/>
                   </linearGradient>
+
 
                 </defs>
                 <g>
@@ -780,8 +973,10 @@
           <div class="section-card-body">
             <h4 class="section-card-title" data-i18n="tab_vault">ভল্ট ও তথ্য</h4>
 
+
           </div>
         </button>
+
 
                 <!-- SECTION 11: নতুন আমল যুক্ত করুন (Independent Personal Sunnah Creator Section) -->
         <button type="button" class="section-launcher-card theme-emerald" data-open-section="sec-custom_habit">
@@ -831,6 +1026,7 @@
           </div>
         </button>
 
+
         <!-- SECTION 12: ডেটা ব্যাকআপ ও ভল্ট (Independent SHA-256 Tamper-Proof Triple-Layer Vault Section) -->
         <button type="button" class="section-launcher-card theme-gold" data-open-section="sec-crypto_vault">
           <div class="section-card-top">
@@ -878,12 +1074,14 @@
           </div>
         </button>
 
+
         <!-- EXTENSIBLE DYNAMIC SECTIONS SLOT (For future independent sections) -->
         <div id="custom-independent-sections-slot" class="extensible-grid-slot" style="display:contents;"></div>
       </div>
     </section>
     <div class="grid-bottom-scroll-space" aria-hidden="true"></div>
   </div>
+
 
   <!-- ========================================================================
        FULL-SCREEN MASTER SECTION VIEW (#master-section-view)
@@ -893,6 +1091,7 @@
   <div id="master-section-view" class="master-section-view hidden">
     <!-- Sticky Master App-Bar for Active Section with Back-to-Home Button & World-Class Emblem -->
     <div class="master-section-topbar" id="master-section-topbar">
+
 
       <div class="master-topbar-center">
         <div id="master-active-logo" class="master-topbar-logo"><svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -921,6 +1120,7 @@
                     <stop offset="100%" stop-color="#92400e"/>
                   </linearGradient>
 
+
                 </defs>
                 <g>
                   <!-- Ornate 3D Mihrab / Night Window Frame -->
@@ -948,8 +1148,10 @@
         </div>
       </div>
 
+
       <div id="master-active-badge" class="master-topbar-badge">০/০</div>
     </div>
+
 
     <!-- ======================================================================
          MASTER PANEL A: INDIVIDUAL PROPHETIC HABIT PHASE SCREEN
@@ -971,12 +1173,15 @@
         </div>
       </div>
 
+
       <!-- Extensible Sub-Sections Slot for Future Phase Sub-Categories -->
       <div id="phase-subsections-slot" class="subsection-slot" data-extensible-slot="phase-subsections"></div>
+
 
       <!-- Habit Cards Container for the Active Individual Section -->
       <div id="habit-list-container" class="habit-list"></div>
     </main>
+
 
     <!-- ======================================================================
          MASTER PANEL B: INDEPENDENT MASNOON ADHKAR & DUAS SECTION (#sec-adhkar)
@@ -1011,12 +1216,15 @@
           </div>
         </div>
 
+
         <!-- Extensible Sub-Section Slot for Future Adhkar Categories -->
         <div id="adhkar-subsections-slot" class="subsection-slot" data-extensible-slot="adhkar-subsections"></div>
+
 
         <div id="duas-list-container" class="duas-list"></div>
       </div>
     </main>
+
 
     <!-- ======================================================================
          MASTER PANEL C: INDEPENDENT DIGITAL TASBIH SECTION (#sec-tasbih)
@@ -1027,6 +1235,7 @@
         <h3 data-i18n="tasbih_title">📿 সুন্নাহ ২৪ ডিজিটাল তাসবীহ</h3>
         <p class="muted" data-i18n="tasbih_subtitle">একটি সহীহ যিকির নির্বাচন করুন এবং গণনা করতে সোনালী বৃত্তে ট্যাপ করুন।</p>
         <select id="tasbih-selector" class="input-select"></select>
+
 
         <!-- World-Standard SVG Circular Progress Ring around Digital Tasbih -->
         <div class="tasbih-ring-container" id="tasbih-tap-area">
@@ -1054,15 +1263,18 @@
           </div>
         </div>
 
+
         <div class="stats-mini">
           <span><span data-i18n="lifetime_dhikr">মোট যাচাইকৃত যিকির গণনা:</span> <strong id="lifetime-dhikr-count">০</strong></span>
         </div>
+
 
         <div class="btn-row">
           <button id="tasbih-reset-btn" class="btn-secondary" data-i18n="reset_cycle">পুনরায় শুরু করুন</button>
         </div>
       </div>
     </main>
+
 
     <!-- ======================================================================
          MASTER PANEL D: TAMPER-PROOF VAULT, 7-DAY MATRIX & 12-MONTH ARCHIVE (#tab-vault / #sec-vault)
@@ -1072,6 +1284,7 @@
         <h3 data-i18n="vault_matrix_title">📊 ৭-দিনের সুন্নাহ ধারাবাহিকতা ম্যাট্রিক্স</h3>
         <p class="muted" data-i18n="vault_matrix_sub">গত ৭ দিনে আপনার দৈনিক সুন্নাহ পালনের অগ্রগতি (দিনে ট্যাপ করে বিস্তারিত দেখুন)।</p>
         <div id="weekly-chart" class="weekly-grid"></div>
+
 
         <!-- WEEKLY CATEGORY AVERAGE BAR GRAPH + LOWEST CATEGORY ADVISORY COMMENT -->
         <div class="category-breakdown-panel">
@@ -1084,12 +1297,14 @@
         </div>
       </div>
 
+
       <!-- MULTI-MONTH AUTOMATIC HISTORY ARCHIVE -->
       <div class="card">
         <div class="archive-header-row">
           <h3 data-i18n="vault_archive_title">🗓️ দীর্ঘমেয়াদী সুন্নাহ আর্কাইভ</h3>
         </div>
         <p class="muted" data-i18n="vault_archive_sub">আপনার বিগত কয়েক মাসের সকল দিনের রেকর্ড ডিভাইসে স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকে (অন্য মাসের কার্ডে ট্যাপ করে সেই মাসের বিস্তারিত দেখুন)।</p>
+
 
         <div class="archive-range-pills" id="archive-range-pills" role="group" aria-label="Archive Range">
           <button type="button" class="range-pill-btn active" data-range-days="30" data-i18n="range_30d">৩০ দিন (১ মাস)</button>
@@ -1098,7 +1313,9 @@
           <button type="button" class="range-pill-btn" data-range-days="365" data-i18n="range_365d">৩৬৫ দিন (১ বছর)</button>
         </div>
 
+
         <div id="monthly-summary-list" class="monthly-summary-grid"></div>
+
 
         <div class="category-breakdown-panel monthly-breakdown-panel">
           <div class="category-breakdown-header">
@@ -1109,11 +1326,13 @@
           <div id="monthly-category-advice" class="category-advice-comment"></div>
         </div>
 
+
         <div class="selected-month-history-header">
           <span id="selected-month-records-label" class="muted-small">📅 নির্বাচিত মাসের দৈনিক আমল তালিকা</span>
         </div>
         <div id="longterm-history-list" class="longterm-history-list"></div>
       </div>
+
 
       <div class="card">
         <h3 data-i18n="vault_compliance_title">🏛️ কর্পোরেট ও গুগল প্লে কমপ্লায়েন্স</h3>
@@ -1124,6 +1343,7 @@
       </div>
     </main>
 
+
     <!-- ======================================================================
          MASTER PANEL E: INDEPENDENT PERSONAL SUNNAH HABIT CREATOR (#sec-custom_habit)
          ====================================================================== -->
@@ -1132,8 +1352,10 @@
         <h3 data-i18n="vault_custom_title">➕ ব্যক্তিগত সুন্নাহ আমল যুক্ত করুন</h3>
         <p class="muted" data-i18n="sec_custom_habit_sub">আপনার পছন্দের যেকোনো নেক আমল বা সুন্নাহ অভ্যাস নির্দিষ্ট ওয়াক্ত বা বিভাগে যুক্ত করুন।</p>
 
+
         <label class="field-label" for="custom-title" data-i18n="custom_lbl_name">১. আমলের নাম</label>
         <input type="text" id="custom-title" class="input-text" data-i18n-placeholder="custom_title_ph" placeholder="আমলের নাম (যেমন: ফজরের পর ৫ আয়াত হিফজ)" />
+
 
         <label class="field-label" for="custom-phase" data-i18n="custom_lbl_phase">২. যে বিভাগে যুক্ত করতে চান</label>
         <select id="custom-phase" class="input-select">
@@ -1146,11 +1368,14 @@
           <option value="character_social" data-i18n="phase_character">আখলাক ও সুন্নাহ দিবস</option>
         </select>
 
+
         <label class="field-label" for="custom-fact" data-i18n="custom_lbl_fact">৩. দলিল বা ফযীলত (ঐচ্ছিক)</label>
         <input type="text" id="custom-fact" class="input-text" data-i18n-placeholder="custom_fact_ph" placeholder="হাদিস সূত্র / ব্যক্তিগত উপকারিতা" />
 
+
         <button id="add-custom-habit-btn" class="btn-primary" data-i18n="custom_add_btn">সুন্নাহ ২৪ রুটিনে যুক্ত করুন</button>
       </div>
+
 
       <!-- User's Added Personal Habits List inside the Independent Section -->
       <div class="card">
@@ -1161,6 +1386,7 @@
         <div id="custom-habits-manage-list" class="habit-list"></div>
       </div>
     </main>
+
 
     <!-- ======================================================================
          MASTER PANEL F: INDEPENDENT SHA-256 TAMPER-PROOF TRIPLE-LAYER VAULT (#sec-crypto_vault)
@@ -1192,6 +1418,7 @@
         </div>
       </div>
 
+
       <div class="card">
         <h3 data-i18n="vault_compliance_title">🏛️ কর্পোরেট ও গুগল প্লে কমপ্লায়েন্স</h3>
         <p class="muted" data-i18n="vault_compliance_sub">সুন্নাহ ২৪ সম্পূর্ণ অফলাইনে চলে—কোনো থার্ড-পার্টি ট্র্যাকার বা বিজ্ঞাপন নেই।</p>
@@ -1201,9 +1428,11 @@
       </div>
     </main>
 
+
     <!-- EXTENSIBLE CUSTOM MASTER PANELS CONTAINER (For Future Independent Sections) -->
     <div id="extensible-master-panels-slot"></div>
   </div>
+
 
   <!-- MODAL FOR ISLAMIC HABITUAL FACT & HADITH REFERENCE -->
   <div id="fact-modal" class="modal-overlay hidden">
@@ -1221,6 +1450,7 @@
       <button id="close-modal-btn" class="btn-primary" data-i18n="modal_close_btn">আলহামদুলিল্লাহ, বুঝেছি</button>
     </div>
   </div>
+
 
   <!-- POP-UP INFO MODAL WHEN USER ADDS A PERSONAL HABIT MANUALLY -->
   <div id="custom-habit-added-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="custom-added-modal-title">
@@ -1241,6 +1471,28 @@
     </div>
   </div>
 
+
+
+  <!-- DECORATED QURAN & HADITH ARTICLE MODAL FOR TWO ASPECTS OF LIFETIME (HEALTH & FREE TIME) -->
+  <div id="two-blessings-article-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="blessings-article-title">
+    <div class="modal-card s24-article-modal-card">
+      <div class="s24-article-hero-banner">
+        <div class="s24-article-top-bar">
+          <span class="s24-article-badge" id="blessings-article-badge">۞ সহীহ বুখারী: ৬৪১২</span>
+          <button type="button" id="close-blessings-article-top-btn" class="waqt-popup-close-btn" aria-label="Close">✕</button>
+        </div>
+        <h3 id="blessings-article-title">জীবনের অমূল্য দু’টি নিয়ামত: সুস্থতা ও অবসর সময়</h3>
+        <p id="blessings-article-subtitle">কুরআনুল কারীম ও রাসূলুল্লাহ ﷺ-এর সহীহ হাদিসের আলোকে সময়ের সদ্ব্যবহার</p>
+      </div>
+
+      <div id="blessings-article-scroll-body" class="s24-article-scroll-body">
+        <!-- Populated dynamically in Bangla, Arabic, and English -->
+      </div>
+
+      <button type="button" id="close-blessings-article-btn" class="btn-primary" style="margin-top:10px;flex-shrink:0;" data-i18n="modal_close_btn">আলহামদুলিল্লাহ, বুঝেছি</button>
+    </div>
+  </div>
+
   <!-- LOCATION SEARCH MODAL ("অবস্থান অনুসন্ধান করুন" -> Country -> City / 64 Districts -> Upazila) -->
   <div id="s24-loc-modal-overlay" class="s24-loc-overlay hidden" role="dialog" aria-modal="true" aria-label="Location Selector">
     <div id="s24-loc-prompt-card" class="s24-loc-prompt-card">
@@ -1256,13 +1508,16 @@
       </button>
     </div>
 
+
     <div id="s24-loc-picker-card" class="s24-loc-picker-card hidden">
       <button type="button" id="s24-loc-close-btn" class="s24-loc-floating-close" aria-label="Close">✕</button>
+
 
       <div class="s24-loc-picker-header">
         <button type="button" id="s24-loc-back-btn" class="s24-loc-back-btn hidden" aria-label="Back">‹</button>
         <h4 id="s24-loc-picker-title">দেশ শনাক্ত করুন</h4>
       </div>
+
 
       <div class="s24-loc-search-wrap">
         <input
@@ -1274,9 +1529,11 @@
         />
       </div>
 
+
       <div id="s24-loc-list-container" class="s24-loc-list-scroll"></div>
     </div>
   </div>
+
 
   <!-- SETTINGS & PREFERENCES MODAL DRAWER (Language & Asr Madhab) -->
   <div id="s24-settings-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="s24-settings-modal-title">
@@ -1289,6 +1546,7 @@
         <button type="button" id="s24-settings-close-btn" class="waqt-popup-close-btn" aria-label="Close Settings">✕</button>
       </div>
 
+
       <div class="s24-settings-group">
         <label for="lang-switcher" id="s24-settings-lang-lbl" class="s24-settings-label">🌐 অ্যাপের ভাষা (Language)</label>
         <select id="lang-switcher" class="lang-select s24-settings-select" aria-label="Select Language">
@@ -1297,6 +1555,7 @@
           <option value="en">🌐 English (EN)</option>
         </select>
       </div>
+
 
       <div class="s24-settings-group">
         <span id="s24-settings-madhab-lbl" class="s24-settings-label">🕌 আসরের ওয়াক্ত মাযহাব (Asr Madhab)</span>
@@ -1314,9 +1573,11 @@
         </button>
       </div>
 
+
       <button type="button" id="s24-settings-done-btn" class="btn-primary" style="margin-top:8px;" data-i18n="popup_ok_btn">✓ ঠিক আছে</button>
     </div>
   </div>
+
 
   <!-- STICKY 4-TAB BOTTOM NAVIGATION BAR (Home, Sunnah Grid, Tasbeeh, Stats) -->
   <nav id="s24-bottom-nav" class="s24-bottom-nav" aria-label="Primary Bottom Navigation">
@@ -1330,6 +1591,7 @@
       <span class="s24-bnav-label" id="bnav-lbl-home">হোম</span>
     </button>
 
+
     <button type="button" class="s24-bnav-btn" data-bnav="grid">
       <span class="s24-bnav-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
@@ -1341,6 +1603,7 @@
       </span>
       <span class="s24-bnav-label" id="bnav-lbl-grid">সুন্নাহ গ্রিড</span>
     </button>
+
 
     <button type="button" class="s24-bnav-btn" data-bnav="tasbih">
       <span class="s24-bnav-icon" aria-hidden="true">
@@ -1355,6 +1618,7 @@
       <span class="s24-bnav-label" id="bnav-lbl-tasbih">তাসবীহ</span>
     </button>
 
+
     <button type="button" class="s24-bnav-btn" data-bnav="stats">
       <span class="s24-bnav-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
@@ -1368,7 +1632,7 @@
     </button>
   </nav>
 
+
   <script src="app.js"></script>
 </body>
 </html>
-
