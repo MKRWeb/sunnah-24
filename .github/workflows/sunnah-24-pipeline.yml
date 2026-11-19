@@ -286,43 +286,31 @@ jobs:
           done
           echo "✅ All Sunnah 24 assets and JS syntax verified for Android packaging!"
 
-      - name: 5. Prepare Persistent Release Keystore
+      - name: 5. Prepare Release Keystore from Encrypted GitHub Secrets (Zero Hardcoded Passwords)
         run: |
           mkdir -p signing
           KEYSTORE_FILE="$PWD/signing/sunnah24-release.keystore"
-          KS_PASS="sunnah24pass"
-          K_ALIAS="sunnah24"
-          K_PASS="sunnah24pass"
 
-          if [ -n "$KEYSTORE_BASE64" ]; then
-            echo "$KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_FILE"
-            KS_PASS="$KEYSTORE_PASSWORD"
-            K_ALIAS="$KEY_ALIAS"
-            K_PASS="$KEY_PASSWORD"
-          elif [ -f "sunnah24-release.keystore" ]; then
-            cp -f "sunnah24-release.keystore" "$KEYSTORE_FILE"
-            echo "✅ Using root sunnah24-release.keystore"
-          elif [ -f "$KEYSTORE_FILE" ]; then
-            echo "✅ Found existing persistent keystore in repository: $KEYSTORE_FILE"
-          else
-            echo "🔐 Generating permanent keystore..."
-            keytool -genkey -v -keystore "$KEYSTORE_FILE" \
-              -alias "$K_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 \
-              -storepass "$KS_PASS" -keypass "$K_PASS" \
-              -dname "CN=MKRWeb, OU=Sunnah24, O=MKRWeb, L=Rajshahi, S=Rajshahi, C=BD"
-
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add -f "signing/sunnah24-release.keystore"
-            git commit -m "chore(signing): persist permanent Android release keystore [skip ci]" || true
-            git pull --rebase origin ${GITHUB_REF_NAME} || true
-            git push origin HEAD:${GITHUB_REF_NAME} || true
+          if [ -z "$KEYSTORE_BASE64" ] || [ -z "$KEYSTORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASSWORD" ]; then
+            echo "❌ SECURITY ERROR: Missing required signing secrets (KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD)."
+            echo "💡 Configure these 4 encrypted secrets in GitHub Repo -> Settings -> Secrets and variables -> Actions."
+            exit 1
           fi
 
+          echo "$KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_FILE"
+          if [ ! -s "$KEYSTORE_FILE" ]; then
+            echo "❌ SECURITY ERROR: Decoded release keystore is empty or invalid."
+            exit 1
+          fi
+
+          # Verify keystore integrity & alias before building
+          keytool -list -keystore "$KEYSTORE_FILE" -alias "$KEY_ALIAS" -storepass "$KEYSTORE_PASSWORD" >/dev/null
+          echo "✅ Verified release keystore from encrypted GitHub Secrets."
+
           echo "KEYSTORE_FILE=${KEYSTORE_FILE}" >> $GITHUB_ENV
-          echo "KS_PASS=${KS_PASS}" >> $GITHUB_ENV
-          echo "K_ALIAS=${K_ALIAS}" >> $GITHUB_ENV
-          echo "K_PASS=${K_PASS}" >> $GITHUB_ENV
+          echo "KS_PASS=${KEYSTORE_PASSWORD}" >> $GITHUB_ENV
+          echo "K_ALIAS=${KEY_ALIAS}" >> $GITHUB_ENV
+          echo "K_PASS=${KEY_PASSWORD}" >> $GITHUB_ENV
 
       - name: 6. Build Capacitor Android Bridge, Play Store API 35 Config & Strict Source-Set Isolation
         env:
@@ -368,9 +356,9 @@ jobs:
               signingConfigs {
                   release {
                       storeFile file(System.getenv("KEYSTORE_FILE") ?: "${rootProject.projectDir}/../signing/sunnah24-release.keystore")
-                      storePassword System.getenv("KS_PASS") ?: "sunnah24pass"
-                      keyAlias System.getenv("K_ALIAS") ?: "sunnah24"
-                      keyPassword System.getenv("K_PASS") ?: "sunnah24pass"
+                      storePassword System.getenv("KS_PASS")
+                      keyAlias System.getenv("K_ALIAS")
+                      keyPassword System.getenv("K_PASS")
                       enableV1Signing true
                       enableV2Signing true
                       enableV3Signing true
@@ -1312,4 +1300,5 @@ jobs:
               sleep 4
             done
           fi
+
 
