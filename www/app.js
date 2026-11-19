@@ -11782,16 +11782,20 @@ function closeTwoBlessingsArticleModal() {
 document.addEventListener("DOMContentLoaded", () => {
   syncTwoBlessingsCardLocale();
 
-  const cardEl = document.getElementById("two-blessings-3d-card");
-  if (cardEl) {
-    cardEl.addEventListener("click", () => openTwoBlessingsArticleModal());
-    cardEl.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        openTwoBlessingsArticleModal();
-      }
+  function bindTwoBlessingsCtaOnlyTrigger() {
+    const ctaBtn = document.getElementById("blessings-card-cta");
+    if (!ctaBtn || ctaBtn.dataset.s24CtaBound === "1") return;
+    ctaBtn.dataset.s24CtaBound = "1";
+
+    ctaBtn.addEventListener("click", (e) => {
+      const targetTrigger = e.target.closest("#blessings-card-cta[data-open-blessings-article='true']");
+      if (!targetTrigger) return;
+      e.stopPropagation();
+      openTwoBlessingsArticleModal();
     });
   }
+
+  bindTwoBlessingsCtaOnlyTrigger();
 
   const closeTopBtn = document.getElementById("close-blessings-article-top-btn");
   const closeBottomBtn = document.getElementById("close-blessings-article-btn");
