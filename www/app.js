@@ -5575,6 +5575,8 @@ function applyLanguageToDOM() {
   renderDiaryHistory();
   if (typeof renderCustomHabitsManageList === "function") renderCustomHabitsManageList();
   if (typeof syncMasterSectionsLiveProgress === "function") syncMasterSectionsLiveProgress();
+  if (typeof syncTwoBlessingsCardLocale === "function") syncTwoBlessingsCardLocale();
+  if (typeof syncFourQualitiesCardLocale === "function") syncFourQualitiesCardLocale();
   updateIntegrityUI(true);
 }
 
@@ -13363,7 +13365,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const langSwitcher = document.getElementById("lang-switcher");
   if (langSwitcher) {
-    langSwitcher.addEventListener("change", () => {
+    langSwitcher.addEventListener("change", (e) => {
+      if (e && e.target && e.target.value && I18N_DICTIONARIES[e.target.value]) {
+        appState.locale = e.target.value;
+      }
       syncTwoBlessingsCardLocale();
     });
   }
@@ -13676,7 +13681,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const langSwitcher = document.getElementById("lang-switcher");
   if (langSwitcher) {
-    langSwitcher.addEventListener("change", () => {
+    langSwitcher.addEventListener("change", (e) => {
+      if (e && e.target && e.target.value && I18N_DICTIONARIES[e.target.value]) {
+        appState.locale = e.target.value;
+      }
       syncFourQualitiesCardLocale();
     });
   }
