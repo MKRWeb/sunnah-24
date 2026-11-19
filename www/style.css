@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg-main: #f1f6f3;
   --bg-card: #ffffff;
   --bg-card-elevated: #f8fbf9;
@@ -50,7 +50,7 @@ body {
   padding-top: 0;
   padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
   line-height: 1.55;
-  user-select: none;
+  user-select: text;
 }
 
 
@@ -1250,14 +1250,6 @@ html[dir="rtl"] .compact-history-item {
 
 html[dir="rtl"] .dua-card {
   border-left: 1px solid rgba(16, 185, 129, 0.16);
-  border-right: 4px solid var(--accent-emerald);
-}
-
-
-
-
-html[dir="rtl"] .quote-box {
-  border-left: none;
   border-right: 4px solid var(--accent-emerald);
 }
 
@@ -2861,17 +2853,6 @@ html[data-theme="dark"] .app-header {
 
 
 
-/* In Dark mode, the button displays the opposite Crisp White background */
-html[data-theme="dark"] .theme-toggle-btn {
-  background: #ffffff;
-  color: #05130e;
-  border-color: #eab308;
-  box-shadow: 0 4px 14px rgba(234, 179, 8, 0.28);
-}
-
-
-
-
 html[data-theme="dark"] .hero-card {
   background: linear-gradient(145deg, #0f382a, #071913);
   border-color: rgba(16, 185, 129, 0.28);
@@ -2916,28 +2897,12 @@ html[data-theme="dark"] .modal-card {
 
 
 
-html[data-theme="dark"] .prohibited-card.status-safe {
-  background: linear-gradient(145deg, rgba(16, 185, 129, 0.1), #0b221a);
-}
-
-
-
-
-html[data-theme="dark"] .prohibited-card.status-danger {
-  background: linear-gradient(145deg, rgba(239, 68, 68, 0.2), #161116);
-}
-
-
-
-
 html[data-theme="dark"] .waqt-pill-card,
 html[data-theme="dark"] html[data-theme="dark"] .chip,
 html[data-theme="dark"] .day-col,
 html[data-theme="dark"] .month-summary-card,
 html[data-theme="dark"] .history-day-row,
-html[data-theme="dark"] .prohibited-slot,
 html[data-theme="dark"] .range-pill-btn,
-html[data-theme="dark"] .mood-btn,
 html[data-theme="dark"] .modal-section {
   background: #071913;
   color: var(--text-primary);
@@ -3353,29 +3318,7 @@ html[data-theme="dark"] #live-waqt-remaining {
 /* ==========================================================================
    HERO-EMBEDDED LIVE ONGOING PRAYER PROGRESS BAR (UNDER HABIT TRACKER)
    ========================================================================== */
-.hero-embedded-waqt-box {
-  margin-top: 12px;
-  margin-bottom: 10px;
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(16, 185, 129, 0.24);
-  border-radius: 16px;
-  box-shadow: 0 4px 14px rgba(15, 45, 34, 0.05);
-}
-
-
-
-
-html[data-theme="dark"] .hero-embedded-waqt-box {
-  background: rgba(7, 25, 19, 0.88);
-  border-color: rgba(16, 185, 129, 0.28);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-}
-
-
-
-
-/* ==========================================================================
+html[data-theme="dark"] /* ==========================================================================
    DARK THEME FIX FOR DAY HISTORY MODAL ITEMS & EMPTY ARCHIVE NOTICE
    ========================================================================== */
 html[data-theme="dark"] .compact-history-item {
@@ -6411,14 +6354,6 @@ html[dir="rtl"] .section-live-pill {
 /* ==========================================================================
    V5.3 MODERN ILLUSTRATED LOGOS, CENTERED GREEN CIRCLES & NO TOP HOME BUTTON
    ========================================================================== */
-#back-to-home-btn,
-.master-back-home-btn {
-  display: none !important;
-}
-
-
-
-
 .section-launcher-card {
   align-items: center !important;
   text-align: center !important;
@@ -12593,4 +12528,30 @@ html[data-theme="dark"] .s24-quality-tile-frame {
   padding: 5.5px 12px !important;
 }
 
+
+
+/* ==========================================================================
+   V13.4 ACCESSIBILITY & READABLE CONTENT SELECTION HYGIENE
+   ========================================================================== */
+.app-header,
+.s24-bottom-nav,
+.tasbih-wheel,
+.habit-check,
+.section-launcher-card,
+.waqt-pill-card,
+.btn-primary,
+.btn-secondary {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.dua-arabic,
+.translit,
+.dua-virtue,
+.habit-snippet,
+.s24-article-scroll-body,
+.modal-section {
+  user-select: text;
+  -webkit-user-select: text;
+}
 
