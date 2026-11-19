@@ -1,4 +1,4 @@
-const CACHE_NAME = "sunnah-24-enterprise-v143-v4.2-bd-loc";
+const CACHE_NAME = "sunnah-24-cache-v4.2-stable";
 const ASSETS = [
   "./",
   "./index.html",
@@ -34,9 +34,34 @@ self.addEventListener("activate", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
+  if (e.request.method !== "GET") return;
+
+  if (e.request.mode === "navigate" || (e.request.headers.get("accept") || "").includes("text/html")) {
+    e.respondWith(
+      fetch(e.request)
+        .then((networkRes) => {
+          const copy = networkRes.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, copy)).catch(() => {});
+          return networkRes;
+        })
+        .catch(() => caches.match(e.request).then((cached) => cached || caches.match("./index.html")))
+    );
+    return;
+  }
+
   e.respondWith(
-    caches.match(e.request).then((cached) => cached || fetch(e.request))
+    caches.match(e.request).then((cached) => {
+      const fetchPromise = fetch(e.request)
+        .then((networkRes) => {
+          if (networkRes && networkRes.status === 200 && networkRes.type === "basic") {
+            const copy = networkRes.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, copy)).catch(() => {});
+          }
+          return networkRes;
+        })
+        .catch(() => cached);
+      return cached || fetchPromise;
+    })
   );
 });
-
 
