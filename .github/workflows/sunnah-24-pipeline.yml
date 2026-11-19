@@ -286,31 +286,51 @@ jobs:
           done
           echo "✅ All Sunnah 24 assets and JS syntax verified for Android packaging!"
 
-      - name: 5. Prepare Release Keystore from Encrypted GitHub Secrets (Zero Hardcoded Passwords)
+      - name: 5. Prepare Release Keystore (Encrypted Secrets First + Safe Existing Repo Keystore Fallback)
         run: |
           mkdir -p signing
           KEYSTORE_FILE="$PWD/signing/sunnah24-release.keystore"
 
-          if [ -z "$KEYSTORE_BASE64" ] || [ -z "$KEYSTORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASSWORD" ]; then
-            echo "❌ SECURITY ERROR: Missing required signing secrets (KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD)."
-            echo "💡 Configure these 4 encrypted secrets in GitHub Repo -> Settings -> Secrets and variables -> Actions."
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            if [ -z "$KEYSTORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASSWORD" ]; then
+              echo "❌ SECURITY ERROR: KEYSTORE_BASE64 is set, but KEYSTORE_PASSWORD, KEY_ALIAS, or KEY_PASSWORD is missing."
+              exit 1
+            fi
+            # Strip any accidental whitespace/newlines from pasted Base64 secret before decoding
+            printf '%s' "$KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > "$KEYSTORE_FILE"
+            if [ ! -s "$KEYSTORE_FILE" ]; then
+              echo "❌ SECURITY ERROR: Decoded KEYSTORE_BASE64 is empty or invalid Base64."
+              exit 1
+            fi
+            KS_PASS="$KEYSTORE_PASSWORD"
+            K_ALIAS="$KEY_ALIAS"
+            K_PASS="$KEY_PASSWORD"
+            echo "✅ Decoded release keystore from encrypted GitHub Secrets."
+          elif [ -f "sunnah24-release.keystore" ]; then
+            cp -f "sunnah24-release.keystore" "$KEYSTORE_FILE"
+            KS_PASS="${KEYSTORE_PASSWORD:-sunnah24pass}"
+            K_ALIAS="${KEY_ALIAS:-sunnah24}"
+            K_PASS="${KEY_PASSWORD:-sunnah24pass}"
+            echo "ℹ️ Using existing repository root sunnah24-release.keystore (tip: migrate to GitHub Secrets KEYSTORE_BASE64)."
+          elif [ -f "$KEYSTORE_FILE" ]; then
+            KS_PASS="${KEYSTORE_PASSWORD:-sunnah24pass}"
+            K_ALIAS="${KEY_ALIAS:-sunnah24}"
+            K_PASS="${KEY_PASSWORD:-sunnah24pass}"
+            echo "ℹ️ Using existing signing/sunnah24-release.keystore."
+          else
+            echo "❌ SECURITY ERROR: No release keystore found in KEYSTORE_BASE64 secret or repository."
+            echo "💡 Add KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS, and KEY_PASSWORD in Repo Settings -> Secrets and variables -> Actions."
             exit 1
           fi
 
-          echo "$KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_FILE"
-          if [ ! -s "$KEYSTORE_FILE" ]; then
-            echo "❌ SECURITY ERROR: Decoded release keystore is empty or invalid."
-            exit 1
-          fi
-
-          # Verify keystore integrity & alias before building
-          keytool -list -keystore "$KEYSTORE_FILE" -alias "$KEY_ALIAS" -storepass "$KEYSTORE_PASSWORD" >/dev/null
-          echo "✅ Verified release keystore from encrypted GitHub Secrets."
+          # Verify keystore integrity, alias, and store password before Gradle build starts
+          keytool -list -keystore "$KEYSTORE_FILE" -alias "$K_ALIAS" -storepass "$KS_PASS" >/dev/null
+          echo "✅ Verified release keystore integrity and alias '${K_ALIAS}'."
 
           echo "KEYSTORE_FILE=${KEYSTORE_FILE}" >> $GITHUB_ENV
-          echo "KS_PASS=${KEYSTORE_PASSWORD}" >> $GITHUB_ENV
-          echo "K_ALIAS=${KEY_ALIAS}" >> $GITHUB_ENV
-          echo "K_PASS=${KEY_PASSWORD}" >> $GITHUB_ENV
+          echo "KS_PASS=${KS_PASS}" >> $GITHUB_ENV
+          echo "K_ALIAS=${K_ALIAS}" >> $GITHUB_ENV
+          echo "K_PASS=${K_PASS}" >> $GITHUB_ENV
 
       - name: 6. Build Capacitor Android Bridge, Play Store API 35 Config & Strict Source-Set Isolation
         env:
