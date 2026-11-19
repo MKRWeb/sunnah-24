@@ -12555,3 +12555,130 @@ html[data-theme="dark"] .s24-quality-tile-frame {
   border-color: rgba(52, 211, 153, 0.22) !important;
 }
 
+
+/* ==========================================================================
+   V13.2 STANDARDIZED COMPACT PROPORTIONS FOR BOTH BOTTOM HOMEPAGE CARDS
+   (#two-blessings-3d-card & #four-qualities-3d-card)
+   Refines card padding, header typography, 3D tile heights, SVG dimensions,
+   and footer bar to a sleek, fatigue-free standard homepage card scale.
+   ========================================================================== */
+#home-dashboard-view .s24-blessings-3d-card,
+#home-dashboard-view .s24-qualities-3d-card {
+  margin: 0 12px 10px !important;
+  padding: 4px !important;
+  border-radius: 18px !important;
+}
+
+#home-dashboard-view .s24-blessings-3d-inner,
+#home-dashboard-view .s24-qualities-3d-inner {
+  border-radius: 14px !important;
+  padding: 11px 11px 9px !important;
+  gap: 8px !important;
+}
+
+/* Compact Header & Typography */
+#home-dashboard-view .s24-blessings-header {
+  gap: 1.5px !important;
+}
+
+#home-dashboard-view .s24-blessings-narrator,
+#home-dashboard-view .s24-qualities-narrator {
+  font-size: 0.72rem !important;
+  line-height: 1.28 !important;
+}
+
+#home-dashboard-view .s24-blessings-headline {
+  font-size: 1.04rem !important;
+  line-height: 1.22 !important;
+  margin-top: 1px !important;
+}
+
+#home-dashboard-view .s24-blessings-subline {
+  font-size: 0.8rem !important;
+  line-height: 1.32 !important;
+}
+
+#home-dashboard-view .s24-blessings-highlight {
+  padding: 0.5px 6px !important;
+  border-radius: 4px !important;
+}
+
+/* Compact Four Qualities Hero Row */
+#home-dashboard-view .s24-qualities-header {
+  gap: 5px !important;
+}
+
+#home-dashboard-view .s24-qualities-hero-row {
+  gap: 9px !important;
+}
+
+#home-dashboard-view .s24-qualities-count-box {
+  min-width: 54px !important;
+  padding: 5px 8px !important;
+  border-radius: 11px !important;
+}
+
+#home-dashboard-view .s24-qualities-num {
+  font-size: 1.04rem !important;
+  line-height: 1.1 !important;
+}
+
+#home-dashboard-view .s24-qualities-word {
+  font-size: 0.92rem !important;
+  line-height: 1.15 !important;
+}
+
+#home-dashboard-view .s24-qualities-statement {
+  font-size: 0.8rem !important;
+  line-height: 1.34 !important;
+}
+
+/* Compact 3D Tiles Grid & Proportional SVG Artwork */
+#home-dashboard-view .s24-blessings-tiles-grid,
+#home-dashboard-view .s24-qualities-tiles-grid {
+  gap: 8px !important;
+}
+
+#home-dashboard-view .s24-blessing-3d-tile,
+#home-dashboard-view .s24-quality-3d-tile {
+  border-radius: 13px !important;
+  padding: 3.5px !important;
+}
+
+#home-dashboard-view .s24-blessing-tile-frame,
+#home-dashboard-view .s24-quality-tile-frame {
+  border-radius: 10px !important;
+  padding: 6px 4px 4px !important;
+}
+
+#home-dashboard-view .s24-blessing-3d-svg,
+#home-dashboard-view .s24-quality-3d-svg {
+  width: 68px !important;
+  height: 54px !important;
+}
+
+#home-dashboard-view .s24-blessing-tile-label,
+#home-dashboard-view .s24-quality-tile-label {
+  padding: 4px 3px 2px !important;
+  font-size: 0.8rem !important;
+  line-height: 1.22 !important;
+}
+
+/* Compact Footer & CTA Pill */
+#home-dashboard-view .s24-blessings-footer,
+#home-dashboard-view .s24-qualities-footer {
+  padding-top: 6px !important;
+  gap: 6px !important;
+}
+
+#home-dashboard-view .s24-blessings-source,
+#home-dashboard-view .s24-qualities-source {
+  font-size: 0.73rem !important;
+}
+
+#home-dashboard-view .s24-blessings-read-cta,
+#home-dashboard-view .s24-qualities-read-cta {
+  font-size: 0.68rem !important;
+  padding: 4.5px 10px !important;
+}
+
