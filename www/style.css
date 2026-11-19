@@ -9805,8 +9805,7 @@ html[dir="rtl"] .s24-nabawi-glass-rows .s24-prime-inline-row > .meta-row-value {
 }
 
 .s24-rosette-icon {
-  font-size: 0.95rem;
-  color: #9a5b38;
+  display: none !important;
 }
 
 .s24-blessings-source strong {
