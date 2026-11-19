@@ -9019,10 +9019,12 @@ function getActiveMadhabMode(dateObj = new Date()) {
 
 
 function syncMadhabToggleUI() {
-  // Always keep clean Commercial White ('light') theme locked
-  document.documentElement.setAttribute("data-theme", "light");
+  const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+  document.documentElement.setAttribute("data-theme", currentTheme);
   const metaTheme = document.querySelector('meta[name="theme-color"]');
-  if (metaTheme) metaTheme.setAttribute("content", "#ffffff");
+  if (metaTheme) {
+    metaTheme.setAttribute("content", currentTheme === "dark" ? "#0b221a" : "#ffffff");
+  }
 
 
 
@@ -12576,6 +12578,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // - Pops `s24ViewHistoryStack` so EVERY tab/screen brings the user back to the exact previous tab/screen
   // - Guarantees the user MUST be at the Home Page (`getCurrentActiveViewId() === "home"`) to exit the app!
   window.handleSunnahBackNavigation = function () {
+    // 1A-0. Close Four Qualities or Two Blessings Article Modals if open
+    const qualitiesArticleModal = document.getElementById("four-qualities-article-modal");
+    if (qualitiesArticleModal && !qualitiesArticleModal.classList.contains("hidden")) {
+      qualitiesArticleModal.classList.add("hidden");
+      return true;
+    }
+
+    const blessingsArticleModal = document.getElementById("two-blessings-article-modal");
+    if (blessingsArticleModal && !blessingsArticleModal.classList.contains("hidden")) {
+      blessingsArticleModal.classList.add("hidden");
+      return true;
+    }
+
     // 1A. Close Settings Modal if open
     if (settingsModal && !settingsModal.classList.contains("hidden")) {
       closeSettingsModal();
@@ -13681,12 +13696,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const langSwitcher = document.getElementById("lang-switcher");
   if (langSwitcher) {
-    langSwitcher.addEventListener("change", (e) => {
-      if (e && e.target && e.target.value && I18N_DICTIONARIES[e.target.value]) {
-        appState.locale = e.target.value;
-      }
-      syncFourQualitiesCardLocale();
+    langSwitcher.addEventListener("change", () => {
+      setTimeout(syncFourQualitiesCardLocale, 20);
     });
   }
 });
+
 
