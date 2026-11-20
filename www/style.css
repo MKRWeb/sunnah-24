@@ -12528,30 +12528,29 @@ html[data-theme="dark"] .s24-quality-tile-frame {
   padding: 5.5px 12px !important;
 }
 
-
-
 /* ==========================================================================
-   V13.4 ACCESSIBILITY & READABLE CONTENT SELECTION HYGIENE
+   V13.5 STRICT GLOBAL ANTI-COPY & NATIVE TEXT SELECTION LOCK
+   Prevents Android WebView long-press selection handles & Copy/Translate menu
+   across the entire app while keeping form inputs editable.
    ========================================================================== */
-.app-header,
-.s24-bottom-nav,
-.tasbih-wheel,
-.habit-check,
-.section-launcher-card,
-.waqt-pill-card,
-.btn-primary,
-.btn-secondary {
-  user-select: none;
-  -webkit-user-select: none;
+html,
+body,
+body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
 }
 
-.dua-arabic,
-.translit,
-.dua-virtue,
-.habit-snippet,
-.s24-article-scroll-body,
-.modal-section {
-  user-select: text;
-  -webkit-user-select: text;
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+  -webkit-touch-callout: default !important;
 }
 
