@@ -1,9 +1,14 @@
-const CACHE_NAME = "sunnah-24-cache-v4.2-stable";
+const CACHE_NAME = "sunnah-24-cache-v4.3-modular";
 const ASSETS = [
   "./",
   "./index.html",
   "./style.css",
-  "./app.js",
+  "./data/i18n-data.js",
+  "./data/habits-duas-data.js",
+  "./data/locations-data.js",
+  "./storage.js",
+  "./astronomy.js",
+  "./ui.js",
   "./icon.svg",
   "./manifest.json",
   "./privacy.html"
