@@ -4,7 +4,7 @@
 [![Download Signed APK](https://img.shields.io/github/v/release/MKRWeb/sunnah-24?label=Download%20APK&style=for-the-badge&color=eab308)](https://github.com/MKRWeb/sunnah-24/releases/latest)
 [![Privacy Policy](https://img.shields.io/badge/Play_Store-Privacy_Policy-38bdf8?style=for-the-badge)](https://mkrweb.github.io/sunnah-24/privacy.html)
 
-**Sunnah 24** is a corporate-grade, 100% offline-first, tamper-proof Islamic 24-hour routine planner, Prophetic habit tracker, interactive digital Tasbih, and comprehensive Masnoon Adhkar.
+**Sunnah 24** is a corporate-grade, 100% offline-first, local-integrity-verified Islamic 24-hour routine planner, Prophetic habit tracker, interactive digital Tasbih, and comprehensive Masnoon Adhkar.
 
 ---
 
@@ -13,7 +13,8 @@
 - **🕒 Complete 24-Hour Prophetic Cycle (32 Core Habits):** Structured across 7 daily phases from *Tahajjud & Fajr* to *Prophetic Sleep*, *Tibb Nabawi Nutrition*, *Fitrah Hygiene*, and *Akhlaq*.
 - **📖 Authentic Hadith Proof & Physiological Science:** Every habit features verified primary source citations (Sahih al-Bukhari, Sahih Muslim, Sunan) paired with modern chronobiology and medical wisdom.
 - **📿 Haptic Digital Tasbih & Adhkar:** Built-in counter for post-Salah Tasbihat, Istighfar, Salawat, and Hawqalah with persistent lifetime analytics.
-- **🛡️ SHA-256 Tamper-Proof Vault:** Every record is sealed with a cryptographic SHA-256 digest chain with 1-click signed JSON backup and verification.
+- **🛡️ SHA-256 Local-Integrity-Verified Vault:** Every record is verified with a SHA-256 checksum digest chain with 1-click signed JSON backup and verification.
+- **🧩 Clean Modular Architecture & Android 16 (API 36) Ready:** Split into `data/i18n-data.js`, `data/habits-duas-data.js`, `data/locations-data.js`, `storage.js`, `astronomy.js`, and `ui.js`, built with Capacitor 8 targeting Android API 36.
 - **☁️ 100% Cloud-Compiled Android APK & Play Store AAB:** Zero desktop required—GitHub Actions compiles, aligns, and cryptographically signs both `.apk` and `.aab` binaries automatically.
 
 ---
@@ -28,4 +29,5 @@
 
 ## 📄 License
 GNU Affero General Public License v3.0 (AGPL-3.0) © [MKRWeb](https://github.com/MKRWeb)
+
 
