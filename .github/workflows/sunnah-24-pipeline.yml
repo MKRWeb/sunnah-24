@@ -126,22 +126,20 @@ jobs:
           LATEST_SHA=$(git rev-parse --short=7 HEAD)
 
           # 4C. Stamp Service Worker cache version & HTML asset query strings inside www/ (for artifact deployment only, not committed back)
-          CACHE_VER="v4.2.${GITHUB_RUN_NUMBER}-${LATEST_SHA}"
+          CACHE_VER="v4.3.${GITHUB_RUN_NUMBER}-${LATEST_SHA}"
           if [ -f "www/sw.js" ]; then
             sed -i "s/sunnah-24-cache-[a-zA-Z0-9._-]*/sunnah-24-cache-${CACHE_VER}/g" www/sw.js || true
             sed -i "s/CACHE_NAME = ['\"][^'\"]*['\"]/CACHE_NAME = 'sunnah-24-cache-${CACHE_VER}'/g" www/sw.js || true
           fi
           if [ -f "www/index.html" ]; then
             sed -i "s|href=\"style.css[^\"]*\"|href=\"style.css?v=${CACHE_VER}\"|g" www/index.html || true
-            sed -i "s|src=\"app.js[^\"]*\"|src=\"app.js?v=${CACHE_VER}\"|g" www/index.html || true
+            for mod in data/i18n-data.js data/habits-duas-data.js data/locations-data.js storage.js astronomy.js ui.js; do
+              sed -i "s|src=\"${mod}[^\"]*\"|src=\"${mod}?v=${CACHE_VER}\"|g" www/index.html || true
+            done
           fi
 
-          # Verify syntax of all JavaScript files in www/
-          for jsfile in www/*.js; do
-            if [ -f "$jsfile" ]; then
-              node --check "$jsfile"
-            fi
-          done
+          # Verify syntax of all modular JavaScript files in www/ and www/data/
+          find www -name "*.js" -exec node --check {} +
           echo "✅ Clean www/-only Web Bundle verified with cache version: ${CACHE_VER}"
 
       - name: 5. Gradual Multi-Repository Auto-Update & Pages Rollout (Wave-by-Wave Sync)
@@ -250,7 +248,7 @@ jobs:
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       RUN_NUMBER: ${{ github.run_number }}
-      VERSION_NAME: "4.2.${{ github.run_number }}"
+      VERSION_NAME: "4.3.${{ github.run_number }}"
 
     steps:
       - name: 1. Checkout Repository & Pull Latest Branch HEAD
@@ -259,7 +257,7 @@ jobs:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
 
-      - name: 2. Setup Node.js 24, Java 21 & Persistent Gradle Dependency Cache (API 35)
+      - name: 2. Setup Node.js 24, Java 21 & Persistent Gradle Dependency Cache (API 36)
         uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -287,16 +285,17 @@ jobs:
         run: |
           test -f www/index.html
           test -f www/style.css
-          test -f www/app.js
+          test -f www/data/i18n-data.js
+          test -f www/data/habits-duas-data.js
+          test -f www/data/locations-data.js
+          test -f www/storage.js
+          test -f www/astronomy.js
+          test -f www/ui.js
           test -f www/manifest.json
           test -f www/sw.js
           test -f www/icon.svg
           test -f www/privacy.html
-          for jsfile in www/*.js; do
-            if [ -f "$jsfile" ]; then
-              node --check "$jsfile"
-            fi
-          done
+          find www -name "*.js" -exec node --check {} +
           echo "✅ All Sunnah 24 assets and JS syntax verified for Android packaging!"
 
       - name: 5. Prepare Release Keystore (Encrypted Secrets First + Safe Existing Repo Keystore Fallback)
@@ -345,7 +344,7 @@ jobs:
           echo "K_ALIAS=${K_ALIAS}" >> $GITHUB_ENV
           echo "K_PASS=${K_PASS}" >> $GITHUB_ENV
 
-      - name: 6. Build Capacitor Android Bridge, Play Store API 35 Config & Strict Source-Set Isolation
+      - name: 6. Build Capacitor Android Bridge, Play Store API 36 Config & Strict Source-Set Isolation
         env:
           NODE_OPTIONS: "--tls-min-v1.2 --dns-result-order=ipv4first"
         run: |
@@ -360,11 +359,11 @@ jobs:
           npx cap copy android
           npx cap sync android
 
-          # 6A. Enforce Google Play Console Target API 35 (Android 15) in variables.gradle
+          # 6A. Enforce Google Play Console Target API 36 (Android 15) in variables.gradle
           VARS_GRADLE="android/variables.gradle"
           if [ -f "$VARS_GRADLE" ]; then
-            sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 35/g' "$VARS_GRADLE"
-            sed -i 's/targetSdkVersion = [0-9]*/targetSdkVersion = 35/g' "$VARS_GRADLE"
+            sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 36/g' "$VARS_GRADLE"
+            sed -i 's/targetSdkVersion = [0-9]*/targetSdkVersion = 36/g' "$VARS_GRADLE"
             echo "✅ Enforced compileSdkVersion=35 and targetSdkVersion=35 in variables.gradle"
           fi
 
@@ -382,9 +381,9 @@ jobs:
 
           // --- GOOGLE PLAY STORE PRODUCTION AAB CONFIGURATION ---
           android {
-              compileSdk 35
+              compileSdk 36
               defaultConfig {
-                  targetSdk 35
+                  targetSdk 36
               }
               signingConfigs {
                   release {
@@ -412,7 +411,7 @@ jobs:
           GRADLE_EOF
               sed -i 's/^          //' "$APP_GRADLE"
             fi
-            echo "✅ Configured Play Store API 35, R8 Minification & Native Release Signing in $APP_GRADLE"
+            echo "✅ Configured Play Store API 36, R8 Minification & Native Release Signing in $APP_GRADLE"
           fi
 
           # 6C. Append Keep Rules for WebView JavascriptInterface & Capacitor Plugins to proguard-rules.pro
@@ -1232,10 +1231,25 @@ jobs:
              -Dorg.gradle.internal.repository.max.tentatives=8 \
              -Dorg.gradle.internal.repository.initial.backoff=5000)
 
+      - name: 7B. Android 16 (API 36) Emulator Boot & Launch Smoke Test
+        if: github.event_name == 'workflow_dispatch'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: |
+            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            adb shell am start -W -n com.mkrweb.sunnah24/.MainActivity
+            sleep 3
+            adb shell pidof com.mkrweb.sunnah24
+
       - name: 8. Sign Sideload APK & Verify Signed Play Store AAB
         run: |
           UNSIGNED_APK="android/app/build/outputs/apk/debug/app-debug.apk"
-          SIGNED_APK="Sunnah-24-v4.2-Enterprise-Signed.apk"
+          SIGNED_APK="Sunnah-24-v4.3-Enterprise-Signed.apk"
 
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
           $BUILD_TOOLS_DIR/zipalign -f -v -p 4 "$UNSIGNED_APK" app-release-aligned.apk
@@ -1255,17 +1269,17 @@ jobs:
 
           AAB_PATH=$(find android/app/build/outputs/bundle/release -name "*.aab" | head -n 1)
           if [ -n "$AAB_PATH" ]; then
-            cp "$AAB_PATH" ./Sunnah-24-v4.2-PlayStore-Signed.aab
-            if ! jarsigner -verify -certs ./Sunnah-24-v4.2-PlayStore-Signed.aab >/dev/null 2>&1; then
+            cp "$AAB_PATH" ./Sunnah-24-v4.3-PlayStore-Signed.aab
+            if ! jarsigner -verify -certs ./Sunnah-24-v4.3-PlayStore-Signed.aab >/dev/null 2>&1; then
               echo "🔐 Signing Play Store AAB with release keystore..."
               jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
                 -keystore "$KEYSTORE_FILE" \
                 -storepass "$KS_PASS" \
                 -keypass "$K_PASS" \
-                ./Sunnah-24-v4.2-PlayStore-Signed.aab "$K_ALIAS"
+                ./Sunnah-24-v4.3-PlayStore-Signed.aab "$K_ALIAS"
             fi
-            jarsigner -verify -verbose -certs ./Sunnah-24-v4.2-PlayStore-Signed.aab
-            echo "✅ Play Store Signed AAB verified: Sunnah-24-v4.2-PlayStore-Signed.aab"
+            jarsigner -verify -verbose -certs ./Sunnah-24-v4.3-PlayStore-Signed.aab
+            echo "✅ Play Store Signed AAB verified: Sunnah-24-v4.3-PlayStore-Signed.aab"
           else
             echo "❌ ERROR: Play Store AAB was not generated!"
             exit 1
@@ -1276,8 +1290,8 @@ jobs:
         with:
           name: Sunnah-24-Enterprise-Release-Bundle
           path: |
-            Sunnah-24-v4.2-Enterprise-Signed.apk
-            Sunnah-24-v4.2-PlayStore-Signed.aab
+            Sunnah-24-v4.3-Enterprise-Signed.apk
+            Sunnah-24-v4.3-PlayStore-Signed.aab
 
       - name: 10. Publish Atomic GitHub Release with APK & Play Store AAB (Fault-Tolerant 403-Safe)
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
@@ -1292,18 +1306,18 @@ jobs:
           TITLE="☪️ Sunnah 24 v${VERSION_NAME} — Play Store Ready AAB & Signed Enterprise APK"
           cat << 'EOF' > /tmp/release_notes.md
           ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Play Store Ready `.aab` & Signed Android `.apk` (v${VERSION_NAME})
-          - **Google Play Store Ready `.aab` (`Sunnah-24-v4.2-PlayStore-Signed.aab`):** Compiled with `targetSdk 35` / `compileSdk 35`, R8 code shrinking + deobfuscation mapping, zero self-updater bytecode, and zero legacy storage permissions.
-          - **Sideload Auto-Updating `.apk` (`Sunnah-24-v4.2-Enterprise-Signed.apk`):** Full in-app update support via Android's system DownloadManager for direct website users.
+          - **Google Play Store Ready `.aab` (`Sunnah-24-v4.3-PlayStore-Signed.aab`):** Compiled with `targetSdk 36` / `compileSdk 36`, R8 code shrinking + deobfuscation mapping, zero self-updater bytecode, and zero legacy storage permissions.
+          - **Sideload Auto-Updating `.apk` (`Sunnah-24-v4.3-Enterprise-Signed.apk`):** Full in-app update support via Android's system DownloadManager for direct website users.
           - **Triple-Redundant Auto-Vault:** Preserves all user habit records across LocalStorage, IndexedDB, and Native Android Vault.
           EOF
           sed -i 's/^          //' /tmp/release_notes.md
           sed -i "s/\${VERSION_NAME}/${VERSION_NAME}/g" /tmp/release_notes.md
 
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" Sunnah-24-v4.2-Enterprise-Signed.apk Sunnah-24-v4.2-PlayStore-Signed.aab --clobber || true
+            gh release upload "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab --clobber || true
             echo "✅ Updated existing GitHub Release $TAG"
           else
-            if gh release create "$TAG" Sunnah-24-v4.2-Enterprise-Signed.apk Sunnah-24-v4.2-PlayStore-Signed.aab --title "$TITLE" --notes-file /tmp/release_notes.md --target "${GITHUB_SHA}"; then
+            if gh release create "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab --title "$TITLE" --notes-file /tmp/release_notes.md --target "${GITHUB_SHA}"; then
               echo "✅ Published GitHub Release $TAG successfully!"
             else
               echo "ℹ️ Notice: Default GITHUB_TOKEN has read-only Release permissions (403). Your Signed APK & Play Store AAB are already safely uploaded in Step 9 Build Artifacts (Sunnah-24-Enterprise-Release-Bundle)!"
@@ -1326,12 +1340,13 @@ jobs:
               fi
               echo "📦 Gradually publishing APK + AAB release $TAG to mirror repository: $TARGET_REPO ..."
               if GH_TOKEN="$SYNC_PAT" gh release view "$TAG" --repo "$TARGET_REPO" >/dev/null 2>&1; then
-                GH_TOKEN="$SYNC_PAT" gh release upload "$TAG" Sunnah-24-v4.2-Enterprise-Signed.apk Sunnah-24-v4.2-PlayStore-Signed.aab --repo "$TARGET_REPO" --clobber || true
+                GH_TOKEN="$SYNC_PAT" gh release upload "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab --repo "$TARGET_REPO" --clobber || true
               else
-                GH_TOKEN="$SYNC_PAT" gh release create "$TAG" Sunnah-24-v4.2-Enterprise-Signed.apk Sunnah-24-v4.2-PlayStore-Signed.aab --repo "$TARGET_REPO" --title "$TITLE" --notes-file /tmp/release_notes.md || true
+                GH_TOKEN="$SYNC_PAT" gh release create "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab --repo "$TARGET_REPO" --title "$TITLE" --notes-file /tmp/release_notes.md || true
               fi
               sleep 4
             done
           fi
+
 
 
