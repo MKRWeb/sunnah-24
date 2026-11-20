@@ -343,14 +343,24 @@ function getJumuahMandalaPatternSvg() {
   }
   return `
     <g class="s24-celestial-anim">
-      <!-- Serene Jumu'ah Morning Sky & Illuminated Mosque Courtyard Halo (No Sun) -->
+      <!-- Serene Jumu'ah Morning Sky & Illuminated Mosque Courtyard Halo -->
       <ellipse cx="200" cy="146" rx="142" ry="86" fill="url(#s24CenterWhiteBacklight)" />
       <!-- Subtle Geometric Mihrab Arch Frame Behind Masjid an-Nabawi -->
       <path d="M104 223 V122 C104 68 148 34 200 34 C252 34 296 68 296 122 V223" fill="none" stroke="#16a34a" stroke-opacity="0.22" stroke-width="2.2" />
       <path d="M114 223 V125 C114 76 153 44 200 44 C247 44 286 76 286 125 V223" fill="none" stroke="#b48a3e" stroke-opacity="0.28" stroke-width="1.4" stroke-dasharray="4 4" />
-      <!-- Delicate Jumu'ah Crescent & Star Finial Accent at Top of Mihrab Arch -->
-      <path d="M203 18 C197.5 19.8 195 25.5 197 31 C199 36.5 204.7 39 210.2 37.2 C206 40.4 199.8 40.2 195.8 36.2 C191.8 32.2 191.6 26 194.8 21.8 C196.8 19.2 199.8 18 203 18 Z" fill="#15803d" opacity="0.82" />
-      <circle cx="212" cy="23" r="1.8" fill="#b48a3e" opacity="0.88" />
+      <!-- Radiant Sun SVG Placed at the Top Finial Position of the Jumu'ah Mihrab Arch -->
+      <circle cx="200" cy="27" r="19" fill="url(#s24SunBloomWarm)" opacity="0.82" />
+      <g stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" opacity="0.88">
+        <line x1="200" y1="11" x2="200" y2="15" />
+        <line x1="200" y1="39" x2="200" y2="43" />
+        <line x1="184" y1="27" x2="188" y2="27" />
+        <line x1="212" y1="27" x2="216" y2="27" />
+        <line x1="188.7" y1="15.7" x2="191.5" y2="18.5" />
+        <line x1="208.5" y1="35.5" x2="211.3" y2="38.3" />
+        <line x1="211.3" y1="15.7" x2="208.5" y2="18.5" />
+        <line x1="191.5" y1="35.5" x2="188.7" y2="38.3" />
+      </g>
+      <circle cx="200" cy="27" r="8.2" fill="url(#s24NoonSunCore)" filter="url(#s24SoftSunGlow)" />
       <!-- Soft Masjid Courtyard Arcade Colonnade Behind Main Dome -->
       <rect x="112" y="196" width="176" height="27" rx="3" fill="#dcfce7" opacity="0.55" />
       ${arches}
