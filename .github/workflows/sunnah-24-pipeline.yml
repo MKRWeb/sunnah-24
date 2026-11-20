@@ -78,9 +78,19 @@ jobs:
             done
           fi
 
-          # 4B. Consolidate any stray root web assets into www/ and DELETE them from the main root directory
-          # so that index.html, style.css, app.js, sw.js, manifest.json, icon.svg, privacy.html ONLY live inside www/
-          WEB_ASSETS="index.html style.css app.js sw.js manifest.json icon.svg privacy.html version.json"
+          # 4B. Remove legacy monolithic app.js if modular files exist, and keep active web assets strictly inside www/
+          if [ -f "www/ui.js" ] && [ -f "www/storage.js" ] && [ -f "www/astronomy.js" ]; then
+            for legacy_js in app.js www/app.js; do
+              if [ -f "$legacy_js" ]; then
+                echo "🗑️ Removing obsolete monolithic $legacy_js (replaced by modular v4.3 scripts)"
+                git rm -f "$legacy_js" 2>/dev/null || rm -f "$legacy_js"
+                REPO_CLEANUP_NEEDED=1
+              fi
+            done
+          fi
+
+          # Consolidate any stray root web assets into www/ and DELETE them from the main root directory
+          WEB_ASSETS="index.html style.css sw.js manifest.json icon.svg privacy.html version.json"
           for extra in *.html *.css *.js *.svg *.png *.webp *.ico *.woff2; do
             if [ -f "$extra" ] && [ "$extra" != "package.json" ] && [ "$extra" != "package-lock.json" ] && [ "$extra" != "capacitor.config.json" ]; then
               case " $WEB_ASSETS " in
