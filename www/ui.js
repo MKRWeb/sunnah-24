@@ -336,32 +336,24 @@ function getFardWaqtSvgIcon(waqtId) {
 //   and never covered by the timeline pills.
 // ============================================================================
 function getJumuahMandalaPatternSvg() {
-  let petals = "";
-  for (let deg = 0; deg < 360; deg += 30) {
-    petals += `<g transform="rotate(${deg} 200 76)">
-      <path d="M200 30 C206.5 36.5 206.5 48.5 200 56 C193.5 48.5 193.5 36.5 200 30 Z" fill="none" stroke="#cbd5cdb8" stroke-width="1.2" />
-      <path d="M200 34 C203.8 38.8 203.8 46 200 51 C196.2 46 196.2 38.8 200 34 Z" fill="none" stroke="#cbd5cd88" stroke-width="0.95" />
-      <circle cx="200" cy="40.5" r="1.4" fill="#cbd5cd99" />
-    </g>`;
-  }
-  let rays = "";
-  for (let i = 0; i < 16; i++) {
-    const deg = i * 22.5;
-    const isGreen = i % 2 === 1;
-    const color = isGreen ? "#15803d" : "#f59e0b";
-    const y1 = isGreen ? 40 : 38;
-    const y2 = isGreen ? 53 : 51;
-    rays += `<line x1="200" y1="${y1}" x2="200" y2="${y2}" stroke="${color}" stroke-width="3.6" stroke-linecap="round" transform="rotate(${deg} 200 76)" />`;
+  let arches = "";
+  for (let i = 0; i < 5; i++) {
+    const x = 132 + i * 34;
+    arches += `<path d="M${x - 10} 223 V208 A10 10 0 0 1 ${x + 10} 208 V223 Z" fill="#14532d" opacity="0.22" />`;
   }
   return `
     <g class="s24-celestial-anim">
-      <ellipse cx="200" cy="148" rx="115" ry="74" fill="url(#s24CenterWhiteBacklight)" />
-      <circle cx="200" cy="76" r="46" fill="url(#s24SunBloomWarm)" opacity="0.65" />
-      <circle cx="200" cy="76" r="42" fill="none" stroke="#cbd5cd80" stroke-width="1.1" stroke-dasharray="3 3" />
-      <circle cx="200" cy="76" r="34" fill="#e8f5ee" opacity="0.62" />
-      ${petals}
-      ${rays}
-      <circle cx="200" cy="76" r="20" fill="url(#s24NoonSunCore)" stroke="#15803d" stroke-width="2.8" />
+      <!-- Serene Jumu'ah Morning Sky & Illuminated Mosque Courtyard Halo (No Sun) -->
+      <ellipse cx="200" cy="146" rx="142" ry="86" fill="url(#s24CenterWhiteBacklight)" />
+      <!-- Subtle Geometric Mihrab Arch Frame Behind Masjid an-Nabawi -->
+      <path d="M104 223 V122 C104 68 148 34 200 34 C252 34 296 68 296 122 V223" fill="none" stroke="#16a34a" stroke-opacity="0.22" stroke-width="2.2" />
+      <path d="M114 223 V125 C114 76 153 44 200 44 C247 44 286 76 286 125 V223" fill="none" stroke="#b48a3e" stroke-opacity="0.28" stroke-width="1.4" stroke-dasharray="4 4" />
+      <!-- Delicate Jumu'ah Crescent & Star Finial Accent at Top of Mihrab Arch -->
+      <path d="M203 18 C197.5 19.8 195 25.5 197 31 C199 36.5 204.7 39 210.2 37.2 C206 40.4 199.8 40.2 195.8 36.2 C191.8 32.2 191.6 26 194.8 21.8 C196.8 19.2 199.8 18 203 18 Z" fill="#15803d" opacity="0.82" />
+      <circle cx="212" cy="23" r="1.8" fill="#b48a3e" opacity="0.88" />
+      <!-- Soft Masjid Courtyard Arcade Colonnade Behind Main Dome -->
+      <rect x="112" y="196" width="176" height="27" rx="3" fill="#dcfce7" opacity="0.55" />
+      ${arches}
     </g>
   `;
 }
@@ -768,7 +760,7 @@ function getSymmetricNabawiCardSvg(sceneKey) {
       <!-- 1. Full Card Sky Backdrop -->
       <rect width="400" height="375" fill="url(#s24SymSky_${sceneKey})" />
 
-      <!-- 2. Celestial Body (Sun / Moon / Jumu'ah Mandala / Asr Cloud) -->
+      <!-- 2. Celestial & Architectural Backdrop (Sun / Moon / Jumu'ah Mosque Mihrab / Asr Cloud) -->
       ${c.celestial}
 
       <!-- 3. Scene Pre-Minaret Horizon or Courtyard Wall Layer -->
@@ -5799,6 +5791,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
