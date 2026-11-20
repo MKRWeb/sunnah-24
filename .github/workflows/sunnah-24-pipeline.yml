@@ -293,18 +293,43 @@ jobs:
 
       - name: 4. Verify Web Assets inside www/ for APK/AAB Bundle
         run: |
-          test -f www/index.html
-          test -f www/style.css
-          test -f www/data/i18n-data.js
-          test -f www/data/habits-duas-data.js
-          test -f www/data/locations-data.js
-          test -f www/storage.js
-          test -f www/astronomy.js
-          test -f www/ui.js
-          test -f www/manifest.json
-          test -f www/sw.js
-          test -f www/icon.svg
-          test -f www/privacy.html
+          # Normalize nested www/www/ if present from artifact extraction
+          if [ ! -f "www/index.html" ] && [ -d "www/www" ]; then
+            cp -rf www/www/* www/ 2>/dev/null || true
+            rm -rf www/www
+          fi
+          # Fallback to git checkout of www/ if still missing
+          if [ ! -f "www/index.html" ]; then
+            git checkout HEAD -- www 2>/dev/null || true
+          fi
+
+          REQUIRED_FILES="
+            www/index.html
+            www/style.css
+            www/data/i18n-data.js
+            www/data/habits-duas-data.js
+            www/data/locations-data.js
+            www/storage.js
+            www/astronomy.js
+            www/ui.js
+            www/manifest.json
+            www/sw.js
+            www/icon.svg
+            www/privacy.html
+          "
+          MISSING=0
+          for rf in $REQUIRED_FILES; do
+            if [ ! -f "$rf" ]; then
+              echo "❌ Missing required asset: $rf"
+              MISSING=1
+            fi
+          done
+          if [ "$MISSING" -ne 0 ]; then
+            echo "📂 Current www directory contents:"
+            ls -laR www || true
+            exit 1
+          fi
+
           find www -name "*.js" -exec node --check {} +
           echo "✅ All Sunnah 24 assets and JS syntax verified for Android packaging!"
 
