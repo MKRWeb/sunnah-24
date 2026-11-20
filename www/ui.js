@@ -5802,6 +5802,46 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// ============================================================================
+// STRICT ANTI-COPY, CONTEXT-MENU & SELECTION LOCK (ANDROID WEBVIEW & PWA)
+// ============================================================================
+(function initStrictAntiCopyProtection() {
+  const isEditableField = (target) => {
+    if (!target || !(target instanceof Element)) return false;
+    return Boolean(target.closest("input, textarea, select, [contenteditable='true']"));
+  };
 
+  document.addEventListener("selectstart", (e) => {
+    if (!isEditableField(e.target)) {
+      e.preventDefault();
+    }
+  }, { capture: true });
 
+  document.addEventListener("contextmenu", (e) => {
+    if (!isEditableField(e.target)) {
+      e.preventDefault();
+    }
+  }, { capture: true });
+
+  document.addEventListener("copy", (e) => {
+    if (!isEditableField(e.target)) {
+      e.preventDefault();
+      if (e.clipboardData) {
+        e.clipboardData.setData("text/plain", "");
+      }
+    }
+  }, { capture: true });
+
+  document.addEventListener("cut", (e) => {
+    if (!isEditableField(e.target)) {
+      e.preventDefault();
+    }
+  }, { capture: true });
+
+  document.addEventListener("dragstart", (e) => {
+    if (!isEditableField(e.target)) {
+      e.preventDefault();
+    }
+  }, { capture: true });
+})();
 
