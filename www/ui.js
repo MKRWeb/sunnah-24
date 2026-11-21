@@ -343,24 +343,26 @@ function getJumuahMandalaPatternSvg() {
   }
   return `
     <g class="s24-celestial-anim">
-      <!-- Serene Jumu'ah Morning Sky & Illuminated Mosque Courtyard Halo -->
+      <!-- Serene Jumu'ah Sky & Illuminated Mosque Courtyard Halo -->
       <ellipse cx="200" cy="146" rx="142" ry="86" fill="url(#s24CenterWhiteBacklight)" />
+      <polygon points="200,64 122,226 278,226" fill="url(#s24DuhaBeamGrad)" opacity="0.65" />
       <!-- Subtle Geometric Mihrab Arch Frame Behind Masjid an-Nabawi -->
       <path d="M104 223 V122 C104 68 148 34 200 34 C252 34 296 68 296 122 V223" fill="none" stroke="#16a34a" stroke-opacity="0.22" stroke-width="2.2" />
       <path d="M114 223 V125 C114 76 153 44 200 44 C247 44 286 76 286 125 V223" fill="none" stroke="#b48a3e" stroke-opacity="0.28" stroke-width="1.4" stroke-dasharray="4 4" />
-      <!-- Radiant Sun SVG Placed at the Top Finial Position of the Jumu'ah Mihrab Arch -->
-      <circle cx="200" cy="27" r="19" fill="url(#s24SunBloomWarm)" opacity="0.82" />
-      <g stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" opacity="0.88">
-        <line x1="200" y1="11" x2="200" y2="15" />
-        <line x1="200" y1="39" x2="200" y2="43" />
-        <line x1="184" y1="27" x2="188" y2="27" />
-        <line x1="212" y1="27" x2="216" y2="27" />
-        <line x1="188.7" y1="15.7" x2="191.5" y2="18.5" />
-        <line x1="208.5" y1="35.5" x2="211.3" y2="38.3" />
-        <line x1="211.3" y1="15.7" x2="208.5" y2="18.5" />
-        <line x1="191.5" y1="35.5" x2="188.7" y2="38.3" />
+      <!-- Radiant Zenith Noon Sun with Corona Halo (Same as Dhuhr Time Sun) -->
+      <circle cx="200" cy="66" r="40" fill="url(#s24SunBloomWarm)" opacity="0.88" />
+      <circle cx="200" cy="66" r="25" fill="#fde68a" opacity="0.52" />
+      <g stroke="#f59e0b" stroke-width="2.4" stroke-linecap="round" opacity="0.72">
+        <line x1="200" y1="30" x2="200" y2="40" />
+        <line x1="200" y1="92" x2="200" y2="102" />
+        <line x1="164" y1="66" x2="174" y2="66" />
+        <line x1="226" y1="66" x2="236" y2="66" />
+        <line x1="174.5" y1="40.5" x2="181.5" y2="47.5" />
+        <line x1="218.5" y1="84.5" x2="225.5" y2="91.5" />
+        <line x1="225.5" y1="40.5" x2="218.5" y2="47.5" />
+        <line x1="181.5" y1="84.5" x2="174.5" y2="91.5" />
       </g>
-      <circle cx="200" cy="27" r="8.2" fill="url(#s24NoonSunCore)" filter="url(#s24SoftSunGlow)" />
+      <circle cx="200" cy="66" r="17.5" fill="url(#s24NoonSunCore)" filter="url(#s24SoftSunGlow)" />
       <!-- Soft Masjid Courtyard Arcade Colonnade Behind Main Dome -->
       <rect x="112" y="196" width="176" height="27" rx="3" fill="#dcfce7" opacity="0.55" />
       ${arches}
@@ -1228,7 +1230,7 @@ function renderFiveWaqtStrip(now = new Date()) {
       isCrossMidnight: winEnd > 1440,
       isProhibited: isProhibitedNow
     };
-    const fardNumMap = { fajr: 1, dhuhr: 2, asr: 3, maghrib: 4, isha: 5 };
+    const fardNumMap = { fajr: 1, dhuhr: 2, jumuah: 2, asr: 3, maghrib: 4, isha: 5 };
     const numPrefix = fardNumMap[waqtSceneKey]
       ? `${localizeDigits(fardNumMap[waqtSceneKey], lang)}. `
       : "";
@@ -4308,7 +4310,7 @@ const MASTER_SECTION_REGISTRY = {
     phaseKey: "character_social",
     titleKey: "phase_character",
     descKey: "desc_character",
-    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"> <defs> <linearGradient id="hdr_sec_character_social_csHand" x1="20" y1="14" x2="58" y2="32" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#fde68a"/> <stop offset="100%" stop-color="#f59e0b"/> </linearGradient> <radialGradient id="hdr_sec_character_social_csCoin" cx="35%" cy="35%" r="65%"> <stop offset="0%" stop-color="#fef08a"/> <stop offset="55%" stop-color="#facc15"/> <stop offset="100%" stop-color="#ca8a04"/> </linearGradient> <linearGradient id="hdr_sec_character_social_csBox" x1="18" y1="52" x2="78" y2="86" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#34d399"/> <stop offset="55%" stop-color="#059669"/> <stop offset="100%" stop-color="#064e3b"/> </linearGradient> <linearGradient id="hdr_sec_character_social_csHeart" x1="38" y1="60" x2="58" y2="80" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#fb7185"/> <stop offset="100%" stop-color="#e11d48"/> </linearGradient> </defs> <g> <path d="M22 16H46C50.4 16 54 19.6 54 24V26H30C25.6 26 22 22.4 22 18V16Z" fill="url(#hdr_sec_character_social_csHand)"/> <rect x="14" y="14" width="10" height="14" rx="3" fill="#059669"/> <circle cx="48" cy="39" r="10.5" fill="url(#hdr_sec_character_social_csCoin)" stroke="#92400e" stroke-width="1.6"/> <path d="M48 33.5V44.5M44 39H52" stroke="#78350f" stroke-width="2.2" stroke-linecap="round"/> <rect x="18" y="53" width="60" height="31" rx="8" fill="url(#hdr_sec_character_social_csBox)"/> <rect x="15" y="49" width="66" height="7" rx="3.5" fill="#fbbf24"/> <rect x="37" y="51" width="22" height="3.5" rx="1.7" fill="#064e3b"/> <path d="M48 78.5C48 78.5 36.5 71.5 36.5 64C36.5 60.4 39.4 57.5 43 57.5C45.2 57.5 47.1 58.6 48 60.3C48.9 58.6 50.8 57.5 53 57.5C56.6 57.5 59.5 60.4 59.5 64C59.5 71.5 48 78.5 48 78.5Z" fill="url(#hdr_sec_character_social_csHeart)" stroke="#ffffff" stroke-width="1.5"/> </g> </svg>`
+    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"> <defs> <linearGradient id="hdr_sec_character_social_csHand" x1="20" y1="14" x2="58" y2="32" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#fde68a"/> <stop offset="100%" stop-color="#f59e0b"/> </linearGradient> <radialGradient id="hdr_sec_character_social_csCoin" cx="35%" cy="35%" r="65%"> <stop offset="0%" stop-color="#fef08a"/> <stop offset="55%" stop-color="#facc15"/> <stop offset="100%" stop-color="#ca8a04"/> </radialGradient> <linearGradient id="hdr_sec_character_social_csBox" x1="18" y1="52" x2="78" y2="86" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#34d399"/> <stop offset="55%" stop-color="#059669"/> <stop offset="100%" stop-color="#064e3b"/> </linearGradient> <linearGradient id="hdr_sec_character_social_csHeart" x1="38" y1="60" x2="58" y2="80" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#fb7185"/> <stop offset="100%" stop-color="#e11d48"/> </linearGradient> </defs> <g> <path d="M22 16H46C50.4 16 54 19.6 54 24V26H30C25.6 26 22 22.4 22 18V16Z" fill="url(#hdr_sec_character_social_csHand)"/> <rect x="14" y="14" width="10" height="14" rx="3" fill="#059669"/> <circle cx="48" cy="39" r="10.5" fill="url(#hdr_sec_character_social_csCoin)" stroke="#92400e" stroke-width="1.6"/> <path d="M48 33.5V44.5M44 39H52" stroke="#78350f" stroke-width="2.2" stroke-linecap="round"/> <rect x="18" y="53" width="60" height="31" rx="8" fill="url(#hdr_sec_character_social_csBox)"/> <rect x="15" y="49" width="66" height="7" rx="3.5" fill="#fbbf24"/> <rect x="37" y="51" width="22" height="3.5" rx="1.7" fill="#064e3b"/> <path d="M48 78.5C48 78.5 36.5 71.5 36.5 64C36.5 60.4 39.4 57.5 43 57.5C45.2 57.5 47.1 58.6 48 60.3C48.9 58.6 50.8 57.5 53 57.5C56.6 57.5 59.5 60.4 59.5 64C59.5 71.5 48 78.5 48 78.5Z" fill="url(#hdr_sec_character_social_csHeart)" stroke="#ffffff" stroke-width="1.5"/> </g> </svg>`
   },
   "sec-adhkar": {
     id: "sec-adhkar",
