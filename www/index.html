@@ -331,6 +331,34 @@
 
 
 
+    <!-- 5B. FOUR PROFOUND QURANIC REFLECTION AYATS (HORIZONTALLY SCROLLABLE FLOATING CARDS + CORNER `i` BUTTON) -->
+    <section
+      id="quran-reflection-ayats-section"
+      class="s24-ayats-showcase-section"
+      aria-label="আল-কুরআনের গূঢ় ও তাৎপর্যপূর্ণ ৪টি আয়াত"
+    >
+      <div class="s24-ayats-section-header">
+        <div class="s24-ayats-header-left">
+          <h4 id="s24-ayats-section-title">আল-কুরআনের গূঢ় তাৎপর্যপূর্ণ আয়াত</h4>
+        </div>
+        <div class="s24-ayats-dots" id="s24-ayats-dots" aria-hidden="true">
+          <span class="s24-ayat-dot active" data-ayat-dot="0"></span>
+          <span class="s24-ayat-dot" data-ayat-dot="1"></span>
+          <span class="s24-ayat-dot" data-ayat-dot="2"></span>
+          <span class="s24-ayat-dot" data-ayat-dot="3"></span>
+        </div>
+      </div>
+
+      <div
+        id="s24-ayats-carousel-track"
+        class="s24-ayats-carousel-track"
+        role="region"
+        aria-label="Horizontally Scrollable Quranic Reflection Ayats"
+      >
+        <!-- Populated dynamically by renderReflectionAyatsCarousel() in ui.js -->
+      </div>
+    </section>
+
     <!-- 6. 3D TWO BLESSINGS (HEALTH & FREE TIME — SAHIH BUKHARI 6412) INTERACTIVE HOMEPAGE CARD -->
     <section
       id="two-blessings-3d-card"
@@ -2079,4 +2107,5 @@
   <script src="ui.js"></script>
 </body>
 </html>
+
 
