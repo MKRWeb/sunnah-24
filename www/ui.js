@@ -2150,7 +2150,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   applyLanguageToDOM();
 
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
+    const isNativeShell =
+      Boolean(window.AndroidDownloader) ||
+      Boolean(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) ||
+      window.location.protocol === "capacitor:" ||
+      window.location.protocol === "file:";
+    if (isNativeShell) {
+      // Unregister any stale Service Worker inside offline APK so Capacitor serves local assets directly without white-screen cache mismatches
+      navigator.serviceWorker.getRegistrations().then((regs) => {
+        regs.forEach((reg) => reg.unregister().catch(() => {}));
+      }).catch(() => {});
+      if (window.caches && typeof window.caches.keys === "function") {
+        window.caches.keys().then((keys) => {
+          keys.forEach((k) => window.caches.delete(k).catch(() => {}));
+        }).catch(() => {});
+      }
+    } else {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    }
   }
 
   // Real-Time 1-Second Live Countdown Ticker for Ongoing Prayers ("ওয়াক্ত শেষ হতে বাকি:" section)
@@ -2959,8 +2976,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     splashHideTimer = setTimeout(() => {
       splash.classList.add("splash-hidden");
+      const homeView = document.getElementById("home-dashboard-view");
+      if (homeView && !activeMasterSectionId && !isSunnahGridPageOpen) {
+        homeView.classList.remove("hidden");
+        homeView.style.display = "";
+      }
       splashFadeTimer = setTimeout(() => {
-        if (splash) splash.style.display = "none";
+        if (splash) {
+          splash.style.display = "none";
+          splash.remove();
+        }
       }, 450);
     }, holdMs);
   }
@@ -5997,4 +6022,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
