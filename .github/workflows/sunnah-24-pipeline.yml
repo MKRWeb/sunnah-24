@@ -330,6 +330,12 @@ jobs:
             exit 1
           fi
 
+          # Normalize asset URLs inside www/index.html for offline Android Capacitor WebView (strip ?v=... query strings that break offline SW/asset matching)
+          sed -i -E 's|(href="style\.css)\?v=[^"]*"|\1"|g' www/index.html || true
+          for mod in data/i18n-data.js data/habits-duas-data.js data/locations-data.js storage.js astronomy.js ui.js; do
+            sed -i -E "s|(src=\"${mod})\?v=[^\"]*\"|\1\"|g" www/index.html || true
+          done
+
           find www -name "*.js" -exec node --check {} +
           echo "✅ All Sunnah 24 assets and JS syntax verified for Android packaging!"
 
@@ -1382,6 +1388,7 @@ jobs:
               sleep 4
             done
           fi
+
 
 
 
