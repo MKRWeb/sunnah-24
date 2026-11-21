@@ -49,13 +49,17 @@ self.addEventListener("fetch", (e) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(e.request, copy)).catch(() => {});
           return networkRes;
         })
-        .catch(() => caches.match(e.request).then((cached) => cached || caches.match("./index.html")))
+        .catch(() =>
+          caches.match(e.request, { ignoreSearch: true }).then(
+            (cached) => cached || caches.match("./index.html", { ignoreSearch: true })
+          )
+        )
     );
     return;
   }
 
   e.respondWith(
-    caches.match(e.request).then((cached) => {
+    caches.match(e.request, { ignoreSearch: true }).then((cached) => {
       const fetchPromise = fetch(e.request)
         .then((networkRes) => {
           if (networkRes && networkRes.status === 200 && networkRes.type === "basic") {
@@ -69,4 +73,6 @@ self.addEventListener("fetch", (e) => {
     })
   );
 });
+
+
 
