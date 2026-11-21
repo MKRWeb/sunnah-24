@@ -1429,6 +1429,7 @@ function applyLanguageToDOM() {
   if (typeof syncMasterSectionsLiveProgress === "function") syncMasterSectionsLiveProgress();
   if (typeof syncTwoBlessingsCardLocale === "function") syncTwoBlessingsCardLocale();
   if (typeof syncFourQualitiesCardLocale === "function") syncFourQualitiesCardLocale();
+  if (typeof renderReflectionAyatsCarousel === "function") renderReflectionAyatsCarousel();
   updateIntegrityUI(true);
 }
 
@@ -5844,4 +5845,154 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, { capture: true });
 })();
+
+// ============================================================================
+// V14.0 FOUR PROFOUND QURANIC REFLECTION AYATS CAROUSEL & CORNER `i` MODAL
+// ============================================================================
+function renderReflectionAyatsCarousel() {
+  const trackEl = document.getElementById("s24-ayats-carousel-track");
+  if (!trackEl || typeof REFLECTION_AYATS_CONTENT === "undefined") return;
+
+  const lang = (appState && appState.locale) || "bn";
+  const titleEl = document.getElementById("s24-ayats-section-title");
+  if (titleEl) {
+    titleEl.textContent =
+      lang === "ar"
+        ? "آيات قرآنية للتدبر والمحاسبة"
+        : lang === "en"
+        ? "Profound Quranic Reflections"
+        : "আল-কুরআনের গূঢ় তাৎপর্যপূর্ণ আয়াত";
+  }
+
+  const infoTitleAttr =
+    lang === "ar" ? "التفسير والتأمل" : lang === "en" ? "Tafsir & Reflection" : "তাফসির ও গূঢ় তাৎপর্য";
+
+  trackEl.innerHTML = REFLECTION_AYATS_CONTENT.map((ayat, idx) => {
+    const surahRef =
+      lang === "ar" ? ayat.surahRef_ar : lang === "en" ? ayat.surahRef_en : ayat.surahRef_bn;
+    const badge =
+      lang === "ar" ? ayat.badge_ar : lang === "en" ? ayat.badge_en : ayat.badge_bn;
+    const translation =
+      lang === "ar" ? "" : lang === "en" ? ayat.translation_en : ayat.translation_bn;
+
+    return `
+      <article class="s24-ayat-float-card" data-ayat-index="${idx}" data-ayat-id="${ayat.id}">
+        <button
+          type="button"
+          class="s24-ayat-corner-info-btn"
+          data-ayat-info-id="${ayat.id}"
+          aria-label="${infoTitleAttr}"
+          title="${infoTitleAttr}"
+        >i</button>
+        <div class="s24-ayat-card-top-bar">
+          <span class="s24-ayat-surah-pill">📖 ${escapeHtml(surahRef)}</span>
+          <span class="s24-ayat-theme-tag">${escapeHtml(badge)}</span>
+        </div>
+        <p class="s24-ayat-arabic-box">${ayat.arabic}</p>
+        ${translation ? `<p class="s24-ayat-translation-text">${escapeHtml(translation)}</p>` : ""}
+      </article>
+    `;
+  }).join("");
+}
+
+function openReflectionAyatModal(ayatId) {
+  if (typeof REFLECTION_AYATS_CONTENT === "undefined") return;
+  const ayat = REFLECTION_AYATS_CONTENT.find((item) => item.id === ayatId);
+  if (!ayat) return;
+
+  const lang = (appState && appState.locale) || "bn";
+  const surahRef =
+    lang === "ar" ? ayat.surahRef_ar : lang === "en" ? ayat.surahRef_en : ayat.surahRef_bn;
+  const badge =
+    lang === "ar" ? ayat.badge_ar : lang === "en" ? ayat.badge_en : ayat.badge_bn;
+  const translation =
+    lang === "ar" ? ayat.translation_ar : lang === "en" ? ayat.translation_en : ayat.translation_bn;
+  const refTitle =
+    lang === "ar" ? ayat.reflectionTitle_ar : lang === "en" ? ayat.reflectionTitle_en : ayat.reflectionTitle_bn;
+  const refBody =
+    lang === "ar" ? ayat.reflectionBody_ar : lang === "en" ? ayat.reflectionBody_en : ayat.reflectionBody_bn;
+  const actTitle =
+    lang === "ar" ? ayat.actionTitle_ar : lang === "en" ? ayat.actionTitle_en : ayat.actionTitle_bn;
+  const actBody =
+    lang === "ar" ? ayat.actionBody_ar : lang === "en" ? ayat.actionBody_en : ayat.actionBody_bn;
+
+  const modalTitleEl = document.getElementById("modal-title");
+  const modalCatEl = document.getElementById("modal-category");
+  const evidenceEl = document.getElementById("modal-evidence");
+  const wisdomEl = document.getElementById("modal-wisdom");
+  const evidenceHeadingEl = evidenceEl?.parentElement?.querySelector("h4");
+  const wisdomSection = wisdomEl?.parentElement;
+  const wisdomHeadingEl = wisdomSection?.querySelector("h4");
+
+  if (modalTitleEl) modalTitleEl.textContent = `${surahRef} — ${badge}`;
+  if (modalCatEl) modalCatEl.textContent = translation;
+  if (evidenceHeadingEl) evidenceHeadingEl.textContent = refTitle;
+  if (evidenceEl) evidenceEl.textContent = refBody;
+  if (wisdomSection) wisdomSection.style.display = "block";
+  if (wisdomHeadingEl) wisdomHeadingEl.textContent = actTitle;
+  if (wisdomEl) wisdomEl.textContent = actBody;
+
+  const modalOverlay = document.getElementById("fact-modal");
+  if (modalOverlay) modalOverlay.classList.remove("hidden");
+  if (navigator.vibrate) navigator.vibrate(12);
+  if (typeof pushAppHistoryState === "function") pushAppHistoryState("modal");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderReflectionAyatsCarousel();
+
+  const trackEl = document.getElementById("s24-ayats-carousel-track");
+  const dotsContainer = document.getElementById("s24-ayats-dots");
+
+  if (trackEl) {
+    // Open `i` button description modal ONLY when clicking the top-right `i` button
+    trackEl.addEventListener("click", (e) => {
+      const infoBtn = e.target.closest("button.s24-ayat-corner-info-btn[data-ayat-info-id]");
+      if (!infoBtn) return;
+      e.stopPropagation();
+      const ayatId = infoBtn.getAttribute("data-ayat-info-id");
+      if (ayatId) openReflectionAyatModal(ayatId);
+    });
+
+    // Update pagination dots dynamically on horizontal scroll
+    trackEl.addEventListener(
+      "scroll",
+      () => {
+        if (!dotsContainer) return;
+        const cards = trackEl.querySelectorAll(".s24-ayat-float-card");
+        if (!cards.length) return;
+        const trackCenter = trackEl.scrollLeft + trackEl.clientWidth / 2;
+        let closestIdx = 0;
+        let minDist = Infinity;
+        cards.forEach((card, i) => {
+          const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+          const dist = Math.abs(trackCenter - cardCenter);
+          if (dist < minDist) {
+            minDist = dist;
+            closestIdx = i;
+          }
+        });
+        dotsContainer.querySelectorAll(".s24-ayat-dot").forEach((dot, i) => {
+          dot.classList.toggle("active", i === closestIdx);
+        });
+      },
+      { passive: true }
+    );
+  }
+
+  if (dotsContainer && trackEl) {
+    dotsContainer.addEventListener("click", (e) => {
+      const dot = e.target.closest("[data-ayat-dot]");
+      if (!dot) return;
+      const idx = parseInt(dot.getAttribute("data-ayat-dot"), 10);
+      const targetCard = trackEl.querySelector(`.s24-ayat-float-card[data-ayat-index="${idx}"]`);
+      if (targetCard) {
+        trackEl.scrollTo({
+          left: targetCard.offsetLeft - 14,
+          behavior: "smooth"
+        });
+      }
+    });
+  }
+});
 
