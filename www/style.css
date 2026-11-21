@@ -12553,4 +12553,150 @@ select,
   user-select: text !important;
   -webkit-touch-callout: default !important;
 }
+/* ==========================================================================
+   V13.6 2/2/1 FARD PRAYER GRID ORDER & STANDARD WHITE SURFACE FOR LAST TWO
+   HOMEPAGE SECTIONS (#two-blessings-3d-card & #four-qualities-3d-card)
+   - Re-orders the 5 Fard Prayer Schedule cards into a balanced 2/2/1 layout:
+       Row 1: Fajr (1st) & Dhuhr (2nd) — 2 symmetrical columns
+       Row 2: Asr (3rd) & Maghrib (4th) — 2 symmetrical columns
+       Row 3: Isha (5th) — full-width horizontal featured card (icon + name/time)
+   - Applies clean standard white surface styling to the last two bottom
+     homepage sections (#two-blessings-3d-card & #four-qualities-3d-card)
+     and their inner framed tiles while preserving all previous updates.
+   ========================================================================== */
+
+/* 1. Fard Prayer Schedule: 2/2/1 Ergonomic Card Grid */
+#home-dashboard-view #five-waqt-grid.five-waqt-grid.fard-waqt-list-ui {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  align-items: stretch !important;
+}
+
+/* Cards 1 to 4 (Fajr, Dhuhr, Asr, Maghrib): 2-per-row symmetrical vertical cards */
+#home-dashboard-view #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(-n+4) {
+  grid-column: span 1 !important;
+  padding: 12px 8px 10px !important;
+  gap: 7px !important;
+  border-radius: 16px !important;
+}
+
+#home-dashboard-view #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(-n+4) .fard-below-svg-info .waqt-time.fard-time-range-pill {
+  width: 92% !important;
+  min-width: 112px !important;
+  max-width: 100% !important;
+  padding: 4.5px 12px !important;
+  font-size: 0.77rem !important;
+}
+
+/* Card 5 (Isha): Full-width horizontal featured card on Row 3 (2/2/1 Order) */
+#home-dashboard-view #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(5) {
+  grid-column: 1 / -1 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 11px 16px !important;
+  gap: 14px !important;
+  border-radius: 16px !important;
+}
+
+#home-dashboard-view #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(5) .waqt-circle-logo.fard-squircle-icon.fard-medium-svg-wrap {
+  margin: 0 !important;
+  width: 44px !important;
+  height: 44px !important;
+  flex-shrink: 0 !important;
+}
+
+#home-dashboard-view #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(5) .fard-below-svg-info {
+  width: auto !important;
+  flex: 0 1 auto !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+#home-dashboard-view #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(5) .fard-below-svg-info .waqt-time.fard-time-range-pill {
+  width: auto !important;
+  min-width: 136px !important;
+  padding: 4.5px 16px !important;
+  font-size: 0.79rem !important;
+}
+
+@media (max-width: 360px) {
+  #home-dashboard-view #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(-n+4) .fard-below-svg-info .waqt-time.fard-time-range-pill {
+    min-width: 96px !important;
+    padding: 4px 8px !important;
+    font-size: 0.72rem !important;
+  }
+  #home-dashboard-view #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(5) {
+    padding: 10px 12px !important;
+    gap: 10px !important;
+  }
+  #home-dashboard-view #five-waqt-grid .waqt-pill-card.fard-waqt-row-item.fard-waqt-vertical-card:nth-child(5) .fard-below-svg-info .waqt-time.fard-time-range-pill {
+    min-width: 120px !important;
+    padding: 4px 12px !important;
+    font-size: 0.74rem !important;
+  }
+}
+
+/* 2. Standard White Surface for Last Two Bottom Homepage Sections
+      (#two-blessings-3d-card & #four-qualities-3d-card) */
+#home-dashboard-view #two-blessings-3d-card.s24-blessings-3d-card,
+#home-dashboard-view #four-qualities-3d-card.s24-qualities-3d-card {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(22, 163, 74, 0.34) !important;
+  box-shadow: 0 4px 14px rgba(15, 35, 25, 0.05), 0 1px 3px rgba(15, 35, 25, 0.03) !important;
+}
+
+#home-dashboard-view #two-blessings-3d-card .s24-blessings-3d-inner,
+#home-dashboard-view #four-qualities-3d-card .s24-qualities-3d-inner {
+  background: #ffffff !important;
+  border: 1px solid #eef2ef !important;
+  box-shadow: none !important;
+}
+
+#home-dashboard-view #two-blessings-3d-card .s24-blessings-ambient-glow,
+#home-dashboard-view #four-qualities-3d-card .s24-qualities-ambient-glow {
+  display: none !important;
+}
+
+#home-dashboard-view #two-blessings-3d-card .s24-blessing-3d-tile,
+#home-dashboard-view #four-qualities-3d-card .s24-quality-3d-tile,
+#home-dashboard-view #four-qualities-3d-card .s24-qualities-count-box {
+  background: #ffffff !important;
+  border: 1.25px solid #dce6e0 !important;
+  box-shadow: 0 3px 10px rgba(15, 35, 25, 0.05) !important;
+}
+
+#home-dashboard-view #two-blessings-3d-card .s24-blessing-tile-frame,
+#home-dashboard-view #four-qualities-3d-card .s24-quality-tile-frame {
+  background: #ffffff !important;
+  border: 1px solid #edf2ef !important;
+}
+
+#home-dashboard-view #two-blessings-3d-card .s24-blessings-narrator,
+#home-dashboard-view #four-qualities-3d-card .s24-qualities-narrator {
+  color: #47554e !important;
+}
+
+#home-dashboard-view #two-blessings-3d-card .s24-blessings-headline,
+#home-dashboard-view #two-blessings-3d-card .s24-blessings-subline,
+#home-dashboard-view #two-blessings-3d-card .s24-blessing-tile-label,
+#home-dashboard-view #two-blessings-3d-card .s24-blessings-source strong,
+#home-dashboard-view #four-qualities-3d-card .s24-qualities-statement,
+#home-dashboard-view #four-qualities-3d-card .s24-quality-tile-label,
+#home-dashboard-view #four-qualities-3d-card .s24-qualities-source strong {
+  color: #1e2923 !important;
+}
+
+#home-dashboard-view #two-blessings-3d-card .s24-blessings-source,
+#home-dashboard-view #four-qualities-3d-card .s24-qualities-source {
+  color: #47554e !important;
+}
+
+#home-dashboard-view #two-blessings-3d-card .s24-blessings-footer,
+#home-dashboard-view #four-qualities-3d-card .s24-qualities-footer {
+  border-top: 1px dashed rgba(22, 163, 74, 0.25) !important;
+}
 
