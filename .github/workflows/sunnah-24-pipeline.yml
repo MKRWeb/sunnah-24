@@ -447,6 +447,16 @@ jobs:
                           debugSymbolLevel 'FULL'
                       }
                   }
+                  sideload {
+                      initWith release
+                      debuggable false
+                      jniDebuggable false
+                      signingConfig signingConfigs.release
+                      minifyEnabled true
+                      shrinkResources true
+                      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                      matchingFallbacks = ['release']
+                  }
               }
           }
           GRADLE_EOF
@@ -515,16 +525,17 @@ jobs:
             sed -i '/<\/manifest>/i \    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.AD_ID" tools:node="remove" />' "$MANIFEST_FILE"
           fi
 
-          # 6F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/debug/AndroidManifest.xml for Sideload APK
-          DEBUG_MANIFEST_DIR="android/app/src/debug"
-          mkdir -p "$DEBUG_MANIFEST_DIR"
-          cat << 'EOF' > "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
+          # 6F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/sideload/AndroidManifest.xml for Non-Debuggable Sideload APK
+          rm -rf "android/app/src/debug"
+          SIDELOAD_MANIFEST_DIR="android/app/src/sideload"
+          mkdir -p "$SIDELOAD_MANIFEST_DIR"
+          cat << 'EOF' > "$SIDELOAD_MANIFEST_DIR/AndroidManifest.xml"
           <?xml version="1.0" encoding="utf-8"?>
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
               <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
           </manifest>
           EOF
-          sed -i 's/^          //' "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
+          sed -i 's/^          //' "$SIDELOAD_MANIFEST_DIR/AndroidManifest.xml"
 
           # 6G. Inject FileProvider XML for Scoped Storage
           XML_DIR="android/app/src/main/res/xml"
@@ -711,9 +722,9 @@ jobs:
           REL_JAVA_EOF
           sed -i 's/^          //' "$RELEASE_JAVA_DIR/MainActivity.java"
 
-          DEBUG_JAVA_DIR="android/app/src/debug/java/com/mkrweb/sunnah24"
-          mkdir -p "$DEBUG_JAVA_DIR"
-          cat << 'DBG_JAVA_EOF' > "$DEBUG_JAVA_DIR/MainActivity.java"
+          SIDELOAD_JAVA_DIR="android/app/src/sideload/java/com/mkrweb/sunnah24"
+          mkdir -p "$SIDELOAD_JAVA_DIR"
+          cat << 'DBG_JAVA_EOF' > "$SIDELOAD_JAVA_DIR/MainActivity.java"
           package com.mkrweb.sunnah24;
 
           import android.app.DownloadManager;
@@ -1184,8 +1195,8 @@ jobs:
               }
           }
           DBG_JAVA_EOF
-          sed -i 's/^          //' "$DEBUG_JAVA_DIR/MainActivity.java"
-          echo "✅ Isolated Play Store Safe Release MainActivity & Sideload Debug MainActivity!"
+          sed -i 's/^          //' "$SIDELOAD_JAVA_DIR/MainActivity.java"
+          echo "✅ Isolated Play Store Safe Release MainActivity & Non-Debuggable Sideload MainActivity!"
 
           # 6I. Inject Google Maven Central Mirror Init Script & Gradle HTTP Retry Properties
           # Permanently eliminates HTTP 429 Too Many Requests from repo.maven.apache.org on GitHub Actions runners
@@ -1252,11 +1263,11 @@ jobs:
           fi
           echo "✅ Configured Google Maven Central Mirror & HTTP 429 Auto-Retry in Gradle!"
 
-      - name: 7. Compile Sideload APK (assembleDebug) & Play Store Signed AAB (bundleRelease)
+      - name: 7. Compile Non-Debuggable Sideload Release APK (assembleSideload) & Play Store Signed AAB (bundleRelease)
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug bundleRelease \
+          ./gradlew assembleSideload bundleRelease \
             --init-script maven-mirror.init.gradle \
             --no-daemon \
             -Dorg.gradle.internal.http.connectionTimeout=120000 \
@@ -1265,7 +1276,7 @@ jobs:
             -Dorg.gradle.internal.repository.initial.backoff=3000 || \
           (echo "⏳ Transient network/Maven hiccup detected; waiting 12s and retrying with cached artifacts..." && \
            sleep 12 && \
-           ./gradlew assembleDebug bundleRelease \
+           ./gradlew assembleSideload bundleRelease \
              --init-script maven-mirror.init.gradle \
              --no-daemon \
              --max-workers=2 \
@@ -1282,14 +1293,19 @@ jobs:
           profile: pixel_6
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: |
-            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            adb install -r android/app/build/outputs/apk/sideload/app-sideload.apk
             adb shell am start -W -n com.mkrweb.sunnah24/.MainActivity
             sleep 3
             adb shell pidof com.mkrweb.sunnah24
 
       - name: 8. Sign Sideload APK & Verify Signed Play Store AAB
         run: |
-          UNSIGNED_APK="android/app/build/outputs/apk/debug/app-debug.apk"
+          UNSIGNED_APK=$(find android/app/build/outputs/apk/sideload -name "*.apk" | head -n 1)
+          if [ -z "$UNSIGNED_APK" ] || [ ! -f "$UNSIGNED_APK" ]; then
+            echo "❌ ERROR: Sideload Release APK was not generated!"
+            ls -laR android/app/build/outputs/apk || true
+            exit 1
+          fi
           SIGNED_APK="Sunnah-24-v4.3-Enterprise-Signed.apk"
 
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
@@ -1388,6 +1404,7 @@ jobs:
               sleep 4
             done
           fi
+
 
 
 
