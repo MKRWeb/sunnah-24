@@ -22,9 +22,6 @@ permissions:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
-# Unified workflow-level concurrency group:
-# Rapid multi-file edits (www/index.html, www/style.css, www/app.js, or future modules) cancel intermediate runs
-# so only the final combined state deploys to GitHub Pages and compiles into APK/AAB.
 concurrency:
   group: "sunnah24-atomic-pipeline-${{ github.ref }}"
   cancel-in-progress: true
@@ -60,14 +57,12 @@ jobs:
 
       - name: 4. Enforce Clean Root (Keep Web Assets Strictly Inside www/ Only) & Auto Cache-Busting
         run: |
-          # Ensure we are on the absolute latest commit of the branch after the stabilization buffer
           git fetch origin "${GITHUB_REF_NAME}"
           git reset --hard "origin/${GITHUB_REF_NAME}"
 
           mkdir -p www
           REPO_CLEANUP_NEEDED=0
 
-          # 4A. Remove any redundant workflow files besides sunnah-24-pipeline.yml
           if [ -d ".github/workflows" ]; then
             for wf in .github/workflows/*.yml .github/workflows/*.yaml; do
               if [ -f "$wf" ] && [ "$(basename "$wf")" != "sunnah-24-pipeline.yml" ]; then
@@ -78,7 +73,6 @@ jobs:
             done
           fi
 
-          # 4B. Remove legacy monolithic app.js if modular files exist, and keep active web assets strictly inside www/
           if [ -f "www/ui.js" ] && [ -f "www/storage.js" ] && [ -f "www/astronomy.js" ]; then
             for legacy_js in app.js www/app.js; do
               if [ -f "$legacy_js" ]; then
@@ -89,7 +83,6 @@ jobs:
             done
           fi
 
-          # Consolidate any stray root web assets into www/ and DELETE them from the main root directory
           WEB_ASSETS="index.html style.css sw.js manifest.json icon.svg privacy.html version.json"
           for extra in *.html *.css *.js *.svg *.png *.webp *.ico *.woff2; do
             if [ -f "$extra" ] && [ "$extra" != "package.json" ] && [ "$extra" != "package-lock.json" ] && [ "$extra" != "capacitor.config.json" ]; then
@@ -119,7 +112,6 @@ jobs:
             fi
           done
 
-          # Also remove any generated www/version.json from git tracking if present (generated at build time only)
           if git ls-files --error-unmatch www/version.json >/dev/null 2>&1; then
             git rm -f www/version.json || true
             REPO_CLEANUP_NEEDED=1
@@ -135,7 +127,6 @@ jobs:
 
           LATEST_SHA=$(git rev-parse --short=7 HEAD)
 
-          # 4C. Stamp Service Worker cache version & HTML asset query strings inside www/ (for artifact deployment only, not committed back)
           CACHE_VER="v4.3.${GITHUB_RUN_NUMBER}-${LATEST_SHA}"
           if [ -f "www/sw.js" ]; then
             sed -i "s/sunnah-24-cache-[a-zA-Z0-9._-]*/sunnah-24-cache-${CACHE_VER}/g" www/sw.js || true
@@ -143,12 +134,11 @@ jobs:
           fi
           if [ -f "www/index.html" ]; then
             sed -i "s|href=\"style.css[^\"]*\"|href=\"style.css?v=${CACHE_VER}\"|g" www/index.html || true
-            for mod in data/i18n-data.js data/habits-duas-data.js data/locations-data.js storage.js astronomy.js ui.js; do
+            for mod in data/i18n-data.js data/habits-duas-data.js data/locations-data.js storage.js astronomy.js ui.js s24_apk_ota_manager.js; do
               sed -i "s|src=\"${mod}[^\"]*\"|src=\"${mod}?v=${CACHE_VER}\"|g" www/index.html || true
             done
           fi
 
-          # Verify syntax of all modular JavaScript files in www/ and www/data/
           find www -name "*.js" -exec node --check {} +
           echo "✅ Clean www/-only Web Bundle verified with cache version: ${CACHE_VER}"
 
@@ -293,12 +283,10 @@ jobs:
 
       - name: 4. Verify Web Assets inside www/ for APK/AAB Bundle
         run: |
-          # Normalize nested www/www/ if present from artifact extraction
           if [ ! -f "www/index.html" ] && [ -d "www/www" ]; then
             cp -rf www/www/* www/ 2>/dev/null || true
             rm -rf www/www
           fi
-          # Fallback to git checkout of www/ if still missing
           if [ ! -f "www/index.html" ]; then
             git checkout HEAD -- www 2>/dev/null || true
           fi
@@ -330,9 +318,8 @@ jobs:
             exit 1
           fi
 
-          # Normalize asset URLs inside www/index.html for offline Android Capacitor WebView (strip ?v=... query strings that break offline SW/asset matching)
           sed -i -E 's|(href="style\.css)\?v=[^"]*"|\1"|g' www/index.html || true
-          for mod in data/i18n-data.js data/habits-duas-data.js data/locations-data.js storage.js astronomy.js ui.js; do
+          for mod in data/i18n-data.js data/habits-duas-data.js data/locations-data.js storage.js astronomy.js ui.js s24_apk_ota_manager.js; do
             sed -i -E "s|(src=\"${mod})\?v=[^\"]*\"|\1\"|g" www/index.html || true
           done
 
@@ -349,7 +336,6 @@ jobs:
               echo "❌ SECURITY ERROR: KEYSTORE_BASE64 is set, but KEYSTORE_PASSWORD, KEY_ALIAS, or KEY_PASSWORD is missing."
               exit 1
             fi
-            # Strip any accidental whitespace/newlines from pasted Base64 secret before decoding
             printf '%s' "$KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > "$KEYSTORE_FILE"
             if [ ! -s "$KEYSTORE_FILE" ]; then
               echo "❌ SECURITY ERROR: Decoded KEYSTORE_BASE64 is empty or invalid Base64."
@@ -359,18 +345,12 @@ jobs:
             K_ALIAS="$KEY_ALIAS"
             K_PASS="$KEY_PASSWORD"
             echo "✅ Decoded release keystore from encrypted GitHub Secrets."
-          elif [ -f "$PWD/signing/sunnah24-v4-clean.keystore" ]; then
-            cp -f "$PWD/signing/sunnah24-v4-clean.keystore" "$KEYSTORE_FILE"
-            KS_PASS="${KEYSTORE_PASSWORD:-sunnah24pass}"
-            K_ALIAS="${KEY_ALIAS:-sunnah24}"
-            K_PASS="${KEY_PASSWORD:-sunnah24pass}"
-            echo "✅ Using clean repository keystore signing/sunnah24-v4-clean.keystore."
           elif [ -f "sunnah24-release.keystore" ]; then
             cp -f "sunnah24-release.keystore" "$KEYSTORE_FILE"
             KS_PASS="${KEYSTORE_PASSWORD:-sunnah24pass}"
             K_ALIAS="${KEY_ALIAS:-sunnah24}"
             K_PASS="${KEY_PASSWORD:-sunnah24pass}"
-            echo "ℹ️ Using existing repository root sunnah24-release.keystore (tip: migrate to GitHub Secrets KEYSTORE_BASE64)."
+            echo "ℹ️ Using existing repository root sunnah24-release.keystore."
           elif [ -f "$KEYSTORE_FILE" ]; then
             KS_PASS="${KEYSTORE_PASSWORD:-sunnah24pass}"
             K_ALIAS="${KEY_ALIAS:-sunnah24}"
@@ -378,11 +358,9 @@ jobs:
             echo "ℹ️ Using existing signing/sunnah24-release.keystore."
           else
             echo "❌ SECURITY ERROR: No release keystore found in KEYSTORE_BASE64 secret or repository."
-            echo "💡 Add KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS, and KEY_PASSWORD in Repo Settings -> Secrets and variables -> Actions."
             exit 1
           fi
 
-          # Verify keystore integrity, alias, and store password before Gradle build starts
           keytool -list -keystore "$KEYSTORE_FILE" -alias "$K_ALIAS" -storepass "$KS_PASS" >/dev/null
           echo "✅ Verified release keystore integrity and alias '${K_ALIAS}'."
 
@@ -406,15 +384,12 @@ jobs:
           npx cap copy android
           npx cap sync android
 
-          # 6A. Enforce Google Play Console Target API 36 (Android 15) in variables.gradle
           VARS_GRADLE="android/variables.gradle"
           if [ -f "$VARS_GRADLE" ]; then
             sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 36/g' "$VARS_GRADLE"
             sed -i 's/targetSdkVersion = [0-9]*/targetSdkVersion = 36/g' "$VARS_GRADLE"
-            echo "✅ Enforced compileSdkVersion=35 and targetSdkVersion=35 in variables.gradle"
           fi
 
-          # 6B. Compute VERSION_CODE, inject Native Release Signing, R8 Mapping & Play Store Compliance into app/build.gradle
           VERSION_CODE=$((2100 + RUN_NUMBER))
           echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_ENV
 
@@ -458,10 +433,8 @@ jobs:
           GRADLE_EOF
               sed -i 's/^          //' "$APP_GRADLE"
             fi
-            echo "✅ Configured Play Store API 36, R8 Minification & Native Release Signing in $APP_GRADLE"
           fi
 
-          # 6C. Append Keep Rules for WebView JavascriptInterface & Capacitor Plugins to proguard-rules.pro
           PROGUARD_FILE="android/app/proguard-rules.pro"
           if ! grep -q "com.mkrweb.sunnah24" "$PROGUARD_FILE" 2>/dev/null; then
             cat << 'PROGUARD_EOF' >> "$PROGUARD_FILE"
@@ -476,7 +449,6 @@ jobs:
             sed -i 's/^          //' "$PROGUARD_FILE"
           fi
 
-          # 6D. Convert www/icon.svg into All Android Launcher Icons & Adaptive Mipmaps
           sudo apt-get update && sudo apt-get install -y librsvg2-bin imagemagick
           RES_DIR="android/app/src/main/res"
 
@@ -506,9 +478,7 @@ jobs:
           rm -f "$RES_DIR/drawable/ic_launcher_foreground.xml"
           rm -f "$RES_DIR/drawable-v24/ic_launcher_foreground.xml"
           rm -rf "$RES_DIR/mipmap-anydpi-v26"
-          echo "✅ Custom Sunnah 24 Launcher Icons & Splash Screens generated!"
 
-          # 6E. Strip Legacy Storage & Sideload Permissions from Merged Manifest for Play Store Compliance
           MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
           if [ -f "$MANIFEST_FILE" ]; then
             if ! grep -q "xmlns:tools" "$MANIFEST_FILE"; then
@@ -521,7 +491,6 @@ jobs:
             sed -i '/<\/manifest>/i \    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.AD_ID" tools:node="remove" />' "$MANIFEST_FILE"
           fi
 
-          # 6F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/debug/AndroidManifest.xml for Sideload APK
           DEBUG_MANIFEST_DIR="android/app/src/debug"
           mkdir -p "$DEBUG_MANIFEST_DIR"
           cat << 'EOF' > "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
@@ -532,7 +501,6 @@ jobs:
           EOF
           sed -i 's/^          //' "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
 
-          # 6G. Inject FileProvider XML for Scoped Storage
           XML_DIR="android/app/src/main/res/xml"
           mkdir -p "$XML_DIR"
           cat << 'EOF' > "$XML_DIR/file_paths.xml"
@@ -543,6 +511,7 @@ jobs:
               <external-cache-path name="external_cache_path" path="." />
               <cache-path name="cache_path" path="." />
               <files-path name="files_path" path="." />
+              <files-path name="apk_updates_internal" path="apk_updates/" />
           </paths>
           EOF
           sed -i 's/^          //' "$XML_DIR/file_paths.xml"
@@ -562,7 +531,6 @@ jobs:
             fi
           fi
 
-          # 6H. STRICT SOURCE-SET ISOLATION FOR GOOGLE PLAY POLICY COMPLIANCE:
           rm -f android/app/src/main/java/com/mkrweb/sunnah24/MainActivity.java
 
           RELEASE_JAVA_DIR="android/app/src/release/java/com/mkrweb/sunnah24"
@@ -642,7 +610,7 @@ jobs:
                           PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                           return pInfo.versionName;
                       } catch (Exception e) {
-                          return "4.2.0";
+                          return "4.3.0";
                       }
                   }
 
@@ -747,32 +715,48 @@ jobs:
           import androidx.activity.OnBackPressedCallback;
           import androidx.core.content.FileProvider;
           import com.getcapacitor.BridgeActivity;
+          import java.io.BufferedInputStream;
           import java.io.BufferedReader;
           import java.io.File;
           import java.io.FileInputStream;
           import java.io.FileOutputStream;
+          import java.io.InputStream;
           import java.io.InputStreamReader;
           import java.io.OutputStream;
+          import java.net.HttpURLConnection;
+          import java.net.URL;
           import java.nio.charset.StandardCharsets;
+          import java.security.MessageDigest;
+          import java.util.Locale;
+          import java.util.concurrent.ExecutorService;
+          import java.util.concurrent.Executors;
           import java.util.concurrent.atomic.AtomicBoolean;
+          import java.util.concurrent.atomic.AtomicLong;
 
           public class MainActivity extends BridgeActivity {
-              private long downloadId = -1;
-              private File targetApkFile = null;
-              private File pendingInstallFile = null;
-              private final AtomicBoolean installerLaunchedForCurrentDownload = new AtomicBoolean(false);
-              private final Handler progressHandler = new Handler(Looper.getMainLooper());
 
-              private final BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
+              private static final long MIN_VALID_APK_BYTES = 512L * 1024L;
+              private static final String VAULT_FILENAME = "sunnah24_enterprise_vault.json";
+
+              private final ExecutorService downloadExecutor = Executors.newSingleThreadExecutor();
+              private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+              private final AtomicLong activeDownloadId = new AtomicLong(-1L);
+              private final AtomicBoolean isDownloadInProgress = new AtomicBoolean(false);
+              private final AtomicBoolean installerLaunchedGuard = new AtomicBoolean(false);
+
+              private volatile File currentTargetApk = null;
+              private volatile File pendingResumeApk = null;
+              private volatile String pendingResumeSha256 = "";
+
+              private final BroadcastReceiver downloadCompleteReceiver = new BroadcastReceiver() {
                   @Override
                   public void onReceive(Context context, Intent intent) {
-                      long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-                      if (downloadId != -1 && downloadId == id) {
-                          progressHandler.removeCallbacksAndMessages(null);
-                          if (installerLaunchedForCurrentDownload.compareAndSet(false, true)) {
-                              notifyWebProgress(100, "✅ ডাউনলোড সম্পন্ন! ইনস্টলার চালু হচ্ছে...");
-                              launchApkInstallerGuarantee(targetApkFile, id);
-                          }
+                      if (intent == null) return;
+                      long completedId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L);
+                      long expectedId = activeDownloadId.get();
+                      if (expectedId != -1L && expectedId == completedId) {
+                          finalizeDownloadManagerCompletion(completedId, currentTargetApk, "");
                       }
                   }
               };
@@ -781,27 +765,21 @@ jobs:
               public void onCreate(Bundle savedInstanceState) {
                   super.onCreate(savedInstanceState);
 
-                  File updateDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-                  if (updateDir != null) {
-                      if (!updateDir.exists()) updateDir.mkdirs();
-                      targetApkFile = new File(updateDir, "Sunnah24-Update.apk");
-                  }
-
                   if (this.bridge != null && this.bridge.getWebView() != null) {
                       WebView webView = this.bridge.getWebView();
                       webView.setBackgroundColor(Color.parseColor("#F1F6F3"));
                       WebSettings ws = webView.getSettings();
                       ws.setDomStorageEnabled(true);
                       ws.setDatabaseEnabled(true);
-                      ws.setCacheMode(WebSettings.LOAD_NO_CACHE);
-                      webView.clearCache(true);
-                      webView.addJavascriptInterface(new WebAppDownloader(), "AndroidDownloader");
+                      ws.setCacheMode(WebSettings.LOAD_DEFAULT);
+                      webView.addJavascriptInterface(new SnapTubeStyleApkBridge(), "AndroidDownloader");
                   }
 
+                  IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
                   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                      registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
+                      registerReceiver(downloadCompleteReceiver, filter, Context.RECEIVER_EXPORTED);
                   } else {
-                      registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+                      registerReceiver(downloadCompleteReceiver, filter);
                   }
 
                   getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -824,44 +802,47 @@ jobs:
               }
 
               @Override
-              public void onResume() {
+              protected void onResume() {
                   super.onResume();
-                  if (pendingInstallFile != null && pendingInstallFile.exists()) {
-                      if (canInstallUnknownPackages()) {
-                          File fileToInstall = pendingInstallFile;
-                          pendingInstallFile = null;
-                          notifyWebProgress(100, "✅ অনুমতি পাওয়া গেছে! ইনস্টলার চালু হচ্ছে...");
-                          triggerDirectFileProviderInstaller(fileToInstall, -1);
-                      }
+                  File resumeCandidate = pendingResumeApk;
+                  if (resumeCandidate != null && resumeCandidate.exists() && canInstallUnknownPackages()) {
+                      pendingResumeApk = null;
+                      String expectedHash = pendingResumeSha256;
+                      pendingResumeSha256 = "";
+                      verifyAndLaunchInstaller(resumeCandidate, -1L, expectedHash);
                   }
               }
 
               @Override
-              public void onDestroy() {
+              protected void onDestroy() {
                   super.onDestroy();
-                  progressHandler.removeCallbacksAndMessages(null);
+                  mainHandler.removeCallbacksAndMessages(null);
+                  downloadExecutor.shutdownNow();
                   try {
-                      unregisterReceiver(onDownloadComplete);
-                  } catch (Exception ignored) {}
+                      unregisterReceiver(downloadCompleteReceiver);
+                  } catch (Exception ignored) {
+                  }
               }
 
-              private boolean hasInstallPermissionInManifest() {
+              private boolean hasInstallPermissionDeclared() {
                   try {
-                      PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_PERMISSIONS);
+                      PackageInfo info = getPackageManager()
+                          .getPackageInfo(getPackageName(), PackageManager.GET_PERMISSIONS);
                       if (info.requestedPermissions != null) {
-                          for (String p : info.requestedPermissions) {
-                              if ("android.permission.REQUEST_INSTALL_PACKAGES".equals(p)) {
+                          for (String perm : info.requestedPermissions) {
+                              if ("android.permission.REQUEST_INSTALL_PACKAGES".equals(perm)) {
                                   return true;
                               }
                           }
                       }
-                  } catch (Exception ignored) {}
+                  } catch (Exception ignored) {
+                  }
                   return false;
               }
 
               private boolean canInstallUnknownPackages() {
                   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                      if (!hasInstallPermissionInManifest()) {
+                      if (!hasInstallPermissionDeclared()) {
                           return true;
                       }
                       return getPackageManager().canRequestPackageInstalls();
@@ -869,106 +850,286 @@ jobs:
                   return true;
               }
 
-              private File getVersionedApkFile(String versionTag) {
-                  String safeTag = (versionTag == null || versionTag.isEmpty())
-                      ? "latest"
-                      : versionTag.replaceAll("[^a-zA-Z0-9._-]", "_");
-                  File updateDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-                  if (updateDir == null) {
-                      updateDir = getFilesDir();
+              private File getApkStorageDir() {
+                  File dir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                  if (dir == null) {
+                      dir = new File(getFilesDir(), "apk_updates");
                   }
-                  if (!updateDir.exists()) updateDir.mkdirs();
-                  return new File(updateDir, "Sunnah24-" + safeTag + ".apk");
+                  if (!dir.exists() && !dir.mkdirs()) {
+                      return getFilesDir();
+                  }
+                  return dir;
               }
 
-              private void notifyWebProgress(int pct, String message) {
-                  runOnUiThread(() -> {
+              private String sanitizeVersionTag(String versionTag) {
+                  if (versionTag == null || versionTag.trim().isEmpty()) {
+                      return "latest";
+                  }
+                  return versionTag.trim().replaceAll("[^a-zA-Z0-9._-]", "_");
+              }
+
+              private File getVersionedApkFile(String versionTag) {
+                  return new File(getApkStorageDir(), "Sunnah24-" + sanitizeVersionTag(versionTag) + ".apk");
+              }
+
+              private File getTempPartFile(File finalApkFile) {
+                  return new File(finalApkFile.getParentFile(), finalApkFile.getName() + ".part");
+              }
+
+              private String computeSha256Hex(File file) {
+                  if (file == null || !file.exists() || !file.isFile()) return "";
+                  try {
+                      MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                      byte[] buf = new byte[16384];
+                      try (InputStream fis = new BufferedInputStream(new FileInputStream(file))) {
+                          int read;
+                          while ((read = fis.read(buf)) != -1) {
+                              digest.update(buf, 0, read);
+                          }
+                      }
+                      byte[] hashBytes = digest.digest();
+                      StringBuilder hex = new StringBuilder(hashBytes.length * 2);
+                      for (byte b : hashBytes) {
+                          hex.append(String.format(Locale.US, "%02x", b));
+                      }
+                      return hex.toString();
+                  } catch (Exception e) {
+                      return "";
+                  }
+              }
+
+              private void emitProgressToWeb(int pct, String message) {
+                  mainHandler.post(() -> {
                       if (bridge != null && bridge.getWebView() != null) {
-                          String safeMsg = message.replace("'", "\\'");
-                          bridge.getWebView().evaluateJavascript(
-                              "if(window.onSunnahApkDownloadProgress) window.onSunnahApkDownloadProgress(" + pct + ", '" + safeMsg + "');",
-                              null
-                          );
+                          String safeMsg = (message == null ? "" : message)
+                              .replace("\\", "\\\\")
+                              .replace("'", "\\'")
+                              .replace("\n", " ");
+                          String js = "if(window.onSunnahApkDownloadProgress){window.onSunnahApkDownloadProgress("
+                              + pct + ",'" + safeMsg + "');}";
+                          bridge.getWebView().evaluateJavascript(js, null);
                       }
                   });
               }
 
-              private void launchApkInstallerGuarantee(File apkFile, long completedDownloadId) {
-                  runOnUiThread(() -> {
-                      File resolvedFile = (apkFile != null && apkFile.exists()) ? apkFile : targetApkFile;
+              private void verifyAndLaunchInstaller(File apkFile, long completedDownloadId, String expectedSha256) {
+                  if (!installerLaunchedGuard.compareAndSet(false, true)) {
+                      return;
+                  }
 
-                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasInstallPermissionInManifest()) {
-                          if (!getPackageManager().canRequestPackageInstalls()) {
-                              pendingInstallFile = resolvedFile;
-                              notifyWebProgress(100, "⚙️ আপডেট ইনস্টল করতে 'Allow from this source' অপশনটি চালু করুন...");
-                              Toast.makeText(
-                                  MainActivity.this,
-                                  "⚙️ অনুগ্রহ করে 'Allow from this source' চালু করে ব্যাক করুন — স্বয়ংক্রিয়ভাবে ইনস্টল শুরু হবে!",
-                                  Toast.LENGTH_LONG
-                              ).show();
-                              try {
-                                  Intent settingsIntent = new Intent(
-                                      Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                                      Uri.parse("package:" + getPackageName())
-                                  );
-                                  settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                  startActivity(settingsIntent);
-                                  return;
-                              } catch (Exception ignored) {}
+                  downloadExecutor.execute(() -> {
+                      boolean hasValidLocalFile = apkFile != null
+                          && apkFile.exists()
+                          && apkFile.isFile()
+                          && apkFile.length() >= MIN_VALID_APK_BYTES;
+
+                      if (hasValidLocalFile && expectedSha256 != null && !expectedSha256.trim().isEmpty()) {
+                          emitProgressToWeb(100, "🔐 SHA-256 যাচাই করা হচ্ছে...");
+                          String actualHash = computeSha256Hex(apkFile);
+                          if (!actualHash.equalsIgnoreCase(expectedSha256.trim())) {
+                              apkFile.delete();
+                              isDownloadInProgress.set(false);
+                              installerLaunchedGuard.set(false);
+                              emitProgressToWeb(-1, "⚠️ SHA-256 যাচাই ব্যর্থ! ফাইলটি মুছে ফেলা হয়েছে।");
+                              return;
                           }
                       }
 
-                      triggerDirectFileProviderInstaller(resolvedFile, completedDownloadId);
+                      mainHandler.post(() -> {
+                          isDownloadInProgress.set(false);
+
+                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                              && hasInstallPermissionDeclared()
+                              && !getPackageManager().canRequestPackageInstalls()) {
+                              pendingResumeApk = apkFile;
+                              pendingResumeSha256 = expectedSha256 == null ? "" : expectedSha256;
+                              installerLaunchedGuard.set(false);
+                              emitProgressToWeb(100, "⚙️ 'Allow from this source' চালু করে ফিরে আসুন...");
+                              Toast.makeText(
+                                  MainActivity.this,
+                                  "⚙️ অনুগ্রহ করে 'Allow from this source' চালু করুন",
+                                  Toast.LENGTH_LONG
+                              ).show();
+                              try {
+                                  Intent intent = new Intent(
+                                      Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                                      Uri.parse("package:" + getPackageName())
+                                  );
+                                  intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                  startActivity(intent);
+                                  return;
+                              } catch (Exception ignored) {
+                              }
+                          }
+
+                          launchPackageInstallerIntent(apkFile, completedDownloadId);
+                      });
                   });
               }
 
-              private void triggerDirectFileProviderInstaller(File apkFile, long completedDownloadId) {
-                  runOnUiThread(() -> {
-                      try {
-                          if (apkFile != null && apkFile.exists() && apkFile.length() > 1024 * 100) {
-                              Uri apkUri;
-                              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                  apkUri = FileProvider.getUriForFile(
-                                      MainActivity.this,
-                                      getPackageName() + ".fileprovider",
-                                      apkFile
-                                  );
-                              } else {
-                                  apkUri = Uri.fromFile(apkFile);
-                              }
+              private void launchPackageInstallerIntent(File apkFile, long completedDownloadId) {
+                  try {
+                      if (apkFile != null && apkFile.exists() && apkFile.length() >= MIN_VALID_APK_BYTES) {
+                          Uri contentUri = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                              ? FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", apkFile)
+                              : Uri.fromFile(apkFile);
+
+                          Intent installIntent = new Intent(Intent.ACTION_VIEW);
+                          installIntent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+                          installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+                          installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                          installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                          installIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                          startActivity(installIntent);
+                          emitProgressToWeb(100, "✅ ইনস্টলার চালু হয়েছে!");
+                          return;
+                      }
+                  } catch (Exception ignored) {
+                  }
+
+                  try {
+                      if (completedDownloadId != -1L) {
+                          DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                          Uri dmUri = dm != null ? dm.getUriForDownloadedFile(completedDownloadId) : null;
+                          if (dmUri != null) {
                               Intent installIntent = new Intent(Intent.ACTION_VIEW);
-                              installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+                              installIntent.setDataAndType(dmUri, "application/vnd.android.package-archive");
                               installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
                               installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                               installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                               installIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                               startActivity(installIntent);
+                              emitProgressToWeb(100, "✅ ইনস্টলার চালু হয়েছে!");
                               return;
                           }
-                      } catch (Exception ignored) {}
+                      }
+                  } catch (Exception e) {
+                      installerLaunchedGuard.set(false);
+                      emitProgressToWeb(-1, "⚠️ ইনস্টলার চালু করা যায়নি: " + e.getMessage());
+                  }
+              }
 
-                      try {
-                          if (completedDownloadId != -1) {
-                              DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                              Uri contentUri = dm.getUriForDownloadedFile(completedDownloadId);
-                              if (contentUri != null) {
-                                  Intent installIntent = new Intent(Intent.ACTION_VIEW);
-                                  installIntent.setDataAndType(contentUri, "application/vnd.android.package-archive");
-                                  installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
-                                  installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                  installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                  installIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                  startActivity(installIntent);
-                                  return;
-                              }
+              private void finalizeDownloadManagerCompletion(long dmId, File targetApk, String expectedSha256) {
+                  DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                  if (dm == null) return;
+
+                  DownloadManager.Query query = new DownloadManager.Query();
+                  query.setFilterById(dmId);
+                  try (Cursor cursor = dm.query(query)) {
+                      if (cursor != null && cursor.moveToFirst()) {
+                          int statusIdx = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
+                          int status = statusIdx >= 0 ? cursor.getInt(statusIdx) : DownloadManager.STATUS_FAILED;
+                          if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                              verifyAndLaunchInstaller(targetApk, dmId, expectedSha256);
+                          } else {
+                              isDownloadInProgress.set(false);
+                              installerLaunchedGuard.set(false);
+                              emitProgressToWeb(-1, "❌ APK ডাউনলোড সম্পন্ন হয়নি।");
                           }
-                      } catch (Exception e) {
-                          Toast.makeText(MainActivity.this, "⚠️ ইনস্টলার চালু করা যায়নি: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                      }
+                  } catch (Exception e) {
+                      isDownloadInProgress.set(false);
+                      installerLaunchedGuard.set(false);
+                      emitProgressToWeb(-1, "❌ ডাউনলোড যাচাই ত্রুটি: " + e.getMessage());
+                  }
+              }
+
+              private void startAtomicApkDownload(final String urlString, final String versionTag, final String expectedSha256) {
+                  if (urlString == null || !urlString.trim().toLowerCase(Locale.US).startsWith("https://")) {
+                      emitProgressToWeb(-1, "❌ শুধুমাত্র সুরক্ষিত HTTPS লিংক অনুমোদিত।");
+                      return;
+                  }
+
+                  if (!isDownloadInProgress.compareAndSet(false, true)) {
+                      return;
+                  }
+
+                  installerLaunchedGuard.set(false);
+                  final File finalApk = getVersionedApkFile(versionTag);
+                  final File partFile = getTempPartFile(finalApk);
+                  currentTargetApk = finalApk;
+
+                  if (finalApk.exists() && finalApk.length() >= MIN_VALID_APK_BYTES) {
+                      if (expectedSha256 == null || expectedSha256.trim().isEmpty()
+                          || computeSha256Hex(finalApk).equalsIgnoreCase(expectedSha256.trim())) {
+                          emitProgressToWeb(100, "✅ যাচাইকৃত APK ফাইল প্রস্তুত আছে!");
+                          verifyAndLaunchInstaller(finalApk, -1L, expectedSha256);
+                          return;
+                      }
+                  }
+
+                  downloadExecutor.execute(() -> {
+                      HttpURLConnection conn = null;
+                      try {
+                          if (partFile.exists()) {
+                              partFile.delete();
+                          }
+
+                          URL url = new URL(urlString.trim());
+                          conn = (HttpURLConnection) url.openConnection();
+                          conn.setInstanceFollowRedirects(true);
+                          conn.setConnectTimeout(20000);
+                          conn.setReadTimeout(30000);
+                          conn.setRequestProperty("User-Agent", "Sunnah24-OTA-Client/4.3");
+
+                          int code = conn.getResponseCode();
+                          if (code < 200 || code >= 300) {
+                              throw new IllegalStateException("HTTP " + code);
+                          }
+
+                          long totalBytes = conn.getContentLengthLong();
+                          long downloadedBytes = 0L;
+                          int lastReportedPct = -1;
+
+                          byte[] buffer = new byte[32768];
+                          try (InputStream in = new BufferedInputStream(conn.getInputStream());
+                               FileOutputStream out = new FileOutputStream(partFile, false)) {
+                              int bytesRead;
+                              while ((bytesRead = in.read(buffer)) != -1) {
+                                  out.write(buffer, 0, bytesRead);
+                                  downloadedBytes += bytesRead;
+                                  if (totalBytes > 0) {
+                                      int pct = (int) ((downloadedBytes * 100L) / totalBytes);
+                                      if (pct > lastReportedPct && pct < 100) {
+                                          lastReportedPct = pct;
+                                          emitProgressToWeb(pct, "⬇️ ডাউনলোড হচ্ছে (" + pct + "%)...");
+                                      }
+                                  }
+                              }
+                              out.flush();
+                          }
+
+                          if (!partFile.exists() || partFile.length() < MIN_VALID_APK_BYTES) {
+                              throw new IllegalStateException("Downloaded APK size invalid");
+                          }
+
+                          if (finalApk.exists()) {
+                              finalApk.delete();
+                          }
+                          if (!partFile.renameTo(finalApk)) {
+                              throw new IllegalStateException("Atomic rename to APK failed");
+                          }
+
+                          emitProgressToWeb(100, "✅ ডাউনলোড সম্পন্ন!");
+                          verifyAndLaunchInstaller(finalApk, -1L, expectedSha256);
+
+                      } catch (Exception ex) {
+                          if (partFile.exists()) {
+                              partFile.delete();
+                          }
+                          isDownloadInProgress.set(false);
+                          installerLaunchedGuard.set(false);
+                          emitProgressToWeb(-1, "❌ ডাউনলোড ব্যর্থ: " + ex.getMessage());
+                      } finally {
+                          if (conn != null) {
+                              conn.disconnect();
+                          }
                       }
                   });
               }
 
-              public class WebAppDownloader {
+              public class SnapTubeStyleApkBridge {
+
                   @JavascriptInterface
                   public boolean isSelfUpdateSupported() {
                       return true;
@@ -982,22 +1143,35 @@ jobs:
                   @JavascriptInterface
                   public void openUnknownSourceSettings() {
                       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                          try {
-                              Intent settingsIntent = new Intent(
-                                  Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                                  Uri.parse("package:" + getPackageName())
-                              );
-                              settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                              startActivity(settingsIntent);
-                          } catch (Exception ignored) {}
+                          mainHandler.post(() -> {
+                              try {
+                                  Intent intent = new Intent(
+                                      Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                                      Uri.parse("package:" + getPackageName())
+                                  );
+                                  intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                  startActivity(intent);
+                              } catch (Exception ignored) {
+                              }
+                          });
+                      }
+                  }
+
+                  @JavascriptInterface
+                  public String getInstalledVersionName() {
+                      try {
+                          PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+                          return info.versionName != null ? info.versionName : "4.3.0";
+                      } catch (Exception e) {
+                          return "4.3.0";
                       }
                   }
 
                   @JavascriptInterface
                   public boolean isVersionApkCached(String versionTag) {
                       File f = getVersionedApkFile(versionTag);
-                      if (f.exists() && f.length() > 1024 * 500) {
-                          targetApkFile = f;
+                      if (f.exists() && f.length() >= MIN_VALID_APK_BYTES) {
+                          currentTargetApk = f;
                           return true;
                       }
                       return false;
@@ -1006,131 +1180,41 @@ jobs:
                   @JavascriptInterface
                   public void installCachedVersionApk(String versionTag) {
                       File f = getVersionedApkFile(versionTag);
-                      if (f.exists() && f.length() > 1024 * 500) {
-                          targetApkFile = f;
-                          launchApkInstallerGuarantee(f, downloadId);
-                      } else if (targetApkFile != null && targetApkFile.exists()) {
-                          launchApkInstallerGuarantee(targetApkFile, downloadId);
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public boolean isLocalApkCached() {
-                      return targetApkFile != null && targetApkFile.exists() && targetApkFile.length() > 1024 * 500;
-                  }
-
-                  @JavascriptInterface
-                  public void installLocalApk() {
-                      if (targetApkFile != null && targetApkFile.exists()) {
-                          launchApkInstallerGuarantee(targetApkFile, downloadId);
+                      if (f.exists() && f.length() >= MIN_VALID_APK_BYTES) {
+                          currentTargetApk = f;
+                          verifyAndLaunchInstaller(f, -1L, "");
+                      } else if (currentTargetApk != null && currentTargetApk.exists()) {
+                          verifyAndLaunchInstaller(currentTargetApk, -1L, "");
                       }
                   }
 
                   @JavascriptInterface
                   public void downloadAndAutoInstallVersionApk(String urlString, String versionTag) {
-                      targetApkFile = getVersionedApkFile(versionTag);
-                      if (targetApkFile.exists() && targetApkFile.length() > 1024 * 500) {
-                          notifyWebProgress(100, "✅ ফাইল ফোনে প্রস্তুত আছে! ইনস্টলার চালু হচ্ছে...");
-                          launchApkInstallerGuarantee(targetApkFile, downloadId);
-                          return;
-                      }
-                      startNativeApkDownload(urlString, versionTag);
+                      startAtomicApkDownload(urlString, versionTag, "");
+                  }
+
+                  @JavascriptInterface
+                  public void downloadAndAutoInstallVersionApk(String urlString, String versionTag, String expectedSha256) {
+                      startAtomicApkDownload(urlString, versionTag, expectedSha256);
                   }
 
                   @JavascriptInterface
                   public void downloadAndInstallApk(String urlString) {
-                      startNativeApkDownload(urlString, "latest");
-                  }
-
-                  private void startNativeApkDownload(String urlString, String versionTag) {
-                      try {
-                          String safeTag = (versionTag == null || versionTag.isEmpty())
-                              ? "latest"
-                              : versionTag.replaceAll("[^a-zA-Z0-9._-]", "_");
-                          String fileName = "Sunnah24-" + safeTag + ".apk";
-                          targetApkFile = getVersionedApkFile(versionTag);
-                          if (targetApkFile.exists()) {
-                              targetApkFile.delete();
-                          }
-                          installerLaunchedForCurrentDownload.set(false);
-
-                          runOnUiThread(() -> Toast.makeText(MainActivity.this, "⬇️ আপডেট ডাউনলোড শুরু হয়েছে...", Toast.LENGTH_SHORT).show());
-
-                          DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlString));
-                          request.setTitle("Sunnah 24 Update (" + safeTag + ")");
-                          request.setDescription("Downloading official update package...");
-                          request.setMimeType("application/vnd.android.package-archive");
-                          request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                          request.setDestinationInExternalFilesDir(MainActivity.this, Environment.DIRECTORY_DOWNLOADS, fileName);
-
-                          DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                          downloadId = dm.enqueue(request);
-
-                          progressHandler.removeCallbacksAndMessages(null);
-                          progressHandler.post(new Runnable() {
-                              @Override
-                              public void run() {
-                                  DownloadManager.Query q = new DownloadManager.Query();
-                                  q.setFilterById(downloadId);
-                                  try (Cursor c = dm.query(q)) {
-                                      if (c != null && c.moveToFirst()) {
-                                          int statusIdx = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
-                                          int bytesIdx = c.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
-                                          int totalIdx = c.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
-                                          int status = statusIdx >= 0 ? c.getInt(statusIdx) : -1;
-
-                                          if (bytesIdx >= 0 && totalIdx >= 0) {
-                                              long downloaded = c.getLong(bytesIdx);
-                                              long total = c.getLong(totalIdx);
-                                              if (total > 0) {
-                                                  int pct = (int) ((downloaded * 100L) / total);
-                                                  if (pct < 100) {
-                                                      notifyWebProgress(pct, "⬇️ ডাউনলোড হচ্ছে (" + pct + "%)...");
-                                                  }
-                                              }
-                                          }
-
-                                          if (status == DownloadManager.STATUS_SUCCESSFUL) {
-                                              progressHandler.removeCallbacksAndMessages(null);
-                                              if (installerLaunchedForCurrentDownload.compareAndSet(false, true)) {
-                                                  notifyWebProgress(100, "✅ ডাউনলোড সম্পন্ন! ইনস্টলার স্ক্রিন চালু হচ্ছে...");
-                                                  launchApkInstallerGuarantee(targetApkFile, downloadId);
-                                              }
-                                              return;
-                                          } else if (status == DownloadManager.STATUS_FAILED) {
-                                              progressHandler.removeCallbacksAndMessages(null);
-                                              notifyWebProgress(-1, "❌ ডাউনলোড ব্যর্থ হয়েছে। পুনরায় চেষ্টা করুন।");
-                                              return;
-                                          }
-                                      }
-                                  } catch (Exception ignored) {}
-                                  progressHandler.postDelayed(this, 350);
-                              }
-                          });
-                      } catch (Exception e) {
-                          runOnUiThread(() -> Toast.makeText(MainActivity.this, "Download Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
-                      }
-                  }
-
-                  @JavascriptInterface
-                  public String getInstalledVersionName() {
-                      try {
-                          PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                          return pInfo.versionName;
-                      } catch (Exception e) {
-                          return "4.2.0";
-                      }
+                      startAtomicApkDownload(urlString, "latest", "");
                   }
 
                   @JavascriptInterface
                   public boolean autoSaveInternalVault(String jsonPayload) {
-                      try {
-                          File vaultFile = new File(getFilesDir(), "sunnah24_enterprise_vault.json");
-                          try (FileOutputStream fos = new FileOutputStream(vaultFile, false)) {
-                              fos.write(jsonPayload.getBytes(StandardCharsets.UTF_8));
-                              fos.flush();
+                      if (jsonPayload == null) return false;
+                      File vaultFile = new File(getFilesDir(), VAULT_FILENAME);
+                      File tmpFile = new File(getFilesDir(), VAULT_FILENAME + ".tmp");
+                      try (FileOutputStream fos = new FileOutputStream(tmpFile, false)) {
+                          fos.write(jsonPayload.getBytes(StandardCharsets.UTF_8));
+                          fos.flush();
+                          if (vaultFile.exists()) {
+                              vaultFile.delete();
                           }
-                          return true;
+                          return tmpFile.renameTo(vaultFile);
                       } catch (Exception e) {
                           return false;
                       }
@@ -1138,30 +1222,30 @@ jobs:
 
                   @JavascriptInterface
                   public String autoLoadInternalVault() {
-                      try {
-                          File vaultFile = new File(getFilesDir(), "sunnah24_enterprise_vault.json");
-                          if (!vaultFile.exists()) return "";
-                          StringBuilder sb = new StringBuilder();
-                          try (BufferedReader reader = new BufferedReader(
-                              new InputStreamReader(new FileInputStream(vaultFile), StandardCharsets.UTF_8))) {
-                              String line;
-                              while ((line = reader.readLine()) != null) {
-                                  sb.append(line);
-                              }
+                      File vaultFile = new File(getFilesDir(), VAULT_FILENAME);
+                      if (!vaultFile.exists()) return "";
+                      StringBuilder sb = new StringBuilder();
+                      try (BufferedReader reader = new BufferedReader(
+                          new InputStreamReader(new FileInputStream(vaultFile), StandardCharsets.UTF_8))) {
+                          String line;
+                          while ((line = reader.readLine()) != null) {
+                              sb.append(line);
                           }
-                          return sb.toString();
                       } catch (Exception e) {
                           return "";
                       }
+                      return sb.toString();
                   }
 
                   @JavascriptInterface
                   public String saveJsonToDownloads(String fileName, String jsonContent) {
                       try {
-                          String safeFileName = fileName.replaceAll("[^a-zA-Z0-9._-]", "_");
+                          String safeName = fileName == null
+                              ? "sunnah24-backup.json"
+                              : fileName.replaceAll("[^a-zA-Z0-9._-]", "_");
                           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                               ContentValues values = new ContentValues();
-                              values.put(MediaStore.Downloads.DISPLAY_NAME, safeFileName);
+                              values.put(MediaStore.Downloads.DISPLAY_NAME, safeName);
                               values.put(MediaStore.Downloads.MIME_TYPE, "application/json");
                               values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
                               Uri uri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
@@ -1172,13 +1256,12 @@ jobs:
                                           os.flush();
                                       }
                                   }
-                                  return "Downloads/" + safeFileName;
+                                  return "Downloads/" + safeName;
                               }
                           }
-                          File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                          if (!dir.exists()) dir.mkdirs();
-                          File outFile = new File(dir, safeFileName);
-                          try (FileOutputStream fos = new FileOutputStream(outFile)) {
+                          File outDir = getApkStorageDir();
+                          File outFile = new File(outDir, safeName);
+                          try (FileOutputStream fos = new FileOutputStream(outFile, false)) {
                               fos.write(jsonContent.getBytes(StandardCharsets.UTF_8));
                               fos.flush();
                           }
@@ -1191,13 +1274,9 @@ jobs:
           }
           DBG_JAVA_EOF
           sed -i 's/^          //' "$DEBUG_JAVA_DIR/MainActivity.java"
-          echo "✅ Isolated Play Store Safe Release MainActivity & Sideload Debug MainActivity!"
 
-          # 6I. Inject Google Maven Central Mirror Init Script & Gradle HTTP Retry Properties
-          # Permanently eliminates HTTP 429 Too Many Requests from repo.maven.apache.org on GitHub Actions runners
           mkdir -p "$HOME/.gradle/init.d"
           cat << 'INIT_GRADLE_EOF' > "$HOME/.gradle/init.d/00-google-maven-mirror.init.gradle"
-          // Global Gradle Init Script: Route all Maven Central requests through Google's high-availability mirror first
           def GOOGLE_MAVEN_CENTRAL = "https://maven-central.storage-download.googleapis.com/maven2/"
           def MAVEN_CENTRAL_PRIMARY = "https://repo1.maven.org/maven2/"
 
@@ -1256,7 +1335,6 @@ jobs:
           PROPS_EOF
             sed -i 's/^          //' "$GRADLE_PROPS"
           fi
-          echo "✅ Configured Google Maven Central Mirror & HTTP 429 Auto-Retry in Gradle!"
 
       - name: 7. Compile Sideload APK (assembleDebug) & Play Store Signed AAB (bundleRelease)
         working-directory: ./android
@@ -1326,6 +1404,8 @@ jobs:
                 ./Sunnah-24-v4.3-PlayStore-Signed.aab "$K_ALIAS"
             fi
             jarsigner -verify -verbose -certs ./Sunnah-24-v4.3-PlayStore-Signed.aab
+            sha256sum "$SIGNED_APK" ./Sunnah-24-v4.3-PlayStore-Signed.aab > SHA256SUMS.txt
+            cat SHA256SUMS.txt
             echo "✅ Play Store Signed AAB verified: Sunnah-24-v4.3-PlayStore-Signed.aab"
           else
             echo "❌ ERROR: Play Store AAB was not generated!"
@@ -1339,6 +1419,7 @@ jobs:
           path: |
             Sunnah-24-v4.3-Enterprise-Signed.apk
             Sunnah-24-v4.3-PlayStore-Signed.aab
+            SHA256SUMS.txt
 
       - name: 10. Publish Atomic GitHub Release with APK & Play Store AAB (Fault-Tolerant 403-Safe)
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
@@ -1354,25 +1435,23 @@ jobs:
           cat << 'EOF' > /tmp/release_notes.md
           ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Play Store Ready `.aab` & Signed Android `.apk` (v${VERSION_NAME})
           - **Google Play Store Ready `.aab` (`Sunnah-24-v4.3-PlayStore-Signed.aab`):** Compiled with `targetSdk 36` / `compileSdk 36`, R8 code shrinking + deobfuscation mapping, zero self-updater bytecode, and zero legacy storage permissions.
-          - **Sideload Auto-Updating `.apk` (`Sunnah-24-v4.3-Enterprise-Signed.apk`):** Full in-app update support via Android's system DownloadManager for direct website users.
+          - **Sideload Auto-Updating `.apk` (`Sunnah-24-v4.3-Enterprise-Signed.apk`):** Full in-app SnapTube-style atomic `.part` download, SHA-256 verification & one-tap package installer launch.
           - **Triple-Redundant Auto-Vault:** Preserves all user habit records across LocalStorage, IndexedDB, and Native Android Vault.
           EOF
           sed -i 's/^          //' /tmp/release_notes.md
           sed -i "s/\${VERSION_NAME}/${VERSION_NAME}/g" /tmp/release_notes.md
 
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab --clobber || true
+            gh release upload "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab SHA256SUMS.txt --clobber || true
             echo "✅ Updated existing GitHub Release $TAG"
           else
-            if gh release create "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab --title "$TITLE" --notes-file /tmp/release_notes.md --target "${GITHUB_SHA}"; then
+            if gh release create "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab SHA256SUMS.txt --title "$TITLE" --notes-file /tmp/release_notes.md --target "${GITHUB_SHA}"; then
               echo "✅ Published GitHub Release $TAG successfully!"
             else
               echo "ℹ️ Notice: Default GITHUB_TOKEN has read-only Release permissions (403). Your Signed APK & Play Store AAB are already safely uploaded in Step 9 Build Artifacts (Sunnah-24-Enterprise-Release-Bundle)!"
-              echo "💡 To also enable automatic public Releases page publishing, go to Repo Settings -> Actions -> General -> Workflow permissions -> select 'Read and write permissions' and click Save."
             fi
           fi
 
-          # Gradual Multi-Repository Release Distribution (if mirror repositories are configured)
           SYNC_PAT="${MULTI_REPO_PAT:-$GH_TOKEN}"
           RAW_REPOS="${TARGET_REPOSITORIES_INPUT} ${TARGET_REPOSITORIES_VARS}"
           if [ -f "sync-repos.txt" ]; then
@@ -1387,15 +1466,11 @@ jobs:
               fi
               echo "📦 Gradually publishing APK + AAB release $TAG to mirror repository: $TARGET_REPO ..."
               if GH_TOKEN="$SYNC_PAT" gh release view "$TAG" --repo "$TARGET_REPO" >/dev/null 2>&1; then
-                GH_TOKEN="$SYNC_PAT" gh release upload "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab --repo "$TARGET_REPO" --clobber || true
+                GH_TOKEN="$SYNC_PAT" gh release upload "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab SHA256SUMS.txt --repo "$TARGET_REPO" --clobber || true
               else
-                GH_TOKEN="$SYNC_PAT" gh release create "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab --repo "$TARGET_REPO" --title "$TITLE" --notes-file /tmp/release_notes.md || true
+                GH_TOKEN="$SYNC_PAT" gh release create "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab SHA256SUMS.txt --repo "$TARGET_REPO" --title "$TITLE" --notes-file /tmp/release_notes.md || true
               fi
               sleep 4
             done
           fi
-
-
-
-
 
