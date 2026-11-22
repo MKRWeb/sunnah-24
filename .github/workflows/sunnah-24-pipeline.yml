@@ -397,6 +397,29 @@ jobs:
           if [ ! -d "android" ]; then
             npx cap add android
           fi
+
+          # Configure Capacitor SplashScreen & WebView backgroundColor to #e8f5ee (prevents white screen on APK entrance)
+          node -e '
+            const fs = require("fs");
+            const cfgPath = "capacitor.config.json";
+            let cfg = {};
+            if (fs.existsSync(cfgPath)) {
+              try { cfg = JSON.parse(fs.readFileSync(cfgPath, "utf8")); } catch {}
+            }
+            cfg.backgroundColor = "#e8f5ee";
+            cfg.android = Object.assign({}, cfg.android, { backgroundColor: "#e8f5ee" });
+            cfg.plugins = cfg.plugins || {};
+            cfg.plugins.SplashScreen = Object.assign({}, cfg.plugins.SplashScreen, {
+              launchShowDuration: 500,
+              launchAutoHide: true,
+              backgroundColor: "#e8f5ee",
+              androidSplashResourceName: "splash",
+              androidScaleType: "CENTER_CROP",
+              showSpinner: false
+            });
+            fs.writeFileSync(cfgPath, JSON.stringify(cfg, null, 2));
+          '
+
           npx cap copy android
           npx cap sync android
 
@@ -491,10 +514,27 @@ jobs:
           done
 
           rsvg-convert -w 512 -h 512 www/icon.svg -o /tmp/s24_logo_512.png
-          convert -size 1080x1920 xc:"#F1F6F3" /tmp/s24_logo_512.png -gravity center -composite /tmp/s24_splash_screen.png
+          convert -size 1080x1920 xc:"#e8f5ee" /tmp/s24_logo_512.png -gravity center -composite /tmp/s24_splash_screen.png
           for existing_splash in $(find "$RES_DIR" -name "splash.png"); do
             cp -f /tmp/s24_splash_screen.png "$existing_splash"
           done
+
+          VALUES_DIR="$RES_DIR/values"
+          mkdir -p "$VALUES_DIR"
+          cat << 'COLORS_EOF' > "$VALUES_DIR/s24_boot_colors.xml"
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <color name="s24_boot_bg">#e8f5ee</color>
+          </resources>
+          COLORS_EOF
+          sed -i 's/^          //' "$VALUES_DIR/s24_boot_colors.xml"
+
+          if [ -f "$VALUES_DIR/styles.xml" ]; then
+            if ! grep -q "android:windowBackground" "$VALUES_DIR/styles.xml"; then
+              sed -i 's|<style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">|<style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">\n        <item name="android:windowBackground">@color/s24_boot_bg</item>|g' "$VALUES_DIR/styles.xml" || true
+              sed -i 's|<style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">|<style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">\n        <item name="android:windowBackground">@color/s24_boot_bg</item>|g' "$VALUES_DIR/styles.xml" || true
+            fi
+          fi
 
           rm -f "$RES_DIR/drawable/ic_launcher_background.xml"
           rm -f "$RES_DIR/drawable/ic_launcher_foreground.xml"
@@ -588,11 +628,12 @@ jobs:
           public class MainActivity extends BridgeActivity {
               @Override
               public void onCreate(Bundle savedInstanceState) {
+                  getWindow().getDecorView().setBackgroundColor(Color.parseColor("#e8f5ee"));
                   super.onCreate(savedInstanceState);
 
                   if (this.bridge != null && this.bridge.getWebView() != null) {
                       WebView webView = this.bridge.getWebView();
-                      webView.setBackgroundColor(Color.parseColor("#F1F6F3"));
+                      webView.setBackgroundColor(Color.parseColor("#e8f5ee"));
                       WebSettings ws = webView.getSettings();
                       ws.setDomStorageEnabled(true);
                       ws.setDatabaseEnabled(true);
@@ -773,6 +814,7 @@ jobs:
 
               @Override
               public void onCreate(Bundle savedInstanceState) {
+                  getWindow().getDecorView().setBackgroundColor(Color.parseColor("#e8f5ee"));
                   super.onCreate(savedInstanceState);
 
                   File updateDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
@@ -783,7 +825,7 @@ jobs:
 
                   if (this.bridge != null && this.bridge.getWebView() != null) {
                       WebView webView = this.bridge.getWebView();
-                      webView.setBackgroundColor(Color.parseColor("#F1F6F3"));
+                      webView.setBackgroundColor(Color.parseColor("#e8f5ee"));
                       WebSettings ws = webView.getSettings();
                       ws.setDomStorageEnabled(true);
                       ws.setDatabaseEnabled(true);
@@ -1388,6 +1430,7 @@ jobs:
               sleep 4
             done
           fi
+
 
 
 
