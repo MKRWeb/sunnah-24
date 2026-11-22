@@ -1,3 +1,4 @@
+
 const CACHE_NAME = "sunnah-24-cache-v4.3-modular";
 const ASSETS = [
   "./",
@@ -98,7 +99,4 @@ self.addEventListener("fetch", (e) => {
     })
   );
 });
-
-
-
 
