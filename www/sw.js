@@ -9,6 +9,7 @@ const ASSETS = [
   "./storage.js",
   "./astronomy.js",
   "./ui.js",
+  "./s24_apk_ota_manager.js",
   "./icon.svg",
   "./manifest.json",
   "./privacy.html"
@@ -73,7 +74,4 @@ self.addEventListener("fetch", (e) => {
     })
   );
 });
-
-
-
 
