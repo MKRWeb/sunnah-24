@@ -2702,6 +2702,27 @@ function isSideloadSelfUpdateEnabled() {
   return false;
 }
 
+function parseSemverTuple(tag) {
+  const cleaned = String(tag || "").replace(/^v/i, "").trim();
+  return cleaned.split(".").map((part) => {
+    const num = parseInt(part.replace(/[^0-9]/g, ""), 10);
+    return Number.isFinite(num) ? num : 0;
+  });
+}
+
+function isRemoteVersionNewer(remoteTag, installedTag) {
+  const r = parseSemverTuple(remoteTag);
+  const i = parseSemverTuple(installedTag);
+  const maxLen = Math.max(r.length, i.length);
+  for (let idx = 0; idx < maxLen; idx++) {
+    const rv = r[idx] || 0;
+    const iv = i[idx] || 0;
+    if (rv > iv) return true;
+    if (rv < iv) return false;
+  }
+  return false;
+}
+
 function getInstalledAppVersionTag() {
   try {
     if (
@@ -2712,7 +2733,7 @@ function getInstalledAppVersionTag() {
       if (nativeVer) return nativeVer.startsWith("v") ? nativeVer : `v${nativeVer}`;
     }
   } catch {}
-  return "v4.2.0";
+  return "v4.3.0";
 }
 
 function renderInstalledVersionBadge() {
@@ -2742,7 +2763,7 @@ function initInAppUpdateChecker(manualTrigger = false) {
       if (!release || !release.tag_name) return;
       const latestTag = release.tag_name.trim();
 
-      if (latestTag !== installedTag) {
+      if (isRemoteVersionNewer(latestTag, installedTag)) {
         const apkAsset = (release.assets || []).find(
           (a) => a.name && a.name.toLowerCase().endsWith(".apk")
         );
@@ -2792,11 +2813,11 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
 
   const subText = isAlreadyOnDevice
     ? appState.locale === "bn"
-      ? "আপডেট ফাইলটি আপনার ফোনে প্রস্তুত আছে। সরাসরি ইনস্টল করুন।"
-      : "Update APK is already saved on your phone. Tap to install."
+      ? "আপডেট ফাইলটি আপনার ফোনে প্রস্তুত আছে। সরাসরি ইনস্টল করুন (সার্টিফিকেট ভিন্ন হলে পুরনো অ্যাপ আনইনস্টল করে নতুনটি ইনস্টল করুন)।"
+      : "Update APK is saved on your phone. Tap to install (if signature differs, uninstall old build first)."
     : appState.locale === "bn"
-    ? "ডাউনলোড শেষ হওয়ার সাথে সাথেই স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হবে।"
-    : "Automatically triggers the package installer right after download finishes.";
+    ? "ডাউনলোড শেষ হওয়ার সাথে সাথেই সিস্টেম প্যাকেজ ইনস্টলার চালু হবে।"
+    : "Launches the Android system package installer automatically once downloaded.";
 
   const btnText = isAlreadyOnDevice
     ? appState.locale === "bn"
@@ -2942,8 +2963,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Single international-standard entrance time range: 1600ms hold + 220ms fade (hard ceiling 2200ms)
-  const ENTRANCE_HOLD_MS = 1600;
-  const ENTRANCE_MAX_CEILING_MS = 2200;
+  const ENTRANCE_HOLD_MS = 950;
+  const ENTRANCE_MAX_CEILING_MS = 1600;
   let entranceCompleted = false;
 
   function revealHomepageSafely() {
@@ -6003,6 +6024,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
