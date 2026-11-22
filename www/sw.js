@@ -1,5 +1,4 @@
-
-const CACHE_NAME = "sunnah-24-cache-v7-v4.3-modular";
+const CACHE_NAME = "sunnah-24-cache-v4.3-modular";
 const ASSETS = [
   "./",
   "./index.html",
@@ -15,25 +14,7 @@ const ASSETS = [
   "./privacy.html"
 ];
 
-function isCapacitorNativeOrigin(urlStr) {
-  try {
-    const u = new URL(urlStr);
-    return (
-      u.protocol === "capacitor:" ||
-      u.protocol === "file:" ||
-      u.hostname === "localhost" ||
-      u.hostname === "127.0.0.1"
-    );
-  } catch (_) {
-    return false;
-  }
-}
-
 self.addEventListener("install", (e) => {
-  if (isCapacitorNativeOrigin(self.location.href)) {
-    self.skipWaiting();
-    return;
-  }
   e.waitUntil(
     caches.open(CACHE_NAME).then(async (cache) => {
       for (const asset of ASSETS) {
@@ -49,12 +30,6 @@ self.addEventListener("install", (e) => {
 });
 
 self.addEventListener("activate", (e) => {
-  if (isCapacitorNativeOrigin(self.location.href)) {
-    e.waitUntil(
-      caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k)))).then(() => self.registration.unregister())
-    );
-    return;
-  }
   e.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : null)))
@@ -65,7 +40,6 @@ self.addEventListener("activate", (e) => {
 
 self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
-  if (isCapacitorNativeOrigin(self.location.href)) return;
 
   if (e.request.mode === "navigate" || (e.request.headers.get("accept") || "").includes("text/html")) {
     e.respondWith(
@@ -99,4 +73,7 @@ self.addEventListener("fetch", (e) => {
     })
   );
 });
+
+
+
 
