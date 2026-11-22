@@ -408,8 +408,8 @@ jobs:
             echo "✅ Enforced compileSdkVersion=35 and targetSdkVersion=35 in variables.gradle"
           fi
 
-          # 6B. Compute VERSION_CODE, inject Native Release Signing, R8 Mapping & Play Store Compliance into app/build.gradle
-          VERSION_CODE=$((2100 + RUN_NUMBER))
+          # 6B. Compute Monotonic VERSION_CODE (strictly > any prior build), inject Native Release Signing, R8 Mapping & Sideload Release BuildType into app/build.gradle
+          VERSION_CODE=$((10000 + RUN_NUMBER))
           echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_ENV
 
           APP_GRADLE="android/app/build.gradle"
@@ -420,11 +420,13 @@ jobs:
             if ! grep -q "GOOGLE PLAY STORE PRODUCTION AAB CONFIGURATION" "$APP_GRADLE"; then
               cat << 'GRADLE_EOF' >> "$APP_GRADLE"
 
-          // --- GOOGLE PLAY STORE PRODUCTION AAB CONFIGURATION ---
+          // --- GOOGLE PLAY STORE PRODUCTION AAB & NON-DEBUGGABLE SIDELOAD RELEASE CONFIGURATION ---
           android {
               compileSdk 36
               defaultConfig {
                   targetSdk 36
+                  versionCode Integer.parseInt(System.getenv("VERSION_CODE") ?: "10001")
+                  versionName System.getenv("VERSION_NAME") ?: "4.3.1"
               }
               signingConfigs {
                   release {
@@ -447,12 +449,22 @@ jobs:
                           debugSymbolLevel 'FULL'
                       }
                   }
+                  sideload {
+                      initWith release
+                      debuggable false
+                      jniDebuggable false
+                      signingConfig signingConfigs.release
+                      minifyEnabled true
+                      shrinkResources true
+                      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                      matchingFallbacks = ['release']
+                  }
               }
           }
           GRADLE_EOF
               sed -i 's/^          //' "$APP_GRADLE"
             fi
-            echo "✅ Configured Play Store API 36, R8 Minification & Native Release Signing in $APP_GRADLE"
+            echo "✅ Configured Play Store API 36, Monotonic versionCode=${VERSION_CODE}, R8 Minification & Native Release Signing in $APP_GRADLE"
           fi
 
           # 6C. Append Keep Rules for WebView JavascriptInterface & Capacitor Plugins to proguard-rules.pro
@@ -515,16 +527,17 @@ jobs:
             sed -i '/<\/manifest>/i \    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.AD_ID" tools:node="remove" />' "$MANIFEST_FILE"
           fi
 
-          # 6F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/debug/AndroidManifest.xml for Sideload APK
-          DEBUG_MANIFEST_DIR="android/app/src/debug"
-          mkdir -p "$DEBUG_MANIFEST_DIR"
-          cat << 'EOF' > "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
+          # 6F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/sideload/AndroidManifest.xml for Non-Debuggable Sideload Release APK
+          rm -rf "android/app/src/debug"
+          SIDELOAD_MANIFEST_DIR="android/app/src/sideload"
+          mkdir -p "$SIDELOAD_MANIFEST_DIR"
+          cat << 'EOF' > "$SIDELOAD_MANIFEST_DIR/AndroidManifest.xml"
           <?xml version="1.0" encoding="utf-8"?>
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
               <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
           </manifest>
           EOF
-          sed -i 's/^          //' "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
+          sed -i 's/^          //' "$SIDELOAD_MANIFEST_DIR/AndroidManifest.xml"
 
           # 6G. Inject FileProvider XML for Scoped Storage
           XML_DIR="android/app/src/main/res/xml"
@@ -711,9 +724,9 @@ jobs:
           REL_JAVA_EOF
           sed -i 's/^          //' "$RELEASE_JAVA_DIR/MainActivity.java"
 
-          DEBUG_JAVA_DIR="android/app/src/debug/java/com/mkrweb/sunnah24"
-          mkdir -p "$DEBUG_JAVA_DIR"
-          cat << 'DBG_JAVA_EOF' > "$DEBUG_JAVA_DIR/MainActivity.java"
+          SIDELOAD_JAVA_DIR="android/app/src/sideload/java/com/mkrweb/sunnah24"
+          mkdir -p "$SIDELOAD_JAVA_DIR"
+          cat << 'DBG_JAVA_EOF' > "$SIDELOAD_JAVA_DIR/MainActivity.java"
           package com.mkrweb.sunnah24;
 
           import android.app.DownloadManager;
@@ -1184,8 +1197,8 @@ jobs:
               }
           }
           DBG_JAVA_EOF
-          sed -i 's/^          //' "$DEBUG_JAVA_DIR/MainActivity.java"
-          echo "✅ Isolated Play Store Safe Release MainActivity & Sideload Debug MainActivity!"
+          sed -i 's/^          //' "$SIDELOAD_JAVA_DIR/MainActivity.java"
+          echo "✅ Isolated Play Store Safe Release MainActivity & Non-Debuggable Sideload MainActivity!"
 
           # 6I. Inject Google Maven Central Mirror Init Script & Gradle HTTP Retry Properties
           # Permanently eliminates HTTP 429 Too Many Requests from repo.maven.apache.org on GitHub Actions runners
@@ -1252,11 +1265,11 @@ jobs:
           fi
           echo "✅ Configured Google Maven Central Mirror & HTTP 429 Auto-Retry in Gradle!"
 
-      - name: 7. Compile Sideload APK (assembleDebug) & Play Store Signed AAB (bundleRelease)
+      - name: 7. Compile Non-Debuggable Sideload Release APK (assembleSideload) & Play Store Signed AAB (bundleRelease)
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug bundleRelease \
+          ./gradlew assembleSideload bundleRelease \
             --init-script maven-mirror.init.gradle \
             --no-daemon \
             -Dorg.gradle.internal.http.connectionTimeout=120000 \
@@ -1265,7 +1278,7 @@ jobs:
             -Dorg.gradle.internal.repository.initial.backoff=3000 || \
           (echo "⏳ Transient network/Maven hiccup detected; waiting 12s and retrying with cached artifacts..." && \
            sleep 12 && \
-           ./gradlew assembleDebug bundleRelease \
+           ./gradlew assembleSideload bundleRelease \
              --init-script maven-mirror.init.gradle \
              --no-daemon \
              --max-workers=2 \
@@ -1282,31 +1295,40 @@ jobs:
           profile: pixel_6
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: |
-            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            adb install -r android/app/build/outputs/apk/sideload/app-sideload.apk
             adb shell am start -W -n com.mkrweb.sunnah24/.MainActivity
             sleep 3
             adb shell pidof com.mkrweb.sunnah24
 
-      - name: 8. Sign Sideload APK & Verify Signed Play Store AAB
+      - name: 8. Verify & Seal Non-Debuggable Sideload APK & Play Store Signed AAB
         run: |
-          UNSIGNED_APK="android/app/build/outputs/apk/debug/app-debug.apk"
+          BUILT_APK=$(find android/app/build/outputs/apk/sideload -name "*.apk" | head -n 1)
+          if [ -z "$BUILT_APK" ] || [ ! -f "$BUILT_APK" ]; then
+            echo "❌ ERROR: Sideload Release APK was not generated!"
+            ls -laR android/app/build/outputs/apk || true
+            exit 1
+          fi
           SIGNED_APK="Sunnah-24-v4.3-Enterprise-Signed.apk"
-
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
-          $BUILD_TOOLS_DIR/zipalign -f -v -p 4 "$UNSIGNED_APK" app-release-aligned.apk
 
-          $BUILD_TOOLS_DIR/apksigner sign \
-            --ks "$KEYSTORE_FILE" \
-            --ks-key-alias "$K_ALIAS" \
-            --ks-pass "pass:$KS_PASS" \
-            --key-pass "pass:$K_PASS" \
-            --v1-signing-enabled true \
-            --v2-signing-enabled true \
-            --v3-signing-enabled true \
-            --out "$SIGNED_APK" \
-            app-release-aligned.apk
+          if $BUILD_TOOLS_DIR/apksigner verify "$BUILT_APK" >/dev/null 2>&1; then
+            cp -f "$BUILT_APK" "$SIGNED_APK"
+          else
+            $BUILD_TOOLS_DIR/zipalign -f -v -p 4 "$BUILT_APK" app-sideload-aligned.apk
+            $BUILD_TOOLS_DIR/apksigner sign \
+              --ks "$KEYSTORE_FILE" \
+              --ks-key-alias "$K_ALIAS" \
+              --ks-pass "pass:$KS_PASS" \
+              --key-pass "pass:$K_PASS" \
+              --v1-signing-enabled true \
+              --v2-signing-enabled true \
+              --v3-signing-enabled true \
+              --out "$SIGNED_APK" \
+              app-sideload-aligned.apk
+          fi
 
           $BUILD_TOOLS_DIR/apksigner verify --verbose "$SIGNED_APK"
+          $BUILD_TOOLS_DIR/aapt2 dump badging "$SIGNED_APK" | head -n 5 || true
 
           AAB_PATH=$(find android/app/build/outputs/bundle/release -name "*.aab" | head -n 1)
           if [ -n "$AAB_PATH" ]; then
@@ -1388,6 +1410,7 @@ jobs:
               sleep 4
             done
           fi
+
 
 
 
