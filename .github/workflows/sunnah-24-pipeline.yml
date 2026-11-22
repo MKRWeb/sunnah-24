@@ -567,18 +567,14 @@ jobs:
             sed -i '/<\/manifest>/i \    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.AD_ID" tools:node="remove" />' "$MANIFEST_FILE"
           fi
 
-          # 6F. Inject REQUEST_INSTALL_PACKAGES + INTERNET + Legacy Write (API<=28) into src/sideload/AndroidManifest.xml
+          # 6F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/sideload/AndroidManifest.xml for Non-Debuggable Sideload Release APK
           rm -rf "android/app/src/debug"
           SIDELOAD_MANIFEST_DIR="android/app/src/sideload"
           mkdir -p "$SIDELOAD_MANIFEST_DIR"
           cat << 'EOF' > "$SIDELOAD_MANIFEST_DIR/AndroidManifest.xml"
           <?xml version="1.0" encoding="utf-8"?>
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools">
-              <uses-permission android:name="android.permission.INTERNET" />
-              <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
               <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-              <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" tools:node="replace" />
           </manifest>
           EOF
           sed -i 's/^          //' "$SIDELOAD_MANIFEST_DIR/AndroidManifest.xml"
@@ -766,16 +762,22 @@ jobs:
           cat << 'DBG_JAVA_EOF' > "$SIDELOAD_JAVA_DIR/MainActivity.java"
           package com.mkrweb.sunnah24;
 
-          import android.content.ClipData;
+          import android.app.DownloadManager;
+          import android.content.BroadcastReceiver;
           import android.content.ContentValues;
+          import android.content.Context;
           import android.content.Intent;
+          import android.content.IntentFilter;
           import android.content.pm.PackageInfo;
           import android.content.pm.PackageManager;
+          import android.database.Cursor;
           import android.graphics.Color;
           import android.net.Uri;
           import android.os.Build;
           import android.os.Bundle;
           import android.os.Environment;
+          import android.os.Handler;
+          import android.os.Looper;
           import android.provider.MediaStore;
           import android.provider.Settings;
           import android.webkit.JavascriptInterface;
@@ -783,57 +785,86 @@ jobs:
           import android.webkit.WebView;
           import android.widget.Toast;
           import androidx.activity.OnBackPressedCallback;
-          import androidx.activity.result.ActivityResultLauncher;
-          import androidx.activity.result.contract.ActivityResultContracts;
           import androidx.core.content.FileProvider;
           import com.getcapacitor.BridgeActivity;
-          import java.io.BufferedInputStream;
           import java.io.BufferedReader;
           import java.io.File;
           import java.io.FileInputStream;
           import java.io.FileOutputStream;
-          import java.io.InputStream;
           import java.io.InputStreamReader;
           import java.io.OutputStream;
-          import java.net.HttpURLConnection;
-          import java.net.URL;
           import java.nio.charset.StandardCharsets;
-          import java.util.concurrent.ExecutorService;
-          import java.util.concurrent.Executors;
-          import java.util.concurrent.atomic.AtomicBoolean;
 
           public class MainActivity extends BridgeActivity {
-              private File targetApkFile = null;
+              private long activeDownloadId = -1L;
               private File pendingInstallFile = null;
-              private final AtomicBoolean isDownloading = new AtomicBoolean(false);
-              private final ExecutorService downloadExecutor = Executors.newSingleThreadExecutor();
-              private ActivityResultLauncher<Intent> unknownSourcesLauncher;
+              private boolean receiverRegistered = false;
+              private final Handler progressHandler = new Handler(Looper.getMainLooper());
+
+              private final Runnable progressPollRunnable = new Runnable() {
+                  @Override
+                  public void run() {
+                      if (activeDownloadId == -1L) return;
+                      DownloadManager dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                      if (dm == null) return;
+                      DownloadManager.Query q = new DownloadManager.Query();
+                      q.setFilterById(activeDownloadId);
+                      try (Cursor c = dm.query(q)) {
+                          if (c != null && c.moveToFirst()) {
+                              int status = c.getInt(c.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS));
+                              long bytesSoFar = c.getLong(c.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                              long bytesTotal = c.getLong(c.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                              if (status == DownloadManager.STATUS_RUNNING || status == DownloadManager.STATUS_PENDING) {
+                                  if (bytesTotal > 0) {
+                                      int pct = (int) ((bytesSoFar * 100L) / bytesTotal);
+                                      notifyWebProgress(pct, "⬇️ ডাউনলোড হচ্ছে (" + pct + "%)...");
+                                  }
+                                  progressHandler.postDelayed(this, 350);
+                              } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                                  notifyWebProgress(100, "✅ ডাউনলোড সম্পন্ন! ইনস্টলার চালু হচ্ছে...");
+                              } else if (status == DownloadManager.STATUS_FAILED) {
+                                  activeDownloadId = -1L;
+                                  notifyWebProgress(-1, "❌ ডাউনলোড ব্যর্থ হয়েছে। পুনরায় চেষ্টা করুন।");
+                              }
+                          }
+                      } catch (Exception ignored) {}
+                  }
+              };
+
+              private final BroadcastReceiver downloadCompleteReceiver = new BroadcastReceiver() {
+                  @Override
+                  public void onReceive(Context context, Intent intent) {
+                      long completedId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L);
+                      if (completedId == -1L || completedId != activeDownloadId) return;
+                      progressHandler.removeCallbacks(progressPollRunnable);
+
+                      DownloadManager dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                      if (dm == null) return;
+                      DownloadManager.Query query = new DownloadManager.Query();
+                      query.setFilterById(completedId);
+                      try (Cursor cursor = dm.query(query)) {
+                          if (cursor != null && cursor.moveToFirst()) {
+                              int statusIdx = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
+                              int status = statusIdx >= 0 ? cursor.getInt(statusIdx) : DownloadManager.STATUS_FAILED;
+                              if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                                  Uri localUri = dm.getUriForDownloadedFile(completedId);
+                                  File apkFile = resolveDownloadedApkFile(cursor, localUri);
+                                  notifyWebProgress(100, "✅ ডাউনলোড সম্পন্ন! ইনস্টলার স্ক্রিন চালু হচ্ছে...");
+                                  installApkGuarantee(apkFile, localUri);
+                              } else {
+                                  notifyWebProgress(-1, "❌ ডাউনলোড ব্যর্থ হয়েছে। পুনরায় চেষ্টা করুন।");
+                              }
+                          }
+                      } catch (Exception e) {
+                          Toast.makeText(MainActivity.this, "⚠️ ইনস্টল ত্রুটি: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                      }
+                  }
+              };
 
               @Override
               public void onCreate(Bundle savedInstanceState) {
                   getWindow().getDecorView().setBackgroundColor(Color.parseColor("#e8f5ee"));
                   super.onCreate(savedInstanceState);
-
-                  // SnapTube-style ActivityResult callback: the exact instant user toggles "Allow from this source"
-                  // and returns from Settings, automatically fire the Android PackageInstaller!
-                  unknownSourcesLauncher = registerForActivityResult(
-                      new ActivityResultContracts.StartActivityForResult(),
-                      result -> {
-                          if (pendingInstallFile != null && isValidApkFile(pendingInstallFile)) {
-                              if (canInstallUnknownPackages()) {
-                                  File fileToInstall = pendingInstallFile;
-                                  pendingInstallFile = null;
-                                  notifyWebProgress(100, "✅ অনুমতি গৃহীত! ইনস্টলার চালু হচ্ছে...");
-                                  triggerSnapTubePackageInstaller(fileToInstall);
-                              } else {
-                                  notifyWebProgress(100, "⚠️ ইনস্টল সম্পন্ন করতে 'Allow from this source' চালু করুন।");
-                              }
-                          }
-                      }
-                  );
-
-                  // Start every app launch clean so the user always gets a fresh download prompt next time
-                  purgeStaleUpdateApks();
 
                   if (this.bridge != null && this.bridge.getWebView() != null) {
                       WebView webView = this.bridge.getWebView();
@@ -845,6 +876,14 @@ jobs:
                       webView.clearCache(true);
                       webView.addJavascriptInterface(new WebAppDownloader(), "AndroidDownloader");
                   }
+
+                  IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                      registerReceiver(downloadCompleteReceiver, filter, Context.RECEIVER_EXPORTED);
+                  } else {
+                      registerReceiver(downloadCompleteReceiver, filter);
+                  }
+                  receiverRegistered = true;
 
                   getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
                       @Override
@@ -868,18 +907,24 @@ jobs:
               @Override
               public void onResume() {
                   super.onResume();
-                  if (pendingInstallFile != null && isValidApkFile(pendingInstallFile) && canInstallUnknownPackages()) {
+                  if (pendingInstallFile != null && pendingInstallFile.exists() && canInstallUnknownPackages()) {
                       File fileToInstall = pendingInstallFile;
                       pendingInstallFile = null;
                       notifyWebProgress(100, "✅ অনুমতি গৃহীত! ইনস্টলার চালু হচ্ছে...");
-                      triggerSnapTubePackageInstaller(fileToInstall);
+                      triggerPackageInstaller(fileToInstall, null);
                   }
               }
 
               @Override
               public void onDestroy() {
                   super.onDestroy();
-                  downloadExecutor.shutdownNow();
+                  progressHandler.removeCallbacks(progressPollRunnable);
+                  if (receiverRegistered) {
+                      try {
+                          unregisterReceiver(downloadCompleteReceiver);
+                      } catch (Exception ignored) {}
+                      receiverRegistered = false;
+                  }
               }
 
               private boolean hasInstallPermissionInManifest() {
@@ -906,54 +951,50 @@ jobs:
                   return true;
               }
 
-              private File getInternalUpdateDirectory() {
-                  File dir = new File(getCacheDir(), "apk_updates");
+              private File getApkStorageDirectory() {
+                  File dir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                  if (dir == null) dir = new File(getCacheDir(), "apk_updates");
                   if (!dir.exists()) dir.mkdirs();
                   return dir;
-              }
-
-              private boolean isValidApkFile(File f) {
-                  if (f == null || !f.exists() || !f.isFile() || f.length() < 1024 * 200) {
-                      return false;
-                  }
-                  try {
-                      PackageInfo pkg = getPackageManager().getPackageArchiveInfo(f.getAbsolutePath(), 0);
-                      return pkg != null && pkg.packageName != null;
-                  } catch (Exception e) {
-                      return false;
-                  }
-              }
-
-              private void purgeStaleUpdateApks() {
-                  try {
-                      File cacheDir = new File(getCacheDir(), "apk_updates");
-                      if (cacheDir.exists() && cacheDir.isDirectory()) {
-                          File[] files = cacheDir.listFiles();
-                          if (files != null) {
-                              for (File f : files) {
-                                  if (f.getName().endsWith(".apk")) f.delete();
-                              }
-                          }
-                      }
-                      File extDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-                      if (extDir != null && extDir.exists() && extDir.isDirectory()) {
-                          File[] files = extDir.listFiles();
-                          if (files != null) {
-                              for (File f : files) {
-                                  if (f.getName().endsWith(".apk")) f.delete();
-                              }
-                          }
-                      }
-                  } catch (Exception ignored) {}
-                  targetApkFile = null;
-                  pendingInstallFile = null;
               }
 
               private File getVersionedApkFile(String versionTag) {
                   String safeTag = (versionTag == null || versionTag.isEmpty())
                       ? "latest"
                       : versionTag.replaceAll("[^a-zA-Z0-9._-]", "_");
-                  return new File(getInternalUpdateDirectory(), "Sunnah24-" + safeTag + ".apk");
+                  return new File(getApkStorageDirectory(), "Sunnah24-" + safeTag + ".apk");
+              }
+
+              private File resolveDownloadedApkFile(Cursor cursor, Uri localUri) {
+                  try {
+                      int uriIdx = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI);
+                      if (uriIdx >= 0) {
+                          String uriStr = cursor.getString(uriIdx);
+                          if (uriStr != null && uriStr.startsWith("file://")) {
+                              File f = new File(Uri.parse(uriStr).getPath());
+                              if (f.exists()) return f;
+                          }
+                      }
+                  } catch (Exception ignored) {}
+
+                  if (localUri != null && "file".equalsIgnoreCase(localUri.getScheme())) {
+                      File f = new File(localUri.getPath());
+                      if (f.exists()) return f;
+                  }
+
+                  File[] files = getApkStorageDirectory().listFiles();
+                  if (files != null) {
+                      File newest = null;
+                      for (File f : files) {
+                          if (f.getName().endsWith(".apk")) {
+                              if (newest == null || f.lastModified() > newest.lastModified()) {
+                                  newest = f;
+                              }
+                          }
+                      }
+                      if (newest != null) return newest;
+                  }
+                  return null;
               }
 
               private void notifyWebProgress(int pct, String message) {
@@ -968,36 +1009,15 @@ jobs:
                   });
               }
 
-              private long getApkLongVersionCode(PackageInfo pkgInfo) {
-                  if (pkgInfo == null) return -1L;
-                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                      return pkgInfo.getLongVersionCode();
-                  }
-                  return (long) pkgInfo.versionCode;
-              }
-
-              // SnapTube-style installer orchestrator:
-              // 1. Verifies the real APK file exists and parses cleanly via PackageManager
-              // 2. If Unknown Sources permission is off, opens Settings via ActivityResultLauncher and auto-installs upon return
-              // 3. If permission is granted, immediately launches system PackageInstaller via FileProvider URI
-              private void launchApkInstallerGuarantee(File apkFile) {
+              private void installApkGuarantee(File apkFile, Uri fallbackUri) {
                   runOnUiThread(() -> {
-                      File resolvedFile = isValidApkFile(apkFile) ? apkFile : targetApkFile;
-                      if (!isValidApkFile(resolvedFile)) {
-                          notifyWebProgress(-1, "❌ ডাউনলোড করা APK ফাইলটি পাওয়া যায়নি। পুনরায় ডাউনলোড করুন।");
-                          Toast.makeText(
-                              MainActivity.this,
-                              "⚠️ APK ফাইলটি পাওয়া যায়নি, অনুগ্রহ করে পুনরায় ডাউনলোড করুন।",
-                              Toast.LENGTH_LONG
-                          ).show();
-                          return;
+                      if (apkFile != null && apkFile.exists()) {
+                          pendingInstallFile = apkFile;
                       }
-                      targetApkFile = resolvedFile;
 
                       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasInstallPermissionInManifest()) {
                           if (!getPackageManager().canRequestPackageInstalls()) {
-                              pendingInstallFile = resolvedFile;
-                              notifyWebProgress(100, "⚙️ 'Allow from this source' চালু করুন — ব্যাক করলেই স্বয়ংক্রিয়ভাবে ইনস্টল হবে!");
+                              notifyWebProgress(100, "⚙️ 'Allow from this source' চালু করে অ্যাপে ফিরুন — স্বয়ংক্রিয়ভাবে ইনস্টল হবে!");
                               Toast.makeText(
                                   MainActivity.this,
                                   "⚙️ অনুগ্রহ করে 'Allow from this source' চালু করুন — সাথে সাথেই ইনস্টল শুরু হবে!",
@@ -1008,91 +1028,47 @@ jobs:
                                       Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
                                       Uri.parse("package:" + getPackageName())
                                   );
-                                  if (unknownSourcesLauncher != null) {
-                                      unknownSourcesLauncher.launch(settingsIntent);
-                                  } else {
-                                      startActivity(settingsIntent);
-                                  }
+                                  startActivity(settingsIntent);
                                   return;
                               } catch (Exception ignored) {}
                           }
                       }
 
-                      triggerSnapTubePackageInstaller(resolvedFile);
+                      triggerPackageInstaller(apkFile, fallbackUri);
                   });
               }
 
-              private void triggerSnapTubePackageInstaller(File apkFile) {
+              private void triggerPackageInstaller(File apkFile, Uri fallbackUri) {
                   runOnUiThread(() -> {
                       try {
-                          if (!isValidApkFile(apkFile)) {
-                              notifyWebProgress(-1, "❌ APK ফাইলটি অকার্যকর। পুনরায় ডাউনলোড করুন।");
-                              return;
+                          Uri apkUri = null;
+                          if (apkFile != null && apkFile.exists()) {
+                              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                  apkUri = FileProvider.getUriForFile(
+                                      MainActivity.this,
+                                      getPackageName() + ".fileprovider",
+                                      apkFile
+                                  );
+                              } else {
+                                  apkUri = Uri.fromFile(apkFile);
+                              }
+                          } else if (fallbackUri != null) {
+                              apkUri = fallbackUri;
                           }
 
-                          boolean isDowngrade = false;
-                          try {
-                              PackageManager pm = getPackageManager();
-                              PackageInfo installedInfo = pm.getPackageInfo(getPackageName(), 0);
-                              PackageInfo archiveInfo = pm.getPackageArchiveInfo(apkFile.getAbsolutePath(), 0);
-                              long installedCode = getApkLongVersionCode(installedInfo);
-                              long archiveCode = getApkLongVersionCode(archiveInfo);
-                              if (installedCode > 0 && archiveCode > 0 && archiveCode < installedCode) {
-                                  isDowngrade = true;
-                              }
-                          } catch (Exception ignored) {}
-
-                          if (isDowngrade) {
-                              // Copy APK to public Downloads so user can install lower version after uninstalling higher build
-                              try {
-                                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                                      ContentValues values = new ContentValues();
-                                      values.put(MediaStore.Downloads.DISPLAY_NAME, apkFile.getName());
-                                      values.put(MediaStore.Downloads.MIME_TYPE, "application/vnd.android.package-archive");
-                                      values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
-                                      Uri dlUri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
-                                      if (dlUri != null) {
-                                          try (InputStream in = new FileInputStream(apkFile);
-                                               OutputStream os = getContentResolver().openOutputStream(dlUri)) {
-                                              if (os != null) {
-                                                  byte[] buf = new byte[16384];
-                                                  int len;
-                                                  while ((len = in.read(buf)) > 0) os.write(buf, 0, len);
-                                                  os.flush();
-                                              }
-                                          }
-                                      }
-                                  }
-                              } catch (Exception ignored) {}
-
+                          if (apkUri == null) {
                               Toast.makeText(
                                   MainActivity.this,
-                                  "ℹ️ পুরনো ভার্সন ইনস্টল করতে বর্তমান অ্যাপটি আনইনস্টল করে Downloads ফোল্ডার থেকে " + apkFile.getName() + " ইনস্টল করুন।",
+                                  "⚠️ ডাউনলোড করা APK ফাইলটি পাওয়া যায়নি, অনুগ্রহ করে পুনরায় ডাউনলোড করুন।",
                                   Toast.LENGTH_LONG
                               ).show();
-                              Intent uninstallIntent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + getPackageName()));
-                              uninstallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                              startActivity(uninstallIntent);
                               return;
-                          }
-
-                          Uri apkUri;
-                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                              apkUri = FileProvider.getUriForFile(
-                                  MainActivity.this,
-                                  getPackageName() + ".fileprovider",
-                                  apkFile
-                              );
-                          } else {
-                              apkUri = Uri.fromFile(apkFile);
                           }
 
                           Intent installIntent = new Intent(Intent.ACTION_VIEW);
                           installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-                          installIntent.setClipData(ClipData.newRawUri("APK", apkUri));
                           installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                           installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                          installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
                           startActivity(installIntent);
                       } catch (Exception e) {
                           Toast.makeText(
@@ -1117,10 +1093,6 @@ jobs:
 
                   @JavascriptInterface
                   public void openUnknownSourceSettings() {
-                      if (targetApkFile != null && isValidApkFile(targetApkFile)) {
-                          launchApkInstallerGuarantee(targetApkFile);
-                          return;
-                      }
                       runOnUiThread(() -> {
                           try {
                               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -1128,16 +1100,15 @@ jobs:
                                       Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
                                       Uri.parse("package:" + getPackageName())
                                   );
-                                  if (unknownSourcesLauncher != null) {
-                                      unknownSourcesLauncher.launch(intent);
-                                  } else {
-                                      startActivity(intent);
-                                  }
+                                  intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                  startActivity(intent);
                                   return;
                               }
                           } catch (Exception ignored) {}
                           try {
-                              startActivity(new Intent(Settings.ACTION_SECURITY_SETTINGS));
+                              Intent secIntent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+                              secIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                              startActivity(secIntent);
                           } catch (Exception e) {
                               Toast.makeText(
                                   MainActivity.this,
@@ -1149,15 +1120,10 @@ jobs:
                   }
 
                   @JavascriptInterface
-                  public void clearCachedUpdateApks() {
-                      purgeStaleUpdateApks();
-                  }
-
-                  @JavascriptInterface
                   public boolean isVersionApkCached(String versionTag) {
                       File f = getVersionedApkFile(versionTag);
-                      if (isValidApkFile(f)) {
-                          targetApkFile = f;
+                      if (f.exists() && f.length() > 1024 * 200) {
+                          pendingInstallFile = f;
                           return true;
                       }
                       return false;
@@ -1166,11 +1132,10 @@ jobs:
                   @JavascriptInterface
                   public void installCachedVersionApk(String versionTag) {
                       File f = getVersionedApkFile(versionTag);
-                      if (isValidApkFile(f)) {
-                          targetApkFile = f;
-                          launchApkInstallerGuarantee(f);
-                      } else if (isValidApkFile(targetApkFile)) {
-                          launchApkInstallerGuarantee(targetApkFile);
+                      if (f.exists()) {
+                          installApkGuarantee(f, null);
+                      } else if (pendingInstallFile != null && pendingInstallFile.exists()) {
+                          installApkGuarantee(pendingInstallFile, null);
                       } else {
                           notifyWebProgress(-1, "❌ ফাইল পাওয়া যায়নি। পুনরায় ডাউনলোড করুন।");
                       }
@@ -1178,130 +1143,87 @@ jobs:
 
                   @JavascriptInterface
                   public boolean isLocalApkCached() {
-                      return isValidApkFile(targetApkFile);
+                      File dir = getApkStorageDirectory();
+                      File[] files = dir.listFiles();
+                      if (files != null) {
+                          for (File f : files) {
+                              if (f.getName().endsWith(".apk") && f.length() > 1024 * 200) {
+                                  pendingInstallFile = f;
+                                  return true;
+                              }
+                          }
+                      }
+                      return false;
                   }
 
                   @JavascriptInterface
                   public void installLocalApk() {
-                      if (isValidApkFile(targetApkFile)) {
-                          launchApkInstallerGuarantee(targetApkFile);
-                      } else {
-                          notifyWebProgress(-1, "❌ ফাইল পাওয়া যায়নি। পুনরায় ডাউনলোড করুন।");
+                      if (pendingInstallFile != null && pendingInstallFile.exists()) {
+                          installApkGuarantee(pendingInstallFile, null);
+                          return;
                       }
+                      File dir = getApkStorageDirectory();
+                      File[] files = dir.listFiles();
+                      if (files != null) {
+                          for (File f : files) {
+                              if (f.getName().endsWith(".apk")) {
+                                  installApkGuarantee(f, null);
+                                  return;
+                              }
+                          }
+                      }
+                      notifyWebProgress(-1, "❌ ফাইল পাওয়া যায়নি। পুনরায় ডাউনলোড করুন।");
                   }
 
                   @JavascriptInterface
                   public void downloadAndAutoInstallVersionApk(String urlString, String versionTag) {
-                      // Always download fresh into internal app cache (eliminates DownloadManager Scoped Storage issues)
-                      purgeStaleUpdateApks();
-                      startDirectInternalApkDownload(urlString, versionTag);
+                      startVersionedApkDownload(urlString, versionTag);
                   }
 
                   @JavascriptInterface
                   public void downloadAndInstallApk(String urlString) {
-                      purgeStaleUpdateApks();
-                      startDirectInternalApkDownload(urlString, "latest");
+                      startVersionedApkDownload(urlString, "latest");
                   }
 
-                  // SnapTube-Style Direct HTTP Streaming Downloader -> Internal Cache -> Auto PackageInstaller
-                  private void startDirectInternalApkDownload(String urlString, String versionTag) {
-                      if (!isDownloading.compareAndSet(false, true)) {
-                          return;
-                      }
-
-                      final File destFile = getVersionedApkFile(versionTag);
-                      final File tempFile = new File(destFile.getAbsolutePath() + ".part");
-                      if (tempFile.exists()) tempFile.delete();
-                      if (destFile.exists()) destFile.delete();
-
-                      runOnUiThread(() -> Toast.makeText(
-                          MainActivity.this,
-                          "⬇️ আপডেট ডাউনলোড শুরু হয়েছে...",
-                          Toast.LENGTH_SHORT
-                      ).show());
-
-                      downloadExecutor.execute(() -> {
-                          HttpURLConnection conn = null;
+                  private void startVersionedApkDownload(String urlString, String versionTag) {
+                      runOnUiThread(() -> {
                           try {
-                              String currentUrl = urlString;
-                              int redirects = 0;
-                              while (redirects < 6) {
-                                  URL url = new URL(currentUrl);
-                                  conn = (HttpURLConnection) url.openConnection();
-                                  conn.setInstanceFollowRedirects(false);
-                                  conn.setConnectTimeout(20000);
-                                  conn.setReadTimeout(30000);
-                                  conn.setRequestProperty("User-Agent", "Sunnah24-Android-Updater/4.3");
-                                  int code = conn.getResponseCode();
-                                  if (code == HttpURLConnection.HTTP_MOVED_PERM ||
-                                      code == HttpURLConnection.HTTP_MOVED_TEMP ||
-                                      code == HttpURLConnection.HTTP_SEE_OTHER ||
-                                      code == 307 || code == 308) {
-                                      String location = conn.getHeaderField("Location");
-                                      conn.disconnect();
-                                      if (location == null || location.isEmpty()) {
-                                          throw new Exception("Empty redirect URL");
-                                      }
-                                      currentUrl = location;
-                                      redirects++;
-                                      continue;
-                                  }
-                                  break;
+                              File destFile = getVersionedApkFile(versionTag);
+                              if (destFile.exists()) {
+                                  destFile.delete();
+                              }
+                              pendingInstallFile = destFile;
+
+                              DownloadManager dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                              if (dm == null) {
+                                  Toast.makeText(MainActivity.this, "⚠️ Download service unavailable", Toast.LENGTH_SHORT).show();
+                                  return;
                               }
 
-                              if (conn == null || conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                                  int errCode = conn != null ? conn.getResponseCode() : -1;
-                                  throw new Exception("HTTP " + errCode);
-                              }
+                              DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlString));
+                              request.setTitle("Sunnah 24 (" + versionTag + ")");
+                              request.setDescription("Downloading Sunnah 24 APK update...");
+                              request.setDestinationUri(Uri.fromFile(destFile));
+                              request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                              request.setAllowedOverMetered(true);
+                              request.setAllowedOverRoaming(true);
 
-                              long totalBytes = conn.getContentLengthLong();
-                              long downloadedBytes = 0L;
-                              int lastReportedPct = -1;
+                              activeDownloadId = dm.enqueue(request);
+                              progressHandler.removeCallbacks(progressPollRunnable);
+                              progressHandler.postDelayed(progressPollRunnable, 300);
 
-                              try (InputStream in = new BufferedInputStream(conn.getInputStream());
-                                   FileOutputStream out = new FileOutputStream(tempFile, false)) {
-                                  byte[] buffer = new byte[16384];
-                                  int bytesRead;
-                                  while ((bytesRead = in.read(buffer)) != -1) {
-                                      out.write(buffer, 0, bytesRead);
-                                      downloadedBytes += bytesRead;
-                                      if (totalBytes > 0) {
-                                          int pct = (int) ((downloadedBytes * 100L) / totalBytes);
-                                          if (pct > lastReportedPct && pct < 100) {
-                                              lastReportedPct = pct;
-                                              notifyWebProgress(pct, "⬇️ ডাউনলোড হচ্ছে (" + pct + "%)...");
-                                          }
-                                      }
-                                  }
-                                  out.flush();
-                              }
-
-                              if (!tempFile.renameTo(destFile)) {
-                                  try (InputStream in = new FileInputStream(tempFile);
-                                       OutputStream out = new FileOutputStream(destFile, false)) {
-                                      byte[] buf = new byte[16384];
-                                      int len;
-                                      while ((len = in.read(buf)) > 0) out.write(buf, 0, len);
-                                      out.flush();
-                                  }
-                                  tempFile.delete();
-                              }
-
-                              if (!isValidApkFile(destFile)) {
-                                  if (destFile.exists()) destFile.delete();
-                                  throw new Exception("Invalid or incomplete APK archive");
-                              }
-
-                              targetApkFile = destFile;
-                              isDownloading.set(false);
-                              notifyWebProgress(100, "✅ ডাউনলোড সম্পন্ন! ইনস্টলার স্ক্রিন চালু হচ্ছে...");
-                              launchApkInstallerGuarantee(destFile);
+                              Toast.makeText(
+                                  MainActivity.this,
+                                  "⬇️ আপডেট ডাউনলোড শুরু হয়েছে...",
+                                  Toast.LENGTH_SHORT
+                              ).show();
                           } catch (Exception e) {
-                              isDownloading.set(false);
-                              if (tempFile.exists()) tempFile.delete();
-                              notifyWebProgress(-1, "❌ ডাউনলোড ব্যর্থ: " + e.getMessage());
-                          } finally {
-                              if (conn != null) conn.disconnect();
+                              notifyWebProgress(-1, "❌ ডাউনলোড শুরু করা যায়নি: " + e.getMessage());
+                              Toast.makeText(
+                                  MainActivity.this,
+                                  "⚠️ ডাউনলোড ত্রুটি: " + e.getMessage(),
+                                  Toast.LENGTH_LONG
+                              ).show();
                           }
                       });
                   }
