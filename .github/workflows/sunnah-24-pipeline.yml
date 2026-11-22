@@ -385,7 +385,7 @@ jobs:
           echo "K_ALIAS=${K_ALIAS}" >> $GITHUB_ENV
           echo "K_PASS=${K_PASS}" >> $GITHUB_ENV
 
-      - name: 6. Build Capacitor Android Bridge, Play Store API 36 Config & Strict Source-Set Isolation
+      - name: 6. Build Capacitor Android Bridge, Play Store API 35 Config & Strict Source-Set Isolation
         env:
           NODE_OPTIONS: "--tls-min-v1.2 --dns-result-order=ipv4first"
         run: |
@@ -398,7 +398,7 @@ jobs:
             npx cap add android
           fi
 
-          # Configure Capacitor SplashScreen & WebView backgroundColor to #e8f5ee (prevents white screen on APK entrance)
+          # Configure Capacitor SplashScreen backgroundColor to branded emerald-mint (#e8f5ee) before cap sync
           node -e '
             const fs = require("fs");
             const cfgPath = "capacitor.config.json";
@@ -407,10 +407,9 @@ jobs:
               try { cfg = JSON.parse(fs.readFileSync(cfgPath, "utf8")); } catch {}
             }
             cfg.backgroundColor = "#e8f5ee";
-            cfg.android = Object.assign({}, cfg.android, { backgroundColor: "#e8f5ee" });
             cfg.plugins = cfg.plugins || {};
             cfg.plugins.SplashScreen = Object.assign({}, cfg.plugins.SplashScreen, {
-              launchShowDuration: 500,
+              launchShowDuration: 600,
               launchAutoHide: true,
               backgroundColor: "#e8f5ee",
               androidSplashResourceName: "splash",
@@ -423,16 +422,16 @@ jobs:
           npx cap copy android
           npx cap sync android
 
-          # 6A. Enforce Google Play Console Target API 36 (Android 15) in variables.gradle
+          # 6A. Enforce Stable Production Target API 35 (Android 15) in variables.gradle
           VARS_GRADLE="android/variables.gradle"
           if [ -f "$VARS_GRADLE" ]; then
-            sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 36/g' "$VARS_GRADLE"
-            sed -i 's/targetSdkVersion = [0-9]*/targetSdkVersion = 36/g' "$VARS_GRADLE"
+            sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 35/g' "$VARS_GRADLE"
+            sed -i 's/targetSdkVersion = [0-9]*/targetSdkVersion = 35/g' "$VARS_GRADLE"
             echo "✅ Enforced compileSdkVersion=35 and targetSdkVersion=35 in variables.gradle"
           fi
 
-          # 6B. Compute VERSION_CODE, inject Native Release Signing, R8 Mapping & Play Store Compliance into app/build.gradle
-          VERSION_CODE=$((2100 + RUN_NUMBER))
+          # 6B. Compute Monotonic VERSION_CODE & cleanly inject Native Release Signing + Sideload BuildType
+          VERSION_CODE=$((10000 + RUN_NUMBER))
           echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_ENV
 
           APP_GRADLE="android/app/build.gradle"
@@ -443,11 +442,13 @@ jobs:
             if ! grep -q "GOOGLE PLAY STORE PRODUCTION AAB CONFIGURATION" "$APP_GRADLE"; then
               cat << 'GRADLE_EOF' >> "$APP_GRADLE"
 
-          // --- GOOGLE PLAY STORE PRODUCTION AAB CONFIGURATION ---
+          // --- GOOGLE PLAY STORE PRODUCTION AAB & NON-DEBUGGABLE SIDELOAD RELEASE CONFIGURATION ---
           android {
-              compileSdk 36
+              compileSdk 35
               defaultConfig {
-                  targetSdk 36
+                  targetSdk 35
+                  versionCode Integer.parseInt(System.getenv("VERSION_CODE") ?: "10001")
+                  versionName System.getenv("VERSION_NAME") ?: "4.3.1"
               }
               signingConfigs {
                   release {
@@ -470,12 +471,22 @@ jobs:
                           debugSymbolLevel 'FULL'
                       }
                   }
+                  sideload {
+                      initWith release
+                      debuggable false
+                      jniDebuggable false
+                      signingConfig signingConfigs.release
+                      minifyEnabled true
+                      shrinkResources true
+                      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                      matchingFallbacks = ['release']
+                  }
               }
           }
           GRADLE_EOF
               sed -i 's/^          //' "$APP_GRADLE"
             fi
-            echo "✅ Configured Play Store API 36, R8 Minification & Native Release Signing in $APP_GRADLE"
+            echo "✅ Configured Play Store API 35, Monotonic versionCode=${VERSION_CODE}, R8 Minification & Native Release Signing in $APP_GRADLE"
           fi
 
           # 6C. Append Keep Rules for WebView JavascriptInterface & Capacitor Plugins to proguard-rules.pro
@@ -493,7 +504,7 @@ jobs:
             sed -i 's/^          //' "$PROGUARD_FILE"
           fi
 
-          # 6D. Convert www/icon.svg into All Android Launcher Icons & Adaptive Mipmaps
+          # 6D. Convert www/icon.svg into All Android Launcher Icons, Branded Splash Screens & Window Background (Zero White Screen!)
           sudo apt-get update && sudo apt-get install -y librsvg2-bin imagemagick
           RES_DIR="android/app/src/main/res"
 
@@ -519,6 +530,7 @@ jobs:
             cp -f /tmp/s24_splash_screen.png "$existing_splash"
           done
 
+          # Override Android native windowBackground in values/styles.xml so the OS paints #e8f5ee at 0ms before WebView boots
           VALUES_DIR="$RES_DIR/values"
           mkdir -p "$VALUES_DIR"
           cat << 'COLORS_EOF' > "$VALUES_DIR/s24_boot_colors.xml"
@@ -540,7 +552,7 @@ jobs:
           rm -f "$RES_DIR/drawable/ic_launcher_foreground.xml"
           rm -f "$RES_DIR/drawable-v24/ic_launcher_foreground.xml"
           rm -rf "$RES_DIR/mipmap-anydpi-v26"
-          echo "✅ Custom Sunnah 24 Launcher Icons & Splash Screens generated!"
+          echo "✅ Custom Sunnah 24 Launcher Icons, Branded Window Background & Splash Screens generated!"
 
           # 6E. Strip Legacy Storage & Sideload Permissions from Merged Manifest for Play Store Compliance
           MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
@@ -555,18 +567,19 @@ jobs:
             sed -i '/<\/manifest>/i \    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.AD_ID" tools:node="remove" />' "$MANIFEST_FILE"
           fi
 
-          # 6F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/debug/AndroidManifest.xml for Sideload APK
-          DEBUG_MANIFEST_DIR="android/app/src/debug"
-          mkdir -p "$DEBUG_MANIFEST_DIR"
-          cat << 'EOF' > "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
+          # 6F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/sideload/AndroidManifest.xml for Non-Debuggable Sideload Release APK
+          rm -rf "android/app/src/debug"
+          SIDELOAD_MANIFEST_DIR="android/app/src/sideload"
+          mkdir -p "$SIDELOAD_MANIFEST_DIR"
+          cat << 'EOF' > "$SIDELOAD_MANIFEST_DIR/AndroidManifest.xml"
           <?xml version="1.0" encoding="utf-8"?>
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
               <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
           </manifest>
           EOF
-          sed -i 's/^          //' "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
+          sed -i 's/^          //' "$SIDELOAD_MANIFEST_DIR/AndroidManifest.xml"
 
-          # 6G. Inject FileProvider XML for Scoped Storage
+          # 6G. Inject FileProvider XML for Scoped Storage (including cache-path for reliable PackageInstaller URI sharing)
           XML_DIR="android/app/src/main/res/xml"
           mkdir -p "$XML_DIR"
           cat << 'EOF' > "$XML_DIR/file_paths.xml"
@@ -576,6 +589,7 @@ jobs:
               <external-files-path name="apk_updates_dir" path="Download/" />
               <external-cache-path name="external_cache_path" path="." />
               <cache-path name="cache_path" path="." />
+              <cache-path name="apk_cache_updates" path="apk_updates/" />
               <files-path name="files_path" path="." />
           </paths>
           EOF
@@ -583,16 +597,7 @@ jobs:
 
           if [ -f "$MANIFEST_FILE" ]; then
             if ! grep -q "fileprovider" "$MANIFEST_FILE"; then
-              sed -i '/<\/application>/i \
-              <provider\
-                  android:name="androidx.core.content.FileProvider"\
-                  android:authorities="${applicationId}.fileprovider"\
-                  android:exported="false"\
-                  android:grantUriPermissions="true">\
-                  <meta-data\
-                      android:name="android.support.FILE_PROVIDER_PATHS"\
-                      android:resource="@xml/file_paths" />\
-              </provider>' "$MANIFEST_FILE"
+              sed -i '/<\/application>/i               <provider                  android:name="androidx.core.content.FileProvider"                  android:authorities="${applicationId}.fileprovider"                  android:exported="false"                  android:grantUriPermissions="true">                  <meta-data                      android:name="android.support.FILE_PROVIDER_PATHS"                      android:resource="@xml/file_paths" />              </provider>' "$MANIFEST_FILE"
             fi
           fi
 
@@ -677,7 +682,7 @@ jobs:
                           PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                           return pInfo.versionName;
                       } catch (Exception e) {
-                          return "4.2.0";
+                          return "4.3.0";
                       }
                   }
 
@@ -752,13 +757,14 @@ jobs:
           REL_JAVA_EOF
           sed -i 's/^          //' "$RELEASE_JAVA_DIR/MainActivity.java"
 
-          DEBUG_JAVA_DIR="android/app/src/debug/java/com/mkrweb/sunnah24"
-          mkdir -p "$DEBUG_JAVA_DIR"
-          cat << 'DBG_JAVA_EOF' > "$DEBUG_JAVA_DIR/MainActivity.java"
+          SIDELOAD_JAVA_DIR="android/app/src/sideload/java/com/mkrweb/sunnah24"
+          mkdir -p "$SIDELOAD_JAVA_DIR"
+          cat << 'DBG_JAVA_EOF' > "$SIDELOAD_JAVA_DIR/MainActivity.java"
           package com.mkrweb.sunnah24;
 
           import android.app.DownloadManager;
           import android.content.BroadcastReceiver;
+          import android.content.ClipData;
           import android.content.ContentValues;
           import android.content.Context;
           import android.content.Intent;
@@ -786,6 +792,7 @@ jobs:
           import java.io.File;
           import java.io.FileInputStream;
           import java.io.FileOutputStream;
+          import java.io.InputStream;
           import java.io.InputStreamReader;
           import java.io.OutputStream;
           import java.nio.charset.StandardCharsets;
@@ -917,6 +924,29 @@ jobs:
                   return new File(updateDir, "Sunnah24-" + safeTag + ".apk");
               }
 
+              private File stageApkToInternalCache(File sourceApk) {
+                  try {
+                      if (sourceApk == null || !sourceApk.exists() || sourceApk.length() < 1024 * 100) {
+                          return sourceApk;
+                      }
+                      File cacheUpdatesDir = new File(getCacheDir(), "apk_updates");
+                      if (!cacheUpdatesDir.exists()) cacheUpdatesDir.mkdirs();
+                      File stagedFile = new File(cacheUpdatesDir, sourceApk.getName());
+                      try (InputStream in = new FileInputStream(sourceApk);
+                           OutputStream out = new FileOutputStream(stagedFile, false)) {
+                          byte[] buf = new byte[8192];
+                          int len;
+                          while ((len = in.read(buf)) > 0) {
+                              out.write(buf, 0, len);
+                          }
+                          out.flush();
+                      }
+                      return stagedFile;
+                  } catch (Exception e) {
+                      return sourceApk;
+                  }
+              }
+
               private void notifyWebProgress(int pct, String message) {
                   runOnUiThread(() -> {
                       if (bridge != null && bridge.getWebView() != null) {
@@ -961,23 +991,23 @@ jobs:
               private void triggerDirectFileProviderInstaller(File apkFile, long completedDownloadId) {
                   runOnUiThread(() -> {
                       try {
-                          if (apkFile != null && apkFile.exists() && apkFile.length() > 1024 * 100) {
+                          File stagedApk = stageApkToInternalCache(apkFile);
+                          if (stagedApk != null && stagedApk.exists() && stagedApk.length() > 1024 * 100) {
                               Uri apkUri;
                               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                   apkUri = FileProvider.getUriForFile(
                                       MainActivity.this,
                                       getPackageName() + ".fileprovider",
-                                      apkFile
+                                      stagedApk
                                   );
                               } else {
-                                  apkUri = Uri.fromFile(apkFile);
+                                  apkUri = Uri.fromFile(stagedApk);
                               }
                               Intent installIntent = new Intent(Intent.ACTION_VIEW);
                               installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-                              installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+                              installIntent.setClipData(ClipData.newRawUri("APK", apkUri));
                               installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                               installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                              installIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                               startActivity(installIntent);
                               return;
                           }
@@ -990,10 +1020,9 @@ jobs:
                               if (contentUri != null) {
                                   Intent installIntent = new Intent(Intent.ACTION_VIEW);
                                   installIntent.setDataAndType(contentUri, "application/vnd.android.package-archive");
-                                  installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+                                  installIntent.setClipData(ClipData.newRawUri("APK", contentUri));
                                   installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                                   installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                  installIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                   startActivity(installIntent);
                                   return;
                               }
@@ -1017,16 +1046,27 @@ jobs:
 
                   @JavascriptInterface
                   public void openUnknownSourceSettings() {
-                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                      runOnUiThread(() -> {
                           try {
-                              Intent settingsIntent = new Intent(
-                                  Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                                  Uri.parse("package:" + getPackageName())
-                              );
-                              settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                              startActivity(settingsIntent);
+                              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                  Intent intent = new Intent(
+                                      Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                                      Uri.parse("package:" + getPackageName())
+                                  );
+                                  startActivity(intent);
+                                  return;
+                              }
                           } catch (Exception ignored) {}
-                      }
+                          try {
+                              startActivity(new Intent(Settings.ACTION_SECURITY_SETTINGS));
+                          } catch (Exception e) {
+                              Toast.makeText(
+                                  MainActivity.this,
+                                  "⚠️ সেটিংস > Apps > Special app access > Install unknown apps থেকে Sunnah 24 চালু করুন।",
+                                  Toast.LENGTH_LONG
+                              ).show();
+                          }
+                      });
                   }
 
                   @JavascriptInterface
@@ -1154,7 +1194,7 @@ jobs:
                           PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                           return pInfo.versionName;
                       } catch (Exception e) {
-                          return "4.2.0";
+                          return "4.3.0";
                       }
                   }
 
@@ -1226,14 +1266,12 @@ jobs:
               }
           }
           DBG_JAVA_EOF
-          sed -i 's/^          //' "$DEBUG_JAVA_DIR/MainActivity.java"
-          echo "✅ Isolated Play Store Safe Release MainActivity & Sideload Debug MainActivity!"
+          sed -i 's/^          //' "$SIDELOAD_JAVA_DIR/MainActivity.java"
+          echo "✅ Isolated Play Store Safe Release MainActivity & Non-Debuggable Sideload MainActivity!"
 
           # 6I. Inject Google Maven Central Mirror Init Script & Gradle HTTP Retry Properties
-          # Permanently eliminates HTTP 429 Too Many Requests from repo.maven.apache.org on GitHub Actions runners
           mkdir -p "$HOME/.gradle/init.d"
           cat << 'INIT_GRADLE_EOF' > "$HOME/.gradle/init.d/00-google-maven-mirror.init.gradle"
-          // Global Gradle Init Script: Route all Maven Central requests through Google's high-availability mirror first
           def GOOGLE_MAVEN_CENTRAL = "https://maven-central.storage-download.googleapis.com/maven2/"
           def MAVEN_CENTRAL_PRIMARY = "https://repo1.maven.org/maven2/"
 
@@ -1294,11 +1332,11 @@ jobs:
           fi
           echo "✅ Configured Google Maven Central Mirror & HTTP 429 Auto-Retry in Gradle!"
 
-      - name: 7. Compile Sideload APK (assembleDebug) & Play Store Signed AAB (bundleRelease)
+      - name: 7. Compile Non-Debuggable Sideload Release APK (assembleSideload) & Play Store Signed AAB (bundleRelease)
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug bundleRelease \
+          ./gradlew assembleSideload bundleRelease \
             --init-script maven-mirror.init.gradle \
             --no-daemon \
             -Dorg.gradle.internal.http.connectionTimeout=120000 \
@@ -1307,7 +1345,7 @@ jobs:
             -Dorg.gradle.internal.repository.initial.backoff=3000 || \
           (echo "⏳ Transient network/Maven hiccup detected; waiting 12s and retrying with cached artifacts..." && \
            sleep 12 && \
-           ./gradlew assembleDebug bundleRelease \
+           ./gradlew assembleSideload bundleRelease \
              --init-script maven-mirror.init.gradle \
              --no-daemon \
              --max-workers=2 \
@@ -1324,19 +1362,23 @@ jobs:
           profile: pixel_6
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: |
-            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            adb install -r android/app/build/outputs/apk/sideload/app-sideload.apk
             adb shell am start -W -n com.mkrweb.sunnah24/.MainActivity
             sleep 3
             adb shell pidof com.mkrweb.sunnah24
 
-      - name: 8. Sign Sideload APK & Verify Signed Play Store AAB
+      - name: 8. Verify & Seal Non-Debuggable Sideload APK & Play Store Signed AAB
         run: |
-          UNSIGNED_APK="android/app/build/outputs/apk/debug/app-debug.apk"
+          BUILT_APK=$(find android/app/build/outputs/apk/sideload -name "*.apk" | head -n 1)
+          if [ -z "$BUILT_APK" ] || [ ! -f "$BUILT_APK" ]; then
+            echo "❌ ERROR: Sideload Release APK was not generated!"
+            ls -laR android/app/build/outputs/apk || true
+            exit 1
+          fi
           SIGNED_APK="Sunnah-24-v4.3-Enterprise-Signed.apk"
-
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
-          $BUILD_TOOLS_DIR/zipalign -f -v -p 4 "$UNSIGNED_APK" app-release-aligned.apk
 
+          $BUILD_TOOLS_DIR/zipalign -f -v -p 4 "$BUILT_APK" app-sideload-aligned.apk
           $BUILD_TOOLS_DIR/apksigner sign \
             --ks "$KEYSTORE_FILE" \
             --ks-key-alias "$K_ALIAS" \
@@ -1346,9 +1388,10 @@ jobs:
             --v2-signing-enabled true \
             --v3-signing-enabled true \
             --out "$SIGNED_APK" \
-            app-release-aligned.apk
+            app-sideload-aligned.apk
 
           $BUILD_TOOLS_DIR/apksigner verify --verbose "$SIGNED_APK"
+          $BUILD_TOOLS_DIR/aapt2 dump badging "$SIGNED_APK" | head -n 5 || true
 
           AAB_PATH=$(find android/app/build/outputs/bundle/release -name "*.aab" | head -n 1)
           if [ -n "$AAB_PATH" ]; then
@@ -1389,7 +1432,7 @@ jobs:
           TITLE="☪️ Sunnah 24 v${VERSION_NAME} — Play Store Ready AAB & Signed Enterprise APK"
           cat << 'EOF' > /tmp/release_notes.md
           ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Play Store Ready `.aab` & Signed Android `.apk` (v${VERSION_NAME})
-          - **Google Play Store Ready `.aab` (`Sunnah-24-v4.3-PlayStore-Signed.aab`):** Compiled with `targetSdk 36` / `compileSdk 36`, R8 code shrinking + deobfuscation mapping, zero self-updater bytecode, and zero legacy storage permissions.
+          - **Google Play Store Ready `.aab` (`Sunnah-24-v4.3-PlayStore-Signed.aab`):** Compiled with `targetSdk 35` / `compileSdk 35`, R8 code shrinking + deobfuscation mapping, zero self-updater bytecode, and zero legacy storage permissions.
           - **Sideload Auto-Updating `.apk` (`Sunnah-24-v4.3-Enterprise-Signed.apk`):** Full in-app update support via Android's system DownloadManager for direct website users.
           - **Triple-Redundant Auto-Vault:** Preserves all user habit records across LocalStorage, IndexedDB, and Native Android Vault.
           EOF
@@ -1430,6 +1473,7 @@ jobs:
               sleep 4
             done
           fi
+
 
 
 
