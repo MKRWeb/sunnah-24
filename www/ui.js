@@ -2723,6 +2723,14 @@ function isRemoteVersionNewer(remoteTag, installedTag) {
   return false;
 }
 
+// Disinfectant: Guarantee any remote release version different from installed (or newer) can be installed without version-lock blocks
+function isRemoteReleaseInstallable(remoteTag, installedTag) {
+  const cleanRemote = String(remoteTag || "").replace(/^v/i, "").trim();
+  const cleanInstalled = String(installedTag || "").replace(/^v/i, "").trim();
+  if (!cleanRemote) return false;
+  return isRemoteVersionNewer(cleanRemote, cleanInstalled) || cleanRemote !== cleanInstalled;
+}
+
 function getInstalledAppVersionTag() {
   try {
     if (
@@ -2763,7 +2771,7 @@ function initInAppUpdateChecker(manualTrigger = false) {
       if (!release || !release.tag_name) return;
       const latestTag = release.tag_name.trim();
 
-      if (isRemoteVersionNewer(latestTag, installedTag)) {
+      if (isRemoteReleaseInstallable(latestTag, installedTag)) {
         const apkAsset = (release.assets || []).find(
           (a) => a.name && a.name.toLowerCase().endsWith(".apk")
         );
@@ -2860,26 +2868,36 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
       !window.AndroidDownloader.canRequestPackageInstalls()
     );
 
-    if (needsUnknownSourcePermission && window.AndroidDownloader) {
-      if (typeof window.AndroidDownloader.openUnknownSourceSettings === "function") {
-        window.AndroidDownloader.openUnknownSourceSettings();
-        return;
-      }
-    }
+    const isCached = banner.getAttribute("data-cached") === "true";
 
-    if (banner.getAttribute("data-cached") === "true" || needsUnknownSourcePermission) {
-      if (
+    if (isCached || needsUnknownSourcePermission) {
+      // Disinfectant: Verify the APK actually exists on disk before calling installCachedVersionApk;
+      // otherwise re-download cleanly instead of hitting "The file does not exist"
+      const hasValidLocalFile = Boolean(
         window.AndroidDownloader &&
-        typeof window.AndroidDownloader.installCachedVersionApk === "function"
-      ) {
-        window.AndroidDownloader.installCachedVersionApk(latestRemoteVersionTag);
-        return;
-      }
-      if (
-        window.AndroidDownloader &&
-        typeof window.AndroidDownloader.installLocalApk === "function"
-      ) {
-        window.AndroidDownloader.installLocalApk();
+        ((typeof window.AndroidDownloader.isVersionApkCached === "function" &&
+          window.AndroidDownloader.isVersionApkCached(latestRemoteVersionTag)) ||
+          (typeof window.AndroidDownloader.isLocalApkCached === "function" &&
+            window.AndroidDownloader.isLocalApkCached()))
+      );
+
+      if (hasValidLocalFile) {
+        if (
+          window.AndroidDownloader &&
+          typeof window.AndroidDownloader.installCachedVersionApk === "function"
+        ) {
+          window.AndroidDownloader.installCachedVersionApk(latestRemoteVersionTag);
+          return;
+        }
+        if (
+          window.AndroidDownloader &&
+          typeof window.AndroidDownloader.installLocalApk === "function"
+        ) {
+          window.AndroidDownloader.installLocalApk();
+          return;
+        }
+      } else if (needsUnknownSourcePermission && window.AndroidDownloader && typeof window.AndroidDownloader.openUnknownSourceSettings === "function") {
+        window.AndroidDownloader.openUnknownSourceSettings();
         return;
       }
     }
@@ -2937,6 +2955,13 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
     statusEl.textContent = statusText;
   }
 
+  if (percent < 0 && btn) {
+    btn.disabled = false;
+    btn.style.background = "var(--accent-gold)";
+    btn.style.color = "#05130e";
+    btn.textContent = appState.locale === "bn" ? "🔄 পুনরায় চেষ্টা করুন" : "🔄 Retry Download";
+  }
+
   if (percent >= 100) {
     if (banner) banner.setAttribute("data-cached", "true");
     if (progBar) progBar.style.width = "100%";
@@ -2957,11 +2982,11 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
         ? "📦 এখনই ইনস্টল করুন"
         : "📦 Install Now";
     }
-    if (statusEl && !statusText) {
+    if (statusEl) {
       statusEl.textContent = needsSourcePerm
         ? appState.locale === "bn"
-          ? "⚙️ সেটিংস থেকে 'Allow from this source' চালু করলেই স্বয়ংক্রিয়ভাবে ইনস্টল হবে।"
-          : "⚙️ Enable 'Allow from this source' in Settings to auto-launch installer."
+          ? "⚙️ 'ইনস্টল অনুমতি দিন' বাটনে ট্যাপ করে 'Allow from this source' চালু করুন — স্বয়ংক্রিয়ভাবে ইনস্টল হবে।"
+          : "⚙️ Tap 'Allow & Install' and enable 'Allow from this source' to auto-launch installer."
         : appState.locale === "bn"
         ? "✅ ডাউনলোড সম্পন্ন! স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হয়েছে।"
         : "✅ Download complete! Package installer launched automatically.";
@@ -6037,6 +6062,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
