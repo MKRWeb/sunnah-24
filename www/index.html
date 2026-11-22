@@ -15,14 +15,36 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body data-active-view="home">
-  <!-- Smooth Startup Splash Screen -->
-  <div id="s24-startup-splash" class="startup-splash">
+  <!-- Non-Blocking Startup Splash Screen (Auto-Dismisses on Ready or Fail-Safe Timer) -->
+  <div id="s24-startup-splash" class="startup-splash" aria-hidden="true">
     <div class="splash-inner">
       <img src="icon.svg" alt="Sunnah 24" class="splash-logo" />
       <h2>সুন্নাহ ২৪ • Sunnah 24</h2>
       <p>Enterprise Prophetic 24-Hour Lifestyle</p>
     </div>
   </div>
+  <script>
+    (function () {
+      var dismissSplashNow = function () {
+        var el = document.getElementById("s24-startup-splash");
+        if (el) {
+          el.classList.add("splash-hidden");
+          el.style.opacity = "0";
+          el.style.visibility = "hidden";
+          el.style.pointerEvents = "none";
+          el.style.display = "none";
+        }
+        var home = document.getElementById("home-dashboard-view");
+        if (home) {
+          home.classList.remove("hidden");
+          home.style.display = "block";
+        }
+      };
+      setTimeout(dismissSplashNow, 1600);
+      window.addEventListener("load", function () { setTimeout(dismissSplashNow, 300); });
+      window.addEventListener("error", function () { setTimeout(dismissSplashNow, 200); }, true);
+    })();
+  </script>
 
 
 
