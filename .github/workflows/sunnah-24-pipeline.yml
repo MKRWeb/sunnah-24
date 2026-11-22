@@ -359,6 +359,12 @@ jobs:
             K_ALIAS="$KEY_ALIAS"
             K_PASS="$KEY_PASSWORD"
             echo "✅ Decoded release keystore from encrypted GitHub Secrets."
+          elif [ -f "$PWD/signing/sunnah24-v4-clean.keystore" ]; then
+            cp -f "$PWD/signing/sunnah24-v4-clean.keystore" "$KEYSTORE_FILE"
+            KS_PASS="${KEYSTORE_PASSWORD:-sunnah24pass}"
+            K_ALIAS="${KEY_ALIAS:-sunnah24}"
+            K_PASS="${KEY_PASSWORD:-sunnah24pass}"
+            echo "✅ Using clean repository keystore signing/sunnah24-v4-clean.keystore."
           elif [ -f "sunnah24-release.keystore" ]; then
             cp -f "sunnah24-release.keystore" "$KEYSTORE_FILE"
             KS_PASS="${KEYSTORE_PASSWORD:-sunnah24pass}"
