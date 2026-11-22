@@ -2691,7 +2691,6 @@ function isSideloadSelfUpdateEnabled() {
     ) {
       return Boolean(window.AndroidDownloader.isSelfUpdateSupported());
     }
-    // Backward compatibility only if native bridge explicitly exposes downloadAndAutoInstallVersionApk
     if (
       window.AndroidDownloader &&
       typeof window.AndroidDownloader.downloadAndAutoInstallVersionApk === "function"
@@ -2712,7 +2711,7 @@ function getInstalledAppVersionTag() {
       if (nativeVer) return nativeVer.startsWith("v") ? nativeVer : `v${nativeVer}`;
     }
   } catch {}
-  return "v4.2.0";
+  return "v4.3.0";
 }
 
 function renderInstalledVersionBadge() {
@@ -2723,7 +2722,6 @@ function renderInstalledVersionBadge() {
 }
 
 function initInAppUpdateChecker(manualTrigger = false) {
-  // Strictly disabled inside Play Store Release AAB builds to satisfy Google Play Device & Network Abuse Policy
   if (!isSideloadSelfUpdateEnabled()) return;
 
   const isInsideNativeApk =
@@ -2820,8 +2818,8 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
       </div>
     </div>
     <div class="update-banner-actions">
-      <button id="trigger-native-update-btn" class="btn-update-action" style="background:var(--accent-gold);color:#05130e;font-weight:800;">${btnText}</button>
-      <button class="btn-update-dismiss" onclick="document.getElementById('s24-update-banner').remove()">${dismissText}</button>
+      <button id="trigger-native-update-btn" type="button" class="btn-update-action" style="background:var(--accent-gold);color:#05130e;font-weight:800;">${btnText}</button>
+      <button type="button" class="btn-update-dismiss" onclick="document.getElementById('s24-update-banner').remove()">${dismissText}</button>
     </div>
   `;
 
@@ -2902,6 +2900,17 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
     statusEl.textContent = statusText;
   }
 
+  if (percent < 0) {
+    if (banner) banner.setAttribute("data-cached", "false");
+    if (btn) {
+      btn.disabled = false;
+      btn.style.background = "var(--accent-gold)";
+      btn.style.color = "#05130e";
+      btn.textContent =
+        appState.locale === "bn" ? "🔄 পুনরায় ডাউনলোড করুন" : "🔄 Retry Download";
+    }
+  }
+
   if (percent >= 100) {
     if (banner) banner.setAttribute("data-cached", "true");
     if (progBar) progBar.style.width = "100%";
@@ -2933,7 +2942,6 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
     }
   }
 };
-
 
 document.addEventListener("DOMContentLoaded", () => {
   renderInstalledVersionBadge();
