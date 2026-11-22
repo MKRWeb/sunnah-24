@@ -543,10 +543,8 @@ jobs:
 
           if [ -f "$VALUES_DIR/styles.xml" ]; then
             if ! grep -q "android:windowBackground" "$VALUES_DIR/styles.xml"; then
-              sed -i 's|<style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">|<style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
-        <item name="android:windowBackground">@color/s24_boot_bg</item>|g' "$VALUES_DIR/styles.xml" || true
-              sed -i 's|<style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">|<style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:windowBackground">@color/s24_boot_bg</item>|g' "$VALUES_DIR/styles.xml" || true
+              sed -i 's|<style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">|<style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">\n        <item name="android:windowBackground">@color/s24_boot_bg</item>|g' "$VALUES_DIR/styles.xml" || true
+              sed -i 's|<style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">|<style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">\n        <item name="android:windowBackground">@color/s24_boot_bg</item>|g' "$VALUES_DIR/styles.xml" || true
             fi
           fi
 
@@ -566,9 +564,7 @@ jobs:
             sed -i '/REQUEST_INSTALL_PACKAGES/d' "$MANIFEST_FILE" || true
             sed -i '/READ_EXTERNAL_STORAGE/d' "$MANIFEST_FILE" || true
             sed -i '/WRITE_EXTERNAL_STORAGE/d' "$MANIFEST_FILE" || true
-            sed -i '/<\/manifest>/i \    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />
-    <uses-permission android:name="android.permission.AD_ID" tools:node="remove" />' "$MANIFEST_FILE"
+            sed -i '/<\/manifest>/i \    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.AD_ID" tools:node="remove" />' "$MANIFEST_FILE"
           fi
 
           # 6F. Inject REQUEST_INSTALL_PACKAGES ONLY into src/sideload/AndroidManifest.xml for Non-Debuggable Sideload Release APK
