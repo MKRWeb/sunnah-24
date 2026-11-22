@@ -2145,9 +2145,29 @@ function openHabitModal(habitId) {
 // Muhasabah UI helpers removed (appState.diaryEntries preserved for SHA-256 backup compatibility)
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadAndVerifyState();
-  initXStyleAutoGeographicDetector();
-  applyLanguageToDOM();
+  try {
+    if (typeof loadAndVerifyState === "function") await loadAndVerifyState();
+  } catch (err) {
+    console.warn("Storage init fallback:", err);
+  }
+  try {
+    if (typeof initXStyleAutoGeographicDetector === "function") initXStyleAutoGeographicDetector();
+  } catch (err) {
+    console.warn("Geo detector fallback:", err);
+  }
+  try {
+    if (typeof applyLanguageToDOM === "function") applyLanguageToDOM();
+  } catch (err) {
+    console.warn("Language render fallback:", err);
+  }
+  try {
+    const homeView = document.getElementById("home-dashboard-view");
+    if (homeView && !activeMasterSectionId && !isSunnahGridPageOpen) {
+      homeView.classList.remove("hidden");
+      homeView.style.display = "block";
+      homeView.style.opacity = "1";
+    }
+  } catch (_) {}
 
   if ("serviceWorker" in navigator) {
     const isNativeShell =
@@ -2921,88 +2941,60 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => initInAppUpdateChecker(false), 2500);
   }
 
-  const STANDARD_INTRO_HOLD_MS = 3250;
-  const SESSION_INTRO_SHOWN_KEY = "SUNNAH_24_SESSION_INTRO_SHOWN_V1";
-  let splashHideTimer = null;
-  let splashFadeTimer = null;
+  // Single international-standard entrance time range: 1600ms hold + 220ms fade (hard ceiling 2200ms)
+  const ENTRANCE_HOLD_MS = 1600;
+  const ENTRANCE_MAX_CEILING_MS = 2200;
+  let entranceCompleted = false;
 
-  function hideIntroSplashImmediately() {
-    if (splashHideTimer) clearTimeout(splashHideTimer);
-    if (splashFadeTimer) clearTimeout(splashFadeTimer);
-    const splash = document.getElementById("s24-startup-splash");
-    if (splash) {
-      splash.classList.add("splash-hidden");
-      splash.style.display = "none";
-    }
-  }
-
-  function hasActiveSessionAlreadyShownIntro() {
-    if (window.__S24_ACTIVE_SESSION_INTRO_DONE === true) return true;
+  function revealHomepageSafely() {
+    if (entranceCompleted) return;
+    entranceCompleted = true;
     try {
-      return sessionStorage.getItem(SESSION_INTRO_SHOWN_KEY) === "1";
-    } catch {
-      return false;
-    }
-  }
-
-  function markActiveSessionIntroShown() {
-    window.__S24_ACTIVE_SESSION_INTRO_DONE = true;
-    try {
-      sessionStorage.setItem(SESSION_INTRO_SHOWN_KEY, "1");
-    } catch {}
-  }
-
-  function triggerStandardIntroSplash(holdMs = STANDARD_INTRO_HOLD_MS) {
-    let splash = document.getElementById("s24-startup-splash");
-    if (!splash) {
-      splash = document.createElement("div");
-      splash.id = "s24-startup-splash";
-      splash.className = "startup-splash";
-      splash.innerHTML = `
-        <div class="splash-inner">
-          <img src="icon.svg" alt="Sunnah 24" class="splash-logo" />
-          <h2>সুন্নাহ ২৪ • Sunnah 24</h2>
-          <p>Enterprise Prophetic 24-Hour Lifestyle</p>
-        </div>
-      `;
-      document.body.prepend(splash);
-    } else {
-      splash.style.display = "flex";
-      splash.classList.remove("splash-hidden");
-    }
-
-    if (splashHideTimer) clearTimeout(splashHideTimer);
-    if (splashFadeTimer) clearTimeout(splashFadeTimer);
-
-    splashHideTimer = setTimeout(() => {
-      splash.classList.add("splash-hidden");
+      const splash = document.getElementById("s24-startup-splash");
+      if (splash) {
+        splash.classList.add("splash-hidden");
+        splash.style.opacity = "0";
+        splash.style.visibility = "hidden";
+        splash.style.pointerEvents = "none";
+        splash.style.display = "none";
+        setTimeout(() => {
+          try {
+            if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
+          } catch (_) {}
+        }, 250);
+      }
       const homeView = document.getElementById("home-dashboard-view");
       if (homeView && !activeMasterSectionId && !isSunnahGridPageOpen) {
         homeView.classList.remove("hidden");
-        homeView.style.display = "";
+        homeView.style.display = "block";
+        homeView.style.opacity = "1";
+        homeView.style.visibility = "visible";
       }
-      splashFadeTimer = setTimeout(() => {
-        if (splash) {
-          splash.style.display = "none";
-          splash.remove();
-        }
-      }, 450);
-    }, holdMs);
+      if (typeof window.__S24_FORCE_REVEAL_HOME__ === "function") {
+        window.__S24_FORCE_REVEAL_HOME__();
+      }
+    } catch (_) {}
   }
 
-  // Strictly show entrance animation ONLY on a brand-new app session.
-  // Never re-trigger when resuming from background or BFCache while active in background.
-  if (!hasActiveSessionAlreadyShownIntro()) {
-    markActiveSessionIntroShown();
-    triggerStandardIntroSplash(STANDARD_INTRO_HOLD_MS);
-  } else {
-    hideIntroSplashImmediately();
-  }
-
-  window.addEventListener("pageshow", (event) => {
-    if (event.persisted || hasActiveSessionAlreadyShownIntro()) {
-      hideIntroSplashImmediately();
+  try {
+    const splashEl = document.getElementById("s24-startup-splash");
+    if (splashEl) {
+      splashEl.style.display = "flex";
+      splashEl.style.opacity = "1";
+      splashEl.style.visibility = "visible";
+      setTimeout(revealHomepageSafely, ENTRANCE_HOLD_MS);
+    } else {
+      revealHomepageSafely();
     }
+  } catch (_) {
+    revealHomepageSafely();
+  }
+
+  // Temper-proof absolute ceiling so entrance never stalls on any device or WebView
+  setTimeout(revealHomepageSafely, ENTRANCE_MAX_CEILING_MS);
+
+  window.addEventListener("pageshow", () => {
+    revealHomepageSafely();
   });
 });
 
@@ -6011,6 +6003,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
