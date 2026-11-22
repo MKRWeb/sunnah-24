@@ -2691,6 +2691,7 @@ function isSideloadSelfUpdateEnabled() {
     ) {
       return Boolean(window.AndroidDownloader.isSelfUpdateSupported());
     }
+    // Backward compatibility only if native bridge explicitly exposes downloadAndAutoInstallVersionApk
     if (
       window.AndroidDownloader &&
       typeof window.AndroidDownloader.downloadAndAutoInstallVersionApk === "function"
@@ -2698,6 +2699,27 @@ function isSideloadSelfUpdateEnabled() {
       return true;
     }
   } catch {}
+  return false;
+}
+
+function parseSemverTuple(tag) {
+  const cleaned = String(tag || "").replace(/^v/i, "").trim();
+  return cleaned.split(".").map((part) => {
+    const num = parseInt(part.replace(/[^0-9]/g, ""), 10);
+    return Number.isFinite(num) ? num : 0;
+  });
+}
+
+function isRemoteVersionNewer(remoteTag, installedTag) {
+  const r = parseSemverTuple(remoteTag);
+  const i = parseSemverTuple(installedTag);
+  const maxLen = Math.max(r.length, i.length);
+  for (let idx = 0; idx < maxLen; idx++) {
+    const rv = r[idx] || 0;
+    const iv = i[idx] || 0;
+    if (rv > iv) return true;
+    if (rv < iv) return false;
+  }
   return false;
 }
 
@@ -2722,6 +2744,7 @@ function renderInstalledVersionBadge() {
 }
 
 function initInAppUpdateChecker(manualTrigger = false) {
+  // Strictly disabled inside Play Store Release AAB builds to satisfy Google Play Device & Network Abuse Policy
   if (!isSideloadSelfUpdateEnabled()) return;
 
   const isInsideNativeApk =
@@ -2740,7 +2763,7 @@ function initInAppUpdateChecker(manualTrigger = false) {
       if (!release || !release.tag_name) return;
       const latestTag = release.tag_name.trim();
 
-      if (latestTag) {
+      if (isRemoteVersionNewer(latestTag, installedTag)) {
         const apkAsset = (release.assets || []).find(
           (a) => a.name && a.name.toLowerCase().endsWith(".apk")
         );
@@ -2780,20 +2803,21 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
   banner.className = "update-banner-card";
   banner.setAttribute("data-cached", isAlreadyOnDevice ? "true" : "false");
 
+  const safeVersion = escapeHtml(newVersion);
   const msgText =
     appState.locale === "ar"
-      ? `✨ تحديث جديد (${newVersion}) متاح لتطبيق سنة ٢٤!`
+      ? `✨ تحديث جديد (${safeVersion}) متاح لتطبيق سنة ٢٤!`
       : appState.locale === "en"
-      ? `✨ Update (${newVersion}) Available for Sunnah 24!`
-      : `✨ সুন্নাহ ২৪-এর নতুন আপডেট (${newVersion}) প্রস্তুত!`;
+      ? `✨ Update (${safeVersion}) Available for Sunnah 24!`
+      : `✨ সুন্নাহ ২৪-এর নতুন আপডেট (${safeVersion}) প্রস্তুত!`;
 
   const subText = isAlreadyOnDevice
     ? appState.locale === "bn"
-      ? "আপডেট ফাইলটি আপনার ফোনে প্রস্তুত আছে। সরাসরি ইনস্টল করুন।"
-      : "Update APK is already saved on your phone. Tap to install."
+      ? "আপডেট ফাইলটি আপনার ফোনে প্রস্তুত আছে। সরাসরি ইনস্টল করুন (সার্টিফিকেট ভিন্ন হলে পুরনো অ্যাপ আনইনস্টল করে নতুনটি ইনস্টল করুন)।"
+      : "Update APK is saved on your phone. Tap to install (if signature differs, uninstall old build first)."
     : appState.locale === "bn"
-    ? "ডাউনলোড শেষ হওয়ার সাথে সাথেই স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হবে।"
-    : "Automatically triggers the package installer right after download finishes.";
+    ? "ডাউনলোড শেষ হওয়ার সাথে সাথেই সিস্টেম প্যাকেজ ইনস্টলার চালু হবে।"
+    : "Launches the Android system package installer automatically once downloaded.";
 
   const btnText = isAlreadyOnDevice
     ? appState.locale === "bn"
@@ -2818,8 +2842,8 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
       </div>
     </div>
     <div class="update-banner-actions">
-      <button id="trigger-native-update-btn" type="button" class="btn-update-action" style="background:var(--accent-gold);color:#05130e;font-weight:800;">${btnText}</button>
-      <button type="button" class="btn-update-dismiss" onclick="document.getElementById('s24-update-banner').remove()">${dismissText}</button>
+      <button id="trigger-native-update-btn" class="btn-update-action" style="background:var(--accent-gold);color:#05130e;font-weight:800;">${btnText}</button>
+      <button class="btn-update-dismiss" onclick="document.getElementById('s24-update-banner').remove()">${dismissText}</button>
     </div>
   `;
 
@@ -2829,6 +2853,29 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
     const btn = document.getElementById("trigger-native-update-btn");
     const statusEl = document.getElementById("s24-update-status");
     const progWrap = document.getElementById("s24-update-progress-wrap");
+
+    const needsUnknownSourcePermission = Boolean(
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.canRequestPackageInstalls === "function" &&
+      !window.AndroidDownloader.canRequestPackageInstalls()
+    );
+
+    if (needsUnknownSourcePermission && window.AndroidDownloader) {
+      if (typeof window.AndroidDownloader.openUnknownSourceSettings === "function") {
+        window.AndroidDownloader.openUnknownSourceSettings();
+        return;
+      }
+    }
+
+    if (needsUnknownSourcePermission && (!latestRemoteApkUrl || !latestRemoteVersionTag)) {
+      if (
+        window.AndroidDownloader &&
+        typeof window.AndroidDownloader.openUnknownSourceSettings === "function"
+      ) {
+        window.AndroidDownloader.openUnknownSourceSettings();
+        return;
+      }
+    }
 
     if (banner.getAttribute("data-cached") === "true") {
       if (
@@ -2898,17 +2945,6 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
   }
   if (statusEl && statusText) {
     statusEl.textContent = statusText;
-  }
-
-  if (percent < 0) {
-    if (banner) banner.setAttribute("data-cached", "false");
-    if (btn) {
-      btn.disabled = false;
-      btn.style.background = "var(--accent-gold)";
-      btn.style.color = "#05130e";
-      btn.textContent =
-        appState.locale === "bn" ? "🔄 পুনরায় ডাউনলোড করুন" : "🔄 Retry Download";
-    }
   }
 
   if (percent >= 100) {
