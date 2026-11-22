@@ -2145,29 +2145,9 @@ function openHabitModal(habitId) {
 // Muhasabah UI helpers removed (appState.diaryEntries preserved for SHA-256 backup compatibility)
 
 document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    if (typeof loadAndVerifyState === "function") await loadAndVerifyState();
-  } catch (err) {
-    console.warn("Storage init fallback:", err);
-  }
-  try {
-    if (typeof initXStyleAutoGeographicDetector === "function") initXStyleAutoGeographicDetector();
-  } catch (err) {
-    console.warn("Geo detector fallback:", err);
-  }
-  try {
-    if (typeof applyLanguageToDOM === "function") applyLanguageToDOM();
-  } catch (err) {
-    console.warn("Language render fallback:", err);
-  }
-  try {
-    const homeView = document.getElementById("home-dashboard-view");
-    if (homeView && !activeMasterSectionId && !isSunnahGridPageOpen) {
-      homeView.classList.remove("hidden");
-      homeView.style.display = "block";
-      homeView.style.opacity = "1";
-    }
-  } catch (_) {}
+  await loadAndVerifyState();
+  initXStyleAutoGeographicDetector();
+  applyLanguageToDOM();
 
   if ("serviceWorker" in navigator) {
     const isNativeShell =
@@ -2702,27 +2682,6 @@ function isSideloadSelfUpdateEnabled() {
   return false;
 }
 
-function parseSemverTuple(tag) {
-  const cleaned = String(tag || "").replace(/^v/i, "").trim();
-  return cleaned.split(".").map((part) => {
-    const num = parseInt(part.replace(/[^0-9]/g, ""), 10);
-    return Number.isFinite(num) ? num : 0;
-  });
-}
-
-function isRemoteVersionNewer(remoteTag, installedTag) {
-  const r = parseSemverTuple(remoteTag);
-  const i = parseSemverTuple(installedTag);
-  const maxLen = Math.max(r.length, i.length);
-  for (let idx = 0; idx < maxLen; idx++) {
-    const rv = r[idx] || 0;
-    const iv = i[idx] || 0;
-    if (rv > iv) return true;
-    if (rv < iv) return false;
-  }
-  return false;
-}
-
 function getInstalledAppVersionTag() {
   try {
     if (
@@ -2733,7 +2692,7 @@ function getInstalledAppVersionTag() {
       if (nativeVer) return nativeVer.startsWith("v") ? nativeVer : `v${nativeVer}`;
     }
   } catch {}
-  return "v4.3.0";
+  return "v4.2.0";
 }
 
 function renderInstalledVersionBadge() {
@@ -2763,7 +2722,7 @@ function initInAppUpdateChecker(manualTrigger = false) {
       if (!release || !release.tag_name) return;
       const latestTag = release.tag_name.trim();
 
-      if (isRemoteVersionNewer(latestTag, installedTag)) {
+      if (latestTag !== installedTag) {
         const apkAsset = (release.assets || []).find(
           (a) => a.name && a.name.toLowerCase().endsWith(".apk")
         );
@@ -2813,11 +2772,11 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
 
   const subText = isAlreadyOnDevice
     ? appState.locale === "bn"
-      ? "আপডেট ফাইলটি আপনার ফোনে প্রস্তুত আছে। সরাসরি ইনস্টল করুন (সার্টিফিকেট ভিন্ন হলে পুরনো অ্যাপ আনইনস্টল করে নতুনটি ইনস্টল করুন)।"
-      : "Update APK is saved on your phone. Tap to install (if signature differs, uninstall old build first)."
+      ? "আপডেট ফাইলটি আপনার ফোনে প্রস্তুত আছে। সরাসরি ইনস্টল করুন।"
+      : "Update APK is already saved on your phone. Tap to install."
     : appState.locale === "bn"
-    ? "ডাউনলোড শেষ হওয়ার সাথে সাথেই সিস্টেম প্যাকেজ ইনস্টলার চালু হবে।"
-    : "Launches the Android system package installer automatically once downloaded.";
+    ? "ডাউনলোড শেষ হওয়ার সাথে সাথেই স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হবে।"
+    : "Automatically triggers the package installer right after download finishes.";
 
   const btnText = isAlreadyOnDevice
     ? appState.locale === "bn"
@@ -2962,60 +2921,88 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => initInAppUpdateChecker(false), 2500);
   }
 
-  // Single international-standard entrance time range: 1600ms hold + 220ms fade (hard ceiling 2200ms)
-  const ENTRANCE_HOLD_MS = 950;
-  const ENTRANCE_MAX_CEILING_MS = 1600;
-  let entranceCompleted = false;
+  const STANDARD_INTRO_HOLD_MS = 3250;
+  const SESSION_INTRO_SHOWN_KEY = "SUNNAH_24_SESSION_INTRO_SHOWN_V1";
+  let splashHideTimer = null;
+  let splashFadeTimer = null;
 
-  function revealHomepageSafely() {
-    if (entranceCompleted) return;
-    entranceCompleted = true;
+  function hideIntroSplashImmediately() {
+    if (splashHideTimer) clearTimeout(splashHideTimer);
+    if (splashFadeTimer) clearTimeout(splashFadeTimer);
+    const splash = document.getElementById("s24-startup-splash");
+    if (splash) {
+      splash.classList.add("splash-hidden");
+      splash.style.display = "none";
+    }
+  }
+
+  function hasActiveSessionAlreadyShownIntro() {
+    if (window.__S24_ACTIVE_SESSION_INTRO_DONE === true) return true;
     try {
-      const splash = document.getElementById("s24-startup-splash");
-      if (splash) {
-        splash.classList.add("splash-hidden");
-        splash.style.opacity = "0";
-        splash.style.visibility = "hidden";
-        splash.style.pointerEvents = "none";
-        splash.style.display = "none";
-        setTimeout(() => {
-          try {
-            if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
-          } catch (_) {}
-        }, 250);
-      }
+      return sessionStorage.getItem(SESSION_INTRO_SHOWN_KEY) === "1";
+    } catch {
+      return false;
+    }
+  }
+
+  function markActiveSessionIntroShown() {
+    window.__S24_ACTIVE_SESSION_INTRO_DONE = true;
+    try {
+      sessionStorage.setItem(SESSION_INTRO_SHOWN_KEY, "1");
+    } catch {}
+  }
+
+  function triggerStandardIntroSplash(holdMs = STANDARD_INTRO_HOLD_MS) {
+    let splash = document.getElementById("s24-startup-splash");
+    if (!splash) {
+      splash = document.createElement("div");
+      splash.id = "s24-startup-splash";
+      splash.className = "startup-splash";
+      splash.innerHTML = `
+        <div class="splash-inner">
+          <img src="icon.svg" alt="Sunnah 24" class="splash-logo" />
+          <h2>সুন্নাহ ২৪ • Sunnah 24</h2>
+          <p>Enterprise Prophetic 24-Hour Lifestyle</p>
+        </div>
+      `;
+      document.body.prepend(splash);
+    } else {
+      splash.style.display = "flex";
+      splash.classList.remove("splash-hidden");
+    }
+
+    if (splashHideTimer) clearTimeout(splashHideTimer);
+    if (splashFadeTimer) clearTimeout(splashFadeTimer);
+
+    splashHideTimer = setTimeout(() => {
+      splash.classList.add("splash-hidden");
       const homeView = document.getElementById("home-dashboard-view");
       if (homeView && !activeMasterSectionId && !isSunnahGridPageOpen) {
         homeView.classList.remove("hidden");
-        homeView.style.display = "block";
-        homeView.style.opacity = "1";
-        homeView.style.visibility = "visible";
+        homeView.style.display = "";
       }
-      if (typeof window.__S24_FORCE_REVEAL_HOME__ === "function") {
-        window.__S24_FORCE_REVEAL_HOME__();
-      }
-    } catch (_) {}
+      splashFadeTimer = setTimeout(() => {
+        if (splash) {
+          splash.style.display = "none";
+          splash.remove();
+        }
+      }, 450);
+    }, holdMs);
   }
 
-  try {
-    const splashEl = document.getElementById("s24-startup-splash");
-    if (splashEl) {
-      splashEl.style.display = "flex";
-      splashEl.style.opacity = "1";
-      splashEl.style.visibility = "visible";
-      setTimeout(revealHomepageSafely, ENTRANCE_HOLD_MS);
-    } else {
-      revealHomepageSafely();
+  // Strictly show entrance animation ONLY on a brand-new app session.
+  // Never re-trigger when resuming from background or BFCache while active in background.
+  if (!hasActiveSessionAlreadyShownIntro()) {
+    markActiveSessionIntroShown();
+    triggerStandardIntroSplash(STANDARD_INTRO_HOLD_MS);
+  } else {
+    hideIntroSplashImmediately();
+  }
+
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted || hasActiveSessionAlreadyShownIntro()) {
+      hideIntroSplashImmediately();
     }
-  } catch (_) {
-    revealHomepageSafely();
-  }
-
-  // Temper-proof absolute ceiling so entrance never stalls on any device or WebView
-  setTimeout(revealHomepageSafely, ENTRANCE_MAX_CEILING_MS);
-
-  window.addEventListener("pageshow", () => {
-    revealHomepageSafely();
   });
 });
 
@@ -6024,8 +6011,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
-
 
 
 

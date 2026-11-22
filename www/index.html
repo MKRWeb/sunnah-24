@@ -13,49 +13,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Scheherazade+New:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <script>
-    (function() {
-      window.__S24_BOOT_TS__ = Date.now();
-      window.__S24_FORCE_REVEAL_HOME__ = function() {
-        try {
-          var splash = document.getElementById("s24-startup-splash");
-          if (splash) {
-            splash.classList.add("splash-hidden");
-            splash.style.opacity = "0";
-            splash.style.visibility = "hidden";
-            splash.style.pointerEvents = "none";
-            splash.style.display = "none";
-          }
-          var body = document.body;
-          if (body) {
-            body.style.opacity = "1";
-            body.style.visibility = "visible";
-            if (!body.getAttribute("data-active-view")) {
-              body.setAttribute("data-active-view", "home");
-            }
-          }
-          var activeView = (body && body.getAttribute("data-active-view")) || "home";
-          if (activeView === "home") {
-            var homeView = document.getElementById("home-dashboard-view");
-            if (homeView) {
-              homeView.classList.remove("hidden");
-              homeView.style.display = "block";
-              homeView.style.opacity = "1";
-              homeView.style.visibility = "visible";
-            }
-          }
-        } catch (_) {}
-      };
-      // Hard failsafe timer: never allow splash to block homepage past 2800ms under any circumstance
-      setTimeout(window.__S24_FORCE_REVEAL_HOME__, 2800);
-      window.addEventListener("error", function() {
-        setTimeout(window.__S24_FORCE_REVEAL_HOME__, 150);
-      });
-      window.addEventListener("unhandledrejection", function() {
-        setTimeout(window.__S24_FORCE_REVEAL_HOME__, 150);
-      });
-    })();
-  </script>
 </head>
 <body data-active-view="home">
   <!-- Smooth Startup Splash Screen -->
@@ -2150,6 +2107,5 @@
   <script src="ui.js"></script>
 </body>
 </html>
-
 
 
