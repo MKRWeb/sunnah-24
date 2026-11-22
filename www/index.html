@@ -9,19 +9,19 @@
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="manifest" href="manifest.json" />
-  <!-- Non-blocking async Google Fonts so offline/slow APK startup never stalls on white screen -->
+  <!-- Non-blocking async Google Fonts so slow/offline APK networks NEVER stall first paint with a white screen -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
+    rel="preload"
+    as="style"
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Scheherazade+New:wght@500;600;700&display=swap"
-    rel="stylesheet"
-    media="print"
-    onload="this.media='all'"
+    onload="this.onload=null;this.rel='stylesheet'"
   />
   <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Scheherazade+New:wght@500;600;700&display=swap" rel="stylesheet" />
   </noscript>
-  <!-- Critical Zero-White-Screen First-Paint Inline CSS & Auto-Dismiss Guarantee -->
+  <!-- Critical Zero-White-Screen First-Paint Inline CSS (Paints branded emerald-mint canvas & inline emblem at 0ms) -->
   <style>
     html, body {
       background-color: #e8f5ee;
@@ -38,7 +38,7 @@
       z-index: 9999;
       opacity: 1;
       visibility: visible;
-      transition: opacity 0.24s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.24s ease;
+      transition: opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.22s ease;
     }
     .startup-splash.splash-hidden {
       opacity: 0 !important;
@@ -83,6 +83,7 @@
   <link rel="stylesheet" href="style.css" />
   <script>
     (function() {
+      window.__S24_BOOT_TS__ = Date.now();
       window.__S24_FORCE_REVEAL_HOME__ = function() {
         try {
           var splash = document.getElementById("s24-startup-splash");
@@ -113,12 +114,13 @@
           }
         } catch (_) {}
       };
-      setTimeout(window.__S24_FORCE_REVEAL_HOME__, 1800);
+      // Hard failsafe timer: never allow splash to block homepage past 2200ms under any circumstance
+      setTimeout(window.__S24_FORCE_REVEAL_HOME__, 2200);
       window.addEventListener("error", function() {
-        setTimeout(window.__S24_FORCE_REVEAL_HOME__, 120);
+        setTimeout(window.__S24_FORCE_REVEAL_HOME__, 150);
       });
       window.addEventListener("unhandledrejection", function() {
-        setTimeout(window.__S24_FORCE_REVEAL_HOME__, 120);
+        setTimeout(window.__S24_FORCE_REVEAL_HOME__, 150);
       });
     })();
   </script>
@@ -144,7 +146,6 @@
       <p>Enterprise Prophetic 24-Hour Lifestyle</p>
     </div>
   </div>
-
 
 
 
@@ -2228,6 +2229,7 @@
   <script src="ui.js"></script>
 </body>
 </html>
+
 
 
 
