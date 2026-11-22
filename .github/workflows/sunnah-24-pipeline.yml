@@ -420,6 +420,7 @@ jobs:
               }
               buildTypes {
                   release {
+                      debuggable false
                       signingConfig signingConfigs.release
                       minifyEnabled true
                       shrinkResources true
@@ -1340,7 +1341,7 @@ jobs:
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug bundleRelease \
+          ./gradlew assembleRelease bundleRelease \
             --init-script maven-mirror.init.gradle \
             --no-daemon \
             -Dorg.gradle.internal.http.connectionTimeout=120000 \
@@ -1349,7 +1350,7 @@ jobs:
             -Dorg.gradle.internal.repository.initial.backoff=3000 || \
           (echo "⏳ Transient network/Maven hiccup detected; waiting 12s and retrying with cached artifacts..." && \
            sleep 12 && \
-           ./gradlew assembleDebug bundleRelease \
+           ./gradlew assembleRelease bundleRelease \
              --init-script maven-mirror.init.gradle \
              --no-daemon \
              --max-workers=2 \
@@ -1373,7 +1374,11 @@ jobs:
 
       - name: 8. Sign Sideload APK & Verify Signed Play Store AAB
         run: |
-          UNSIGNED_APK="android/app/build/outputs/apk/debug/app-debug.apk"
+          UNSIGNED_APK=$(find android/app/build/outputs/apk/release -name "*.apk" | head -n 1)
+          if [ -z "$UNSIGNED_APK" ] || [ ! -f "$UNSIGNED_APK" ]; then
+            echo "❌ ERROR: Release APK was not generated!"
+            exit 1
+          fi
           SIGNED_APK="Sunnah-24-v4.3-Enterprise-Signed.apk"
 
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
