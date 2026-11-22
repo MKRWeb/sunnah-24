@@ -248,7 +248,7 @@ jobs:
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       RUN_NUMBER: ${{ github.run_number }}
-      VERSION_NAME: "4.7.${{ github.run_number }}"
+      VERSION_NAME: "4.8.${{ github.run_number }}"
 
     steps:
       - name: 1. Checkout Repository & Pull Latest Branch HEAD
