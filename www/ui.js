@@ -2682,6 +2682,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============================================================================
 let latestRemoteApkUrl = "";
 let latestRemoteVersionTag = "";
+let isApkDownloadInProgress = false;
 
 function isSideloadSelfUpdateEnabled() {
   try {
@@ -2691,7 +2692,6 @@ function isSideloadSelfUpdateEnabled() {
     ) {
       return Boolean(window.AndroidDownloader.isSelfUpdateSupported());
     }
-    // Backward compatibility only if native bridge explicitly exposes downloadAndAutoInstallVersionApk
     if (
       window.AndroidDownloader &&
       typeof window.AndroidDownloader.downloadAndAutoInstallVersionApk === "function"
@@ -2723,9 +2723,9 @@ function isRemoteVersionNewer(remoteTag, installedTag) {
   return false;
 }
 
-// Universal Unrestricted Release Installer: Allows ANY release version (newer, identical, or older)
-// to be downloaded and installed every time the user enters the app.
-function isRemoteReleaseInstallable(remoteTag, installedTag) {
+// SnapTube-style unrestricted release check: allows installing ANY release version
+// (newer, identical, or older) every time the user enters the app.
+function isRemoteReleaseInstallable(remoteTag) {
   const cleanRemote = String(remoteTag || "").replace(/^v/i, "").trim();
   return Boolean(cleanRemote);
 }
@@ -2751,7 +2751,6 @@ function renderInstalledVersionBadge() {
 }
 
 function initInAppUpdateChecker(manualTrigger = false) {
-  // Strictly disabled inside Play Store Release AAB builds to satisfy Google Play Device & Network Abuse Policy
   if (!isSideloadSelfUpdateEnabled()) return;
 
   const isInsideNativeApk =
@@ -2770,7 +2769,7 @@ function initInAppUpdateChecker(manualTrigger = false) {
       if (!release || !release.tag_name) return;
       const latestTag = release.tag_name.trim();
 
-      if (isRemoteReleaseInstallable(latestTag, installedTag)) {
+      if (isRemoteReleaseInstallable(latestTag)) {
         const apkAsset = (release.assets || []).find(
           (a) => a.name && a.name.toLowerCase().endsWith(".apk")
         );
@@ -2779,7 +2778,7 @@ function initInAppUpdateChecker(manualTrigger = false) {
         latestRemoteApkUrl = apkAsset.browser_download_url;
         latestRemoteVersionTag = latestTag;
 
-        // Always start fresh on app entry so user gets a clean download prompt every session
+        // Always start fresh on every app launch so the user gets a clean download prompt
         if (
           window.AndroidDownloader &&
           typeof window.AndroidDownloader.clearCachedUpdateApks === "function"
@@ -2789,7 +2788,7 @@ function initInAppUpdateChecker(manualTrigger = false) {
           } catch (_) {}
         }
 
-        showUpdateNotificationBanner(latestTag, false);
+        showUpdateNotificationBanner(latestTag);
       } else if (manualTrigger) {
         alert(
           appState.locale === "bn"
@@ -2801,16 +2800,77 @@ function initInAppUpdateChecker(manualTrigger = false) {
     .catch(() => {});
 }
 
-function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
+function startSnapTubeStyleDownloadAndInstall() {
+  const btn = document.getElementById("trigger-native-update-btn");
+  const statusEl = document.getElementById("s24-update-status");
+  const progWrap = document.getElementById("s24-update-progress-wrap");
+  const progBar = document.getElementById("s24-update-progress-bar");
+
+  if (!window.AndroidDownloader || isApkDownloadInProgress) return;
+
+  // Step 1: Check if APK is ALREADY verified & ready on disk (e.g., returning from Unknown Sources Settings or tapping Install Now)
+  const hasVerifiedApkOnDisk = Boolean(
+    (typeof window.AndroidDownloader.isVersionApkCached === "function" &&
+      window.AndroidDownloader.isVersionApkCached(latestRemoteVersionTag)) ||
+      (typeof window.AndroidDownloader.isLocalApkCached === "function" &&
+        window.AndroidDownloader.isLocalApkCached())
+  );
+
+  if (hasVerifiedApkOnDisk) {
+    if (progWrap) progWrap.style.display = "block";
+    if (progBar) progBar.style.width = "100%";
+    if (statusEl) {
+      statusEl.textContent =
+        appState.locale === "bn"
+          ? "📦 প্যাকেজ ইনস্টলার চালু হচ্ছে..."
+          : "📦 Launching system package installer...";
+    }
+    if (typeof window.AndroidDownloader.installCachedVersionApk === "function") {
+      window.AndroidDownloader.installCachedVersionApk(latestRemoteVersionTag);
+      return;
+    }
+    if (typeof window.AndroidDownloader.installLocalApk === "function") {
+      window.AndroidDownloader.installLocalApk();
+      return;
+    }
+  }
+
+  // Step 2: Otherwise start SnapTube-style direct HTTP stream download -> auto-install at 100%
+  isApkDownloadInProgress = true;
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = appState.locale === "bn" ? "⏳ ০% ডাউনলোড হচ্ছে..." : "⏳ Downloading 0%...";
+  }
+  if (progWrap) progWrap.style.display = "block";
+  if (progBar) progBar.style.width = "2%";
+  if (statusEl) {
+    statusEl.textContent =
+      appState.locale === "bn"
+        ? "ডাউনলোড শেষ হওয়ার সাথে সাথেই ইনস্টলার চালু হবে..."
+        : "Package installer will launch automatically once downloaded...";
+  }
+
+  if (typeof window.AndroidDownloader.downloadAndAutoInstallVersionApk === "function") {
+    window.AndroidDownloader.downloadAndAutoInstallVersionApk(
+      latestRemoteApkUrl,
+      latestRemoteVersionTag
+    );
+  } else if (typeof window.AndroidDownloader.downloadAndInstallApk === "function") {
+    window.AndroidDownloader.downloadAndInstallApk(latestRemoteApkUrl);
+  }
+}
+
+function showUpdateNotificationBanner(newVersion) {
   if (!isSideloadSelfUpdateEnabled()) return;
 
   const existing = document.getElementById("s24-update-banner");
   if (existing) existing.remove();
+  isApkDownloadInProgress = false;
 
   const banner = document.createElement("div");
   banner.id = "s24-update-banner";
   banner.className = "update-banner-card";
-  banner.setAttribute("data-cached", isAlreadyOnDevice ? "true" : "false");
+  banner.setAttribute("data-cached", "false");
 
   const safeVersion = escapeHtml(newVersion);
   const msgText =
@@ -2820,21 +2880,13 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
       ? `✨ Update (${safeVersion}) Available for Sunnah 24!`
       : `✨ সুন্নাহ ২৪-এর নতুন আপডেট (${safeVersion}) প্রস্তুত!`;
 
-  const subText = isAlreadyOnDevice
-    ? appState.locale === "bn"
-      ? "আপডেট ফাইলটি ডাউনলোড সম্পন্ন! ইনস্টল করতে নিচের বাটনে ট্যাপ করুন।"
-      : "Update APK downloaded! Tap below to install this version."
-    : appState.locale === "bn"
-    ? "যেকোনো ভার্সন ডাউনলোড ও ইনস্টল করতে নিচের বাটনে ট্যাপ করুন।"
-    : "Tap below to download & install this release version.";
+  const subText =
+    appState.locale === "bn"
+      ? "যেকোনো ভার্সন ডাউনলোড ও ইনস্টল করতে নিচের বাটনে ট্যাপ করুন।"
+      : "Tap below to download & install this update package.";
 
-  const btnText = isAlreadyOnDevice
-    ? appState.locale === "bn"
-      ? "📦 এখনই ইনস্টল করুন"
-      : "📦 Install Now"
-    : appState.locale === "bn"
-    ? "🚀 আপডেট করুন"
-    : "🚀 Update Now";
+  const btnText =
+    appState.locale === "bn" ? "🚀 আপডেট করুন" : "🚀 Update Now";
 
   const dismissText =
     appState.locale === "ar" ? "لاحقاً" : appState.locale === "en" ? "Later" : "পরে";
@@ -2851,87 +2903,16 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
       </div>
     </div>
     <div class="update-banner-actions">
-      <button id="trigger-native-update-btn" class="btn-update-action" style="background:var(--accent-gold);color:#05130e;font-weight:800;">${btnText}</button>
-      <button class="btn-update-dismiss" onclick="document.getElementById('s24-update-banner').remove()">${dismissText}</button>
+      <button id="trigger-native-update-btn" type="button" class="btn-update-action" style="background:var(--accent-gold);color:#05130e;font-weight:800;">${btnText}</button>
+      <button type="button" class="btn-update-dismiss" onclick="document.getElementById('s24-update-banner').remove()">${dismissText}</button>
     </div>
   `;
 
   document.body.appendChild(banner);
 
-  document.getElementById("trigger-native-update-btn").addEventListener("click", () => {
-    const btn = document.getElementById("trigger-native-update-btn");
-    const statusEl = document.getElementById("s24-update-status");
-    const progWrap = document.getElementById("s24-update-progress-wrap");
-
-    const needsUnknownSourcePermission = Boolean(
-      window.AndroidDownloader &&
-      typeof window.AndroidDownloader.canRequestPackageInstalls === "function" &&
-      !window.AndroidDownloader.canRequestPackageInstalls()
-    );
-
-    const isCached = banner.getAttribute("data-cached") === "true";
-
-    if (isCached || needsUnknownSourcePermission) {
-      // Disinfectant: Verify the APK actually exists on disk before calling installCachedVersionApk;
-      // otherwise re-download cleanly instead of hitting "The file does not exist"
-      const hasValidLocalFile = Boolean(
-        window.AndroidDownloader &&
-        ((typeof window.AndroidDownloader.isVersionApkCached === "function" &&
-          window.AndroidDownloader.isVersionApkCached(latestRemoteVersionTag)) ||
-          (typeof window.AndroidDownloader.isLocalApkCached === "function" &&
-            window.AndroidDownloader.isLocalApkCached()))
-      );
-
-      if (hasValidLocalFile) {
-        if (
-          window.AndroidDownloader &&
-          typeof window.AndroidDownloader.installCachedVersionApk === "function"
-        ) {
-          window.AndroidDownloader.installCachedVersionApk(latestRemoteVersionTag);
-          return;
-        }
-        if (
-          window.AndroidDownloader &&
-          typeof window.AndroidDownloader.installLocalApk === "function"
-        ) {
-          window.AndroidDownloader.installLocalApk();
-          return;
-        }
-      } else if (needsUnknownSourcePermission && window.AndroidDownloader && typeof window.AndroidDownloader.openUnknownSourceSettings === "function") {
-        window.AndroidDownloader.openUnknownSourceSettings();
-        return;
-      }
-    }
-
-    if (
-      window.AndroidDownloader &&
-      typeof window.AndroidDownloader.downloadAndAutoInstallVersionApk === "function"
-    ) {
-      btn.disabled = true;
-      btn.textContent = appState.locale === "bn" ? "⏳ ০% ডাউনলোড হচ্ছে..." : "⏳ Downloading 0%...";
-      if (progWrap) progWrap.style.display = "block";
-      if (statusEl) {
-        statusEl.textContent =
-          appState.locale === "bn"
-            ? "ডাউনলোড শেষ হলে স্বয়ংক্রিয়ভাবে ইনস্টল স্ক্রিন ওপেন হবে..."
-            : "Package installer will launch automatically at 100%...";
-      }
-      window.AndroidDownloader.downloadAndAutoInstallVersionApk(
-        latestRemoteApkUrl,
-        latestRemoteVersionTag
-      );
-      return;
-    }
-
-    if (
-      window.AndroidDownloader &&
-      typeof window.AndroidDownloader.downloadAndInstallApk === "function"
-    ) {
-      btn.disabled = true;
-      if (progWrap) progWrap.style.display = "block";
-      window.AndroidDownloader.downloadAndInstallApk(latestRemoteApkUrl);
-    }
-  });
+  document
+    .getElementById("trigger-native-update-btn")
+    .addEventListener("click", startSnapTubeStyleDownloadAndInstall);
 }
 
 // Live Progress Bar & Automatic Installer Trigger Callback
@@ -2950,26 +2931,35 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
   }
 
   if (btn && percent >= 0 && percent < 100) {
+    btn.disabled = true;
     btn.textContent = `⬇️ ${localizeDigits(percent, appState.locale)}%`;
   }
   if (statusEl && statusText) {
     statusEl.textContent = statusText;
   }
 
-  if (percent < 0 && btn) {
-    btn.disabled = false;
-    btn.style.background = "var(--accent-gold)";
-    btn.style.color = "#05130e";
-    btn.textContent = appState.locale === "bn" ? "🔄 পুনরায় চেষ্টা করুন" : "🔄 Retry Download";
+  if (percent < 0) {
+    isApkDownloadInProgress = false;
+    if (banner) banner.setAttribute("data-cached", "false");
+    if (btn) {
+      btn.disabled = false;
+      btn.style.background = "var(--accent-gold)";
+      btn.style.color = "#05130e";
+      btn.textContent =
+        appState.locale === "bn" ? "🔄 পুনরায় ডাউনলোড করুন" : "🔄 Retry Download";
+    }
   }
 
   if (percent >= 100) {
+    isApkDownloadInProgress = false;
     if (banner) banner.setAttribute("data-cached", "true");
     if (progBar) progBar.style.width = "100%";
-    const needsSourcePerm =
+
+    const needsSourcePerm = Boolean(
       window.AndroidDownloader &&
       typeof window.AndroidDownloader.canRequestPackageInstalls === "function" &&
-      !window.AndroidDownloader.canRequestPackageInstalls();
+      !window.AndroidDownloader.canRequestPackageInstalls()
+    );
 
     if (btn) {
       btn.disabled = false;
@@ -2983,14 +2973,14 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
         ? "📦 এখনই ইনস্টল করুন"
         : "📦 Install Now";
     }
-    if (statusEl) {
+    if (statusEl && !statusText) {
       statusEl.textContent = needsSourcePerm
         ? appState.locale === "bn"
           ? "⚙️ 'ইনস্টল অনুমতি দিন' বাটনে ট্যাপ করে 'Allow from this source' চালু করুন — স্বয়ংক্রিয়ভাবে ইনস্টল হবে।"
           : "⚙️ Tap 'Allow & Install' and enable 'Allow from this source' to auto-launch installer."
         : appState.locale === "bn"
-        ? "✅ ডাউনলোড সম্পন্ন! স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হয়েছে (সমস্যা হলে 'এখনই ইনস্টল করুন' চাপুন)।"
-        : "✅ Download complete! Package installer launched (tap 'Install Now' if needed).";
+        ? "✅ ডাউনলোড সম্পন্ন! ইনস্টলার চালু হচ্ছে..."
+        : "✅ Download complete! Launching installer...";
     }
   }
 };
