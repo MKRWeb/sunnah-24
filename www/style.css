@@ -1435,7 +1435,8 @@ html[dir="rtl"] .info-btn {
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
+  pointer-events: none;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 
 
