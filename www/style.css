@@ -12836,3 +12836,67 @@ html[data-theme="dark"] .s24-ayat-translation-text {
   color: #e2e8f0 !important;
 }
 
+
+
+/* ==========================================================================
+   V14.1 ZERO-JUMP VIEW TRANSITION, SCROLL-ANCHOR LOCK & VIEWPORT STABILITY FIX
+   - Eliminates screen jumping when clicking Sunnah Grid sections, Tasbeeh,
+     or Stats in both PWA and Android Capacitor APK WebViews.
+   - Replaces positional translateX/translateY entrance keyframes on full-page
+     views with pure opacity transitions so viewport coordinates never shift.
+   - Locks scroll-anchoring (`overflow-anchor: none`) and reserves viewport
+     min-height (`100dvh`) so swapping views never collapses & re-expands the
+     scroll container or shifts the sticky header / bottom navigation bar.
+   ========================================================================== */
+html {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-anchor: none;
+  scroll-behavior: auto !important;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overflow-anchor: none;
+}
+
+.app-header {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.s24-bottom-nav {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+@keyframes m3PureOpacityFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.home-dashboard-view,
+.sunnah-grid-view,
+.master-section-view,
+.master-screen-panel {
+  animation: m3PureOpacityFade 0.16s ease-out !important;
+  transform: none !important;
+  overflow-anchor: none;
+}
+
+#sunnah-grid-view,
+#master-section-view {
+  min-height: calc(100dvh - 132px) !important;
+}
+
+.section-launcher-card:active,
+.s24-bnav-btn:active {
+  transform: none !important;
+}
+
