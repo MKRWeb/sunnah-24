@@ -802,7 +802,7 @@ jobs:
               }
 
               @Override
-              protected void onResume() {
+              public void onResume() {
                   super.onResume();
                   File resumeCandidate = pendingResumeApk;
                   if (resumeCandidate != null && resumeCandidate.exists() && canInstallUnknownPackages()) {
@@ -814,7 +814,7 @@ jobs:
               }
 
               @Override
-              protected void onDestroy() {
+              public void onDestroy() {
                   super.onDestroy();
                   mainHandler.removeCallbacksAndMessages(null);
                   downloadExecutor.shutdownNow();
