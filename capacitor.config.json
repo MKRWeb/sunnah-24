@@ -2,22 +2,11 @@
   "appId": "com.mkrweb.sunnah24",
   "appName": "Sunnah 24",
   "webDir": "www",
-  "backgroundColor": "#e8f5ee",
+  "bundledWebRuntime": false,
   "server": {
     "androidScheme": "https"
-  },
-  "android": {
-    "backgroundColor": "#e8f5ee"
-  },
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 600,
-      "launchAutoHide": true,
-      "backgroundColor": "#e8f5ee",
-      "androidSplashResourceName": "splash",
-      "androidScaleType": "CENTER_CROP",
-      "showSpinner": false
-    }
   }
 }
+
+
 
