@@ -3,10 +3,10 @@
   "appName": "Sunnah 24",
   "webDir": "www",
   "bundledWebRuntime": false,
+  "backgroundColor": "#F1F6F3",
   "server": {
-    "androidScheme": "https"
+    "androidScheme": "http",
+    "cleartext": true
   }
 }
-
-
 
