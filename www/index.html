@@ -1,151 +1,29 @@
 <!DOCTYPE html>
-<html lang="bn" dir="ltr" data-theme="light" style="background-color:#e8f5ee;">
+<html lang="bn" dir="ltr" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Sunnah 24 — নববী জীবনধারা ও রুটিন প্ল্যানার | Sunnah 24</title>
   <meta name="description" content="Sunnah 24: Enterprise-grade 24-Hour Islamic Routine Planner, Prophetic Habit Tracker, Digital Tasbih & Triple-Layer Local-Integrity-Verified Vault." />
-  <meta name="theme-color" content="#e8f5ee" />
+  <meta name="theme-color" content="#ffffff" />
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="manifest" href="manifest.json" />
-  <!-- Non-blocking async Google Fonts so slow/offline APK networks NEVER stall first paint with a white screen -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    rel="preload"
-    as="style"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Scheherazade+New:wght@500;600;700&display=swap"
-    onload="this.onload=null;this.rel='stylesheet'"
-  />
-  <noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Scheherazade+New:wght@500;600;700&display=swap" rel="stylesheet" />
-  </noscript>
-  <!-- Critical Zero-White-Screen First-Paint Inline CSS (Paints branded emerald-mint canvas & inline emblem at 0ms) -->
-  <style>
-    html, body {
-      background-color: #e8f5ee;
-      margin: 0;
-      padding: 0;
-    }
-    .startup-splash {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 50% 38%, #f2fbf6 0%, #dcf2e6 62%, #cbe9d8 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      opacity: 1;
-      visibility: visible;
-      transition: opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.22s ease;
-    }
-    .startup-splash.splash-hidden {
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-      display: none !important;
-    }
-    .splash-inner {
-      text-align: center;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .splash-emblem-wrap {
-      width: 82px;
-      height: 82px;
-      border-radius: 22px;
-      background: linear-gradient(145deg, #065f46 0%, #047857 55%, #059669 100%);
-      border: 2px solid #10b981;
-      box-shadow: 0 12px 28px rgba(6, 95, 70, 0.28);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 14px;
-    }
-    .splash-inner h2 {
-      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans Bengali", "Segoe UI", Roboto, sans-serif;
-      font-size: 1.28rem;
-      color: #064e3b;
-      font-weight: 800;
-      margin: 0 0 4px 0;
-    }
-    .splash-inner p {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 0.78rem;
-      color: #1e4635;
-      font-weight: 600;
-      margin: 0;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Scheherazade+New:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <script>
-    (function() {
-      window.__S24_BOOT_TS__ = Date.now();
-      window.__S24_FORCE_REVEAL_HOME__ = function() {
-        try {
-          var splash = document.getElementById("s24-startup-splash");
-          if (splash) {
-            splash.classList.add("splash-hidden");
-            splash.style.opacity = "0";
-            splash.style.visibility = "hidden";
-            splash.style.pointerEvents = "none";
-            splash.style.display = "none";
-          }
-          var body = document.body;
-          if (body) {
-            body.style.opacity = "1";
-            body.style.visibility = "visible";
-            if (!body.getAttribute("data-active-view")) {
-              body.setAttribute("data-active-view", "home");
-            }
-          }
-          var activeView = (body && body.getAttribute("data-active-view")) || "home";
-          if (activeView === "home") {
-            var homeView = document.getElementById("home-dashboard-view");
-            if (homeView) {
-              homeView.classList.remove("hidden");
-              homeView.style.display = "block";
-              homeView.style.opacity = "1";
-              homeView.style.visibility = "visible";
-            }
-          }
-        } catch (_) {}
-      };
-      // Hard failsafe timer: never allow splash to block homepage past 2200ms under any circumstance
-      setTimeout(window.__S24_FORCE_REVEAL_HOME__, 2200);
-      window.addEventListener("error", function() {
-        setTimeout(window.__S24_FORCE_REVEAL_HOME__, 150);
-      });
-      window.addEventListener("unhandledrejection", function() {
-        setTimeout(window.__S24_FORCE_REVEAL_HOME__, 150);
-      });
-    })();
-  </script>
 </head>
-<body data-active-view="home" style="background-color:#f4f7f5;">
-  <!-- Instant Zero-Latency Branded Startup Splash Screen (Inline SVG renders at 0ms with zero white flash) -->
+<body data-active-view="home">
+  <!-- Smooth Startup Splash Screen -->
   <div id="s24-startup-splash" class="startup-splash">
     <div class="splash-inner">
-      <div class="splash-emblem-wrap" aria-hidden="true">
-        <svg viewBox="0 0 64 64" width="54" height="54" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="s24BootCrescent" x1="18" y1="12" x2="46" y2="52" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#fef08a"/>
-              <stop offset="55%" stop-color="#facc15"/>
-              <stop offset="100%" stop-color="#d97706"/>
-            </linearGradient>
-          </defs>
-          <path d="M38 14C28.6 15.8 22 24.1 22 34C22 45.2 31.1 54.3 42.3 54.3C45.4 54.3 48.3 53.6 50.9 52.3C46.8 55.8 41.5 58 35.7 58C22.6 58 12 47.4 12 34.3C12 22.8 20.1 13.2 31 11C33.4 11.7 35.8 12.7 38 14Z" fill="url(#s24BootCrescent)"/>
-          <path d="M44 19L45.4 23.1L49.5 24.5L45.4 25.9L44 30L42.6 25.9L38.5 24.5L42.6 23.1L44 19Z" fill="#fef9c3"/>
-        </svg>
-      </div>
+      <img src="icon.svg" alt="Sunnah 24" class="splash-logo" />
       <h2>সুন্নাহ ২৪ • Sunnah 24</h2>
       <p>Enterprise Prophetic 24-Hour Lifestyle</p>
     </div>
   </div>
+
 
 
 
@@ -2229,7 +2107,6 @@
   <script src="ui.js"></script>
 </body>
 </html>
-
 
 
 
