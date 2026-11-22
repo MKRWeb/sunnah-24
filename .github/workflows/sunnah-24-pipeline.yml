@@ -248,7 +248,7 @@ jobs:
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       RUN_NUMBER: ${{ github.run_number }}
-      VERSION_NAME: "4.6.${{ github.run_number }}"
+      VERSION_NAME: "4.7.${{ github.run_number }}"
 
     steps:
       - name: 1. Checkout Repository & Pull Latest Branch HEAD
@@ -408,7 +408,7 @@ jobs:
             const DEFAULT_REPO_OWNER = "MKRWeb";
             const DEFAULT_REPO_NAME = "sunnah-24";
             const DEFAULT_RELEASE_API = `https://api.github.com/repos/${DEFAULT_REPO_OWNER}/${DEFAULT_REPO_NAME}/releases/latest`;
-            const FALLBACK_APK_URL = `https://github.com/${DEFAULT_REPO_OWNER}/${DEFAULT_REPO_NAME}/releases/latest/download/Sunnah-24-v4.3-Enterprise-Signed.apk`;
+            const FALLBACK_APK_URL = `https://github.com/${DEFAULT_REPO_OWNER}/${DEFAULT_REPO_NAME}/releases/latest/download/Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk`;
 
             let currentState = S24OtaState.IDLE;
             let lastProgressPct = -1;
@@ -1958,7 +1958,7 @@ jobs:
             echo "❌ ERROR: Release APK was not generated!"
             exit 1
           fi
-          SIGNED_APK="Sunnah-24-v4.3-Enterprise-Signed.apk"
+          SIGNED_APK="Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk"
 
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
           $BUILD_TOOLS_DIR/zipalign -f -v -p 4 "$UNSIGNED_APK" app-release-aligned.apk
@@ -1978,19 +1978,19 @@ jobs:
 
           AAB_PATH=$(find android/app/build/outputs/bundle/release -name "*.aab" | head -n 1)
           if [ -n "$AAB_PATH" ]; then
-            cp "$AAB_PATH" ./Sunnah-24-v4.3-PlayStore-Signed.aab
-            if ! jarsigner -verify -certs ./Sunnah-24-v4.3-PlayStore-Signed.aab >/dev/null 2>&1; then
+            cp "$AAB_PATH" ./Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab
+            if ! jarsigner -verify -certs ./Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab >/dev/null 2>&1; then
               echo "🔐 Signing Play Store AAB with release keystore..."
               jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
                 -keystore "$KEYSTORE_FILE" \
                 -storepass "$KS_PASS" \
                 -keypass "$K_PASS" \
-                ./Sunnah-24-v4.3-PlayStore-Signed.aab "$K_ALIAS"
+                ./Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab "$K_ALIAS"
             fi
-            jarsigner -verify -verbose -certs ./Sunnah-24-v4.3-PlayStore-Signed.aab
-            sha256sum "$SIGNED_APK" ./Sunnah-24-v4.3-PlayStore-Signed.aab > SHA256SUMS.txt
+            jarsigner -verify -verbose -certs ./Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab
+            sha256sum "$SIGNED_APK" ./Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab > SHA256SUMS.txt
             cat SHA256SUMS.txt
-            echo "✅ Play Store Signed AAB verified: Sunnah-24-v4.3-PlayStore-Signed.aab"
+            echo "✅ Play Store Signed AAB verified: Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab"
           else
             echo "❌ ERROR: Play Store AAB was not generated!"
             exit 1
@@ -2001,8 +2001,8 @@ jobs:
         with:
           name: Sunnah-24-Enterprise-Release-Bundle
           path: |
-            Sunnah-24-v4.3-Enterprise-Signed.apk
-            Sunnah-24-v4.3-PlayStore-Signed.aab
+            Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk
+            Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab
             SHA256SUMS.txt
 
       - name: 10. Publish Atomic GitHub Release with APK & Play Store AAB (Fault-Tolerant 403-Safe)
@@ -2018,18 +2018,18 @@ jobs:
           TITLE="☪️ Sunnah 24 v${VERSION_NAME} — Play Store Ready AAB & Signed Enterprise APK"
           cat << 'EOF' > /tmp/release_notes.md
           ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Play Store Ready `.aab` & Signed Android `.apk` (v${VERSION_NAME})
-          - **Google Play Store Ready `.aab` (`Sunnah-24-v4.3-PlayStore-Signed.aab`):** Compiled with `targetSdk 36` / `compileSdk 36`, R8 code shrinking + deobfuscation mapping, zero self-updater bytecode, and zero legacy storage permissions.
-          - **Sideload Auto-Updating `.apk` (`Sunnah-24-v4.3-Enterprise-Signed.apk`):** Full in-app SnapTube-style atomic `.part` download, SHA-256 verification & one-tap package installer launch.
+          - **Google Play Store Ready `.aab` (`Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab`):** Compiled with `targetSdk 36` / `compileSdk 36`, R8 code shrinking + deobfuscation mapping, zero self-updater bytecode, and zero legacy storage permissions.
+          - **Sideload Auto-Updating `.apk` (`Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk`):** Full in-app SnapTube-style atomic `.part` download, SHA-256 verification & one-tap package installer launch.
           - **Triple-Redundant Auto-Vault:** Preserves all user habit records across LocalStorage, IndexedDB, and Native Android Vault.
           EOF
           sed -i 's/^          //' /tmp/release_notes.md
           sed -i "s/\${VERSION_NAME}/${VERSION_NAME}/g" /tmp/release_notes.md
 
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab SHA256SUMS.txt --clobber || true
+            gh release upload "$TAG" Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab SHA256SUMS.txt --clobber || true
             echo "✅ Updated existing GitHub Release $TAG"
           else
-            if gh release create "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab SHA256SUMS.txt --title "$TITLE" --notes-file /tmp/release_notes.md --target "${GITHUB_SHA}"; then
+            if gh release create "$TAG" Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab SHA256SUMS.txt --title "$TITLE" --notes-file /tmp/release_notes.md --target "${GITHUB_SHA}"; then
               echo "✅ Published GitHub Release $TAG successfully!"
             else
               echo "ℹ️ Notice: Default GITHUB_TOKEN has read-only Release permissions (403). Your Signed APK & Play Store AAB are already safely uploaded in Step 9 Build Artifacts (Sunnah-24-Enterprise-Release-Bundle)!"
@@ -2050,9 +2050,9 @@ jobs:
               fi
               echo "📦 Gradually publishing APK + AAB release $TAG to mirror repository: $TARGET_REPO ..."
               if GH_TOKEN="$SYNC_PAT" gh release view "$TAG" --repo "$TARGET_REPO" >/dev/null 2>&1; then
-                GH_TOKEN="$SYNC_PAT" gh release upload "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab SHA256SUMS.txt --repo "$TARGET_REPO" --clobber || true
+                GH_TOKEN="$SYNC_PAT" gh release upload "$TAG" Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab SHA256SUMS.txt --repo "$TARGET_REPO" --clobber || true
               else
-                GH_TOKEN="$SYNC_PAT" gh release create "$TAG" Sunnah-24-v4.3-Enterprise-Signed.apk Sunnah-24-v4.3-PlayStore-Signed.aab SHA256SUMS.txt --repo "$TARGET_REPO" --title "$TITLE" --notes-file /tmp/release_notes.md || true
+                GH_TOKEN="$SYNC_PAT" gh release create "$TAG" Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab SHA256SUMS.txt --repo "$TARGET_REPO" --title "$TITLE" --notes-file /tmp/release_notes.md || true
               fi
               sleep 4
             done
