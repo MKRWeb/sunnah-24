@@ -437,7 +437,7 @@ jobs:
           APP_GRADLE="android/app/build.gradle"
           if [ -f "$APP_GRADLE" ]; then
             sed -i "s/versionCode [0-9]*/versionCode ${VERSION_CODE}/g" "$APP_GRADLE"
-            sed -i "s/versionName "[^"]*"/versionName "${VERSION_NAME}"/g" "$APP_GRADLE"
+            sed -i "s/versionName \"[^\"]*\"/versionName \"${VERSION_NAME}\"/g" "$APP_GRADLE"
 
             if ! grep -q "GOOGLE PLAY STORE PRODUCTION AAB CONFIGURATION" "$APP_GRADLE"; then
               cat << 'GRADLE_EOF' >> "$APP_GRADLE"
@@ -950,7 +950,7 @@ jobs:
               private void notifyWebProgress(int pct, String message) {
                   runOnUiThread(() -> {
                       if (bridge != null && bridge.getWebView() != null) {
-                          String safeMsg = message.replace("'", "\'");
+                          String safeMsg = message.replace("'", "\\'");
                           bridge.getWebView().evaluateJavascript(
                               "if(window.onSunnahApkDownloadProgress) window.onSunnahApkDownloadProgress(" + pct + ", '" + safeMsg + "');",
                               null
