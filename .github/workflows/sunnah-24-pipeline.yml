@@ -425,8 +425,8 @@ jobs:
           # 6A. Enforce Stable Production Target API 35 (Android 15) in variables.gradle
           VARS_GRADLE="android/variables.gradle"
           if [ -f "$VARS_GRADLE" ]; then
-            sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 35/g' "$VARS_GRADLE"
-            sed -i 's/targetSdkVersion = [0-9]*/targetSdkVersion = 35/g' "$VARS_GRADLE"
+            sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 36/g' "$VARS_GRADLE"
+            sed -i 's/targetSdkVersion = [0-9]*/targetSdkVersion = 36/g' "$VARS_GRADLE"
             echo "✅ Enforced compileSdkVersion=35 and targetSdkVersion=35 in variables.gradle"
           fi
 
@@ -444,9 +444,9 @@ jobs:
 
           // --- GOOGLE PLAY STORE PRODUCTION AAB & NON-DEBUGGABLE SIDELOAD RELEASE CONFIGURATION ---
           android {
-              compileSdk 35
+              compileSdk 36
               defaultConfig {
-                  targetSdk 35
+                  targetSdk 36
                   versionCode Integer.parseInt(System.getenv("VERSION_CODE") ?: "10001")
                   versionName System.getenv("VERSION_NAME") ?: "4.3.1"
               }
@@ -1432,7 +1432,7 @@ jobs:
           TITLE="☪️ Sunnah 24 v${VERSION_NAME} — Play Store Ready AAB & Signed Enterprise APK"
           cat << 'EOF' > /tmp/release_notes.md
           ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Play Store Ready `.aab` & Signed Android `.apk` (v${VERSION_NAME})
-          - **Google Play Store Ready `.aab` (`Sunnah-24-v4.3-PlayStore-Signed.aab`):** Compiled with `targetSdk 35` / `compileSdk 35`, R8 code shrinking + deobfuscation mapping, zero self-updater bytecode, and zero legacy storage permissions.
+          - **Google Play Store Ready `.aab` (`Sunnah-24-v4.3-PlayStore-Signed.aab`):** Compiled with `targetSdk 36` / `compileSdk 36`, R8 code shrinking + deobfuscation mapping, zero self-updater bytecode, and zero legacy storage permissions.
           - **Sideload Auto-Updating `.apk` (`Sunnah-24-v4.3-Enterprise-Signed.apk`):** Full in-app update support via Android's system DownloadManager for direct website users.
           - **Triple-Redundant Auto-Vault:** Preserves all user habit records across LocalStorage, IndexedDB, and Native Android Vault.
           EOF
