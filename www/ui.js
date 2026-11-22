@@ -4648,7 +4648,9 @@ function openMasterSection(sectionId, recordHistory = true) {
   }
 
   if (navigator.vibrate) navigator.vibrate(12);
-  window.scrollTo({ top: 0, behavior: "instant" });
+  if ((window.scrollY || window.pageYOffset || 0) !== 0) {
+    window.scrollTo(0, 0);
+  }
 }
 
 function closeMasterSectionToHome() {
@@ -4664,9 +4666,7 @@ function closeMasterSectionToHome() {
 
   syncMasterSectionsLiveProgress();
 
-  requestAnimationFrame(() => {
-    window.scrollTo({ top: homeDashboardScrollY || 0, behavior: "instant" });
-  });
+  window.scrollTo(0, homeDashboardScrollY || 0);
 }
 
 // Superseded legacy handleSunnahBackNavigation #2 consolidated into unified LIFO modal & view handler
@@ -5121,13 +5121,10 @@ function openSunnahGridPage(recordHistory = true, restoreScroll = false) {
   }
   setBottomNavActiveTab("grid");
 
-  requestAnimationFrame(() => {
-    const targetY = restoreScroll ? (s24ViewScrollPositions.grid || sunnahGridScrollY || 0) : 0;
-    window.scrollTo({
-      top: targetY,
-      behavior: "instant"
-    });
-  });
+  const targetY = restoreScroll ? (s24ViewScrollPositions.grid || sunnahGridScrollY || 0) : 0;
+  if ((window.scrollY || window.pageYOffset || 0) !== targetY) {
+    window.scrollTo(0, targetY);
+  }
 }
 
 // Open the Independent Home Page (#home-dashboard-view)
@@ -5157,13 +5154,10 @@ function openHomeDashboardPage(restoreScroll = true, recordHistory = false) {
   setBottomNavActiveTab("home");
   syncHomeExpandedBreathingSpace();
 
-  requestAnimationFrame(() => {
-    const targetY = restoreScroll ? (s24ViewScrollPositions.home || homeDashboardScrollY || 0) : 0;
-    window.scrollTo({
-      top: targetY,
-      behavior: "instant"
-    });
-  });
+  const targetY = restoreScroll ? (s24ViewScrollPositions.home || homeDashboardScrollY || 0) : 0;
+  if ((window.scrollY || window.pageYOffset || 0) !== targetY) {
+    window.scrollTo(0, targetY);
+  }
 }
 
 // Smoothly adjusts Home Page bottom breathing space & viewport scroll when 5-Waqt Popup
@@ -5360,12 +5354,7 @@ document.addEventListener("DOMContentLoaded", () => {
     syncBottomNavWithCurrentView();
 
     if (restoreScroll && s24ViewScrollPositions[sectionId] > 0) {
-      requestAnimationFrame(() => {
-        window.scrollTo({
-          top: s24ViewScrollPositions[sectionId],
-          behavior: "instant"
-        });
-      });
+      window.scrollTo(0, s24ViewScrollPositions[sectionId]);
     }
   };
   if (window.Sunnah24SectionEngine) {
@@ -6022,5 +6011,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
