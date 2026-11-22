@@ -2145,9 +2145,22 @@ function openHabitModal(habitId) {
 // Muhasabah UI helpers removed (appState.diaryEntries preserved for SHA-256 backup compatibility)
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadAndVerifyState();
-  initXStyleAutoGeographicDetector();
-  applyLanguageToDOM();
+  try {
+    initXStyleAutoGeographicDetector();
+    applyLanguageToDOM();
+  } catch (initPaintErr) {
+    console.warn("Initial synchronous paint warning:", initPaintErr);
+  }
+
+  try {
+    await Promise.race([
+      loadAndVerifyState(),
+      new Promise((resolve) => setTimeout(resolve, 1500))
+    ]);
+    applyLanguageToDOM();
+  } catch (storageBootErr) {
+    console.warn("Storage boot fallback warning:", storageBootErr);
+  }
 
   if ("serviceWorker" in navigator) {
     const isNativeShell =
@@ -2813,6 +2826,17 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
     const statusEl = document.getElementById("s24-update-status");
     const progWrap = document.getElementById("s24-update-progress-wrap");
 
+    if (
+      window.AndroidDownloader &&
+      typeof window.AndroidDownloader.canRequestPackageInstalls === "function" &&
+      !window.AndroidDownloader.canRequestPackageInstalls() &&
+      typeof window.AndroidDownloader.openUnknownSourceSettings === "function" &&
+      banner.getAttribute("data-needs-perm") === "true"
+    ) {
+      window.AndroidDownloader.openUnknownSourceSettings();
+      return;
+    }
+
     if (banner.getAttribute("data-cached") === "true") {
       if (
         window.AndroidDownloader &&
@@ -2921,7 +2945,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => initInAppUpdateChecker(false), 2500);
   }
 
-  const STANDARD_INTRO_HOLD_MS = 3250;
+  const STANDARD_INTRO_HOLD_MS = 850;
   const SESSION_INTRO_SHOWN_KEY = "SUNNAH_24_SESSION_INTRO_SHOWN_V1";
   let splashHideTimer = null;
   let splashFadeTimer = null;
