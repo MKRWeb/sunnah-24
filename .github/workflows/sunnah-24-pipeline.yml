@@ -948,10 +948,25 @@ jobs:
                   }
               }
 
+              private String escapeJsString(String raw) {
+                  if (raw == null) return "";
+                  StringBuilder sb = new StringBuilder(raw.length() + 16);
+                  for (int i = 0; i < raw.length(); i++) {
+                      char ch = raw.charAt(i);
+                      if (ch == '\\') sb.append("\\\\");
+                      else if (ch == '"') sb.append("\\\"");
+                      else if (ch == '\'') sb.append("\\\'");
+                      else if (ch == '\n') sb.append("\\n");
+                      else if (ch == '\r') sb.append("\\r");
+                      else sb.append(ch);
+                  }
+                  return sb.toString();
+              }
+
               private void notifyWebProgress(int pct, String message) {
                   runOnUiThread(() -> {
                       if (bridge != null && bridge.getWebView() != null) {
-                          String quotedMsg = JSONObject.quote(message != null ? message : "");
+                          String quotedMsg = "\"" + escapeJsString(message) + "\"";
                           bridge.getWebView().evaluateJavascript(
                               "if(window.onSunnahApkDownloadProgress){window.onSunnahApkDownloadProgress(" + pct + "," + quotedMsg + ");}",
                               null
