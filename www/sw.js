@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "sunnah-24-cache-v4.3-modular";
+const CACHE_NAME = "sunnah-24-cache-v7-v4.3-modular";
 const ASSETS = [
   "./",
   "./index.html",
