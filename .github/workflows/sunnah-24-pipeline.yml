@@ -835,11 +835,8 @@ jobs:
                   getWindow().getDecorView().setBackgroundColor(Color.parseColor("#e8f5ee"));
                   super.onCreate(savedInstanceState);
 
-                  File updateDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-                  if (updateDir != null) {
-                      if (!updateDir.exists()) updateDir.mkdirs();
-                      targetApkFile = new File(updateDir, "Sunnah24-Update.apk");
-                  }
+                  purgeStaleUpdateApks();
+                  targetApkFile = new File(getPrimaryUpdateDirectory(), "Sunnah24-Update.apk");
 
                   if (this.bridge != null && this.bridge.getWebView() != null) {
                       WebView webView = this.bridge.getWebView();
@@ -927,6 +924,30 @@ jobs:
                   File cacheDir = new File(getCacheDir(), "apk_updates");
                   if (!cacheDir.exists()) cacheDir.mkdirs();
                   return cacheDir;
+              }
+
+              // Ensures next app launch starts clean so the update prompt always offers a fresh download
+              private void purgeStaleUpdateApks() {
+                  try {
+                      File cacheDir = new File(getCacheDir(), "apk_updates");
+                      if (cacheDir.exists() && cacheDir.isDirectory()) {
+                          File[] files = cacheDir.listFiles();
+                          if (files != null) {
+                              for (File f : files) {
+                                  if (f.getName().endsWith(".apk")) f.delete();
+                              }
+                          }
+                      }
+                      File extDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                      if (extDir != null && extDir.exists() && extDir.isDirectory()) {
+                          File[] files = extDir.listFiles();
+                          if (files != null) {
+                              for (File f : files) {
+                                  if (f.getName().endsWith(".apk")) f.delete();
+                              }
+                          }
+                      }
+                  } catch (Exception ignored) {}
               }
 
               private File getVersionedApkFile(String versionTag) {
@@ -1073,11 +1094,32 @@ jobs:
                   });
               }
 
+              private long getApkLongVersionCode(PackageInfo pkgInfo) {
+                  if (pkgInfo == null) return -1L;
+                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                      return pkgInfo.getLongVersionCode();
+                  }
+                  return (long) pkgInfo.versionCode;
+              }
+
               private void triggerDirectFileProviderInstaller(File apkFile, long completedDownloadId) {
                   runOnUiThread(() -> {
                       try {
                           File stagedApk = stageApkToInternalCache(apkFile);
                           if (stagedApk != null && stagedApk.exists() && stagedApk.length() > 1024 * 100) {
+                              // Check if downloaded APK has a lower versionCode than currently installed (Android blocks downgrades unless old build is uninstalled first)
+                              boolean isDowngrade = false;
+                              try {
+                                  PackageManager pm = getPackageManager();
+                                  PackageInfo installedInfo = pm.getPackageInfo(getPackageName(), 0);
+                                  PackageInfo archiveInfo = pm.getPackageArchiveInfo(stagedApk.getAbsolutePath(), 0);
+                                  long installedCode = getApkLongVersionCode(installedInfo);
+                                  long archiveCode = getApkLongVersionCode(archiveInfo);
+                                  if (installedCode > 0 && archiveCode > 0 && archiveCode < installedCode) {
+                                      isDowngrade = true;
+                                  }
+                              } catch (Exception ignored) {}
+
                               Uri apkUri;
                               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                   apkUri = FileProvider.getUriForFile(
@@ -1088,11 +1130,48 @@ jobs:
                               } else {
                                   apkUri = Uri.fromFile(stagedApk);
                               }
+
+                              if (isDowngrade) {
+                                  // Copy APK to public Downloads so user can still tap it after uninstalling older/higher versionCode build
+                                  try {
+                                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                          ContentValues values = new ContentValues();
+                                          values.put(MediaStore.Downloads.DISPLAY_NAME, stagedApk.getName());
+                                          values.put(MediaStore.Downloads.MIME_TYPE, "application/vnd.android.package-archive");
+                                          values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+                                          Uri dlUri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+                                          if (dlUri != null) {
+                                              try (InputStream in = new FileInputStream(stagedApk);
+                                                   OutputStream os = getContentResolver().openOutputStream(dlUri)) {
+                                                  if (os != null) {
+                                                      byte[] buf = new byte[16384];
+                                                      int len;
+                                                      while ((len = in.read(buf)) > 0) os.write(buf, 0, len);
+                                                      os.flush();
+                                                  }
+                                              }
+                                          }
+                                      }
+                                  } catch (Exception ignored) {}
+
+                                  Toast.makeText(
+                                      MainActivity.this,
+                                      "ℹ️ পুরনো ভার্সন ইনস্টল করতে প্রথমে বর্তমান অ্যাপটি আনইনস্টল করুন, তারপর Downloads ফোল্ডার থেকে " + stagedApk.getName() + " ইনস্টল করুন।",
+                                      Toast.LENGTH_LONG
+                                  ).show();
+                                  Intent uninstallIntent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + getPackageName()));
+                                  uninstallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                  startActivity(uninstallIntent);
+                                  return;
+                              }
+
                               Intent installIntent = new Intent(Intent.ACTION_VIEW);
                               installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
                               installIntent.setClipData(ClipData.newRawUri("APK", apkUri));
                               installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                               installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                              installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+                              installIntent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
                               startActivity(installIntent);
                               return;
                           }
@@ -1155,9 +1234,14 @@ jobs:
                   }
 
                   @JavascriptInterface
+                  public void clearCachedUpdateApks() {
+                      purgeStaleUpdateApks();
+                  }
+
+                  @JavascriptInterface
                   public boolean isVersionApkCached(String versionTag) {
                       File f = getVersionedApkFile(versionTag);
-                      if (f.exists() && f.length() > 1024 * 500) {
+                      if (f.exists() && f.length() > 1024 * 100) {
                           targetApkFile = f;
                           return true;
                       }
@@ -1167,34 +1251,30 @@ jobs:
                   @JavascriptInterface
                   public void installCachedVersionApk(String versionTag) {
                       File f = getVersionedApkFile(versionTag);
-                      if (f.exists() && f.length() > 1024 * 500) {
+                      if (f.exists() && f.length() > 1024 * 100) {
                           targetApkFile = f;
                           launchApkInstallerGuarantee(f, downloadId);
-                      } else if (targetApkFile != null && targetApkFile.exists()) {
+                      } else if (targetApkFile != null && targetApkFile.exists() && targetApkFile.length() > 1024 * 100) {
                           launchApkInstallerGuarantee(targetApkFile, downloadId);
                       }
                   }
 
                   @JavascriptInterface
                   public boolean isLocalApkCached() {
-                      return targetApkFile != null && targetApkFile.exists() && targetApkFile.length() > 1024 * 500;
+                      return targetApkFile != null && targetApkFile.exists() && targetApkFile.length() > 1024 * 100;
                   }
 
                   @JavascriptInterface
                   public void installLocalApk() {
-                      if (targetApkFile != null && targetApkFile.exists()) {
+                      if (targetApkFile != null && targetApkFile.exists() && targetApkFile.length() > 1024 * 100) {
                           launchApkInstallerGuarantee(targetApkFile, downloadId);
                       }
                   }
 
                   @JavascriptInterface
                   public void downloadAndAutoInstallVersionApk(String urlString, String versionTag) {
-                      targetApkFile = getVersionedApkFile(versionTag);
-                      if (targetApkFile.exists() && targetApkFile.length() > 1024 * 500) {
-                          notifyWebProgress(100, "✅ ফাইল ফোনে প্রস্তুত আছে! ইনস্টলার চালু হচ্ছে...");
-                          launchApkInstallerGuarantee(targetApkFile, downloadId);
-                          return;
-                      }
+                      // Always perform a fresh download when user taps Update so any release version can be installed cleanly
+                      purgeStaleUpdateApks();
                       startNativeApkDownload(urlString, versionTag);
                   }
 
