@@ -12903,7 +12903,11 @@ body {
 
 
 /* ==========================================================================
-   APK ENTRANCE ZERO-WHITE-SCREEN & AUTO-UNLOCK SAFEGUARD
+   V14.3 ZERO-WHITE-SCREEN BRANDED EMERALD-MINT ENTRANCE & VIEWPORT RECOVERY
+   - Eliminates pure #ffffff white screen flash on initial APK launch
+   - Uses warm emerald-mint radial canvas (#f2fbf6 -> #cbe9d8) matching native
+     Android windowBackground & Capacitor SplashScreen backgroundColor
+   - Hard maximum splash hold ceiling (2200ms) with automatic homepage reveal
    ========================================================================== */
 html,
 body {
@@ -12918,12 +12922,14 @@ body {
   align-items: center !important;
   justify-content: center !important;
   z-index: 9999 !important;
-  transition: opacity 0.24s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.24s ease !important;
-  animation: s24SplashAutoUnlock 1.8s forwards;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.22s ease !important;
+  animation: s24SplashAutoDismiss 2.2s forwards;
 }
 
-@keyframes s24SplashAutoUnlock {
-  0%, 84% {
+@keyframes s24SplashAutoDismiss {
+  0%, 88% {
     opacity: 1;
     visibility: visible;
   }
