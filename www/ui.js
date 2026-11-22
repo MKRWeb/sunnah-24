@@ -2723,12 +2723,11 @@ function isRemoteVersionNewer(remoteTag, installedTag) {
   return false;
 }
 
-// Disinfectant: Guarantee any remote release version different from installed (or newer) can be installed without version-lock blocks
+// Universal Unrestricted Release Installer: Allows ANY release version (newer, identical, or older)
+// to be downloaded and installed every time the user enters the app.
 function isRemoteReleaseInstallable(remoteTag, installedTag) {
   const cleanRemote = String(remoteTag || "").replace(/^v/i, "").trim();
-  const cleanInstalled = String(installedTag || "").replace(/^v/i, "").trim();
-  if (!cleanRemote) return false;
-  return isRemoteVersionNewer(cleanRemote, cleanInstalled) || cleanRemote !== cleanInstalled;
+  return Boolean(cleanRemote);
 }
 
 function getInstalledAppVersionTag() {
@@ -2780,15 +2779,17 @@ function initInAppUpdateChecker(manualTrigger = false) {
         latestRemoteApkUrl = apkAsset.browser_download_url;
         latestRemoteVersionTag = latestTag;
 
-        let alreadyOnDevice = false;
+        // Always start fresh on app entry so user gets a clean download prompt every session
         if (
           window.AndroidDownloader &&
-          typeof window.AndroidDownloader.isVersionApkCached === "function"
+          typeof window.AndroidDownloader.clearCachedUpdateApks === "function"
         ) {
-          alreadyOnDevice = Boolean(window.AndroidDownloader.isVersionApkCached(latestTag));
+          try {
+            window.AndroidDownloader.clearCachedUpdateApks();
+          } catch (_) {}
         }
 
-        showUpdateNotificationBanner(latestTag, alreadyOnDevice);
+        showUpdateNotificationBanner(latestTag, false);
       } else if (manualTrigger) {
         alert(
           appState.locale === "bn"
@@ -2821,11 +2822,11 @@ function showUpdateNotificationBanner(newVersion, isAlreadyOnDevice) {
 
   const subText = isAlreadyOnDevice
     ? appState.locale === "bn"
-      ? "আপডেট ফাইলটি আপনার ফোনে প্রস্তুত আছে। সরাসরি ইনস্টল করুন (সার্টিফিকেট ভিন্ন হলে পুরনো অ্যাপ আনইনস্টল করে নতুনটি ইনস্টল করুন)।"
-      : "Update APK is saved on your phone. Tap to install (if signature differs, uninstall old build first)."
+      ? "আপডেট ফাইলটি ডাউনলোড সম্পন্ন! ইনস্টল করতে নিচের বাটনে ট্যাপ করুন।"
+      : "Update APK downloaded! Tap below to install this version."
     : appState.locale === "bn"
-    ? "ডাউনলোড শেষ হওয়ার সাথে সাথেই সিস্টেম প্যাকেজ ইনস্টলার চালু হবে।"
-    : "Launches the Android system package installer automatically once downloaded.";
+    ? "যেকোনো ভার্সন ডাউনলোড ও ইনস্টল করতে নিচের বাটনে ট্যাপ করুন।"
+    : "Tap below to download & install this release version.";
 
   const btnText = isAlreadyOnDevice
     ? appState.locale === "bn"
@@ -2988,8 +2989,8 @@ window.onSunnahApkDownloadProgress = function (percent, statusText) {
           ? "⚙️ 'ইনস্টল অনুমতি দিন' বাটনে ট্যাপ করে 'Allow from this source' চালু করুন — স্বয়ংক্রিয়ভাবে ইনস্টল হবে।"
           : "⚙️ Tap 'Allow & Install' and enable 'Allow from this source' to auto-launch installer."
         : appState.locale === "bn"
-        ? "✅ ডাউনলোড সম্পন্ন! স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হয়েছে।"
-        : "✅ Download complete! Package installer launched automatically.";
+        ? "✅ ডাউনলোড সম্পন্ন! স্বয়ংক্রিয়ভাবে ইনস্টলার চালু হয়েছে (সমস্যা হলে 'এখনই ইনস্টল করুন' চাপুন)।"
+        : "✅ Download complete! Package installer launched (tap 'Install Now' if needed).";
     }
   }
 };
