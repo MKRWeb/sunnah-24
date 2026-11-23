@@ -1108,8 +1108,8 @@ jobs:
                   release {
                       debuggable false
                       signingConfig signingConfigs.release
-                      minifyEnabled true
-                      shrinkResources true
+                      minifyEnabled false
+                      shrinkResources false
                       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
                       ndk {
                           debugSymbolLevel 'FULL'
@@ -2064,27 +2064,33 @@ jobs:
 
       - name: 8. Sign Sideload APK & Verify Signed Play Store AAB (Dynamic Version Filenames)
         run: |
-          UNSIGNED_APK=$(find android/app/build/outputs/apk/sideload/release -name "*.apk" | head -n 1)
-          if [ -z "$UNSIGNED_APK" ] || [ ! -f "$UNSIGNED_APK" ]; then
+          BUILT_APK=$(find android/app/build/outputs/apk/sideload/release -name "*.apk" | head -n 1)
+          if [ -z "$BUILT_APK" ] || [ ! -f "$BUILT_APK" ]; then
             echo "❌ ERROR: Sideload Release APK was not generated!"
             exit 1
           fi
           SIGNED_APK="Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk"
 
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
-          $BUILD_TOOLS_DIR/zipalign -f -v -p 4 "$UNSIGNED_APK" app-release-aligned.apk
+          if $BUILD_TOOLS_DIR/apksigner verify "$BUILT_APK" >/dev/null 2>&1; then
+            echo "✅ AGP already aligned & signed $BUILT_APK; copying directly without re-zipaligning."
+            cp -f "$BUILT_APK" "$SIGNED_APK"
+          else
+            echo "🔐 Aligning & signing unsigned APK with apksigner..."
+            $BUILD_TOOLS_DIR/zipalign -f -v -p 4 "$BUILT_APK" app-release-aligned.apk
+            $BUILD_TOOLS_DIR/apksigner sign \
+              --ks "$KEYSTORE_FILE" \
+              --ks-key-alias "$K_ALIAS" \
+              --ks-pass "pass:$KS_PASS" \
+              --key-pass "pass:$K_PASS" \
+              --v1-signing-enabled true \
+              --v2-signing-enabled true \
+              --v3-signing-enabled true \
+              --out "$SIGNED_APK" \
+              app-release-aligned.apk
+          fi
 
-          $BUILD_TOOLS_DIR/apksigner sign \
-            --ks "$KEYSTORE_FILE" \
-            --ks-key-alias "$K_ALIAS" \
-            --ks-pass "pass:$KS_PASS" \
-            --key-pass "pass:$K_PASS" \
-            --v1-signing-enabled true \
-            --v2-signing-enabled true \
-            --v3-signing-enabled true \
-            --out "$SIGNED_APK" \
-            app-release-aligned.apk
-
+          $BUILD_TOOLS_DIR/zipalign -c -v 4 "$SIGNED_APK"
           $BUILD_TOOLS_DIR/apksigner verify --verbose "$SIGNED_APK"
 
           AAB_PATH=$(find android/app/build/outputs/bundle/playstoreRelease -name "*.aab" | head -n 1)
