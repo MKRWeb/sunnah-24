@@ -1,5 +1,5 @@
 // ============================================================================
-// SUNNAH 24 — SNAP-TUBE-GRADE APK DOWNLOAD & SELF-UPDATE MANAGER (v2.0)
+// SUNNAH 24 — SNAP-TUBE-GRADE APK DOWNLOAD & SELF-UPDATE MANAGER (v3.0)
 // Deterministic Version Guard + SHA-256 Artifact Integrity + Atomic State FSM
 // Compatible with Capacitor 8 Android Bridge (`AndroidDownloader`) & Web/PWA
 // ============================================================================
@@ -22,7 +22,7 @@
   const DEFAULT_REPO_OWNER = "MKRWeb";
   const DEFAULT_REPO_NAME = "sunnah-24";
   const DEFAULT_RELEASE_API = `https://api.github.com/repos/${DEFAULT_REPO_OWNER}/${DEFAULT_REPO_NAME}/releases/latest`;
-  const FALLBACK_APK_URL = `https://github.com/${DEFAULT_REPO_OWNER}/${DEFAULT_REPO_NAME}/releases/latest/download/Sunnah-24-v4.3-Enterprise-Signed.apk`;
+  const DEFAULT_RELEASES_PAGE = `https://github.com/${DEFAULT_REPO_OWNER}/${DEFAULT_REPO_NAME}/releases/latest`;
 
   let currentState = S24OtaState.IDLE;
   let lastProgressPct = -1;
@@ -118,7 +118,7 @@
         }
       } catch (_) {}
     }
-    return "4.3.0";
+    return "4.6.0";
   }
 
   function canSelfInstallApk() {
@@ -167,45 +167,51 @@
 
     if (loc === "ar") {
       return {
-        title: `تحديث متاح (${safeVer}) • سنة ٢٤`,
+        title: `✨ تحديث جديد متاح (${safeVer}) • سنة ٢٤`,
         subReady: isCached
           ? "ملف التحديث جاهز على الجهاز. اضغط للتثبيت الآن."
-          : "تنزيل مباشر وتثبيت تلقائي مثل سناب تيوب.",
+          : "تنزيل مباشر وتثبيت تلقائي داخل التطبيق.",
         subPerm: "فعّل «السماح من هذا المصدر» ثم عد لتشغيل المثبّت تلقائياً.",
-        ctaInstall: "تثبيت الآن",
-        ctaDownload: "تحميل وتثبيت",
-        ctaAllow: "السماح والتثبيت",
+        ctaInstall: "📦 تثبيت الآن",
+        ctaDownload: "🚀 تحديث وتثبيت",
+        ctaAllow: "⚙️ السماح والتثبيت",
         ctaDismiss: "لاحقاً",
-        upToDate: `أنت تستخدم أحدث إصدار (${safeVer}).`
+        checkBtn: "🔄 التحقق من وجود تحديثات للتطبيق",
+        checking: "⏳ جارٍ التحقق من وجود تحديثات...",
+        upToDate: `✅ أنت تستخدم أحدث إصدار (${safeVer}).`
       };
     }
 
     if (loc === "en") {
       return {
-        title: `Update Ready (${safeVer}) • Sunnah 24`,
+        title: `✨ New Update Available (${safeVer}) • Sunnah 24`,
         subReady: isCached
-          ? "Verified APK is cached on device. Tap to install."
-          : "Direct APK download + one-tap package installer launch.",
+          ? "Verified APK is cached on device. Tap to install now."
+          : "Direct in-app APK download + automatic package installer.",
         subPerm: "Enable 'Allow from this source' in Settings; installer resumes automatically.",
-        ctaInstall: "Install Now",
-        ctaDownload: "Download & Install",
-        ctaAllow: "Allow & Install",
+        ctaInstall: "📦 Install Now",
+        ctaDownload: "🚀 Update Now",
+        ctaAllow: "⚙️ Allow & Install",
         ctaDismiss: "Later",
-        upToDate: `You are on the latest version (${safeVer}).`
+        checkBtn: "🔄 Check for App Update",
+        checking: "⏳ Checking for latest APK update...",
+        upToDate: `✅ You are on the latest version (${safeVer}).`
       };
     }
 
     return {
-      title: `নতুন আপডেট (${safeVer}) • সুন্নাহ ২৪`,
+      title: `✨ নতুন আপডেট প্রস্তুত (${safeVer}) • সুন্নাহ ২৪`,
       subReady: isCached
         ? "যাচাইকৃত APK ফাইলটি ফোনে প্রস্তুত আছে। এখনই ইনস্টল করুন।"
         : "সরাসরি APK ডাউনলোড ও স্বয়ংক্রিয় ইনস্টলার চালু হবে।",
       subPerm: "সেটিংস থেকে 'Allow from this source' চালু করে ব্যাক করুন—ইনস্টল শুরু হবে।",
-      ctaInstall: "এখনই ইনস্টল করুন",
-      ctaDownload: "ডাউনলোড ও ইনস্টল",
-      ctaAllow: "অনুমতি ও ইনস্টল",
+      ctaInstall: "📦 এখনই ইনস্টল করুন",
+      ctaDownload: "🚀 আপডেট করুন",
+      ctaAllow: "⚙️ অনুমতি ও ইনস্টল",
       ctaDismiss: "পরে",
-      upToDate: `আপনি সর্বশেষ সংস্করণ (${safeVer}) ব্যবহার করছেন।`
+      checkBtn: "🔄 নতুন আপডেট যাচাই করুন",
+      checking: "⏳ নতুন সংস্করণ যাচাই করা হচ্ছে...",
+      upToDate: `✅ আপনি সর্বশেষ সংস্করণ (${safeVer}) ব্যবহার করছেন।`
     };
   }
 
@@ -217,10 +223,11 @@
     banner.id = "s24-update-banner";
     banner.className = "update-banner-card";
     banner.style.display = "none";
+    banner.style.zIndex = "9999";
 
     banner.innerHTML = `
       <div class="update-banner-content">
-        <span>📲</span>
+        <span>🚀</span>
         <div style="flex:1;min-width:0;">
           <strong id="s24-update-title"></strong>
           <small id="s24-update-status"></small>
@@ -335,7 +342,7 @@
 
     try {
       if (typeof bridge.downloadAndAutoInstallVersionApk === "function") {
-        if (typeof bridge.downloadAndAutoInstallVersionApk.length >= 3) {
+        if (bridge.downloadAndAutoInstallVersionApk.length >= 3) {
           bridge.downloadAndAutoInstallVersionApk(
             info.apkUrl,
             info.versionTag,
@@ -360,16 +367,20 @@
   }
 
   function handleActionButtonClick() {
-    const info = pendingUpdateInfo || {
-      versionTag: "latest",
-      apkUrl: FALLBACK_APK_URL,
-      sha256: ""
-    };
+    const info = pendingUpdateInfo;
+    if (!info || !isValidHttpsUrl(info.apkUrl)) {
+      if (!isNativeAndroidContext()) {
+        global.open(DEFAULT_RELEASES_PAGE, "_blank", "noopener,noreferrer");
+      } else {
+        checkForLatestApkUpdate({ manual: true });
+      }
+      return;
+    }
 
     if (!isNativeAndroidContext()) {
       const a = document.createElement("a");
-      a.href = isValidHttpsUrl(info.apkUrl) ? info.apkUrl : FALLBACK_APK_URL;
-      a.setAttribute("download", "");
+      a.href = info.apkUrl;
+      a.setAttribute("download", info.fileName || "");
       a.rel = "noopener noreferrer";
       document.body.appendChild(a);
       a.click();
@@ -399,7 +410,13 @@
 
   async function checkForLatestApkUpdate(options = {}) {
     const manual = Boolean(options && options.manual);
-    if (!manual && !canSelfInstallApk()) {
+    const nativeMode = canSelfInstallApk();
+
+    if (!manual && !nativeMode) {
+      // On website browser, still resolve latest release asset URL for the Install App button
+      if (!isNativeAndroidContext()) {
+        updateWebsiteInstallButtonHref();
+      }
       return null;
     }
 
@@ -410,9 +427,13 @@
     currentState = S24OtaState.CHECKING;
     const installedVer = getInstalledVersion();
 
+    if (manual && typeof global.showTimeLockToast === "function") {
+      global.showTimeLockToast(getLocalizedStrings(installedVer, false).checking);
+    }
+
     try {
       const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
-      const timeoutId = controller ? setTimeout(() => controller.abort(), 9000) : null;
+      const timeoutId = controller ? setTimeout(() => controller.abort(), 10000) : null;
 
       const resp = await fetch(DEFAULT_RELEASE_API, {
         cache: "no-store",
@@ -433,15 +454,6 @@
 
       if (!latestTag) {
         currentState = S24OtaState.IDLE;
-        return null;
-      }
-
-      const cmp = compareVersions(latestTag, installedVer);
-      if (cmp <= 0) {
-        currentState = S24OtaState.UP_TO_DATE;
-        if (manual && typeof global.showTimeLockToast === "function") {
-          global.showTimeLockToast(getLocalizedStrings(installedVer, false).upToDate);
-        }
         return null;
       }
 
@@ -468,6 +480,15 @@
         sha256: extractExpectedSha256(releaseData, apkAsset)
       };
 
+      const cmp = compareVersions(latestTag, installedVer);
+      if (cmp <= 0) {
+        currentState = S24OtaState.UP_TO_DATE;
+        if (manual && typeof global.showTimeLockToast === "function") {
+          global.showTimeLockToast(getLocalizedStrings(installedVer, false).upToDate);
+        }
+        return null;
+      }
+
       pendingUpdateInfo = info;
       currentState = S24OtaState.UPDATE_AVAILABLE;
 
@@ -485,6 +506,32 @@
       currentState = S24OtaState.ERROR;
       return null;
     }
+  }
+
+  async function updateWebsiteInstallButtonHref() {
+    const webApkBtn = document.getElementById("web-apk-download-btn");
+    if (!webApkBtn) return;
+    try {
+      const resp = await fetch(DEFAULT_RELEASE_API, {
+        cache: "no-store",
+        headers: { Accept: "application/vnd.github+json" }
+      });
+      if (!resp || !resp.ok) return;
+      const releaseData = await resp.json();
+      const assets = Array.isArray(releaseData.assets) ? releaseData.assets : [];
+      const apkAsset = assets.find(
+        (a) =>
+          a &&
+          typeof a.name === "string" &&
+          a.name.toLowerCase().endsWith(".apk") &&
+          isValidHttpsUrl(a.browser_download_url)
+      );
+      if (apkAsset) {
+        webApkBtn.href = apkAsset.browser_download_url;
+        webApkBtn.setAttribute("download", apkAsset.name);
+        webApkBtn.setAttribute("title", `Download ${apkAsset.name}`);
+      }
+    } catch (_) {}
   }
 
   global.onSunnahApkDownloadProgress = function (percent, statusText) {
@@ -524,7 +571,7 @@
 
     if (pctNum >= 100) {
       currentState = S24OtaState.READY_TO_INSTALL;
-      const info = pendingUpdateInfo || { versionTag: "latest", apkUrl: FALLBACK_APK_URL, sha256: "" };
+      const info = pendingUpdateInfo || { versionTag: "latest", apkUrl: DEFAULT_RELEASES_PAGE, sha256: "" };
       const strings = getLocalizedStrings(info.versionTag, true);
       const hasPerm = hasUnknownSourcePermission();
       if (btnEl) {
@@ -545,6 +592,51 @@
     }
   };
 
+  function injectManualUpdateCheckButton() {
+    if (!canSelfInstallApk()) return;
+    const settingsCard = document.querySelector("#s24-settings-modal .s24-settings-drawer-card");
+    if (!settingsCard || document.getElementById("s24-manual-ota-check-btn")) return;
+
+    const installedVer = getInstalledVersion();
+    const strings = getLocalizedStrings(installedVer, false);
+
+    const group = document.createElement("div");
+    group.className = "s24-settings-group";
+    group.innerHTML = `
+      <span class="s24-settings-label">📲 APK Version: <strong>v${installedVer.replace(/^v/i, "")}</strong></span>
+      <button type="button" id="s24-manual-ota-check-btn" class="btn-secondary" style="margin-top:4px;">${strings.checkBtn}</button>
+    `;
+
+    const doneBtn = document.getElementById("s24-settings-done-btn");
+    if (doneBtn) {
+      settingsCard.insertBefore(group, doneBtn);
+    } else {
+      settingsCard.appendChild(group);
+    }
+
+    const checkBtn = document.getElementById("s24-manual-ota-check-btn");
+    if (checkBtn) {
+      checkBtn.addEventListener("click", () => {
+        const settingsModal = document.getElementById("s24-settings-modal");
+        if (settingsModal) settingsModal.classList.add("hidden");
+        checkForLatestApkUpdate({ manual: true });
+      });
+    }
+  }
+
+  function scheduleUpdateCheck(delayMs = 1200) {
+    if (!canSelfInstallApk()) return;
+    setTimeout(() => {
+      if (
+        currentState === S24OtaState.IDLE ||
+        currentState === S24OtaState.ERROR ||
+        currentState === S24OtaState.UP_TO_DATE
+      ) {
+        checkForLatestApkUpdate({ manual: false });
+      }
+    }, delayMs);
+  }
+
   global.Sunnah24ApkUpdater = Object.freeze({
     states: S24OtaState,
     getState: () => currentState,
@@ -559,14 +651,18 @@
     const webApkBtn = document.getElementById("web-apk-download-btn");
     if (webApkBtn && !isNativeAndroidContext()) {
       webApkBtn.classList.remove("hidden");
+      updateWebsiteInstallButtonHref();
     } else if (webApkBtn && isNativeAndroidContext()) {
       webApkBtn.classList.add("hidden");
     }
 
-    if (canSelfInstallApk()) {
-      setTimeout(() => {
-        checkForLatestApkUpdate({ manual: false });
-      }, 2400);
+    injectManualUpdateCheckButton();
+    scheduleUpdateCheck(1200);
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      scheduleUpdateCheck(700);
     }
   });
 })(window);
