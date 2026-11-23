@@ -1359,7 +1359,7 @@ jobs:
                           File appDownloadDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
                           if (appDownloadDir == null) appDownloadDir = getFilesDir();
                           if (!appDownloadDir.exists()) appDownloadDir.mkdirs();
-                          File outFile = new File(appDownloadDir, safeName);
+                          File outFile = new File(appDownloadDir, safeFileName);
                           try (FileOutputStream fos = new FileOutputStream(outFile)) {
                               fos.write(jsonContent.getBytes(StandardCharsets.UTF_8));
                               fos.flush();
