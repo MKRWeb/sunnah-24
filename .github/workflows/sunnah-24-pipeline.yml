@@ -76,7 +76,7 @@ jobs:
           if [ -f "www/ui.js" ] && [ -f "www/storage.js" ] && [ -f "www/astronomy.js" ]; then
             for legacy_js in app.js www/app.js; do
               if [ -f "$legacy_js" ]; then
-                echo "🗑️ Removing obsolete monolithic $legacy_js (replaced by modular v4.3 scripts)"
+                echo "🗑️ Removing obsolete monolithic $legacy_js"
                 git rm -f "$legacy_js" 2>/dev/null || rm -f "$legacy_js"
                 REPO_CLEANUP_NEEDED=1
               fi
@@ -102,11 +102,9 @@ jobs:
                 ROOT_TS=$(git log -1 --format="%ct" -- "$f" 2>/dev/null || echo 0)
                 WWW_TS=$(git log -1 --format="%ct" -- "www/$f" 2>/dev/null || echo 0)
                 if [ "${ROOT_TS:-0}" -gt "${WWW_TS:-0}" ]; then
-                  echo "🔄 Root $f had newer edit; copying to www/$f before cleaning root"
                   cp -f "$f" "www/$f"
                 fi
               fi
-              echo "🗑️ Removing duplicate $f from main root directory (keeping only www/$f)"
               git rm -f "$f" 2>/dev/null || rm -f "$f"
               REPO_CLEANUP_NEEDED=1
             fi
@@ -127,7 +125,7 @@ jobs:
 
           LATEST_SHA=$(git rev-parse --short=7 HEAD)
 
-          CACHE_VER="v4.3.${GITHUB_RUN_NUMBER}-${LATEST_SHA}"
+          CACHE_VER="v4.6.${GITHUB_RUN_NUMBER}-${LATEST_SHA}"
           if [ -f "www/sw.js" ]; then
             sed -i "s/sunnah-24-cache-[a-zA-Z0-9._-]*/sunnah-24-cache-${CACHE_VER}/g" www/sw.js || true
             sed -i "s/CACHE_NAME = ['\"][^'\"]*['\"]/CACHE_NAME = 'sunnah-24-cache-${CACHE_VER}'/g" www/sw.js || true
@@ -248,7 +246,7 @@ jobs:
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       RUN_NUMBER: ${{ github.run_number }}
-      VERSION_NAME: "4.8.${{ github.run_number }}"
+      VERSION_NAME: "4.6.${{ github.run_number }}"
 
     steps:
       - name: 1. Checkout Repository & Pull Latest Branch HEAD
@@ -281,7 +279,7 @@ jobs:
           name: sunnah24-verified-www-bundle
           path: ./www
 
-      - name: 4. Verify Web Assets inside www/ for APK/AAB Bundle
+      - name: 4. Write Embedded OTA Manager & Verify All Web Assets inside www/
         run: |
           if [ ! -f "www/index.html" ] && [ -d "www/www" ]; then
             cp -rf www/www/* www/ 2>/dev/null || true
@@ -291,101 +289,10 @@ jobs:
             git checkout HEAD -- www 2>/dev/null || true
           fi
 
-          REQUIRED_FILES="
-            www/index.html
-            www/style.css
-            www/data/i18n-data.js
-            www/data/habits-duas-data.js
-            www/data/locations-data.js
-            www/storage.js
-            www/astronomy.js
-            www/ui.js
-            www/s24_apk_ota_manager.js
-            www/manifest.json
-            www/sw.js
-            www/icon.svg
-            www/privacy.html
-          "
-          MISSING=0
-          for rf in $REQUIRED_FILES; do
-            if [ ! -f "$rf" ]; then
-              echo "❌ Missing required asset: $rf"
-              MISSING=1
-            fi
-          done
-          if [ "$MISSING" -ne 0 ]; then
-            echo "📂 Current www directory contents:"
-            ls -laR www || true
-            exit 1
-          fi
-
-          sed -i -E 's|(href="style\.css)\?v=[^"]*"|\1"|g' www/index.html || true
-          for mod in data/i18n-data.js data/habits-duas-data.js data/locations-data.js storage.js astronomy.js ui.js s24_apk_ota_manager.js; do
-            sed -i -E "s|(src=\"${mod})\?v=[^\"]*\"|\1\"|g" www/index.html || true
-          done
-
-          find www -name "*.js" -exec node --check {} +
-          echo "✅ All Sunnah 24 assets and JS syntax verified for Android packaging!"
-
-      - name: 5. Prepare Release Keystore (Encrypted Secrets First + Safe Existing Repo Keystore Fallback)
-        run: |
-          mkdir -p signing
-          KEYSTORE_FILE="$PWD/signing/sunnah24-release.keystore"
-
-          if [ -n "$KEYSTORE_BASE64" ]; then
-            if [ -z "$KEYSTORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASSWORD" ]; then
-              echo "❌ SECURITY ERROR: KEYSTORE_BASE64 is set, but KEYSTORE_PASSWORD, KEY_ALIAS, or KEY_PASSWORD is missing."
-              exit 1
-            fi
-            printf '%s' "$KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > "$KEYSTORE_FILE"
-            if [ ! -s "$KEYSTORE_FILE" ]; then
-              echo "❌ SECURITY ERROR: Decoded KEYSTORE_BASE64 is empty or invalid Base64."
-              exit 1
-            fi
-            KS_PASS="$KEYSTORE_PASSWORD"
-            K_ALIAS="$KEY_ALIAS"
-            K_PASS="$KEY_PASSWORD"
-            echo "✅ Decoded release keystore from encrypted GitHub Secrets."
-          elif [ -f "sunnah24-release.keystore" ]; then
-            cp -f "sunnah24-release.keystore" "$KEYSTORE_FILE"
-            KS_PASS="${KEYSTORE_PASSWORD:-sunnah24pass}"
-            K_ALIAS="${KEY_ALIAS:-sunnah24}"
-            K_PASS="${KEY_PASSWORD:-sunnah24pass}"
-            echo "ℹ️ Using existing repository root sunnah24-release.keystore."
-          elif [ -f "$KEYSTORE_FILE" ]; then
-            KS_PASS="${KEYSTORE_PASSWORD:-sunnah24pass}"
-            K_ALIAS="${KEY_ALIAS:-sunnah24}"
-            K_PASS="${KEY_PASSWORD:-sunnah24pass}"
-            echo "ℹ️ Using existing signing/sunnah24-release.keystore."
-          else
-            echo "❌ SECURITY ERROR: No release keystore found in KEYSTORE_BASE64 secret or repository."
-            exit 1
-          fi
-
-          keytool -list -keystore "$KEYSTORE_FILE" -alias "$K_ALIAS" -storepass "$KS_PASS" >/dev/null
-          echo "✅ Verified release keystore integrity and alias '${K_ALIAS}'."
-
-          echo "KEYSTORE_FILE=${KEYSTORE_FILE}" >> $GITHUB_ENV
-          echo "KS_PASS=${KS_PASS}" >> $GITHUB_ENV
-          echo "K_ALIAS=${K_ALIAS}" >> $GITHUB_ENV
-          echo "K_PASS=${K_PASS}" >> $GITHUB_ENV
-
-      - name: 6. Build Capacitor Android Bridge, Play Store API 36 Config & Strict Source-Set Isolation
-        env:
-          NODE_OPTIONS: "--tls-min-v1.2 --dns-result-order=ipv4first"
-        run: |
-          npm config set registry https://registry.npmjs.org/
-          npm config set fetch-retries 5
-          npm config set fetch-retry-mintimeout 20000
-          npm config set fetch-retry-maxtimeout 120000
-          npm install --no-audit --no-fund || (sleep 5 && npm install --no-audit --no-fund)
-          if [ ! -d "android" ]; then
-            npx cap add android
-          fi
-          # Write & verify www/s24_apk_ota_manager.js directly inside CI so it is guaranteed present before Capacitor sync
+          # Always write the verified SnapTube-style OTA Manager into www/s24_apk_ota_manager.js
           cat << 'S24_OTA_MANAGER_EOF' > www/s24_apk_ota_manager.js
           // ============================================================================
-          // SUNNAH 24 — SNAP-TUBE-GRADE APK DOWNLOAD & SELF-UPDATE MANAGER (v2.0)
+          // SUNNAH 24 — SNAP-TUBE-GRADE APK DOWNLOAD & SELF-UPDATE MANAGER (v3.0)
           // Deterministic Version Guard + SHA-256 Artifact Integrity + Atomic State FSM
           // Compatible with Capacitor 8 Android Bridge (`AndroidDownloader`) & Web/PWA
           // ============================================================================
@@ -408,7 +315,7 @@ jobs:
             const DEFAULT_REPO_OWNER = "MKRWeb";
             const DEFAULT_REPO_NAME = "sunnah-24";
             const DEFAULT_RELEASE_API = `https://api.github.com/repos/${DEFAULT_REPO_OWNER}/${DEFAULT_REPO_NAME}/releases/latest`;
-            const FALLBACK_APK_URL = `https://github.com/${DEFAULT_REPO_OWNER}/${DEFAULT_REPO_NAME}/releases/latest/download/Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk`;
+            const DEFAULT_RELEASES_PAGE = `https://github.com/${DEFAULT_REPO_OWNER}/${DEFAULT_REPO_NAME}/releases/latest`;
 
             let currentState = S24OtaState.IDLE;
             let lastProgressPct = -1;
@@ -504,7 +411,7 @@ jobs:
                   }
                 } catch (_) {}
               }
-              return "4.3.0";
+              return "4.6.0";
             }
 
             function canSelfInstallApk() {
@@ -553,45 +460,51 @@ jobs:
 
               if (loc === "ar") {
                 return {
-                  title: `تحديث متاح (${safeVer}) • سنة ٢٤`,
+                  title: `✨ تحديث جديد متاح (${safeVer}) • سنة ٢٤`,
                   subReady: isCached
                     ? "ملف التحديث جاهز على الجهاز. اضغط للتثبيت الآن."
-                    : "تنزيل مباشر وتثبيت تلقائي مثل سناب تيوب.",
+                    : "تنزيل مباشر وتثبيت تلقائي داخل التطبيق.",
                   subPerm: "فعّل «السماح من هذا المصدر» ثم عد لتشغيل المثبّت تلقائياً.",
-                  ctaInstall: "تثبيت الآن",
-                  ctaDownload: "تحميل وتثبيت",
-                  ctaAllow: "السماح والتثبيت",
+                  ctaInstall: "📦 تثبيت الآن",
+                  ctaDownload: "🚀 تحديث وتثبيت",
+                  ctaAllow: "⚙️ السماح والتثبيت",
                   ctaDismiss: "لاحقاً",
-                  upToDate: `أنت تستخدم أحدث إصدار (${safeVer}).`
+                  checkBtn: "🔄 التحقق من وجود تحديثات للتطبيق",
+                  checking: "⏳ جارٍ التحقق من وجود تحديثات...",
+                  upToDate: `✅ أنت تستخدم أحدث إصدار (${safeVer}).`
                 };
               }
 
               if (loc === "en") {
                 return {
-                  title: `Update Ready (${safeVer}) • Sunnah 24`,
+                  title: `✨ New Update Available (${safeVer}) • Sunnah 24`,
                   subReady: isCached
-                    ? "Verified APK is cached on device. Tap to install."
-                    : "Direct APK download + one-tap package installer launch.",
+                    ? "Verified APK is cached on device. Tap to install now."
+                    : "Direct in-app APK download + automatic package installer.",
                   subPerm: "Enable 'Allow from this source' in Settings; installer resumes automatically.",
-                  ctaInstall: "Install Now",
-                  ctaDownload: "Download & Install",
-                  ctaAllow: "Allow & Install",
+                  ctaInstall: "📦 Install Now",
+                  ctaDownload: "🚀 Update Now",
+                  ctaAllow: "⚙️ Allow & Install",
                   ctaDismiss: "Later",
-                  upToDate: `You are on the latest version (${safeVer}).`
+                  checkBtn: "🔄 Check for App Update",
+                  checking: "⏳ Checking for latest APK update...",
+                  upToDate: `✅ You are on the latest version (${safeVer}).`
                 };
               }
 
               return {
-                title: `নতুন আপডেট (${safeVer}) • সুন্নাহ ২৪`,
+                title: `✨ নতুন আপডেট প্রস্তুত (${safeVer}) • সুন্নাহ ২৪`,
                 subReady: isCached
                   ? "যাচাইকৃত APK ফাইলটি ফোনে প্রস্তুত আছে। এখনই ইনস্টল করুন।"
                   : "সরাসরি APK ডাউনলোড ও স্বয়ংক্রিয় ইনস্টলার চালু হবে।",
                 subPerm: "সেটিংস থেকে 'Allow from this source' চালু করে ব্যাক করুন—ইনস্টল শুরু হবে।",
-                ctaInstall: "এখনই ইনস্টল করুন",
-                ctaDownload: "ডাউনলোড ও ইনস্টল",
-                ctaAllow: "অনুমতি ও ইনস্টল",
+                ctaInstall: "📦 এখনই ইনস্টল করুন",
+                ctaDownload: "🚀 আপডেট করুন",
+                ctaAllow: "⚙️ অনুমতি ও ইনস্টল",
                 ctaDismiss: "পরে",
-                upToDate: `আপনি সর্বশেষ সংস্করণ (${safeVer}) ব্যবহার করছেন।`
+                checkBtn: "🔄 নতুন আপডেট যাচাই করুন",
+                checking: "⏳ নতুন সংস্করণ যাচাই করা হচ্ছে...",
+                upToDate: `✅ আপনি সর্বশেষ সংস্করণ (${safeVer}) ব্যবহার করছেন।`
               };
             }
 
@@ -603,10 +516,11 @@ jobs:
               banner.id = "s24-update-banner";
               banner.className = "update-banner-card";
               banner.style.display = "none";
+              banner.style.zIndex = "9999";
 
               banner.innerHTML = `
                 <div class="update-banner-content">
-                  <span>📲</span>
+                  <span>🚀</span>
                   <div style="flex:1;min-width:0;">
                     <strong id="s24-update-title"></strong>
                     <small id="s24-update-status"></small>
@@ -721,7 +635,7 @@ jobs:
 
               try {
                 if (typeof bridge.downloadAndAutoInstallVersionApk === "function") {
-                  if (typeof bridge.downloadAndAutoInstallVersionApk.length >= 3) {
+                  if (bridge.downloadAndAutoInstallVersionApk.length >= 3) {
                     bridge.downloadAndAutoInstallVersionApk(
                       info.apkUrl,
                       info.versionTag,
@@ -746,16 +660,20 @@ jobs:
             }
 
             function handleActionButtonClick() {
-              const info = pendingUpdateInfo || {
-                versionTag: "latest",
-                apkUrl: FALLBACK_APK_URL,
-                sha256: ""
-              };
+              const info = pendingUpdateInfo;
+              if (!info || !isValidHttpsUrl(info.apkUrl)) {
+                if (!isNativeAndroidContext()) {
+                  global.open(DEFAULT_RELEASES_PAGE, "_blank", "noopener,noreferrer");
+                } else {
+                  checkForLatestApkUpdate({ manual: true });
+                }
+                return;
+              }
 
               if (!isNativeAndroidContext()) {
                 const a = document.createElement("a");
-                a.href = isValidHttpsUrl(info.apkUrl) ? info.apkUrl : FALLBACK_APK_URL;
-                a.setAttribute("download", "");
+                a.href = info.apkUrl;
+                a.setAttribute("download", info.fileName || "");
                 a.rel = "noopener noreferrer";
                 document.body.appendChild(a);
                 a.click();
@@ -785,7 +703,13 @@ jobs:
 
             async function checkForLatestApkUpdate(options = {}) {
               const manual = Boolean(options && options.manual);
-              if (!manual && !canSelfInstallApk()) {
+              const nativeMode = canSelfInstallApk();
+
+              if (!manual && !nativeMode) {
+                // On website browser, still resolve latest release asset URL for the Install App button
+                if (!isNativeAndroidContext()) {
+                  updateWebsiteInstallButtonHref();
+                }
                 return null;
               }
 
@@ -796,9 +720,13 @@ jobs:
               currentState = S24OtaState.CHECKING;
               const installedVer = getInstalledVersion();
 
+              if (manual && typeof global.showTimeLockToast === "function") {
+                global.showTimeLockToast(getLocalizedStrings(installedVer, false).checking);
+              }
+
               try {
                 const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
-                const timeoutId = controller ? setTimeout(() => controller.abort(), 9000) : null;
+                const timeoutId = controller ? setTimeout(() => controller.abort(), 10000) : null;
 
                 const resp = await fetch(DEFAULT_RELEASE_API, {
                   cache: "no-store",
@@ -819,15 +747,6 @@ jobs:
 
                 if (!latestTag) {
                   currentState = S24OtaState.IDLE;
-                  return null;
-                }
-
-                const cmp = compareVersions(latestTag, installedVer);
-                if (cmp <= 0) {
-                  currentState = S24OtaState.UP_TO_DATE;
-                  if (manual && typeof global.showTimeLockToast === "function") {
-                    global.showTimeLockToast(getLocalizedStrings(installedVer, false).upToDate);
-                  }
                   return null;
                 }
 
@@ -854,6 +773,15 @@ jobs:
                   sha256: extractExpectedSha256(releaseData, apkAsset)
                 };
 
+                const cmp = compareVersions(latestTag, installedVer);
+                if (cmp <= 0) {
+                  currentState = S24OtaState.UP_TO_DATE;
+                  if (manual && typeof global.showTimeLockToast === "function") {
+                    global.showTimeLockToast(getLocalizedStrings(installedVer, false).upToDate);
+                  }
+                  return null;
+                }
+
                 pendingUpdateInfo = info;
                 currentState = S24OtaState.UPDATE_AVAILABLE;
 
@@ -871,6 +799,32 @@ jobs:
                 currentState = S24OtaState.ERROR;
                 return null;
               }
+            }
+
+            async function updateWebsiteInstallButtonHref() {
+              const webApkBtn = document.getElementById("web-apk-download-btn");
+              if (!webApkBtn) return;
+              try {
+                const resp = await fetch(DEFAULT_RELEASE_API, {
+                  cache: "no-store",
+                  headers: { Accept: "application/vnd.github+json" }
+                });
+                if (!resp || !resp.ok) return;
+                const releaseData = await resp.json();
+                const assets = Array.isArray(releaseData.assets) ? releaseData.assets : [];
+                const apkAsset = assets.find(
+                  (a) =>
+                    a &&
+                    typeof a.name === "string" &&
+                    a.name.toLowerCase().endsWith(".apk") &&
+                    isValidHttpsUrl(a.browser_download_url)
+                );
+                if (apkAsset) {
+                  webApkBtn.href = apkAsset.browser_download_url;
+                  webApkBtn.setAttribute("download", apkAsset.name);
+                  webApkBtn.setAttribute("title", `Download ${apkAsset.name}`);
+                }
+              } catch (_) {}
             }
 
             global.onSunnahApkDownloadProgress = function (percent, statusText) {
@@ -910,7 +864,7 @@ jobs:
 
               if (pctNum >= 100) {
                 currentState = S24OtaState.READY_TO_INSTALL;
-                const info = pendingUpdateInfo || { versionTag: "latest", apkUrl: FALLBACK_APK_URL, sha256: "" };
+                const info = pendingUpdateInfo || { versionTag: "latest", apkUrl: DEFAULT_RELEASES_PAGE, sha256: "" };
                 const strings = getLocalizedStrings(info.versionTag, true);
                 const hasPerm = hasUnknownSourcePermission();
                 if (btnEl) {
@@ -931,6 +885,51 @@ jobs:
               }
             };
 
+            function injectManualUpdateCheckButton() {
+              if (!canSelfInstallApk()) return;
+              const settingsCard = document.querySelector("#s24-settings-modal .s24-settings-drawer-card");
+              if (!settingsCard || document.getElementById("s24-manual-ota-check-btn")) return;
+
+              const installedVer = getInstalledVersion();
+              const strings = getLocalizedStrings(installedVer, false);
+
+              const group = document.createElement("div");
+              group.className = "s24-settings-group";
+              group.innerHTML = `
+                <span class="s24-settings-label">📲 APK Version: <strong>v${installedVer.replace(/^v/i, "")}</strong></span>
+                <button type="button" id="s24-manual-ota-check-btn" class="btn-secondary" style="margin-top:4px;">${strings.checkBtn}</button>
+              `;
+
+              const doneBtn = document.getElementById("s24-settings-done-btn");
+              if (doneBtn) {
+                settingsCard.insertBefore(group, doneBtn);
+              } else {
+                settingsCard.appendChild(group);
+              }
+
+              const checkBtn = document.getElementById("s24-manual-ota-check-btn");
+              if (checkBtn) {
+                checkBtn.addEventListener("click", () => {
+                  const settingsModal = document.getElementById("s24-settings-modal");
+                  if (settingsModal) settingsModal.classList.add("hidden");
+                  checkForLatestApkUpdate({ manual: true });
+                });
+              }
+            }
+
+            function scheduleUpdateCheck(delayMs = 1200) {
+              if (!canSelfInstallApk()) return;
+              setTimeout(() => {
+                if (
+                  currentState === S24OtaState.IDLE ||
+                  currentState === S24OtaState.ERROR ||
+                  currentState === S24OtaState.UP_TO_DATE
+                ) {
+                  checkForLatestApkUpdate({ manual: false });
+                }
+              }, delayMs);
+            }
+
             global.Sunnah24ApkUpdater = Object.freeze({
               states: S24OtaState,
               getState: () => currentState,
@@ -945,21 +944,118 @@ jobs:
               const webApkBtn = document.getElementById("web-apk-download-btn");
               if (webApkBtn && !isNativeAndroidContext()) {
                 webApkBtn.classList.remove("hidden");
+                updateWebsiteInstallButtonHref();
               } else if (webApkBtn && isNativeAndroidContext()) {
                 webApkBtn.classList.add("hidden");
               }
 
-              if (canSelfInstallApk()) {
-                setTimeout(() => {
-                  checkForLatestApkUpdate({ manual: false });
-                }, 2400);
+              injectManualUpdateCheckButton();
+              scheduleUpdateCheck(1200);
+            });
+
+            document.addEventListener("visibilitychange", () => {
+              if (document.visibilityState === "visible") {
+                scheduleUpdateCheck(700);
               }
             });
           })(window);
           S24_OTA_MANAGER_EOF
-          node --check www/s24_apk_ota_manager.js
-          echo "✅ Embedded & syntax-verified www/s24_apk_ota_manager.js"
 
+          # Guarantee www/index.html loads s24_apk_ota_manager.js before </body>
+          if [ -f "www/index.html" ] && ! grep -q "s24_apk_ota_manager.js" www/index.html; then
+            sed -i 's|</body>|  <script src="s24_apk_ota_manager.js"></script>\n</body>|' www/index.html
+          fi
+
+          REQUIRED_FILES="
+            www/index.html
+            www/style.css
+            www/data/i18n-data.js
+            www/data/habits-duas-data.js
+            www/data/locations-data.js
+            www/storage.js
+            www/astronomy.js
+            www/ui.js
+            www/s24_apk_ota_manager.js
+            www/manifest.json
+            www/sw.js
+            www/icon.svg
+            www/privacy.html
+          "
+          MISSING=0
+          for rf in $REQUIRED_FILES; do
+            if [ ! -f "$rf" ]; then
+              echo "❌ Missing required asset: $rf"
+              MISSING=1
+            fi
+          done
+          if [ "$MISSING" -ne 0 ]; then
+            ls -laR www || true
+            exit 1
+          fi
+
+          sed -i -E 's|(href="style\.css)\?v=[^"]*"|\1"|g' www/index.html || true
+          for mod in data/i18n-data.js data/habits-duas-data.js data/locations-data.js storage.js astronomy.js ui.js s24_apk_ota_manager.js; do
+            sed -i -E "s|(src=\"${mod})\?v=[^\"]*\"|\1\"|g" www/index.html || true
+          done
+
+          find www -name "*.js" -exec node --check {} +
+          echo "✅ All Sunnah 24 assets (including s24_apk_ota_manager.js) verified!"
+
+      - name: 5. Prepare Release Keystore (Encrypted Secrets First + Safe Existing Repo Keystore Fallback)
+        run: |
+          mkdir -p signing
+          KEYSTORE_FILE="$PWD/signing/sunnah24-release.keystore"
+
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            if [ -z "$KEYSTORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASSWORD" ]; then
+              echo "❌ SECURITY ERROR: KEYSTORE_BASE64 is set, but KEYSTORE_PASSWORD, KEY_ALIAS, or KEY_PASSWORD is missing."
+              exit 1
+            fi
+            printf '%s' "$KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > "$KEYSTORE_FILE"
+            if [ ! -s "$KEYSTORE_FILE" ]; then
+              echo "❌ SECURITY ERROR: Decoded KEYSTORE_BASE64 is empty or invalid Base64."
+              exit 1
+            fi
+            KS_PASS="$KEYSTORE_PASSWORD"
+            K_ALIAS="$KEY_ALIAS"
+            K_PASS="$KEY_PASSWORD"
+            echo "✅ Decoded release keystore from encrypted GitHub Secrets."
+          elif [ -f "sunnah24-release.keystore" ]; then
+            cp -f "sunnah24-release.keystore" "$KEYSTORE_FILE"
+            KS_PASS="${KEYSTORE_PASSWORD:-sunnah24pass}"
+            K_ALIAS="${KEY_ALIAS:-sunnah24}"
+            K_PASS="${KEY_PASSWORD:-sunnah24pass}"
+            echo "ℹ️ Using existing repository root sunnah24-release.keystore."
+          elif [ -f "$KEYSTORE_FILE" ]; then
+            KS_PASS="${KEYSTORE_PASSWORD:-sunnah24pass}"
+            K_ALIAS="${KEY_ALIAS:-sunnah24}"
+            K_PASS="${KEY_PASSWORD:-sunnah24pass}"
+            echo "ℹ️ Using existing signing/sunnah24-release.keystore."
+          else
+            echo "❌ SECURITY ERROR: No release keystore found in KEYSTORE_BASE64 secret or repository."
+            exit 1
+          fi
+
+          keytool -list -keystore "$KEYSTORE_FILE" -alias "$K_ALIAS" -storepass "$KS_PASS" >/dev/null
+          echo "✅ Verified release keystore integrity and alias '${K_ALIAS}'."
+
+          echo "KEYSTORE_FILE=${KEYSTORE_FILE}" >> $GITHUB_ENV
+          echo "KS_PASS=${KS_PASS}" >> $GITHUB_ENV
+          echo "K_ALIAS=${K_ALIAS}" >> $GITHUB_ENV
+          echo "K_PASS=${K_PASS}" >> $GITHUB_ENV
+
+      - name: 6. Build Capacitor Android Bridge & Dual Flavors (Sideload Release APK vs Play Store AAB)
+        env:
+          NODE_OPTIONS: "--tls-min-v1.2 --dns-result-order=ipv4first"
+        run: |
+          npm config set registry https://registry.npmjs.org/
+          npm config set fetch-retries 5
+          npm config set fetch-retry-mintimeout 20000
+          npm config set fetch-retry-maxtimeout 120000
+          npm install --no-audit --no-fund || (sleep 5 && npm install --no-audit --no-fund)
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
           npx cap copy android
           npx cap sync android
 
@@ -977,14 +1073,25 @@ jobs:
             sed -i "s/versionCode [0-9]*/versionCode ${VERSION_CODE}/g" "$APP_GRADLE"
             sed -i "s/versionName \"[^\"]*\"/versionName \"${VERSION_NAME}\"/g" "$APP_GRADLE"
 
-            if ! grep -q "GOOGLE PLAY STORE PRODUCTION AAB CONFIGURATION" "$APP_GRADLE"; then
+            if ! grep -q "SUNNAH 24 DUAL DISTRIBUTION FLAVORS" "$APP_GRADLE"; then
               cat << 'GRADLE_EOF' >> "$APP_GRADLE"
 
-          // --- GOOGLE PLAY STORE PRODUCTION AAB CONFIGURATION ---
+          // --- SUNNAH 24 DUAL DISTRIBUTION FLAVORS (SIDELOAD RELEASE APK + PLAY STORE AAB) ---
           android {
               compileSdk 36
               defaultConfig {
                   targetSdk 36
+                  versionCode Integer.parseInt(System.getenv("VERSION_CODE") ?: "2100")
+                  versionName System.getenv("VERSION_NAME") ?: "4.6.0"
+              }
+              flavorDimensions += "distribution"
+              productFlavors {
+                  sideload {
+                      dimension "distribution"
+                  }
+                  playstore {
+                      dimension "distribution"
+                  }
               }
               signingConfigs {
                   release {
@@ -1071,15 +1178,16 @@ jobs:
             sed -i '/<\/manifest>/i \    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />\n    <uses-permission android:name="android.permission.AD_ID" tools:node="remove" />' "$MANIFEST_FILE"
           fi
 
-          DEBUG_MANIFEST_DIR="android/app/src/debug"
-          mkdir -p "$DEBUG_MANIFEST_DIR"
-          cat << 'EOF' > "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
+          # Sideload Flavor Manifest: grants REQUEST_INSTALL_PACKAGES ONLY to sideload APK
+          SIDELOAD_MANIFEST_DIR="android/app/src/sideload"
+          mkdir -p "$SIDELOAD_MANIFEST_DIR"
+          cat << 'EOF' > "$SIDELOAD_MANIFEST_DIR/AndroidManifest.xml"
           <?xml version="1.0" encoding="utf-8"?>
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
               <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
           </manifest>
           EOF
-          sed -i 's/^          //' "$DEBUG_MANIFEST_DIR/AndroidManifest.xml"
+          sed -i 's/^          //' "$SIDELOAD_MANIFEST_DIR/AndroidManifest.xml"
 
           XML_DIR="android/app/src/main/res/xml"
           mkdir -p "$XML_DIR"
@@ -1113,9 +1221,10 @@ jobs:
 
           rm -f android/app/src/main/java/com/mkrweb/sunnah24/MainActivity.java
 
-          RELEASE_JAVA_DIR="android/app/src/release/java/com/mkrweb/sunnah24"
-          mkdir -p "$RELEASE_JAVA_DIR"
-          cat << 'REL_JAVA_EOF' > "$RELEASE_JAVA_DIR/MainActivity.java"
+          # 1. Play Store Flavor MainActivity (Zero self-updater code — 100% Google Play Policy Compliant)
+          PLAYSTORE_JAVA_DIR="android/app/src/playstore/java/com/mkrweb/sunnah24"
+          mkdir -p "$PLAYSTORE_JAVA_DIR"
+          cat << 'REL_JAVA_EOF' > "$PLAYSTORE_JAVA_DIR/MainActivity.java"
           package com.mkrweb.sunnah24;
 
           import android.content.ContentValues;
@@ -1190,7 +1299,7 @@ jobs:
                           PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                           return pInfo.versionName;
                       } catch (Exception e) {
-                          return "4.3.0";
+                          return "4.6.0";
                       }
                   }
 
@@ -1250,7 +1359,7 @@ jobs:
                           File appDownloadDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
                           if (appDownloadDir == null) appDownloadDir = getFilesDir();
                           if (!appDownloadDir.exists()) appDownloadDir.mkdirs();
-                          File outFile = new File(appDownloadDir, safeFileName);
+                          File outFile = new File(appDownloadDir, safeName);
                           try (FileOutputStream fos = new FileOutputStream(outFile)) {
                               fos.write(jsonContent.getBytes(StandardCharsets.UTF_8));
                               fos.flush();
@@ -1263,11 +1372,12 @@ jobs:
               }
           }
           REL_JAVA_EOF
-          sed -i 's/^          //' "$RELEASE_JAVA_DIR/MainActivity.java"
+          sed -i 's/^          //' "$PLAYSTORE_JAVA_DIR/MainActivity.java"
 
-          DEBUG_JAVA_DIR="android/app/src/debug/java/com/mkrweb/sunnah24"
-          mkdir -p "$DEBUG_JAVA_DIR"
-          cat << 'DBG_JAVA_EOF' > "$DEBUG_JAVA_DIR/MainActivity.java"
+          # 2. Sideload Flavor MainActivity (SnapTube-style in-app APK Download + SHA-256 + Auto-Installer)
+          SIDELOAD_JAVA_DIR="android/app/src/sideload/java/com/mkrweb/sunnah24"
+          mkdir -p "$SIDELOAD_JAVA_DIR"
+          cat << 'DBG_JAVA_EOF' > "$SIDELOAD_JAVA_DIR/MainActivity.java"
           package com.mkrweb.sunnah24;
 
           import android.app.DownloadManager;
@@ -1650,7 +1760,7 @@ jobs:
                           conn.setInstanceFollowRedirects(true);
                           conn.setConnectTimeout(20000);
                           conn.setReadTimeout(30000);
-                          conn.setRequestProperty("User-Agent", "Sunnah24-OTA-Client/4.3");
+                          conn.setRequestProperty("User-Agent", "Sunnah24-OTA-Client/4.6");
 
                           int code = conn.getResponseCode();
                           if (code < 200 || code >= 300) {
@@ -1741,9 +1851,9 @@ jobs:
                   public String getInstalledVersionName() {
                       try {
                           PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
-                          return info.versionName != null ? info.versionName : "4.3.0";
+                          return info.versionName != null ? info.versionName : "4.6.0";
                       } catch (Exception e) {
-                          return "4.3.0";
+                          return "4.6.0";
                       }
                   }
 
@@ -1853,7 +1963,7 @@ jobs:
               }
           }
           DBG_JAVA_EOF
-          sed -i 's/^          //' "$DEBUG_JAVA_DIR/MainActivity.java"
+          sed -i 's/^          //' "$SIDELOAD_JAVA_DIR/MainActivity.java"
 
           mkdir -p "$HOME/.gradle/init.d"
           cat << 'INIT_GRADLE_EOF' > "$HOME/.gradle/init.d/00-google-maven-mirror.init.gradle"
@@ -1916,20 +2026,20 @@ jobs:
             sed -i 's/^          //' "$GRADLE_PROPS"
           fi
 
-      - name: 7. Compile Sideload APK (assembleDebug) & Play Store Signed AAB (bundleRelease)
+      - name: 7. Compile Sideload Release APK (assembleSideloadRelease) & Play Store Signed AAB (bundlePlaystoreRelease)
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleRelease bundleRelease \
+          ./gradlew assembleSideloadRelease bundlePlaystoreRelease \
             --init-script maven-mirror.init.gradle \
             --no-daemon \
             -Dorg.gradle.internal.http.connectionTimeout=120000 \
             -Dorg.gradle.internal.http.socketTimeout=120000 \
             -Dorg.gradle.internal.repository.max.tentatives=6 \
             -Dorg.gradle.internal.repository.initial.backoff=3000 || \
-          (echo "⏳ Transient network/Maven hiccup detected; waiting 12s and retrying with cached artifacts..." && \
+          (echo "⏳ Transient network/Maven hiccup detected; waiting 12s and retrying..." && \
            sleep 12 && \
-           ./gradlew assembleRelease bundleRelease \
+           ./gradlew assembleSideloadRelease bundlePlaystoreRelease \
              --init-script maven-mirror.init.gradle \
              --no-daemon \
              --max-workers=2 \
@@ -1946,16 +2056,17 @@ jobs:
           profile: pixel_6
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: |
-            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            APK_TEST=$(find android/app/build/outputs/apk/sideload/release -name "*.apk" | head -n 1)
+            adb install -r "$APK_TEST"
             adb shell am start -W -n com.mkrweb.sunnah24/.MainActivity
             sleep 3
             adb shell pidof com.mkrweb.sunnah24
 
-      - name: 8. Sign Sideload APK & Verify Signed Play Store AAB
+      - name: 8. Sign Sideload APK & Verify Signed Play Store AAB (Dynamic Version Filenames)
         run: |
-          UNSIGNED_APK=$(find android/app/build/outputs/apk/release -name "*.apk" | head -n 1)
+          UNSIGNED_APK=$(find android/app/build/outputs/apk/sideload/release -name "*.apk" | head -n 1)
           if [ -z "$UNSIGNED_APK" ] || [ ! -f "$UNSIGNED_APK" ]; then
-            echo "❌ ERROR: Release APK was not generated!"
+            echo "❌ ERROR: Sideload Release APK was not generated!"
             exit 1
           fi
           SIGNED_APK="Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk"
@@ -1976,21 +2087,22 @@ jobs:
 
           $BUILD_TOOLS_DIR/apksigner verify --verbose "$SIGNED_APK"
 
-          AAB_PATH=$(find android/app/build/outputs/bundle/release -name "*.aab" | head -n 1)
+          AAB_PATH=$(find android/app/build/outputs/bundle/playstoreRelease -name "*.aab" | head -n 1)
+          SIGNED_AAB="Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab"
           if [ -n "$AAB_PATH" ]; then
-            cp "$AAB_PATH" ./Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab
-            if ! jarsigner -verify -certs ./Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab >/dev/null 2>&1; then
+            cp "$AAB_PATH" "./$SIGNED_AAB"
+            if ! jarsigner -verify -certs "./$SIGNED_AAB" >/dev/null 2>&1; then
               echo "🔐 Signing Play Store AAB with release keystore..."
               jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
                 -keystore "$KEYSTORE_FILE" \
                 -storepass "$KS_PASS" \
                 -keypass "$K_PASS" \
-                ./Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab "$K_ALIAS"
+                "./$SIGNED_AAB" "$K_ALIAS"
             fi
-            jarsigner -verify -verbose -certs ./Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab
-            sha256sum "$SIGNED_APK" ./Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab > SHA256SUMS.txt
+            jarsigner -verify -verbose -certs "./$SIGNED_AAB"
+            sha256sum "$SIGNED_APK" "./$SIGNED_AAB" > SHA256SUMS.txt
             cat SHA256SUMS.txt
-            echo "✅ Play Store Signed AAB verified: Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab"
+            echo "✅ Play Store Signed AAB verified: $SIGNED_AAB"
           else
             echo "❌ ERROR: Play Store AAB was not generated!"
             exit 1
@@ -2001,8 +2113,8 @@ jobs:
         with:
           name: Sunnah-24-Enterprise-Release-Bundle
           path: |
-            Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk
-            Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab
+            Sunnah-24-v${{ env.VERSION_NAME }}-Enterprise-Signed.apk
+            Sunnah-24-v${{ env.VERSION_NAME }}-PlayStore-Signed.aab
             SHA256SUMS.txt
 
       - name: 10. Publish Atomic GitHub Release with APK & Play Store AAB (Fault-Tolerant 403-Safe)
@@ -2015,6 +2127,8 @@ jobs:
           TARGET_REPOSITORIES_INPUT: ${{ github.event.inputs.target_repositories || '' }}
         run: |
           TAG="v${VERSION_NAME}"
+          SIGNED_APK="Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk"
+          SIGNED_AAB="Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab"
           TITLE="☪️ Sunnah 24 v${VERSION_NAME} — Play Store Ready AAB & Signed Enterprise APK"
           cat << 'EOF' > /tmp/release_notes.md
           ### ☪️ সুন্নাহ ২৪ (Sunnah 24) — Play Store Ready `.aab` & Signed Android `.apk` (v${VERSION_NAME})
@@ -2026,13 +2140,13 @@ jobs:
           sed -i "s/\${VERSION_NAME}/${VERSION_NAME}/g" /tmp/release_notes.md
 
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab SHA256SUMS.txt --clobber || true
+            gh release upload "$TAG" "$SIGNED_APK" "$SIGNED_AAB" SHA256SUMS.txt --clobber || true
             echo "✅ Updated existing GitHub Release $TAG"
           else
-            if gh release create "$TAG" Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab SHA256SUMS.txt --title "$TITLE" --notes-file /tmp/release_notes.md --target "${GITHUB_SHA}"; then
+            if gh release create "$TAG" "$SIGNED_APK" "$SIGNED_AAB" SHA256SUMS.txt --title "$TITLE" --notes-file /tmp/release_notes.md --target "${GITHUB_SHA}"; then
               echo "✅ Published GitHub Release $TAG successfully!"
             else
-              echo "ℹ️ Notice: Default GITHUB_TOKEN has read-only Release permissions (403). Your Signed APK & Play Store AAB are already safely uploaded in Step 9 Build Artifacts (Sunnah-24-Enterprise-Release-Bundle)!"
+              echo "ℹ️ Notice: Default GITHUB_TOKEN has read-only Release permissions (403)."
             fi
           fi
 
@@ -2050,9 +2164,9 @@ jobs:
               fi
               echo "📦 Gradually publishing APK + AAB release $TAG to mirror repository: $TARGET_REPO ..."
               if GH_TOKEN="$SYNC_PAT" gh release view "$TAG" --repo "$TARGET_REPO" >/dev/null 2>&1; then
-                GH_TOKEN="$SYNC_PAT" gh release upload "$TAG" Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab SHA256SUMS.txt --repo "$TARGET_REPO" --clobber || true
+                GH_TOKEN="$SYNC_PAT" gh release upload "$TAG" "$SIGNED_APK" "$SIGNED_AAB" SHA256SUMS.txt --repo "$TARGET_REPO" --clobber || true
               else
-                GH_TOKEN="$SYNC_PAT" gh release create "$TAG" Sunnah-24-v${VERSION_NAME}-Enterprise-Signed.apk Sunnah-24-v${VERSION_NAME}-PlayStore-Signed.aab SHA256SUMS.txt --repo "$TARGET_REPO" --title "$TITLE" --notes-file /tmp/release_notes.md || true
+                GH_TOKEN="$SYNC_PAT" gh release create "$TAG" "$SIGNED_APK" "$SIGNED_AAB" SHA256SUMS.txt --repo "$TARGET_REPO" --title "$TITLE" --notes-file /tmp/release_notes.md || true
               fi
               sleep 4
             done
