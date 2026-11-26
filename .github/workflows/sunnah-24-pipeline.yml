@@ -125,12 +125,13 @@ jobs:
 
           LATEST_SHA=$(git rev-parse --short=7 HEAD)
 
-          CACHE_VER="v4.6.${GITHUB_RUN_NUMBER}-${LATEST_SHA}"
+          CACHE_VER="v4.7.${GITHUB_RUN_NUMBER}-${LATEST_SHA}"
           if [ -f "www/sw.js" ]; then
-            sed -i "s/sunnah-24-cache-[a-zA-Z0-9._-]*/sunnah-24-cache-${CACHE_VER}/g" www/sw.js || true
-            sed -i "s/CACHE_NAME = ['\"][^'\"]*['\"]/CACHE_NAME = 'sunnah-24-cache-${CACHE_VER}'/g" www/sw.js || true
+            sed -i -E "s|sunnah-24-cache-[a-zA-Z0-9._-]+|sunnah-24-cache-${CACHE_VER}|g" www/sw.js || true
           fi
           if [ -f "www/index.html" ]; then
+            grep -q 'id="tibb-grid-view"' www/index.html || { echo "❌ Missing #tibb-grid-view in www/index.html"; exit 1; }
+            grep -q 'id="sunnah-grid-view"' www/index.html || { echo "❌ Missing #sunnah-grid-view in www/index.html"; exit 1; }
             sed -i "s|href=\"style.css[^\"]*\"|href=\"style.css?v=${CACHE_VER}\"|g" www/index.html || true
             for mod in data/i18n-data.js data/habits-duas-data.js data/locations-data.js storage.js astronomy.js ui.js s24_apk_ota_manager.js; do
               sed -i "s|src=\"${mod}[^\"]*\"|src=\"${mod}?v=${CACHE_VER}\"|g" www/index.html || true
@@ -2177,4 +2178,5 @@ jobs:
               sleep 4
             done
           fi
+
 
