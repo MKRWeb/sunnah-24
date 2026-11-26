@@ -35,9 +35,8 @@
           el.style.display = "none";
         }
         var home = document.getElementById("home-dashboard-view");
-        if (home) {
+        if (home && document.body.getAttribute("data-active-view") === "home") {
           home.classList.remove("hidden");
-          home.style.display = "block";
         }
       };
       setTimeout(dismissSplashNow, 1600);
