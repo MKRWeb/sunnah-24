@@ -4401,6 +4401,243 @@ const MASTER_SECTION_REGISTRY = {
     descKey: "sec_crypto_vault_desc",
     logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"> <defs> <linearGradient id="hdr_sec_crypto_cvLayer3" x1="16" y1="54" x2="80" y2="84" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#0f172a"/> <stop offset="100%" stop-color="#1e293b"/> </linearGradient> <linearGradient id="hdr_sec_crypto_cvLayer2" x1="16" y1="36" x2="80" y2="66" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#047857"/> <stop offset="100%" stop-color="#064e3b"/> </linearGradient> <linearGradient id="hdr_sec_crypto_cvLayer1" x1="16" y1="18" x2="80" y2="48" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#34d399"/> <stop offset="100%" stop-color="#059669"/> </linearGradient> <linearGradient id="hdr_sec_crypto_cvShield" x1="38" y1="28" x2="84" y2="86" gradientUnits="userSpaceOnUse"> <stop offset="0%" stop-color="#fef08a"/> <stop offset="50%" stop-color="#facc15"/> <stop offset="100%" stop-color="#b45309"/> </linearGradient> </defs> <g> <rect x="14" y="56" width="54" height="18" rx="6" fill="url(#hdr_sec_crypto_cvLayer3)" stroke="#475569" stroke-width="1.6"/> <circle cx="24" cy="65" r="2.5" fill="#38bdf8"/> <rect x="14" y="37" width="54" height="18" rx="6" fill="url(#hdr_sec_crypto_cvLayer2)" stroke="#10b981" stroke-width="1.6"/> <circle cx="24" cy="46" r="2.5" fill="#fde047"/> <rect x="14" y="18" width="54" height="18" rx="6" fill="url(#hdr_sec_crypto_cvLayer1)" stroke="#a7f3d0" stroke-width="1.6"/> <circle cx="24" cy="27" r="2.5" fill="#ffffff"/> <path d="M62 32L84 40.5V56.5C84 70.5 74.6 81.5 62 86C49.4 81.5 40 70.5 40 56.5V40.5L62 32Z" fill="url(#hdr_sec_crypto_cvShield)" stroke="#78350f" stroke-width="2.2" stroke-linejoin="round"/> <rect x="54.5" y="54" width="15" height="13" rx="3.2" fill="#064e3b"/> <path d="M57.5 54V50C57.5 47.5 59.5 45.5 62 45.5C64.5 45.5 66.5 47.5 66.5 50V54" stroke="#064e3b" stroke-width="3" stroke-linecap="round"/> <circle cx="62" cy="60.5" r="2" fill="#fef08a"/> </g> </svg>`
   }
+,
+  "tibb-01-ideology": {
+    id: "tibb-01-ideology",
+    type: "tibb-monograph",
+    panelId: "panel-tibb-01-ideology",
+    titleKey: "tibb_sec_1_title",
+    descKey: "tibb_sec_1_desc",
+    badgeKey: "tibb_badge_1",
+    badgeText: "০১ • ভিত্তি",
+    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
+          <linearGradient id="tibb_hdr_1_g1" x1="16" y1="10" x2="80" y2="86" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#34d399"/><stop offset="55%" stop-color="#059669"/><stop offset="100%" stop-color="#064e3b"/>
+          </linearGradient>
+          <linearGradient id="tibb_hdr_1_g2" x1="28" y1="16" x2="68" y2="74" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fef08a"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#b45309"/>
+          </linearGradient>
+        </defs>
+        <g>
+          <path d="M48 10L78 22V46C78 66 65 81 48 86C31 81 18 66 18 46V22L48 10Z" fill="url(#tibb_hdr_1_g1)" stroke="#064e3b" stroke-width="2.2"/>
+          <path d="M48 15L73 25V46C73 63 62 76 48 80.5" stroke="#a7f3d0" stroke-width="1.5" stroke-opacity="0.55"/>
+          <path d="M48 25V68M31 35H65" stroke="url(#tibb_hdr_1_g2)" stroke-width="3.6" stroke-linecap="round"/>
+          <path d="M25 46L31 35L37 46C37 49.5 34.3 52 31 52C27.7 52 25 49.5 25 46Z" fill="url(#tibb_hdr_1_g2)"/>
+          <path d="M59 46L65 35L71 46C71 49.5 68.3 52 65 52C61.7 52 59 49.5 59 46Z" fill="url(#tibb_hdr_1_g2)"/>
+          <rect x="37" y="65" width="22" height="5" rx="2.5" fill="url(#tibb_hdr_1_g2)"/>
+        </g></svg>`
+  },
+  "tibb-02-digestion": {
+    id: "tibb-02-digestion",
+    type: "tibb-monograph",
+    panelId: "panel-tibb-02-digestion",
+    titleKey: "tibb_sec_2_title",
+    descKey: "tibb_sec_2_desc",
+    badgeKey: "tibb_badge_2",
+    badgeText: "০২ • ১/৩ নীতি",
+    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
+          <linearGradient id="tibb_hdr_2_b1" x1="16" y1="48" x2="80" y2="82" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fde047"/><stop offset="55%" stop-color="#d97706"/><stop offset="100%" stop-color="#78350f"/>
+          </linearGradient>
+          <linearGradient id="tibb_hdr_2_lf" x1="30" y1="16" x2="66" y2="48" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#6ee7b7"/><stop offset="60%" stop-color="#10b981"/><stop offset="100%" stop-color="#065f46"/>
+          </linearGradient>
+          <linearGradient id="tibb_hdr_2_wt" x1="60" y1="22" x2="78" y2="48" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#0284c7"/>
+          </linearGradient>
+        </defs>
+        <g>
+          <path d="M26 48C26 32 37 22 50 22C49 36 41 45 26 48Z" fill="url(#tibb_hdr_2_lf)" stroke="#064e3b" stroke-width="1.8"/>
+          <path d="M68 22C74 29 77 34 77 39C77 44 73 48 68 48C63 48 59 44 59 39C59 34 62 29 68 22Z" fill="url(#tibb_hdr_2_wt)" stroke="#0369a1" stroke-width="1.6"/>
+          <path d="M16 50H80C77 69 65 80 48 80C31 80 19 69 16 50Z" fill="url(#tibb_hdr_2_b1)" stroke="#78350f" stroke-width="2.2"/>
+          <rect x="14" y="46" width="68" height="6" rx="3" fill="#f59e0b" stroke="#78350f" stroke-width="1.6"/>
+          <path d="M26 57C29 65 35 70 42 72" stroke="#fef9c3" stroke-width="2.2" stroke-linecap="round" stroke-opacity="0.7"/>
+        </g></svg>`
+  },
+  "tibb-03-autophagy": {
+    id: "tibb-03-autophagy",
+    type: "tibb-monograph",
+    panelId: "panel-tibb-03-autophagy",
+    titleKey: "tibb_sec_3_title",
+    descKey: "tibb_sec_3_desc",
+    badgeKey: "tibb_badge_3",
+    badgeText: "০৩ • কোষ শুদ্ধি",
+    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
+          <radialGradient id="tibb_hdr_3_orb" cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stop-color="#a5f3fc"/><stop offset="50%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#1e3a8a"/>
+          </radialGradient>
+          <linearGradient id="tibb_hdr_3_mn" x1="52" y1="14" x2="80" y2="42" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#d97706"/>
+          </linearGradient>
+        </defs>
+        <g>
+          <circle cx="44" cy="52" r="28" fill="url(#tibb_hdr_3_orb)" stroke="#1e3a8a" stroke-width="2.2"/>
+          <circle cx="44" cy="52" r="17" fill="#e0f2fe" fill-opacity="0.3" stroke="#bae6fd" stroke-width="1.8" stroke-dasharray="5 3"/>
+          <circle cx="38" cy="46" r="5" fill="#fef08a"/>
+          <circle cx="52" cy="57" r="4" fill="#34d399"/>
+          <circle cx="37" cy="60" r="3" fill="#ffffff" fill-opacity="0.8"/>
+          <path d="M68 14C62 16.5 59 23 61.5 29C64 35 70.5 38 76.5 35.5C71.8 39 65 38.8 60.5 34.3C56 29.8 55.8 23 59.3 18.3C61.5 15.4 64.6 14 68 14Z" fill="url(#tibb_hdr_3_mn)" stroke="#92400e" stroke-width="1.5"/>
+        </g></svg>`
+  },
+  "tibb-04-circadian": {
+    id: "tibb-04-circadian",
+    type: "tibb-monograph",
+    panelId: "panel-tibb-04-circadian",
+    titleKey: "tibb_sec_4_title",
+    descKey: "tibb_sec_4_desc",
+    badgeKey: "tibb_badge_4",
+    badgeText: "০৪ • জৈবিক ঘড়ি",
+    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
+          <linearGradient id="tibb_hdr_4_dk" x1="16" y1="14" x2="80" y2="82" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#312e81"/><stop offset="55%" stop-color="#4c1d95"/><stop offset="100%" stop-color="#0f172a"/>
+          </linearGradient>
+          <linearGradient id="tibb_hdr_4_gd" x1="28" y1="22" x2="68" y2="68" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#f59e0b"/>
+          </linearGradient>
+        </defs>
+        <g>
+          <circle cx="48" cy="48" r="34" fill="url(#tibb_hdr_4_dk)" stroke="#f59e0b" stroke-width="2.6"/>
+          <circle cx="48" cy="48" r="26" fill="none" stroke="#a78bfa" stroke-width="1.4" stroke-dasharray="3 4"/>
+          <path d="M54 27C47 29.5 43.5 37.5 46 44.5C48.5 51.5 56.5 55 63.5 52.5C58 56.8 50 56.5 44.5 51C39 45.5 38.8 37.5 43.1 32C45.8 28.5 49.6 27 54 27Z" fill="url(#tibb_hdr_4_gd)"/>
+          <path d="M48 34V48L58 53" stroke="#34d399" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="33" cy="34" r="1.8" fill="#fef08a"/>
+          <circle cx="31" cy="58" r="1.5" fill="#fde047"/>
+        </g></svg>`
+  },
+  "tibb-05-vitality": {
+    id: "tibb-05-vitality",
+    type: "tibb-monograph",
+    panelId: "panel-tibb-05-vitality",
+    titleKey: "tibb_sec_5_title",
+    descKey: "tibb_sec_5_desc",
+    badgeKey: "tibb_badge_5",
+    badgeText: "০৫ • বায়োমেকানিক্স",
+    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
+          <linearGradient id="tibb_hdr_5_ht" x1="20" y1="18" x2="76" y2="80" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fb7185"/><stop offset="55%" stop-color="#e11d48"/><stop offset="100%" stop-color="#881337"/>
+          </linearGradient>
+        </defs>
+        <g>
+          <path d="M48 80C48 80 16 60 16 36C16 24.5 25 16 36 16C42.2 16 46.5 19 48 23.2C49.5 19 53.8 16 60 16C71 16 80 24.5 80 36C80 60 48 80 48 80Z" fill="url(#tibb_hdr_5_ht)" stroke="#881337" stroke-width="2.2"/>
+          <path d="M24 31C25 25 29.5 22 34.5 22" stroke="#ffe4e6" stroke-width="2.4" stroke-linecap="round" stroke-opacity="0.7"/>
+          <path d="M21 46H35L40 33L47 58L53 39L57 46H75" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g></svg>`
+  },
+  "tibb-06-hygiene": {
+    id: "tibb-06-hygiene",
+    type: "tibb-monograph",
+    panelId: "panel-tibb-06-hygiene",
+    titleKey: "tibb_sec_6_title",
+    descKey: "tibb_sec_6_desc",
+    badgeKey: "tibb_badge_6",
+    badgeText: "০৬ • মিসওয়াক-অযু",
+    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
+          <linearGradient id="tibb_hdr_6_dp" x1="26" y1="12" x2="70" y2="82" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#bae6fd"/><stop offset="50%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#0369a1"/>
+          </linearGradient>
+          <linearGradient id="tibb_hdr_6_ms" x1="18" y1="62" x2="78" y2="78" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fde68a"/><stop offset="100%" stop-color="#92400e"/>
+          </linearGradient>
+        </defs>
+        <g>
+          <path d="M48 13C61 30 70 43 70 55C70 67.2 60.2 77 48 77C35.8 77 26 67.2 26 55C26 43 35 30 48 13Z" fill="url(#tibb_hdr_6_dp)" stroke="#0369a1" stroke-width="2.2"/>
+          <path d="M36 47C35 54 38 62 44 66" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-opacity="0.75"/>
+          <path d="M48 39L50.5 45.5L57 48L50.5 50.5L48 57L45.5 50.5L39 48L45.5 45.5Z" fill="#fef08a"/>
+          <rect x="20" y="75" width="56" height="8" rx="4" fill="url(#tibb_hdr_6_ms)" stroke="#78350f" stroke-width="1.6"/>
+        </g></svg>`
+  },
+  "tibb-07-mental": {
+    id: "tibb-07-mental",
+    type: "tibb-monograph",
+    panelId: "panel-tibb-07-mental",
+    titleKey: "tibb_sec_7_title",
+    descKey: "tibb_sec_7_desc",
+    badgeKey: "tibb_badge_7",
+    badgeText: "০৭ • যিকির ও PNI",
+    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
+          <radialGradient id="tibb_hdr_7_hl" cx="50%" cy="45%" r="50%">
+            <stop offset="0%" stop-color="#fef08a" stop-opacity="0.75"/><stop offset="65%" stop-color="#34d399" stop-opacity="0.25"/><stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="tibb_hdr_7_pt" x1="24" y1="22" x2="72" y2="76" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#6ee7b7"/><stop offset="55%" stop-color="#10b981"/><stop offset="100%" stop-color="#065f46"/>
+          </linearGradient>
+        </defs>
+        <g>
+          <circle cx="48" cy="48" r="38" fill="url(#tibb_hdr_7_hl)"/>
+          <path d="M48 18C56 30 58 44 48 64C38 44 40 30 48 18Z" fill="url(#tibb_hdr_7_pt)" stroke="#064e3b" stroke-width="1.8"/>
+          <path d="M48 64C33 56 22 44 22 31C35 32 44 43 48 64Z" fill="#34d399" stroke="#064e3b" stroke-width="1.8"/>
+          <path d="M48 64C63 56 74 44 74 31C61 32 52 43 48 64Z" fill="#059669" stroke="#064e3b" stroke-width="1.8"/>
+          <path d="M26 70H70C67 77 58 81 48 81C38 81 29 77 26 70Z" fill="#f59e0b" stroke="#92400e" stroke-width="1.8"/>
+        </g></svg>`
+  },
+  "tibb-08-superfoods": {
+    id: "tibb-08-superfoods",
+    type: "tibb-monograph",
+    panelId: "panel-tibb-08-superfoods",
+    titleKey: "tibb_sec_8_title",
+    descKey: "tibb_sec_8_desc",
+    badgeKey: "tibb_badge_8",
+    badgeText: "০৮ • কালোজিরা-মধু",
+    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
+          <linearGradient id="tibb_hdr_8_hn" x1="20" y1="26" x2="62" y2="82" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fef08a"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#b45309"/>
+          </linearGradient>
+          <linearGradient id="tibb_hdr_8_ol" x1="58" y1="36" x2="84" y2="74" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#86efac"/><stop offset="60%" stop-color="#16a34a"/><stop offset="100%" stop-color="#14532d"/>
+          </linearGradient>
+        </defs>
+        <g>
+          <rect x="25" y="16" width="32" height="9" rx="4" fill="#92400e"/>
+          <rect x="20" y="25" width="42" height="56" rx="11" fill="url(#tibb_hdr_8_hn)" stroke="#92400e" stroke-width="2"/>
+          <path d="M26 32V72" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" stroke-opacity="0.6"/>
+          <polygon points="41,41 50,46 50,56 41,61 32,56 32,46" fill="#fffbeb" stroke="#b45309" stroke-width="1.6"/>
+          <ellipse cx="71" cy="58" rx="11" ry="15" transform="rotate(-18 71 58)" fill="url(#tibb_hdr_8_ol)" stroke="#14532d" stroke-width="2"/>
+          <path d="M68 42C72 34 78 30 84 29" stroke="#15803d" stroke-width="2.5" stroke-linecap="round"/>
+        </g></svg>`
+  },
+  "tibb-09-routine": {
+    id: "tibb-09-routine",
+    type: "tibb-monograph",
+    panelId: "panel-tibb-09-routine",
+    titleKey: "tibb_sec_9_title",
+    descKey: "tibb_sec_9_desc",
+    badgeKey: "tibb_badge_9",
+    badgeText: "০৯ • ৫ পর্ব রুটিন",
+    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
+          <linearGradient id="tibb_hdr_9_rg" x1="14" y1="14" x2="82" y2="82" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#10b981"/><stop offset="50%" stop-color="#059669"/><stop offset="100%" stop-color="#064e3b"/>
+          </linearGradient>
+        </defs>
+        <g>
+          <circle cx="48" cy="48" r="34" fill="#ecfdf5" stroke="url(#tibb_hdr_9_rg)" stroke-width="5"/>
+          <circle cx="48" cy="48" r="25" fill="#ffffff" stroke="#a7f3d0" stroke-width="1.6"/>
+          <circle cx="48" cy="28" r="3" fill="#f59e0b"/>
+          <circle cx="68" cy="48" r="3" fill="#10b981"/>
+          <circle cx="48" cy="68" r="3" fill="#6366f1"/>
+          <circle cx="28" cy="48" r="3" fill="#0ea5e9"/>
+          <path d="M48 33V48L59 54" stroke="#065f46" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="48" cy="48" r="3.5" fill="#f59e0b"/>
+        </g></svg>`
+  },
+  "tibb-10-avoidance": {
+    id: "tibb-10-avoidance",
+    type: "tibb-monograph",
+    panelId: "panel-tibb-10-avoidance",
+    titleKey: "tibb_sec_10_title",
+    descKey: "tibb_sec_10_desc",
+    badgeKey: "tibb_badge_10",
+    badgeText: "১০ • ৫ নীরব ঘাতক",
+    logoHtml: `<svg viewBox="0 0 96 96" width="52" height="52" style="filter:drop-shadow(0 4px 6px rgba(15,23,42,0.24));display:block;" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
+          <linearGradient id="tibb_hdr_10_sh" x1="18" y1="10" x2="78" y2="86" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fca5a5"/><stop offset="45%" stop-color="#dc2626"/><stop offset="100%" stop-color="#7f1d1d"/>
+          </linearGradient>
+        </defs>
+        <g>
+          <path d="M48 10L78 22V46C78 66 65 81 48 86C31 81 18 66 18 46V22L48 10Z" fill="url(#tibb_hdr_10_sh)" stroke="#7f1d1d" stroke-width="2.2"/>
+          <circle cx="48" cy="47" r="18" fill="#ffffff" fill-opacity="0.16" stroke="#ffffff" stroke-width="3.2"/>
+          <line x1="36" y1="59" x2="60" y2="35" stroke="#fef08a" stroke-width="4" stroke-linecap="round"/>
+        </g></svg>`
+  }
 };
 
 function applyCornerPillState(badgeEl, doneCount, totalCount) {
@@ -4605,6 +4842,10 @@ function updateActiveMasterHeaderUI(sectionId) {
   } else if (sectionId === "sec-crypto_vault") {
     if (badgeEl) {
       badgeEl.textContent = "🔐 SHA-256";
+    }
+  } else if (meta.type === "tibb-monograph") {
+    if (badgeEl) {
+      badgeEl.textContent = meta.badgeKey ? t(meta.badgeKey) : (meta.badgeText || "🌿 তিব্বে নববী");
     }
   } else {
     if (badgeEl) {
@@ -4920,6 +5161,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // 1B. Click on any Section Card in the 10-Section Tibb-an-Nabawi & Health Grid
+  const tibbSectionsGrid = document.getElementById("tibb-health-sections-grid");
+  if (tibbSectionsGrid) {
+    tibbSectionsGrid.addEventListener("click", (e) => {
+      const cardBtn = e.target.closest("[data-open-section]");
+      if (!cardBtn) return;
+      const targetSecId = cardBtn.getAttribute("data-open-section");
+      if (targetSecId) {
+        openMasterSection(targetSecId, true);
+      }
+    });
+  }
+
   // Allow tapping top-left App Brand Logo/Title to return to Home Dashboard from any Master Section
   const headerLeftEl = document.querySelector(".header-left");
   if (headerLeftEl) {
@@ -5066,8 +5320,9 @@ function syncSettingsAndBottomNavLocalization() {
     doneBtn.textContent = t("popup_ok_btn");
   }
 
-  // Bottom Navigation Bar Labels (Home, Sunnah Grid, Tasbeeh, Stats)
+  // Bottom Navigation Bar Labels (Home, Health Guide, Sunnah Grid [Middle], Tasbeeh, Stats)
   const bHome = document.getElementById("bnav-lbl-home");
+  const bTibb = document.getElementById("bnav-lbl-tibb");
   const bGrid = document.getElementById("bnav-lbl-grid");
   const bTasbih = document.getElementById("bnav-lbl-tasbih");
   const bStats = document.getElementById("bnav-lbl-stats");
@@ -5075,6 +5330,10 @@ function syncSettingsAndBottomNavLocalization() {
   if (bHome) {
     bHome.textContent =
       lang === "ar" ? "الرئيسية" : lang === "en" ? "Home" : "হোম";
+  }
+  if (bTibb) {
+    bTibb.textContent =
+      lang === "ar" ? "الطب النبوي" : lang === "en" ? "Health Guide" : "স্বাস্থ্য গাইড";
   }
   if (bGrid) {
     bGrid.textContent =
@@ -5114,6 +5373,8 @@ function syncBottomNavWithCurrentView() {
     setBottomNavActiveTab("tasbih");
   } else if (activeMasterSectionId === "sec-vault") {
     setBottomNavActiveTab("stats");
+  } else if (String(activeMasterSectionId).startsWith("tibb-")) {
+    setBottomNavActiveTab("tibb");
   } else {
     setBottomNavActiveTab("grid");
   }
@@ -5296,6 +5557,20 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           openHomeDashboardPage(false, true);
         }
+      } else if (target === "tibb") {
+        if (currentViewId !== "home") {
+          openHomeDashboardPage(false, true);
+        }
+        setBottomNavActiveTab("tibb");
+        requestAnimationFrame(() => {
+          const tibbHub = document.getElementById("tibb-health-hub-section");
+          const hdr = document.getElementById("main-app-header");
+          if (tibbHub) {
+            const offset = (hdr ? hdr.offsetHeight : 58) + 10;
+            const y = tibbHub.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+          }
+        });
       } else if (target === "grid") {
         if (currentViewId === "grid") {
           window.scrollTo({ top: 0, behavior: "smooth" });
@@ -6035,6 +6310,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
