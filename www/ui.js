@@ -3001,7 +3001,7 @@ document.addEventListener("DOMContentLoaded", () => {
     splashHideTimer = setTimeout(() => {
       splash.classList.add("splash-hidden");
       const homeView = document.getElementById("home-dashboard-view");
-      if (homeView && !activeMasterSectionId && !isSunnahGridPageOpen) {
+      if (homeView && !activeMasterSectionId && !isSunnahGridPageOpen && !isTibbGridPageOpen) {
         homeView.classList.remove("hidden");
         homeView.style.display = "";
       }
@@ -5229,21 +5229,23 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============================================================================
 let isSunnahGridPageOpen = false;
 let sunnahGridScrollY = 0;
-let masterSectionOriginPage = "home"; // "home" | "grid"
+let isTibbGridPageOpen = false;
+let tibbGridScrollY = 0;
+let masterSectionOriginPage = "home"; // "home" | "grid" | "tibb-grid"
 
 // LIFO Tab & View History Stack: Always starts anchored at "home"
-// View IDs: "home" | "grid" | "sec-tahajjud_fajr" | "sec-duha_work" | "sec-dhuhr_asr" |
-//           "sec-maghrib_isha" | "sec-sleep_sunnah" | "sec-diet_hygiene" |
-//           "sec-character_social" | "sec-adhkar" | "sec-tasbih" | "sec-vault" |
-//           "sec-custom_habit" | "sec-crypto_vault"
+// View IDs: "home" | "tibb-grid" | "grid" | "tibb-01-ideology" .. "tibb-10-avoidance" |
+//           "sec-tahajjud_fajr" .. "sec-crypto_vault"
 let s24ViewHistoryStack = ["home"];
 const s24ViewScrollPositions = {
   home: 0,
-  grid: 0
+  grid: 0,
+  "tibb-grid": 0
 };
 
 function getCurrentActiveViewId() {
   if (activeMasterSectionId) return activeMasterSectionId;
+  if (isTibbGridPageOpen) return "tibb-grid";
   if (isSunnahGridPageOpen) return "grid";
   return "home";
 }
@@ -5254,6 +5256,7 @@ function saveCurrentActiveViewScrollPosition() {
   s24ViewScrollPositions[curId] = y;
   if (curId === "home") homeDashboardScrollY = y;
   if (curId === "grid") sunnahGridScrollY = y;
+  if (curId === "tibb-grid") tibbGridScrollY = y;
 }
 
 function recordViewTransitionInStack(targetViewId) {
@@ -5362,7 +5365,9 @@ function setBottomNavActiveTab(tabKey) {
 
 function syncBottomNavWithCurrentView() {
   if (!activeMasterSectionId) {
-    if (isSunnahGridPageOpen) {
+    if (isTibbGridPageOpen) {
+      setBottomNavActiveTab("tibb");
+    } else if (isSunnahGridPageOpen) {
       setBottomNavActiveTab("grid");
     } else {
       setBottomNavActiveTab("home");
@@ -5380,9 +5385,42 @@ function syncBottomNavWithCurrentView() {
   }
 }
 
+// Open the Independent Health Guide Grid Page (#tibb-grid-view)
+function openTibbGridPage(recordHistory = true, restoreScroll = false) {
+  const homeView = document.getElementById("home-dashboard-view");
+  const tibbView = document.getElementById("tibb-grid-view");
+  const gridView = document.getElementById("sunnah-grid-view");
+  const masterView = document.getElementById("master-section-view");
+  if (!homeView || !tibbView || !gridView || !masterView) return;
+
+  if (recordHistory) {
+    recordViewTransitionInStack("tibb-grid");
+  } else {
+    saveCurrentActiveViewScrollPosition();
+  }
+
+  activeMasterSectionId = null;
+  isSunnahGridPageOpen = false;
+  isTibbGridPageOpen = true;
+  document.body.setAttribute("data-active-view", "tibb-grid");
+
+  homeView.classList.add("hidden");
+  gridView.classList.add("hidden");
+  masterView.classList.add("hidden");
+  tibbView.classList.remove("hidden");
+
+  setBottomNavActiveTab("tibb");
+
+  const targetY = restoreScroll ? (s24ViewScrollPositions["tibb-grid"] || tibbGridScrollY || 0) : 0;
+  if ((window.scrollY || window.pageYOffset || 0) !== targetY) {
+    window.scrollTo(0, targetY);
+  }
+}
+
 // Open the Independent Sunnah Grid Page (#sunnah-grid-view)
 function openSunnahGridPage(recordHistory = true, restoreScroll = false) {
   const homeView = document.getElementById("home-dashboard-view");
+  const tibbView = document.getElementById("tibb-grid-view");
   const gridView = document.getElementById("sunnah-grid-view");
   const masterView = document.getElementById("master-section-view");
   if (!homeView || !gridView || !masterView) return;
@@ -5394,10 +5432,12 @@ function openSunnahGridPage(recordHistory = true, restoreScroll = false) {
   }
 
   activeMasterSectionId = null;
+  isTibbGridPageOpen = false;
   isSunnahGridPageOpen = true;
   document.body.setAttribute("data-active-view", "sunnah-grid");
 
   homeView.classList.add("hidden");
+  if (tibbView) tibbView.classList.add("hidden");
   masterView.classList.add("hidden");
   gridView.classList.remove("hidden");
 
@@ -5415,6 +5455,7 @@ function openSunnahGridPage(recordHistory = true, restoreScroll = false) {
 // Open the Independent Home Page (#home-dashboard-view)
 function openHomeDashboardPage(restoreScroll = true, recordHistory = false) {
   const homeView = document.getElementById("home-dashboard-view");
+  const tibbView = document.getElementById("tibb-grid-view");
   const gridView = document.getElementById("sunnah-grid-view");
   const masterView = document.getElementById("master-section-view");
   if (!homeView || !gridView || !masterView) return;
@@ -5427,8 +5468,10 @@ function openHomeDashboardPage(restoreScroll = true, recordHistory = false) {
 
   activeMasterSectionId = null;
   isSunnahGridPageOpen = false;
+  isTibbGridPageOpen = false;
   document.body.setAttribute("data-active-view", "home");
 
+  if (tibbView) tibbView.classList.add("hidden");
   gridView.classList.add("hidden");
   masterView.classList.add("hidden");
   homeView.classList.remove("hidden");
@@ -5464,7 +5507,8 @@ function syncHomeExpandedBreathingSpace(expandedElement = null) {
   if (
     expandedElement &&
     !activeMasterSectionId &&
-    !isSunnahGridPageOpen
+    !isSunnahGridPageOpen &&
+    !isTibbGridPageOpen
   ) {
     setTimeout(() => {
       const rect = expandedElement.getBoundingClientRect();
@@ -5558,19 +5602,11 @@ document.addEventListener("DOMContentLoaded", () => {
           openHomeDashboardPage(false, true);
         }
       } else if (target === "tibb") {
-        if (currentViewId !== "home") {
-          openHomeDashboardPage(false, true);
+        if (currentViewId === "tibb-grid") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          openTibbGridPage(true, false);
         }
-        setBottomNavActiveTab("tibb");
-        requestAnimationFrame(() => {
-          const tibbHub = document.getElementById("tibb-health-hub-section");
-          const hdr = document.getElementById("main-app-header");
-          if (tibbHub) {
-            const offset = (hdr ? hdr.offsetHeight : 58) + 10;
-            const y = tibbHub.getBoundingClientRect().top + window.pageYOffset - offset;
-            window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
-          }
-        });
       } else if (target === "grid") {
         if (currentViewId === "grid") {
           window.scrollTo({ top: 0, behavior: "smooth" });
@@ -5638,6 +5674,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const origOpenMasterSection = openMasterSection;
   openMasterSection = function (sectionId, recordHistory = true, restoreScroll = false) {
     const gridView = document.getElementById("sunnah-grid-view");
+    const tibbView = document.getElementById("tibb-grid-view");
 
     if (recordHistory) {
       recordViewTransitionInStack(sectionId);
@@ -5646,7 +5683,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     isSunnahGridPageOpen = false;
+    isTibbGridPageOpen = false;
     if (gridView) gridView.classList.add("hidden");
+    if (tibbView) tibbView.classList.add("hidden");
 
     // Pass recordHistory=false to origOpenMasterSection because recordViewTransitionInStack already pushed history
     origOpenMasterSection(sectionId, false);
@@ -5663,8 +5702,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const origCloseMasterSectionToHome = closeMasterSectionToHome;
   closeMasterSectionToHome = function () {
     const gridView = document.getElementById("sunnah-grid-view");
+    const tibbView = document.getElementById("tibb-grid-view");
     if (gridView) gridView.classList.add("hidden");
+    if (tibbView) tibbView.classList.add("hidden");
     isSunnahGridPageOpen = false;
+    isTibbGridPageOpen = false;
     s24ViewHistoryStack = ["home"];
     origCloseMasterSectionToHome();
     syncBottomNavWithCurrentView();
@@ -5677,6 +5719,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const navigateToStackView = (targetViewId) => {
     if (!targetViewId || targetViewId === "home") {
       openHomeDashboardPage(true, false);
+      return;
+    }
+    if (targetViewId === "tibb-grid") {
+      openTibbGridPage(false, true);
       return;
     }
     if (targetViewId === "grid") {
@@ -6310,6 +6356,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
