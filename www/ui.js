@@ -4871,6 +4871,8 @@ function openMasterSection(sectionId, recordHistory = true) {
   document.body.setAttribute("data-active-view", sectionId);
 
   // Hide Home Dashboard completely & show Full-Screen Master View
+  homeView.style.display = "";
+  masterView.style.display = "";
   homeView.classList.add("hidden");
   masterView.classList.remove("hidden");
 
@@ -5404,11 +5406,20 @@ function openTibbGridPage(recordHistory = true, restoreScroll = false) {
   isTibbGridPageOpen = true;
   document.body.setAttribute("data-active-view", "tibb-grid");
 
+  // Clear any inline display override so .hidden works deterministically
+  homeView.style.display = "";
+  gridView.style.display = "";
+  masterView.style.display = "";
+  tibbView.style.display = "";
+
   homeView.classList.add("hidden");
   gridView.classList.add("hidden");
   masterView.classList.add("hidden");
   tibbView.classList.remove("hidden");
 
+  if (typeof syncMasterSectionsLiveProgress === "function") {
+    syncMasterSectionsLiveProgress();
+  }
   setBottomNavActiveTab("tibb");
 
   const targetY = restoreScroll ? (s24ViewScrollPositions["tibb-grid"] || tibbGridScrollY || 0) : 0;
@@ -5435,6 +5446,11 @@ function openSunnahGridPage(recordHistory = true, restoreScroll = false) {
   isTibbGridPageOpen = false;
   isSunnahGridPageOpen = true;
   document.body.setAttribute("data-active-view", "sunnah-grid");
+
+  homeView.style.display = "";
+  gridView.style.display = "";
+  masterView.style.display = "";
+  if (tibbView) tibbView.style.display = "";
 
   homeView.classList.add("hidden");
   if (tibbView) tibbView.classList.add("hidden");
@@ -5470,6 +5486,11 @@ function openHomeDashboardPage(restoreScroll = true, recordHistory = false) {
   isSunnahGridPageOpen = false;
   isTibbGridPageOpen = false;
   document.body.setAttribute("data-active-view", "home");
+
+  homeView.style.display = "";
+  gridView.style.display = "";
+  masterView.style.display = "";
+  if (tibbView) tibbView.style.display = "";
 
   if (tibbView) tibbView.classList.add("hidden");
   gridView.classList.add("hidden");
