@@ -12902,3 +12902,380 @@ body {
 }
 
 
+
+
+/* ==========================================================================
+   V15.0 TIBB-AN-NABAWI & PREVENTIVE HEALTH 10-SECTION GRID (AFTER HOME,
+   BEFORE SUNNAH GRID) + FULL-SCREEN MONOGRAPH READER & 5-TAB MIDDLE SUNNAH GRID
+   ========================================================================== */
+
+/* 1. 5-Tab Bottom Navigation Bar with Sunnah Grid Centered in the Middle */
+.s24-bottom-nav {
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  padding: 5px 4px calc(5px + env(safe-area-inset-bottom, 0px)) 4px !important;
+  gap: 2px !important;
+}
+
+.s24-bnav-icon {
+  width: 38px !important;
+  height: 26px !important;
+}
+
+.s24-bnav-label {
+  font-size: 0.62rem !important;
+  letter-spacing: -0.01em;
+}
+
+/* 2. New 10-Section Grid Container on Home Dashboard (Positioned Right Before Sunnah Grid) */
+.tibb-health-hub-wrapper {
+  margin: 4px 12px 14px !important;
+}
+
+#tibb-hub-heading {
+  font-size: 1.02rem !important;
+  font-weight: 600 !important;
+  color: var(--text-primary, #1e2923) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+html[data-theme="dark"] #tibb-hub-heading {
+  color: #f8fafc !important;
+}
+
+/* 3. Tri-Lingual (BN / EN / AR) Switching Inside Monograph Reader Panels */
+.tibb-monograph-panel .lang-ar,
+.tibb-monograph-panel .tibb-lang-ar {
+  display: none !important;
+}
+
+html:not([lang="bn"]) .tibb-monograph-panel .lang-bn,
+html:not([lang="bn"]) .tibb-monograph-panel .tibb-lang-bn {
+  display: none !important;
+}
+
+html:not([lang="en"]) .tibb-monograph-panel .lang-en,
+html:not([lang="en"]) .tibb-monograph-panel .tibb-lang-en {
+  display: none !important;
+}
+
+html[lang="ar"] .tibb-monograph-panel .lang-ar,
+html[lang="ar"] .tibb-monograph-panel .tibb-lang-ar {
+  display: inline !important;
+}
+
+html[lang="ar"] .tibb-monograph-panel .tibb-reader-hero-card,
+html[lang="ar"] .tibb-monograph-panel .tibb-reader-body-card,
+html[lang="ar"] .tibb-monograph-panel p,
+html[lang="ar"] .tibb-monograph-panel li {
+  direction: rtl;
+  text-align: right !important;
+}
+
+html[lang="ar"] .tibb-monograph-panel .monograph-list {
+  padding-left: 0;
+  padding-right: 18px;
+}
+
+/* 4. Monograph Reader Hero & Content Styling (Light & Dark Mode Native App UI) */
+.tibb-monograph-panel {
+  padding-bottom: 16px !important;
+}
+
+.tibb-reader-hero-card {
+  background:
+    radial-gradient(circle at 90% 15%, rgba(254, 243, 199, 0.62) 0%, transparent 52%),
+    linear-gradient(155deg, #ffffff 0%, #f1f8f4 100%);
+  border: 1.5px solid rgba(22, 163, 74, 0.34);
+  border-radius: 20px;
+  padding: 15px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 14px rgba(15, 35, 25, 0.05);
+}
+
+.tibb-reader-chapter-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.68rem;
+  font-weight: 600 !important;
+  color: #15803d;
+  background: #e8f5ee;
+  border: 1px solid rgba(22, 163, 74, 0.32);
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 7px;
+}
+
+.tibb-reader-title {
+  font-size: 1.08rem !important;
+  font-weight: 700 !important;
+  color: #14532d !important;
+  line-height: 1.35 !important;
+  margin-bottom: 4px !important;
+}
+
+.tibb-reader-sub {
+  font-size: 0.68rem;
+  font-weight: 600 !important;
+  color: #b45309;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1.35;
+}
+
+.tibb-reader-body-card {
+  background: #ffffff;
+  border: 1.5px solid rgba(22, 163, 74, 0.24);
+  border-radius: 20px;
+  padding: 16px 15px;
+  box-shadow: 0 4px 16px rgba(15, 35, 25, 0.04);
+  font-size: 0.88rem;
+  line-height: 1.72;
+  color: var(--text-primary, #1e2923);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tibb-reader-body-card p {
+  margin: 0 0 8px 0;
+  text-align: left !important;
+}
+
+.tibb-reader-body-card .grid-3-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 9px;
+  margin: 4px 0;
+}
+
+.tibb-reader-body-card .grid-box {
+  background: #f4faf7;
+  border: 1px solid rgba(22, 163, 74, 0.26);
+  border-top: 3px solid #16a34a;
+  border-radius: 14px;
+  padding: 11px 12px;
+  text-align: center;
+}
+
+.tibb-reader-body-card .grid-box-title {
+  font-size: 0.8rem;
+  font-weight: 700 !important;
+  color: #15803d;
+  margin-bottom: 4px;
+}
+
+.tibb-reader-body-card .grid-box-desc {
+  font-size: 0.8rem;
+  line-height: 1.48;
+  margin: 0 !important;
+  text-align: center !important;
+}
+
+.tibb-reader-body-card .callout-quran {
+  background: #f2fbf6;
+  border: 1px solid rgba(22, 163, 74, 0.24);
+  border-left: 4px solid #16a34a;
+  border-radius: 14px;
+  padding: 13px 14px;
+}
+
+.tibb-reader-body-card .callout-hadith {
+  background: #fffcf3;
+  border: 1px solid rgba(217, 119, 6, 0.25);
+  border-left: 4px solid #d97706;
+  border-radius: 14px;
+  padding: 13px 14px;
+}
+
+.tibb-reader-body-card .callout-science {
+  background: #f2f8fb;
+  border: 1px solid rgba(2, 132, 199, 0.24);
+  border-left: 4px solid #0284c7;
+  border-radius: 14px;
+  padding: 13px 14px;
+}
+
+.tibb-reader-body-card .callout-danger {
+  background: #fef4f4;
+  border: 1px solid rgba(220, 38, 38, 0.26);
+  border-left: 4px solid #dc2626;
+  border-radius: 14px;
+  padding: 13px 14px;
+}
+
+.tibb-reader-body-card .callout-label {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 700 !important;
+  margin-bottom: 6px;
+  color: #14532d;
+}
+
+.tibb-reader-body-card .callout-hadith .callout-label {
+  color: #b45309;
+}
+
+.tibb-reader-body-card .callout-science .callout-label {
+  color: #0369a1;
+}
+
+.tibb-reader-body-card .callout-danger .callout-label {
+  color: #b91c1c;
+}
+
+.tibb-reader-body-card .citation-ref {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.76rem;
+  font-weight: 600 !important;
+  color: var(--text-muted, #64746b);
+}
+
+.tibb-reader-body-card .monograph-list {
+  padding-left: 18px;
+  margin: 4px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.tibb-reader-body-card .monograph-list li {
+  line-height: 1.65;
+}
+
+.tibb-reader-body-card .routine-phase {
+  background: #f8fbf9;
+  border: 1px solid rgba(22, 163, 74, 0.24);
+  border-radius: 15px;
+  padding: 13px;
+}
+
+.tibb-reader-body-card .routine-phase-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 8px;
+  margin-bottom: 9px;
+  border-bottom: 1.5px solid rgba(217, 119, 6, 0.35);
+}
+
+.tibb-reader-body-card .routine-phase-title {
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  color: #14532d !important;
+  margin: 0 !important;
+}
+
+.tibb-reader-body-card .routine-time-badge {
+  font-size: 0.68rem;
+  font-weight: 600 !important;
+  background: #15803d;
+  color: #ffffff;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.tibb-reader-body-card .table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(22, 163, 74, 0.24);
+}
+
+.tibb-reader-body-card .monograph-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 0.79rem;
+}
+
+.tibb-reader-body-card .monograph-table th {
+  background: #14532d;
+  color: #ffffff;
+  font-weight: 600 !important;
+  text-align: left;
+  padding: 9px 10px;
+  border: 1px solid rgba(22, 163, 74, 0.25);
+}
+
+.tibb-reader-body-card .monograph-table td {
+  padding: 9px 10px;
+  border: 1px solid rgba(22, 163, 74, 0.2);
+  vertical-align: top;
+}
+
+.tibb-reader-body-card .monograph-table tr:nth-child(even) {
+  background: #f4faf7;
+}
+
+/* Dark Mode Overrides for Tibb-an-Nabawi Monograph Reader */
+html[data-theme="dark"] .tibb-reader-hero-card,
+html[data-theme="dark"] .tibb-reader-body-card {
+  background: #0b221a !important;
+  border-color: rgba(52, 211, 153, 0.32) !important;
+  color: #f1f5f9 !important;
+}
+
+html[data-theme="dark"] .tibb-reader-title,
+html[data-theme="dark"] .tibb-reader-body-card .routine-phase-title {
+  color: #6ee7b7 !important;
+}
+
+html[data-theme="dark"] .tibb-reader-chapter-pill {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+  border-color: rgba(52, 211, 153, 0.38);
+}
+
+html[data-theme="dark"] .tibb-reader-body-card .grid-box,
+html[data-theme="dark"] .tibb-reader-body-card .callout-quran,
+html[data-theme="dark"] .tibb-reader-body-card .routine-phase {
+  background: #071913 !important;
+  border-color: rgba(52, 211, 153, 0.28) !important;
+  color: #e2e8f0 !important;
+}
+
+html[data-theme="dark"] .tibb-reader-body-card .callout-hadith {
+  background: rgba(234, 179, 8, 0.1) !important;
+  border-color: rgba(234, 179, 8, 0.34) !important;
+}
+
+html[data-theme="dark"] .tibb-reader-body-card .callout-science {
+  background: rgba(14, 165, 233, 0.1) !important;
+  border-color: rgba(56, 189, 248, 0.34) !important;
+}
+
+html[data-theme="dark"] .tibb-reader-body-card .callout-danger {
+  background: rgba(239, 68, 68, 0.12) !important;
+  border-color: rgba(248, 113, 113, 0.36) !important;
+}
+
+html[data-theme="dark"] .tibb-reader-body-card .callout-label {
+  color: #6ee7b7 !important;
+}
+
+html[data-theme="dark"] .tibb-reader-body-card .callout-hadith .callout-label {
+  color: #fde047 !important;
+}
+
+html[data-theme="dark"] .tibb-reader-body-card .callout-science .callout-label {
+  color: #7dd3fc !important;
+}
+
+html[data-theme="dark"] .tibb-reader-body-card .callout-danger .callout-label {
+  color: #fca5a5 !important;
+}
+
+html[data-theme="dark"] .tibb-reader-body-card .monograph-table tr:nth-child(even) {
+  background: #071913 !important;
+}
+
+html[data-theme="dark"] .tibb-reader-body-card [style*="background-color: var(--card-bg)"] {
+  background-color: #0b221a !important;
+  border-color: rgba(52, 211, 153, 0.28) !important;
+}
+
