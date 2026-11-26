@@ -12905,8 +12905,12 @@ body {
 
 
 /* ==========================================================================
-   V15.0 TIBB-AN-NABAWI & PREVENTIVE HEALTH 10-SECTION GRID (AFTER HOME,
-   BEFORE SUNNAH GRID) + FULL-SCREEN MONOGRAPH READER & 5-TAB MIDDLE SUNNAH GRID
+   V15.2 UNIFIED STANDARD UI/UX FOR HEALTH GUIDE GRID (#tibb-grid-view) &
+   ALL 10 MONOGRAPH READER SECTIONS (.tibb-monograph-panel)
+   - Matches the exact spacing, card proportions, and clean Material 3
+     visual hierarchy of #sunnah-grid-view
+   - Structures every chapter's content into balanced, fatigue-free cards,
+     semantic callouts, and mobile-native superfood cards (zero horizontal scroll)
    ========================================================================== */
 
 /* 1. 5-Tab Bottom Navigation Bar with Sunnah Grid Centered in the Middle */
@@ -12926,9 +12930,20 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* 2. New 10-Section Grid Container on Home Dashboard (Positioned Right Before Sunnah Grid) */
-.tibb-health-hub-wrapper {
-  margin: 4px 12px 14px !important;
+/* 2. Independent Health Guide Grid Page (#tibb-grid-view) — Identical Standard to #sunnah-grid-view */
+#tibb-grid-view {
+  min-height: calc(100dvh - 132px) !important;
+  padding-top: 2px !important;
+  padding-bottom: 4px !important;
+}
+
+#tibb-grid-view .tibb-health-hub-wrapper {
+  margin: 12px 14px 12px !important;
+}
+
+#tibb-grid-view .sections-hub-header {
+  margin-bottom: 12px !important;
+  padding: 0 2px !important;
 }
 
 #tibb-hub-heading {
@@ -12940,11 +12955,52 @@ body {
   gap: 8px;
 }
 
-html[data-theme="dark"] #tibb-hub-heading {
+#tibb-grid-view #tibb-health-sections-grid {
+  gap: 11px !important;
+}
+
+#tibb-grid-view .section-launcher-card {
+  background: #ffffff !important;
+  border: 1px solid var(--border-subtle, #e3ebe6) !important;
+  border-radius: 18px !important;
+  padding: 28px 8px 14px !important;
+  box-shadow: var(--shadow-m3-card) !important;
+}
+
+#tibb-grid-view .section-live-pill {
+  font-size: 0.65rem !important;
+  font-weight: 500 !important;
+  padding: 2px 8px !important;
+  min-height: 20px !important;
+}
+
+#tibb-grid-view .section-world-logo {
+  width: 58px !important;
+  height: 58px !important;
+}
+
+#tibb-grid-view .section-world-logo svg {
+  width: 56px !important;
+  height: 56px !important;
+}
+
+#tibb-grid-view .section-card-title {
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  color: #1e2923 !important;
+}
+
+html[data-theme="dark"] #tibb-hub-heading,
+html[data-theme="dark"] #tibb-grid-view .section-card-title {
   color: #f8fafc !important;
 }
 
-/* 3. Tri-Lingual (BN / EN / AR) Switching Inside Monograph Reader Panels */
+html[data-theme="dark"] #tibb-grid-view .section-launcher-card {
+  background: #0b221a !important;
+  border-color: rgba(16, 185, 129, 0.22) !important;
+}
+
+/* 3. Tri-Lingual (BN / EN / AR) Visibility Inside Monograph Reader Panels */
 .tibb-monograph-panel .lang-ar,
 .tibb-monograph-panel .tibb-lang-ar {
   display: none !important;
@@ -12960,7 +13016,13 @@ html:not([lang="en"]) .tibb-monograph-panel .tibb-lang-en {
   display: none !important;
 }
 
-html[lang="ar"] .tibb-monograph-panel .lang-ar,
+html[lang="ar"] .tibb-monograph-panel div.lang-ar {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+}
+
+html[lang="ar"] .tibb-monograph-panel span.lang-ar,
 html[lang="ar"] .tibb-monograph-panel .tibb-lang-ar {
   display: inline !important;
 }
@@ -12968,7 +13030,8 @@ html[lang="ar"] .tibb-monograph-panel .tibb-lang-ar {
 html[lang="ar"] .tibb-monograph-panel .tibb-reader-hero-card,
 html[lang="ar"] .tibb-monograph-panel .tibb-reader-body-card,
 html[lang="ar"] .tibb-monograph-panel p,
-html[lang="ar"] .tibb-monograph-panel li {
+html[lang="ar"] .tibb-monograph-panel li,
+html[lang="ar"] .tibb-monograph-panel blockquote {
   direction: rtl;
   text-align: right !important;
 }
@@ -12978,143 +13041,203 @@ html[lang="ar"] .tibb-monograph-panel .monograph-list {
   padding-right: 18px;
 }
 
-/* 4. Monograph Reader Hero & Content Styling (Light & Dark Mode Native App UI) */
+/* 4. Rearranged Standard Monograph Reader Layout (Clean Hierarchy & Comfortable Spacing) */
 .tibb-monograph-panel {
-  padding-bottom: 16px !important;
+  padding: 0 14px 18px !important;
 }
 
 .tibb-reader-hero-card {
   background:
-    radial-gradient(circle at 90% 15%, rgba(254, 243, 199, 0.62) 0%, transparent 52%),
-    linear-gradient(155deg, #ffffff 0%, #f1f8f4 100%);
-  border: 1.5px solid rgba(22, 163, 74, 0.34);
-  border-radius: 20px;
+    radial-gradient(circle at 92% 14%, rgba(254, 243, 199, 0.55) 0%, transparent 50%),
+    linear-gradient(160deg, #ffffff 0%, #f4faf6 100%);
+  border: 1px solid rgba(22, 163, 74, 0.28);
+  border-radius: 18px;
   padding: 15px 16px;
   margin-bottom: 12px;
-  box-shadow: 0 4px 14px rgba(15, 35, 25, 0.05);
+  box-shadow: var(--shadow-m3-card);
 }
 
 .tibb-reader-chapter-pill {
   display: inline-flex;
   align-items: center;
-  font-size: 0.68rem;
+  font-size: 0.69rem;
   font-weight: 600 !important;
   color: #15803d;
   background: #e8f5ee;
-  border: 1px solid rgba(22, 163, 74, 0.32);
+  border: 1px solid rgba(22, 163, 74, 0.28);
   padding: 3px 10px;
   border-radius: 999px;
-  margin-bottom: 7px;
+  margin-bottom: 8px;
 }
 
 .tibb-reader-title {
-  font-size: 1.08rem !important;
-  font-weight: 700 !important;
+  font-size: 1.06rem !important;
+  font-weight: 600 !important;
   color: #14532d !important;
-  line-height: 1.35 !important;
+  line-height: 1.38 !important;
   margin-bottom: 4px !important;
 }
 
 .tibb-reader-sub {
-  font-size: 0.68rem;
-  font-weight: 600 !important;
-  color: #b45309;
-  letter-spacing: 0.03em;
+  font-size: 0.66rem;
+  font-weight: 500 !important;
+  color: #92400e;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  line-height: 1.35;
+  line-height: 1.38;
 }
 
 .tibb-reader-body-card {
   background: #ffffff;
-  border: 1.5px solid rgba(22, 163, 74, 0.24);
-  border-radius: 20px;
+  border: 1px solid var(--border-subtle, #e3ebe6);
+  border-radius: 18px;
   padding: 16px 15px;
-  box-shadow: 0 4px 16px rgba(15, 35, 25, 0.04);
-  font-size: 0.88rem;
+  box-shadow: var(--shadow-m3-card);
+  font-size: 0.87rem;
   line-height: 1.72;
   color: var(--text-primary, #1e2923);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 13px;
 }
 
-.tibb-reader-body-card p {
-  margin: 0 0 8px 0;
+.tibb-reader-body-card p,
+.tibb-lead-intro {
+  margin: 0 !important;
   text-align: left !important;
+  color: var(--text-primary, #1e2923);
 }
 
+/* Structured Bullet Lists inside Monograph Reader */
+.tibb-reader-body-card .monograph-list {
+  padding-left: 18px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tibb-reader-body-card .monograph-list li {
+  line-height: 1.66;
+  padding-left: 2px;
+}
+
+.tibb-reader-body-card .monograph-list li strong {
+  color: #14532d;
+  font-weight: 600 !important;
+}
+
+html[dir="rtl"] .tibb-reader-body-card .monograph-list li {
+  padding-left: 0;
+  padding-right: 2px;
+}
+
+/* Tri-Partition 3-Column / Stacked Metric Cards (Chapter 2: 1/3 Stomach Rule) */
 .tibb-reader-body-card .grid-3-col {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 9px;
-  margin: 4px 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 2px 0;
+}
+
+@media (max-width: 390px) {
+  .tibb-reader-body-card .grid-3-col {
+    grid-template-columns: 1fr;
+  }
 }
 
 .tibb-reader-body-card .grid-box {
-  background: #f4faf7;
-  border: 1px solid rgba(22, 163, 74, 0.26);
+  background: #f6fbf8;
+  border: 1px solid rgba(22, 163, 74, 0.22);
   border-top: 3px solid #16a34a;
   border-radius: 14px;
-  padding: 11px 12px;
+  padding: 11px 10px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
 }
 
 .tibb-reader-body-card .grid-box-title {
   font-size: 0.8rem;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   color: #15803d;
-  margin-bottom: 4px;
 }
 
 .tibb-reader-body-card .grid-box-desc {
-  font-size: 0.8rem;
+  font-size: 0.77rem;
   line-height: 1.48;
+  color: var(--text-secondary, #47554e);
   margin: 0 !important;
   text-align: center !important;
 }
 
-.tibb-reader-body-card .callout-quran {
-  background: #f2fbf6;
-  border: 1px solid rgba(22, 163, 74, 0.24);
-  border-left: 4px solid #16a34a;
+/* Semantic Callout Blocks (Qur'an, Hadith, Science, Danger) */
+.tibb-reader-body-card .callout-quran,
+.tibb-reader-body-card .callout-hadith,
+.tibb-reader-body-card .callout-science,
+.tibb-reader-body-card .callout-danger {
   border-radius: 14px;
   padding: 13px 14px;
+  margin: 0 !important;
+}
+
+.tibb-reader-body-card .callout-quran {
+  background: #f4fbf7;
+  border: 1px solid rgba(22, 163, 74, 0.22);
+  border-left: 3.5px solid #16a34a;
 }
 
 .tibb-reader-body-card .callout-hadith {
-  background: #fffcf3;
-  border: 1px solid rgba(217, 119, 6, 0.25);
-  border-left: 4px solid #d97706;
-  border-radius: 14px;
-  padding: 13px 14px;
+  background: #fffdf5;
+  border: 1px solid rgba(217, 119, 6, 0.24);
+  border-left: 3.5px solid #d97706;
 }
 
 .tibb-reader-body-card .callout-science {
-  background: #f2f8fb;
-  border: 1px solid rgba(2, 132, 199, 0.24);
-  border-left: 4px solid #0284c7;
-  border-radius: 14px;
-  padding: 13px 14px;
+  background: #f4f9fc;
+  border: 1px solid rgba(2, 132, 199, 0.22);
+  border-left: 3.5px solid #0284c7;
 }
 
 .tibb-reader-body-card .callout-danger {
-  background: #fef4f4;
-  border: 1px solid rgba(220, 38, 38, 0.26);
-  border-left: 4px solid #dc2626;
-  border-radius: 14px;
-  padding: 13px 14px;
+  background: #fef6f6;
+  border: 1px solid rgba(220, 38, 38, 0.24);
+  border-left: 3.5px solid #dc2626;
+}
+
+html[lang="ar"] .tibb-reader-body-card .callout-quran {
+  border-left: 1px solid rgba(22, 163, 74, 0.22);
+  border-right: 3.5px solid #16a34a;
+}
+
+html[lang="ar"] .tibb-reader-body-card .callout-hadith {
+  border-left: 1px solid rgba(217, 119, 6, 0.24);
+  border-right: 3.5px solid #d97706;
+}
+
+html[lang="ar"] .tibb-reader-body-card .callout-science {
+  border-left: 1px solid rgba(2, 132, 199, 0.22);
+  border-right: 3.5px solid #0284c7;
+}
+
+html[lang="ar"] .tibb-reader-body-card .callout-danger {
+  border-left: 1px solid rgba(220, 38, 38, 0.24);
+  border-right: 3.5px solid #dc2626;
 }
 
 .tibb-reader-body-card .callout-label {
   display: block;
   font-size: 0.84rem;
-  font-weight: 700 !important;
-  margin-bottom: 6px;
+  font-weight: 600 !important;
+  margin-bottom: 7px;
   color: #14532d;
+  line-height: 1.38;
 }
 
 .tibb-reader-body-card .callout-hadith .callout-label {
-  color: #b45309;
+  color: #92400e;
 }
 
 .tibb-reader-body-card .callout-science .callout-label {
@@ -13127,29 +13250,19 @@ html[lang="ar"] .tibb-monograph-panel .monograph-list {
 
 .tibb-reader-body-card .citation-ref {
   display: block;
-  margin-top: 6px;
-  font-size: 0.76rem;
-  font-weight: 600 !important;
+  margin-top: 7px;
+  font-size: 0.74rem;
+  font-weight: 500 !important;
   color: var(--text-muted, #64746b);
 }
 
-.tibb-reader-body-card .monograph-list {
-  padding-left: 18px;
-  margin: 4px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-
-.tibb-reader-body-card .monograph-list li {
-  line-height: 1.65;
-}
-
+/* Chapter 9: 5-Phase Daily Routine Cards */
 .tibb-reader-body-card .routine-phase {
   background: #f8fbf9;
-  border: 1px solid rgba(22, 163, 74, 0.24);
+  border: 1px solid rgba(22, 163, 74, 0.22);
   border-radius: 15px;
-  padding: 13px;
+  padding: 13px 14px;
+  margin: 0 !important;
 }
 
 .tibb-reader-body-card .routine-phase-header {
@@ -13159,99 +13272,199 @@ html[lang="ar"] .tibb-monograph-panel .monograph-list {
   align-items: center;
   gap: 6px;
   padding-bottom: 8px;
-  margin-bottom: 9px;
-  border-bottom: 1.5px solid rgba(217, 119, 6, 0.35);
+  margin-bottom: 10px;
+  border-bottom: 1px dashed rgba(22, 163, 74, 0.26);
 }
 
 .tibb-reader-body-card .routine-phase-title {
-  font-size: 0.9rem !important;
-  font-weight: 700 !important;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
   color: #14532d !important;
   margin: 0 !important;
+  line-height: 1.35 !important;
 }
 
 .tibb-reader-body-card .routine-time-badge {
+  font-size: 0.67rem;
+  font-weight: 600 !important;
+  background: #e8f5ee;
+  color: #15803d;
+  border: 1px solid rgba(22, 163, 74, 0.3);
+  padding: 2.5px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* Chapter 8: Mobile-Native Prophetic Superfood Cards Stack (Zero Horizontal Scroll) */
+.tibb-superfood-cards-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.tibb-sf-card {
+  background: #f8fbf9;
+  border: 1px solid rgba(22, 163, 74, 0.22);
+  border-left: 3.5px solid #16a34a;
+  border-radius: 15px;
+  padding: 13px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+html[lang="ar"] .tibb-sf-card {
+  border-left: 1px solid rgba(22, 163, 74, 0.22);
+  border-right: 3.5px solid #16a34a;
+}
+
+.tibb-sf-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tibb-sf-title-wrap h4 {
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  color: #14532d !important;
+  margin: 0 0 1px 0 !important;
+  line-height: 1.3 !important;
+}
+
+.tibb-sf-title-wrap small {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--text-muted, #64746b);
+}
+
+.tibb-sf-ref-pill {
   font-size: 0.68rem;
   font-weight: 600 !important;
-  background: #15803d;
-  color: #ffffff;
-  padding: 3px 10px;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid rgba(217, 119, 6, 0.28);
+  padding: 2.5px 9px;
   border-radius: 999px;
+  white-space: nowrap;
 }
 
-.tibb-reader-body-card .table-responsive {
-  width: 100%;
-  overflow-x: auto;
-  border-radius: 12px;
-  border: 1px solid rgba(22, 163, 74, 0.24);
+.tibb-sf-quote {
+  margin: 0;
+  padding: 8px 11px;
+  background: #ffffff;
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  border-radius: 10px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: #065f46;
+  line-height: 1.55;
 }
 
-.tibb-reader-body-card .monograph-table {
-  width: 100%;
-  min-width: 520px;
-  border-collapse: collapse;
-  font-size: 0.79rem;
+.tibb-sf-compounds {
+  font-size: 0.77rem;
+  color: var(--text-secondary, #47554e);
+  background: #eef7f2;
+  padding: 6px 10px;
+  border-radius: 9px;
+  line-height: 1.45;
 }
 
-.tibb-reader-body-card .monograph-table th {
-  background: #14532d;
-  color: #ffffff;
+.tibb-sf-label {
   font-weight: 600 !important;
-  text-align: left;
-  padding: 9px 10px;
-  border: 1px solid rgba(22, 163, 74, 0.25);
+  color: #15803d;
+  margin-right: 4px;
 }
 
-.tibb-reader-body-card .monograph-table td {
-  padding: 9px 10px;
-  border: 1px solid rgba(22, 163, 74, 0.2);
-  vertical-align: top;
+html[lang="ar"] .tibb-sf-label {
+  margin-right: 0;
+  margin-left: 4px;
 }
 
-.tibb-reader-body-card .monograph-table tr:nth-child(even) {
-  background: #f4faf7;
+.tibb-sf-mechanism {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-primary, #1e2923);
+  margin: 0 !important;
 }
 
-/* Dark Mode Overrides for Tibb-an-Nabawi Monograph Reader */
+/* Dark Mode Overrides for Tibb-an-Nabawi Monograph Reader & Superfood Cards */
 html[data-theme="dark"] .tibb-reader-hero-card,
 html[data-theme="dark"] .tibb-reader-body-card {
   background: #0b221a !important;
-  border-color: rgba(52, 211, 153, 0.32) !important;
+  border-color: rgba(52, 211, 153, 0.26) !important;
   color: #f1f5f9 !important;
 }
 
 html[data-theme="dark"] .tibb-reader-title,
-html[data-theme="dark"] .tibb-reader-body-card .routine-phase-title {
+html[data-theme="dark"] .tibb-reader-body-card .routine-phase-title,
+html[data-theme="dark"] .tibb-reader-body-card .monograph-list li strong,
+html[data-theme="dark"] .tibb-sf-title-wrap h4 {
   color: #6ee7b7 !important;
 }
 
-html[data-theme="dark"] .tibb-reader-chapter-pill {
-  background: rgba(16, 185, 129, 0.2);
+html[data-theme="dark"] .tibb-reader-sub {
+  color: #fbbf24;
+}
+
+html[data-theme="dark"] .tibb-reader-chapter-pill,
+html[data-theme="dark"] .tibb-reader-body-card .routine-time-badge {
+  background: rgba(16, 185, 129, 0.18);
   color: #6ee7b7;
-  border-color: rgba(52, 211, 153, 0.38);
+  border-color: rgba(52, 211, 153, 0.34);
+}
+
+html[data-theme="dark"] .tibb-reader-body-card p,
+html[data-theme="dark"] .tibb-lead-intro,
+html[data-theme="dark"] .tibb-sf-mechanism {
+  color: #e2e8f0 !important;
 }
 
 html[data-theme="dark"] .tibb-reader-body-card .grid-box,
 html[data-theme="dark"] .tibb-reader-body-card .callout-quran,
-html[data-theme="dark"] .tibb-reader-body-card .routine-phase {
+html[data-theme="dark"] .tibb-reader-body-card .routine-phase,
+html[data-theme="dark"] .tibb-sf-card {
   background: #071913 !important;
-  border-color: rgba(52, 211, 153, 0.28) !important;
+  border-color: rgba(52, 211, 153, 0.26) !important;
   color: #e2e8f0 !important;
 }
 
+html[data-theme="dark"] .tibb-sf-quote {
+  background: #0b221a;
+  border-color: rgba(52, 211, 153, 0.24);
+  color: #a7f3d0;
+}
+
+html[data-theme="dark"] .tibb-sf-compounds {
+  background: rgba(16, 185, 129, 0.12);
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .tibb-sf-label {
+  color: #6ee7b7;
+}
+
+html[data-theme="dark"] .tibb-sf-ref-pill {
+  background: rgba(234, 179, 8, 0.16);
+  color: #fde047;
+  border-color: rgba(234, 179, 8, 0.32);
+}
+
 html[data-theme="dark"] .tibb-reader-body-card .callout-hadith {
-  background: rgba(234, 179, 8, 0.1) !important;
-  border-color: rgba(234, 179, 8, 0.34) !important;
+  background: rgba(234, 179, 8, 0.09) !important;
+  border-color: rgba(234, 179, 8, 0.32) !important;
 }
 
 html[data-theme="dark"] .tibb-reader-body-card .callout-science {
-  background: rgba(14, 165, 233, 0.1) !important;
-  border-color: rgba(56, 189, 248, 0.34) !important;
+  background: rgba(14, 165, 233, 0.09) !important;
+  border-color: rgba(56, 189, 248, 0.32) !important;
 }
 
 html[data-theme="dark"] .tibb-reader-body-card .callout-danger {
-  background: rgba(239, 68, 68, 0.12) !important;
-  border-color: rgba(248, 113, 113, 0.36) !important;
+  background: rgba(239, 68, 68, 0.11) !important;
+  border-color: rgba(248, 113, 113, 0.34) !important;
 }
 
 html[data-theme="dark"] .tibb-reader-body-card .callout-label {
@@ -13270,12 +13483,8 @@ html[data-theme="dark"] .tibb-reader-body-card .callout-danger .callout-label {
   color: #fca5a5 !important;
 }
 
-html[data-theme="dark"] .tibb-reader-body-card .monograph-table tr:nth-child(even) {
-  background: #071913 !important;
-}
-
 html[data-theme="dark"] .tibb-reader-body-card [style*="background-color: var(--card-bg)"] {
   background-color: #0b221a !important;
-  border-color: rgba(52, 211, 153, 0.28) !important;
+  border-color: rgba(52, 211, 153, 0.26) !important;
 }
 
