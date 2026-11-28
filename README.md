@@ -1,33 +1,58 @@
-# ☪️ Sunnah 24 — Prophetic 24-Hour Lifestyle & Habit Planner
+<div align="center">
 
-[![Live Web App](https://img.shields.io/badge/Live_App-GitHub_Pages-10b981?style=for-the-badge)](https://mkrweb.github.io/sunnah-24/)
-[![Download Signed APK](https://img.shields.io/github/v/release/MKRWeb/sunnah-24?label=Download%20APK&style=for-the-badge&color=eab308)](https://github.com/MKRWeb/sunnah-24/releases/latest)
-[![Privacy Policy](https://img.shields.io/badge/Play_Store-Privacy_Policy-38bdf8?style=for-the-badge)](https://mkrweb.github.io/sunnah-24/privacy.html)
+### بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
 
-**Sunnah 24** is a corporate-grade, 100% offline-first, local-integrity-verified Islamic 24-hour routine planner, Prophetic habit tracker, interactive digital Tasbih, and comprehensive Masnoon Adhkar.
+# ☪️ Sunnah 24
 
----
+### **Prophetic 24-Hour Lifestyle & Habit Planner**
 
-## 🌟 Enterprise Highlights
+*100% offline-first • SHA-256 integrity-verified • Built for PWA & Android 16 (API 36)*
 
-- **🕒 Complete 24-Hour Prophetic Cycle (32 Core Habits):** Structured across 7 daily phases from *Tahajjud & Fajr* to *Prophetic Sleep*, *Tibb Nabawi Nutrition*, *Fitrah Hygiene*, and *Akhlaq*.
-- **📖 Authentic Hadith Proof & Physiological Science:** Every habit features verified primary source citations (Sahih al-Bukhari, Sahih Muslim, Sunan) paired with modern chronobiology and medical wisdom.
-- **📿 Haptic Digital Tasbih & Adhkar:** Built-in counter for post-Salah Tasbihat, Istighfar, Salawat, and Hawqalah with persistent lifetime analytics.
-- **🛡️ SHA-256 Local-Integrity-Verified Vault:** Every record is verified with a SHA-256 checksum digest chain with 1-click signed JSON backup and verification.
-- **🧩 Clean Modular Architecture & Android 16 (API 36) Ready:** Split into `data/i18n-data.js`, `data/habits-duas-data.js`, `data/locations-data.js`, `storage.js`, `astronomy.js`, and `ui.js`, built with Capacitor 8 targeting Android API 36.
-- **☁️ 100% Cloud-Compiled Android APK & Play Store AAB:** Zero desktop required—GitHub Actions compiles, aligns, and cryptographically signs both `.apk` and `.aab` binaries automatically.
+<br>
 
----
+[![Live Web App](https://img.shields.io/badge/🌐_Live_PWA-Launch_App-065f46?style=for-the-badge&labelColor=052e16)](https://sunnah-24.github.io/sunnah24/)
+[![Download APK](https://img.shields.io/github/v/release/Sunnah-24/sunnah24?style=for-the-badge&label=📲_Android_Release&color=b45309&labelColor=052e16)](https://github.com/Sunnah-24/sunnah24/releases/latest)
+[![Privacy Policy](https://img.shields.io/badge/🛡️_Privacy-Zero_Tracking-0f766e?style=for-the-badge&labelColor=052e16)](https://sunnah-24.github.io/sunnah24/privacy.html)
+[![License](https://img.shields.io/badge/⚖️_License-AGPLv3-475569?style=for-the-badge&labelColor=052e16)](#license)
 
-## 📲 Download & Links
-
-- **Live Web App (PWA):** [https://mkrweb.github.io/sunnah-24/](https://mkrweb.github.io/sunnah-24/)
-- **Google Play Privacy Policy:** [https://mkrweb.github.io/sunnah-24/privacy.html](https://mkrweb.github.io/sunnah-24/privacy.html)
-- **Latest Android APK & AAB:** [GitHub Releases Page](https://github.com/MKRWeb/sunnah-24/releases/latest)
+</div>
 
 ---
 
-## 📄 License
-GNU Affero General Public License v3.0 (AGPL-3.0) © [MKRWeb](https://github.com/MKRWeb)
+> *"The most beloved deeds to Allah are those that are most consistent, even if they are small."* — **Sahih al-Bukhari & Sahih Muslim**
+>
+> **Sunnah 24** harmonizes daily Prophetic rhythms with modern chronobiology in a private, zero-telemetry workspace—combining a **32-habit 24-hour cycle**, **primary Hadith proofs**, **haptic digital Tasbih**, **Masnoon Adhkar**, and a **cryptographically verified local vault**.
 
+---
 
+## ✨ Core Highlights
+
+| Pillar | What You Get |
+| :--- | :--- |
+| **🕒 24-Hour Prophetic Cycle** | **32 core habits** organized across **7 daily phases**—from *Tahajjud & Fajr* to *Prophetic Sleep*, alongside *Tibb Nabawi Nutrition*, *Fitrah Hygiene*, and *Akhlaq*. |
+| **📖 Hadith & Science** | Every habit pairs verified citations (*Sahih al-Bukhari*, *Sahih Muslim*, *Sunan*) with practical chronobiology and physiological insights. |
+| **📿 Haptic Tasbih & Adhkar** | Dedicated counter for post-Salah Tasbihat, Istighfar, Salawat, and Hawqalah with persistent lifetime analytics and Masnoon Adhkar. |
+| **🛡️ SHA-256 Local Vault** | Local-first storage protected by a **SHA-256 checksum digest chain**, complete with 1-click signed JSON backup and integrity verification. |
+| **☁️ Cloud-Signed Android Builds** | Built with **Capacitor 8** targeting **Android 16 (API 36)**—automatically compiled, aligned, and signed (`.apk` & `.aab`) via GitHub Actions. |
+
+---
+
+## 🧩 Architecture
+
+```text
+sunnah24/
+├── www/
+│   ├── index.html               # Main PWA & Capacitor shell
+│   ├── style.css                # Serene emerald & gold UI theme
+│   ├── astronomy.js             # Solar & daily phase timing engine
+│   ├── storage.js               # Offline vault + SHA-256 checksum chain
+│   ├── ui.js                    # Interactive views, habit tracking & haptic Tasbih
+│   ├── s24_apk_ota_manager.js   # Verified Android in-app update manager
+│   ├── sw.js & manifest.json    # Offline service worker & PWA manifest
+│   ├── icon.svg & privacy.html  # App emblem & zero-tracking privacy policy
+│   └── data/
+│       ├── habits-duas-data.js  # 32 habits, Hadith proofs, science notes & Adhkar
+│       ├── i18n-data.js         # Localization & UI strings
+│       └── locations-data.js    # Location presets & coordinates
+└── .github/workflows/
+    └── sunnah-24-pipeline.yml   # Automated Pages deploy + signed APK & AAB build
